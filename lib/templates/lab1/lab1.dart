@@ -60,32 +60,63 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
+    return const Text(
+      'Hello Flutter!',
+      style: TextStyle(
+        fontSize: 80,
+        color: Color.fromARGB(255, 24, 182, 134),
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
+    return const Icon(
+      Icons.home,
+      size: 120,
+      color: Colors.blue,
     );
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
+    return Image.network(
+      'https://images.ctfassets.net/hrltx12pl8hq/28ECAQiPJZ78hxatLTa7Ts/2f695d869736ae3b0de3e56ceaca3958/free-nature-images.jpg?fit=fill&w=1200&h=630',
+      width: 200,
+      height: 200,
+      fit: BoxFit.cover,
     );
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
+    return TextButton(
+      onPressed: () {
+        print('Pressed');
+      },
+      child: Text("BUTTON"),
     );
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
+    return Column(
+       children: [
+        Container(
+          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.all(40),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.teal),
+            borderRadius: BorderRadius.vertical(),
+          ),
+          child: Text("data"),
+        ),
+        Container(
+          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.all(40),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.red),
+            borderRadius: BorderRadius.circular(40),
+          ),
+          child: Icon(Icons.favorite, size: 70),
+        )
+       ],
     );
-  }
 }
