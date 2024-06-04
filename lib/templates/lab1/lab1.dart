@@ -60,32 +60,81 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
+    return Center(
+      child: Text (
+        'Hello Flutter!',
+        style: TextStyle(
+          fontSize: 24,
+          color: Colors.teal,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 
+
+
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Icon(Icons.home);
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
+    return  
+      Image.network(
+  'https://avatars.mds.yandex.net/i?id=d63d013380d720cb8dcd673174d79a0c3f7f5bfb-12164831-images-thumbs&n=13',
+  width: 200,
+  height: 200,
+  fit: BoxFit.cover,
     );
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
-    );
-  }
+    return TextButton(onPressed: () {
+      print('tapped');
+    },
+     child: Text('Tap me!'),
+     );
+  } 
 
-  Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
-    );
-  }
+Widget exercise5() {
+  return Column(
+    children: [
+      Container(
+        padding: EdgeInsets.all(20),
+        margin: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.blue,
+            width: 2,
+          ),
+          color: Colors.blue,
+        ),
+        child: Text(
+          'Hello, world!',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      SizedBox(height: 16),
+      Container(
+        margin: EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.green,
+            width: 2,
+          ),
+          color: Colors.green,
+        ),
+        child: Icon(
+          Icons.home,
+          color: Colors.red,
+          size: 48,
+        ),
+      ),
+    ],
+  );
+}
 }
