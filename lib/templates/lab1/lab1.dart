@@ -60,32 +60,59 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Container(
+      child: const Text(
+        'Hello Flutter!',
+        style: TextStyle(
+          fontSize: 100,
+          color: Colors.red, 
+          fontWeight: FontWeight.normal),
+        )
+      );
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
+    return const Icon( 
+      Icons.macro_off,
       size: 100,
+      color: Colors.blue,
     );
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
+    return Image.network(
+      'https://media.istockphoto.com/id/184276818/ru/%D1%84%D0%BE%D1%82%D0%BE/%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B5-%D1%8F%D0%B1%D0%BB%D0%BE%D0%BA%D0%BE.jpg?s=612x612&w=0&k=20&c=HDH3wLEAvc7soT85pAcS4JOQu5KJ8xM9JOilVe1zFLI=',
+      fit: BoxFit.fill,
+      width: 80,
+      height: 50,
     );
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
+    return TextButton(
+      onPressed: (){
+        print("Pressed");
+      },
+      child: const Text(
+        'Press me',
+      ),
     );
+    
+    
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Container(
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+      color: Colors.blue,
+    ),
+      child: Column(
+      children: <Container> [
+        Container(child: const Text('apple')),
+        Container(child: const Icon(Icons.apple))]
+      )
+    ); 
   }
 }
