@@ -60,32 +60,68 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
-    );
-  }
+  return const Text(
+      'Hello Flutter!',
+      style: TextStyle(
+      fontSize: 24.0,
+      color: Colors.green, 
+      fontWeight: FontWeight.bold,
+    ),
+  );
+}
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
+    return const Icon(
+      Icons.stars,
+      size: 125,
     );
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Image.network(
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2MhDs25KKZOGqzzQh_UoPEoITxhTmj9NXPA&s'
+      );
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
-    );
-  }
-
+  return TextButton(
+    onPressed: () {
+      print('Pressed');
+    },
+    child: Text('Press me'),
+  );
+}
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
-    );
-  }
+  return Column(
+    children: <Widget>[
+      Container(
+        padding: const EdgeInsets.all(10.0),
+        margin: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: Colors.blue,
+          border: Border.all(),
+        ),
+        child: const Text(
+          'Hello Flutter!',
+          style: TextStyle(
+            fontSize: 24.0,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      Container(
+        padding: const EdgeInsets.all(10.0),
+        margin: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: Colors.red,
+          border: Border.all(),
+        ),
+        child: const Icon(
+          Icons.favorite,
+          color: Colors.white,
+        ),
+      ),
+    ],
+  );
+}
 }
