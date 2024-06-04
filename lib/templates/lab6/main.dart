@@ -1,3 +1,4 @@
+import 'package:education/generated/l10n.dart';
 import 'package:education/templates/lab6/login.dart';
 import 'package:education/templates/lab6/theme.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
-            // Add your generated delegate here
+            S.delegate
           ],
           supportedLocales: [
             const Locale('en', ''),
@@ -37,4 +38,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
