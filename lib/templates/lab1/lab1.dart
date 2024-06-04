@@ -60,39 +60,58 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return Text(
-      'Hello Flutter!',
+    return const Text(
+      "Hello Flutter!",
       style: TextStyle(
-        fontSize: 24, 
-        color: Colors.black, 
-        fontWeight: FontWeight.bold, 
-      ),
+          color: Color.fromARGB(255, 0, 0, 0),
+          fontSize: 25,
+          fontWeight: FontWeight.bold),
     );
   }
 
   Widget exercise2() {
-    return Icon(
-      Icons.home,
-      size: 100, 
-      color: Colors.red,
-    );
+    return const Icon(Icons.home,
+        size: 200, color: Color.fromARGB(255, 0, 0, 0));
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Image.network(
+        "https://static.xabar.uz/crop/2/4/720_460_95_2479473632.jpg",
+        width: 100,
+        height: 100,
+        fit: BoxFit.cover);
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return TextButton(
+        onPressed: () => (print("Pressed")), child: const Text("press it"));
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: 25, vertical: 25),
+          margin: const EdgeInsets.symmetric(vertical: 25),
+          decoration: BoxDecoration(
+              color: Color.fromARGB(0, 32, 72, 87),
+              border: Border.all(color: Color.fromARGB(255, 0, 0, 0))),
+          child: const Text(
+            "Column",
+          ),
+        ),
+        Container(
+          padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: 25, vertical: 25),
+          margin: const EdgeInsets.symmetric(vertical: 50),
+          decoration: const BoxDecoration(color: Color.fromARGB(0, 32, 72, 87)),
+          child: Image.network(
+              "https://static.xabar.uz/crop/2/4/720_460_95_2479473632.jpg",
+              width: 100,
+              height: 100),
+        ),
+      ],
     );
   }
 }
