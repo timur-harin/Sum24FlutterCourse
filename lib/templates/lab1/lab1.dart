@@ -22,7 +22,7 @@ class LAb1HomePage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: const Icon(Icons.stars),
-        title: const Text('Lab 2'),
+        title: const Text('Lab 1'),
         backgroundColor: Colors.teal,
         elevation: 4,
       ),
@@ -60,32 +60,74 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
+    TextStyle customStyle = const TextStyle(fontSize: 24, color: Colors.blue, fontWeight: FontWeight.bold);
+
+    // Return the Text widget with the custom style applied
+    return Text(
+      'Hello Flutter!',
+      style: customStyle,
     );
+
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
+    return const Icon(
+      Icons.home,
       size: 100,
+      color: Colors.black,
     );
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
+    String imageUrl = "https://www.w-dog.ru/wallpapers/6/15/516378149952025/minony-multfilm-troe-zheltye-ochki-kombinezony-gitara-igrushka-mishka-plyushevyj-belyj-fon.jpg";
+    
+    return Image.network(
+      imageUrl,
+      width: 200,
+      height: 300,
+      fit: BoxFit.cover,
     );
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
+    void onPressed() {
+        print("Pressed");
+    };
+
+    // Return the TextButton configured with the onPressed callback
+    return TextButton(
+      onPressed: onPressed,
+      child: Text('Press Me'),
     );
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
+    String textContent = 'Hello, Flutter';
+
+    IconData iconData = Icons.star;
+
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.all(10), 
+          padding: EdgeInsets.all(8), 
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.blue), 
+            borderRadius: BorderRadius.circular(10), 
+          ),
+          child: Text(textContent),
+        ),
+      
+        Container(
+          margin: EdgeInsets.all(10), 
+          padding: EdgeInsets.all(8), 
+          decoration: BoxDecoration(
+            color: Colors.yellow, 
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(iconData, color: Colors.red),
+        ),
+      ],
     );
   }
 }
