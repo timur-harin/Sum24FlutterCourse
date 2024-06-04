@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 void main() => runApp(const Lab1());
 
@@ -60,32 +61,83 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
+    return const Text(
+      "Hello world!",
+      style: TextStyle(
+        color: Colors.red,
+        fontSize: 50.0,
+        fontWeight: FontWeight.w700
+      )
     );
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
+    return const Icon(
+      Icons.star,
+      size: 50,
+      color: Colors.yellow
     );
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
+    return const Image(
+      image: NetworkImage('https://avatars.mds.yandex.net/get-shedevrum/12369909/2b544b05cccb11ee8ad77e2051c0c3c2/orig'),
+      width: 1000,
+      height: 500,
+      fit: BoxFit.cover,
     );
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return TextButton(
+        onPressed: () {
+        print('Pressed');
+        },
+
+        child: Text('Button'),
+      );
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black,
+              width: 3,
+            ),
+          ),
+          padding: EdgeInsets.fromLTRB(500, 1, 1, 1),
+          margin: EdgeInsets.fromLTRB(1, 1, 1, 1),
+          child: const Text(
+            "Text in Container in Column",
+              style: TextStyle(
+              color: Colors.blue,
+              fontSize: 30.0,
+              fontWeight: FontWeight.w400
+            )
+          ),
+        ),
+        Container(
+
+           decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.red,
+              width: 10,
+            ),
+          ),
+
+          padding: EdgeInsets.fromLTRB(100, 50, 1, 50),
+          margin: EdgeInsets.fromLTRB(100, 100, 500, 100),
+          child: const Icon(
+            Icons.star,
+            size: 50,
+            color: Colors.yellow
+          )
+        ) 
+      ]
     );
   }
 }
