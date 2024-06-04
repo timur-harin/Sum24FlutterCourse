@@ -60,32 +60,63 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
+    return const Text(
+      'Hello Flutter!',
+      style: TextStyle(
+        fontSize: 24,
+        color: Colors.pink,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
+    return const Icon(
+      Icons.access_alarms_sharp,
+      size: 50,
+      color: Colors.blue,
     );
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Image.network(
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3Me_vy_UllvFDmxN7bTRpUQMINvJ9uCemPQ&s',
+        width: 100,
+        height: 100,
+        fit: BoxFit.cover);
+  }
+
+  void tapped() {
+    print('Pressed');
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
+    return TextButton(
+      onPressed: tapped,
+      child: Text('Тык'),
     );
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          'Hello Flutter!',
+          style: TextStyle(
+            fontSize: 24,
+            color: Colors.pink,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Icon(
+          Icons.abc_sharp,
+          size: 100,
+          color: Colors.yellow,
+        ),
+      ],
+
     );
   }
 }
