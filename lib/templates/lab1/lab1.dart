@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 void main() => runApp(const Lab1());
 
@@ -60,32 +61,72 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
+    return const Text(
+      "Hello Flutter!",
+      style: TextStyle(fontWeight: FontWeight.bold,
+    fontSize: 18, color: Colors.brown),
     );
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
+    return const Icon(
+      Icons.account_box_rounded,
+      size: 52,
+      color: Colors.deepOrangeAccent,
     );
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
+    return Image.network(
+    'https://pichold.ru/wp-content/uploads/2022/07/8-1.jpg', 
+    width: 200, 
+    height: 200, 
+    fit: BoxFit.cover,
     );
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      TextButton(
+        onPressed: () {
+          print("Pressed");
+        },
+        child: const Text('Tap me'),
+        
+      ),
+    ],
+  );
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+          margin: EdgeInsets.fromLTRB(10, 5, 10, 5) ,
+          decoration: BoxDecoration(
+          border: Border.all(color: Colors.greenAccent), 
+          color: Color.fromARGB(255, 216, 160, 160), 
+        ), 
+         child: Text(
+          'Capibaraaaaa',
+          style: TextStyle(fontSize: 24), 
+        ),
+        ),
+         Container(
+        margin: EdgeInsets.fromLTRB(10, 5, 10, 5), 
+        padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.green),
+          color: Colors.white, 
+        ),
+        child: Icon(Icons.access_time, color: Colors.purple), 
+      ),
+      ],
+
+      
     );
   }
 }
