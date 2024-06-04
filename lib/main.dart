@@ -1,7 +1,8 @@
+import 'package:education/templates/lab1/lab1.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const Lab1());
 }
 
 class MainApp extends StatelessWidget {
