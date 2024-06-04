@@ -22,7 +22,7 @@ class LAb1HomePage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: const Icon(Icons.stars),
-        title: const Text('Lab 1'),
+        title: const Text('Lab 2'),
         backgroundColor: Colors.teal,
         elevation: 4,
       ),
@@ -60,32 +60,40 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Text("Hello flutter",
+        style: TextStyle(
+            color: Colors.amber, fontSize: 26, fontWeight: FontWeight.bold));
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
+    return Icon(
+      Icons.airplanemode_on,
+      color: Colors.purple,
+      size: 30,
     );
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Image.network(
+        'https://sun6-22.userapi.com/q8yASSaZaHir1t6oBZq6R-R6w5zS3YeEwTic3Q/li-4kGCG6d4.jpg'
+        ,
+        width: 100,
+        height: 100,);
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return TextButton(onPressed: () {}, child: Text("Button"));
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
+    return const Column(
+      children: [
+        Text("My text",style: TextStyle( color: Colors.amber, fontSize: 26, fontWeight: FontWeight.bold),),
+        Icon(
+      Icons.airplanemode_on,
+      color: Colors.purple,
+      size: 30,)
+      ],
     );
   }
 }
