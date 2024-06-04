@@ -60,32 +60,59 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Text(
+      'Hello Flutter!',
+      style: TextStyle(
+        fontSize: 30,
+        color: Colors.yellow,
+        fontWeight: FontWeight.bold,
+      ),
+      );
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
+    return const Icon(
+      Icons.access_time,
       size: 100,
+      color: Colors.red,
     );
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
+    return Image.network(
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0lmTrDXEKioAUbgiVi4UX21hnmkfNKiPpaQ&s',
+      width: 100,
+      height: 100,
+      fit: BoxFit.cover,
     );
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
+    return TextButton(
+      onPressed: () {print('Pressed');},
+      child: Text('Жмать Сюда'),
     );
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          'Finish!!!',
+          style: TextStyle(
+            fontSize: 30,
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Icon(
+          Icons.airplanemode_inactive,
+          size: 80,
+          color: Colors.yellow,
+        ),
+      ],
     );
   }
 }
