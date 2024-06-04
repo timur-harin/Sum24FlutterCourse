@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:flutter/widgets.dart';
 
 void main() => runApp(const Lab1());
 
@@ -60,32 +61,60 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
+    return const Text(
+      'Hello Flutter!',
+      style: TextStyle(
+        fontSize: 50,
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
+    return const Icon(
+      Icons.monitor_heart,
+      size: 50,
+      color: Colors.red,
     );
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
+    return const Image(
+      image: NetworkImage(
+          'https://avatars.mds.yandex.net/i?id=fbc6c0d87f9036610d1713409ac67fa0719b96d5-5101230-images-thumbs&n=13'),
+      width: 800,
+      height: 600,
+      fit: BoxFit.cover,
     );
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
+    return TextButton(
+      child: const Text('Button... hleba'),
+      onPressed: () {
+        print('Pressed');
+      },
     );
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
+    return Container(
+      width: 300,
+      height: 200,
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(100, 200, 200, 200),
+        border: Border.all(
+          color: Colors.black,
+          width: 2,
+        ),
+      ),
+      child: Column(
+        children: [
+          exercise1(),
+          exercise2(),
+        ],
+      ),
     );
   }
 }
