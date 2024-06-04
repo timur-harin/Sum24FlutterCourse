@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const Lab1());
@@ -98,25 +99,33 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise5() {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          'Hello Flutter!',
-          style: TextStyle(
-            fontSize: 24,
-            color: Colors.pink,
-            fontWeight: FontWeight.w500,
+        Container(
+          margin: const EdgeInsets.all(10.0),
+          width: 48.0,
+          child: const Text(
+            'Hello Flutter!',
+            style: TextStyle(
+              fontSize: 24,
+              color: Colors.pink,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+
+        ),
+        Container(
+          margin: const EdgeInsets.all(5.0),
+          width: 12.0,
+          child: const Icon(
+            Icons.abc_sharp,
+            size: 100,
+            color: Colors.yellow,
           ),
         ),
-        Icon(
-          Icons.abc_sharp,
-          size: 100,
-          color: Colors.yellow,
-        ),
       ],
-
     );
   }
 }
