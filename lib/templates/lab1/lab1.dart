@@ -60,32 +60,60 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return const Text("Hello Flutter!",
+        style: TextStyle(
+          fontSize: 90,
+          color: Colors.red,
+          fontWeight: FontWeight.bold,
+        ));
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
+    return const Icon(
+      Icons.arrow_downward,
+      size: 180,
+      color: Colors.yellow,
     );
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
+    return const Image(
+      image: NetworkImage(
+          'https://memepedia.ru/wp-content/uploads/2020/12/sasha-iz-univera-memy-3.jpg'),
+      width: 50,
+      height: 400,
+      fit: BoxFit.cover,
     );
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
+    return TextButton(
+      onPressed: () {
+        print("Pressed");
+      },
+      child: const Text('Button'),
     );
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          margin: const EdgeInsets.all(5),
+          decoration: const BoxDecoration(color: Colors.blue),
+          child: const Text('text'),
+        ),
+        Container(
+          padding: const EdgeInsets.all(7),
+          margin: const EdgeInsets.all(9),
+          decoration: const BoxDecoration(color: Colors.green),
+          child: const Icon(
+            Icons.home,
+            size: 180,
+          ),
+        ),
+      ],
     );
   }
 }
