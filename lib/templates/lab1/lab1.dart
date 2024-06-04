@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 
 void main() => runApp(const Lab1());
 
@@ -60,32 +64,66 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return const Text('Hello Flutter!',
+        style: TextStyle(
+            color: Color.fromARGB(255, 71, 9, 81),
+            fontSize: 50,
+            fontWeight: FontWeight.w100));
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return const Icon(Icons.wallet,
+        size: 116.0, color: Color.fromARGB(255, 130, 54, 144));
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return const Image(
+        image: NetworkImage(
+            "https://lh5.googleusercontent.com/proxy/Ka_H98xVvtbMiCwqOAlBitoYIUPbtbWZFMxktx99siRiFPcq--Ktg6kJ695jn04o1UTXPWa3QcTG9R1orq-hwfBTCVkF"),
+        width: 550,
+        height: 350,
+        fit: BoxFit.cover);
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
+    return TextButton(
+      style: ButtonStyle(
+        foregroundColor: WidgetStateProperty.all<Color>(
+            const Color.fromARGB(255, 151, 161, 170)),
+      ),
+      onPressed: () {
+        print('Pressed');
+      },
+      child: const Text('Press me'),
     );
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Column(children: [
+      Container(
+        width: 350,
+        height: 200,
+        padding: EdgeInsets.all(10),
+        margin: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+            border: Border.all(color: Color.fromARGB(255, 168, 206, 240))),
+        child: const Text(
+          'BMW',
+          style: TextStyle(fontSize: 25, color: Color.fromARGB(255, 71, 9, 81)),
+          textAlign: TextAlign.center,
+        ),
+      ),
+      Container(
+        width: 250,
+        height: 150,
+        margin: EdgeInsets.only(top: 20),
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color.fromARGB(255, 71, 65, 12)),
+            color: Colors.green),
+        child: const Icon(Icons.holiday_village,
+            color: Color.fromARGB(255, 213, 130, 47)),
+      ),
+    ]);
   }
 }
