@@ -30,6 +30,7 @@ class Novel extends Book {
 
 mixin ConvertibleToJson {
   Map<String, dynamic> toJson();
+<<<<<<< HEAD
 }
 
 <<<<<<< HEAD
@@ -48,6 +49,22 @@ double computeArea(
   }
 }
 
+=======
+}
+
+double computeArea(
+    {required double length,
+    required double width,
+    String shape = 'rectangle'}) {
+  const double pi = 3.14;
+  if (shape == 'circle') {
+    return pi * length * length;
+  } else {
+    return length * width;
+  }
+}
+
+>>>>>>> 0e16554 (lab1 Antipov Dmitrii ISE01)
 class User {
   String name;
   int? age;
@@ -77,5 +94,8 @@ void main() {
 
   User newUser = User(name: 'Bob', age: null, email: 'bob@example.com');
   newUser.showUserInfo();
+<<<<<<< HEAD
+>>>>>>> 0e16554 (lab1 Antipov Dmitrii ISE01)
+=======
 >>>>>>> 0e16554 (lab1 Antipov Dmitrii ISE01)
 }

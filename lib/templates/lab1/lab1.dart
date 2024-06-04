@@ -58,23 +58,74 @@ class LAb1HomePage extends StatelessWidget {
 
   Widget exercise1() {
 <<<<<<< HEAD
+<<<<<<< HEAD
     return const FlutterLogo(
       size: 100,
 =======
+=======
+>>>>>>> 0e16554 (lab1 Antipov Dmitrii ISE01)
     return const Text(
       "Hello Flutter!",
       style: TextStyle(
           color: Color.fromARGB(255, 255, 0, 0),
           fontSize: 40,
           fontWeight: FontWeight.bold),
+<<<<<<< HEAD
+>>>>>>> 0e16554 (lab1 Antipov Dmitrii ISE01)
+=======
 >>>>>>> 0e16554 (lab1 Antipov Dmitrii ISE01)
     );
   }
 
   Widget exercise2() {
 <<<<<<< HEAD
+<<<<<<< HEAD
     return const FlutterLogo(
       size: 100,
+=======
+    return const Icon(Icons.home,
+        size: 200, color: Color.fromARGB(255, 0, 255, 0));
+  }
+
+  Widget exercise3() {
+    return Image.network(
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Wiki_Test_Image.jpg/800px-Wiki_Test_Image.jpg",
+        width: 100,
+        height: 100,
+        fit: BoxFit.cover);
+  }
+
+  Widget exercise4() {
+    return TextButton(
+        onPressed: () => (print("Pressed")), child: const Text("press it"));
+  }
+
+  Widget exercise5() {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: 10, vertical: 30),
+          margin: const EdgeInsets.symmetric(vertical: 50),
+          decoration: BoxDecoration(
+              color: Color.fromARGB(0, 32, 72, 87),
+              border: Border.all(color: Color.fromARGB(255, 100, 100, 100))),
+          child: const Text(
+            "Column",
+          ),
+        ),
+        Container(
+          padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: 10, vertical: 30),
+          margin: const EdgeInsets.symmetric(vertical: 50),
+          decoration: const BoxDecoration(color: Color.fromARGB(0, 32, 72, 87)),
+          child: Image.network(
+              "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Wiki_Test_Image.jpg/800px-Wiki_Test_Image.jpg",
+              width: 100,
+              height: 100),
+        ),
+      ],
+>>>>>>> 0e16554 (lab1 Antipov Dmitrii ISE01)
     );
   }
 
