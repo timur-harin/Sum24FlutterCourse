@@ -63,20 +63,20 @@ class Lab1HomePage extends StatelessWidget {
     return const Text(
       "Hello Flutter!",
       style: TextStyle(
-          color: Color.fromARGB(255, 255, 0, 0),
-          fontSize: 24, // Изменено значение fontSize
+          color: Color.fromARGB(255, 100, 50, 0),
+          fontSize: 24,
           fontWeight: FontWeight.bold),
     );
   }
 
   Widget exercise2() {
     return const Icon(Icons.home,
-        size: 150, color: Color.fromARGB(255, 0, 0, 255)); // Исправлен альфа-канал цвета
+        size: 150, color: Color.fromARGB(255, 30, 100, 255));
   }
 
   Widget exercise3() {
     return Image.network(
-        "https://example.com/image.jpg", // Прямой URL к изображению
+        "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSFWWBlHPRPYIucpEX3UKAK_bgSjbv5ndpH0gwEvD8RyxgysKrf",
         width: 130,
         height: 130,
         fit: BoxFit.cover);
@@ -107,7 +107,7 @@ class Lab1HomePage extends StatelessWidget {
               horizontal: 25, vertical: 25),
           margin: const EdgeInsets.symmetric(vertical: 50),
           decoration: const BoxDecoration(color: Color.fromARGB(255, 32, 72, 87)),
-          child: const Icon(Icons.star, // Заменено на Icon
+          child: const Icon(Icons.star,
               size: 130, 
               color: Colors.white),
         ),
