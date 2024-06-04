@@ -8,13 +8,13 @@ class Lab1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: LAb1HomePage(),
+      home: Lab1HomePage(),
     );
   }
 }
 
-class LAb1HomePage extends StatelessWidget {
-  const LAb1HomePage({super.key});
+class Lab1HomePage extends StatelessWidget {
+  const Lab1HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class LAb1HomePage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: const Icon(Icons.stars),
-        title: const Text('Lab 2'),
+        title: const Text('Lab 1'),
         backgroundColor: Colors.teal,
         elevation: 4,
       ),
@@ -64,19 +64,19 @@ class LAb1HomePage extends StatelessWidget {
       "Hello Flutter!",
       style: TextStyle(
           color: Color.fromARGB(255, 255, 0, 0),
-          fontSize: 14,
+          fontSize: 24, // Изменено значение fontSize
           fontWeight: FontWeight.bold),
     );
   }
 
   Widget exercise2() {
     return const Icon(Icons.home,
-        size: 150, color: Color.fromARGB(0, 255, 0, 0));
+        size: 150, color: Color.fromARGB(255, 0, 0, 255)); // Исправлен альфа-канал цвета
   }
 
   Widget exercise3() {
     return Image.network(
-        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.cnn.com%2F2020%2F01%2F27%2Fsport%2Fkobe-bryant-legacy-spt-intl%2Findex.html&psig=AOvVaw2J_3-MdF5ZIIoQ0s_aBjLr&ust=1717608610541000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCLCXhOu8woYDFQAAAAAdAAAAABAE",
+        "https://example.com/image.jpg", // Прямой URL к изображению
         width: 130,
         height: 130,
         fit: BoxFit.cover);
@@ -84,7 +84,8 @@ class LAb1HomePage extends StatelessWidget {
 
   Widget exercise4() {
     return TextButton(
-        onPressed: () => (print("Pressed")), child: const Text("press me"));
+        onPressed: () => print("Pressed"), 
+        child: const Text("Press me"));
   }
 
   Widget exercise5() {
@@ -105,11 +106,10 @@ class LAb1HomePage extends StatelessWidget {
           padding: const EdgeInsetsDirectional.symmetric(
               horizontal: 25, vertical: 25),
           margin: const EdgeInsets.symmetric(vertical: 50),
-          decoration: const BoxDecoration(color: Color.fromARGB(0, 32, 72, 87)),
-          child: Image.network(
-              "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.cnn.com%2F2020%2F01%2F27%2Fsport%2Fkobe-bryant-legacy-spt-intl%2Findex.html&psig=AOvVaw2J_3-MdF5ZIIoQ0s_aBjLr&ust=1717608610541000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCLCXhOu8woYDFQAAAAAdAAAAABAE",
-              width: 130,
-              height: 130),
+          decoration: const BoxDecoration(color: Color.fromARGB(255, 32, 72, 87)),
+          child: const Icon(Icons.star, // Заменено на Icon
+              size: 130, 
+              color: Colors.white),
         ),
       ],
     );
