@@ -60,32 +60,47 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Text("Hello, Flutter!",style: TextStyle(fontSize: 40, color: Colors.blue,fontWeight: FontWeight.bold));
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Icon(Icons.holiday_village, size: 100, color: Colors.deepOrange);
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Image.network("http://mtdata.ru/u22/photo0850/20132377487-0/original.jpg", width: 100, height: 100, fit: BoxFit.cover);
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return TextButton(onPressed: () {print("Pressed.I try my best");}, child: Text("Click!"));
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
+    return Column(children: <Widget>[
+      Container(
+        padding: EdgeInsets.all(30),
+        margin: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 120, 18, 127),
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child:
+        Text(
+          "It is hard",
+          style: TextStyle(fontSize: 40, color: Colors.amberAccent)
+          )
+      ),
+      Container(
+        padding: EdgeInsets.all(30),
+        margin: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 127, 43, 18),
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child:
+        Icon(Icons.access_alarm, size: 40, color: Colors.pinkAccent)
+      )
+    ]
     );
   }
 }
