@@ -60,33 +60,48 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return Text(
-      "Hello Flutter!",
+    return const Text(
+      "Hello Flutter",
       style: TextStyle(
-          fontSize: 100, color: Colors.red, fontWeight: FontWeight.bold),
+      color: Colors.amberAccent,
+      fontSize: 30,
+      fontWeight: FontWeight.bold
+    ),
     );
   }
 
   Widget exercise2() {
-    return Icon(Icons.home, size: 100, color: Colors.blue);
+    return const Icon(
+      Icons.holiday_village,
+      color: Colors.cyan,
+      size: 10,
+    );
   }
 
   Widget exercise3() {
-    return Image.network(
-        "https://www.w-dog.ru/wallpapers/10/1/500321873866125/priroda-les-trava.jpg");
+    return const Image(
+      image:NetworkImage("https://static.tildacdn.com/tild6461-3737-4462-b836-383331623161/photo.jpg"),
+      fit: BoxFit.cover,
+    );
   }
 
   Widget exercise4() {
-    return TextButton(
-        onPressed: () {
-          print('tapped');
-        },
-        child: const Text('Tap me!'));
+    return const TextButton(
+        onPressed: buttonPressedPrint,
+        child: Text("Btn")
+    );
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
+    return const Column(
+      children: <Widget>[
+        Text("EX 5", style: TextStyle(color: Colors.deepOrange, fontSize: 30),),
+        Icon(Icons.ice_skating, color: Colors.purpleAccent)
+      ],
     );
   }
+}
+
+void buttonPressedPrint() {
+  print("Pressed");
 }
