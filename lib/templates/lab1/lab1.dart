@@ -60,32 +60,31 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Text("Hello Flutter!", style: TextStyle(fontSize: 50, color: Colors.red, fontWeight: FontWeight.bold));
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Icon(Icons.access_time, size: 100, color: Colors.blue);
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Image.network("https://avatars.dzeninfra.ru/get-zen_doc/62917/pub_64d4ec7a57753700871fa094_64d61b4988e5a5673f56bd41/scale_1200", width: 500, height: 250, fit: BoxFit.cover);
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return TextButton(onPressed: () {print("Pressed");} , child: Text("Button"));
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Column(children: <Widget>[
+      Container(
+        child: Text("I try:)"), 
+        padding: const EdgeInsets.all(8.0), 
+        margin: const EdgeInsets.all(10.0),
+        color: Colors.amber[600]), 
+      Container(child: Icon(Icons.abc), padding: const EdgeInsets.all(8.0), 
+        margin: const EdgeInsets.all(10.0),
+        color: Colors.amber[500])
+      ]);
   }
 }
