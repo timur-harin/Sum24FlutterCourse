@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 void main() => runApp(const Lab1());
 
@@ -60,32 +61,47 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return const Text(
+      "Hello Flutter!", 
+      style: TextStyle(fontSize: 30, 
+      fontWeight: FontWeight.bold, 
+      color: Color.fromARGB(255, 98, 180, 22)
+      )
+      );
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return const Icon(Icons.home, size: 140, color: Colors.amber);
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
+    return Image.network("https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg",
+    width: 300,
+    height: 400,
+    fit: BoxFit.cover
     );
   }
 
+
+
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return  TextButton(onPressed: (){
+      print('Pressed');
+    },
+    child: const Text("Tap me"));
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Column(children: [Container(
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
+      decoration: BoxDecoration(color: Color.fromARGB(255, 116, 96, 229), borderRadius: BorderRadius.circular(10),),  
+      child: const Text("Hello"),), 
+      Container(
+      padding: const EdgeInsets.all(40),
+      margin: const EdgeInsets.all(30),
+      decoration: BoxDecoration(color: const Color.fromARGB(255, 231, 21, 21), borderRadius: BorderRadius.circular(10),),
+      child: Icon(Icons.home))]);
+
   }
 }
