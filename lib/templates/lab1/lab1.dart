@@ -71,7 +71,7 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise3() {
-    Container container = Container(width: 60, height: 60, child: Image.network("https://akvamir72.ru/wa-data/public/shop/products/55/25/2555/images/6590/6590.970.jpg", fit: BoxFit.cover,),);
+    Container container = Container(width: 160, height: 160, child: Image.network("https://akvamir72.ru/wa-data/public/shop/products/55/25/2555/images/6590/6590.970.jpg", fit: BoxFit.cover,),);
     return container;
   }
 
