@@ -60,32 +60,58 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
+    return const Text(
+      "Hello Flutter!",
+      style: TextStyle(
+          color: Color.fromARGB(255, 255, 0, 0),
+          fontSize: 14,
+          fontWeight: FontWeight.bold),
     );
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return const Icon(Icons.home,
+        size: 150, color: Color.fromARGB(0, 255, 0, 0));
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Image.network(
+        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.cnn.com%2F2020%2F01%2F27%2Fsport%2Fkobe-bryant-legacy-spt-intl%2Findex.html&psig=AOvVaw2J_3-MdF5ZIIoQ0s_aBjLr&ust=1717608610541000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCLCXhOu8woYDFQAAAAAdAAAAABAE",
+        width: 130,
+        height: 130,
+        fit: BoxFit.cover);
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return TextButton(
+        onPressed: () => (print("Pressed")), child: const Text("press me"));
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: 20, vertical: 20),
+          margin: const EdgeInsets.symmetric(vertical: 20),
+          decoration: BoxDecoration(
+              color: Color.fromARGB(150, 0, 50, 87),
+              border: Border.all(color: Color.fromARGB(255, 0, 0, 0))),
+          child: const Text(
+            "Column",
+          ),
+        ),
+        Container(
+          padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: 25, vertical: 25),
+          margin: const EdgeInsets.symmetric(vertical: 50),
+          decoration: const BoxDecoration(color: Color.fromARGB(0, 32, 72, 87)),
+          child: Image.network(
+              "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.cnn.com%2F2020%2F01%2F27%2Fsport%2Fkobe-bryant-legacy-spt-intl%2Findex.html&psig=AOvVaw2J_3-MdF5ZIIoQ0s_aBjLr&ust=1717608610541000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCLCXhOu8woYDFQAAAAAdAAAAABAE",
+              width: 130,
+              height: 130),
+        ),
+      ],
     );
   }
 }
