@@ -120,11 +120,11 @@ class LAb1HomePage extends StatelessWidget {
               width: 2,
             ),
           ),
-        child: Icon(
+          child: Icon(
             Icons.home,
-           size: 50,
+            size: 50,
             color: Colors.teal,
-         ),
+          ),
         ),
       ],
     );
