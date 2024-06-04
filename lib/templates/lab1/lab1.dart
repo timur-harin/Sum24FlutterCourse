@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const Lab1());
@@ -93,10 +94,18 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise5() {
-    return const Column(
+    return Column(
       children: <Widget>[
-        Text("EX 5", style: TextStyle(color: Colors.deepOrange, fontSize: 30),),
-        Icon(Icons.ice_skating, color: Colors.purpleAccent)
+        Container(
+          padding: const EdgeInsets.all(8.0),
+          margin: const EdgeInsets.symmetric(),
+          child: const Text("EX 5", style: TextStyle(color: Colors.deepOrange, fontSize: 30))
+        ),
+        Container(
+            padding: const EdgeInsets.all(8.0),
+            margin: const EdgeInsets.symmetric(),
+            child: const Icon(Icons.ice_skating, color: Colors.purpleAccent)
+        ),
       ],
     );
   }
