@@ -60,32 +60,63 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
+    return const Text(
+      "Hello Flutter!",
+      style: TextStyle(
+        fontSize: 40,
+        color: Colors.blue,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
+    return const Icon(
+      Icons.star,
       size: 100,
+      color: Colors.yellow,
     );
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Image.network('https://www.economist.com/sites/default/files/images/2015/09/blogs/economist-explains/code2.png');
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
+    return TextButton(
+      onPressed:(){
+        print('Pressed'); 
+      },
+      child: const Text(
+        "Tap me", 
+        style: TextStyle(
+          color: Colors.purple,
+          fontSize: 50,
+        ),
+      ),
     );
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
+    return Column(
+      children: [
+        Container(
+          child: const Text(
+            "Container with a Text", 
+            style: TextStyle(
+              fontSize: 30,
+              color: Colors.green,
+            ),
+          ),
+        ),
+        Container(
+          child: const Icon(
+            Icons.square, 
+            size: 100,
+            color: Colors.red,
+          ),
+        ),
+      ],
     );
   }
 }
