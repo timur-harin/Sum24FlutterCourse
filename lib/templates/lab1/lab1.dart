@@ -60,20 +60,31 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
+    return const Text(
+        'Flutter Rules',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            fontWeight: FontWeight.w900,
+            fontSize: 37.0,
+            color: Colors.teal,
+        ),
     );
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
+    return const Icon(
+        Icons.tv,
+        color: Colors.teal,
+        size: 42.0,
     );
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
+    return Image.network(
+        'https://i.pinimg.com/736x/b7/43/26/b74326865ca5feff316e6416a1b73ddc.jpg',
+        width: 48.0,
+        height: 64.0,
+        fit: BoxFit.fill,
     );
   }
 
