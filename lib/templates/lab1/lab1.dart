@@ -60,32 +60,73 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
+    return const Text(
+      'Hello World!',
+      style: TextStyle(
+      fontSize: 30,
+      color: Colors.teal,
+      ),
     );
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return const Icon(Icons.home , size: 90, color: Colors.teal,);
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
+    return Image.network(
+      'https://storage.googleapis.com/cms-storage-bucket/acb0587990b4e7890b95.png',
+      width: 100,
+      height: 60,
+      fit: BoxFit.cover,
     );
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return TextButton(
+    onPressed: () {
+      print('Pressed');
+    },
+    child: const Text('Press me'),
+  );
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.blue,
+              width: 2,
+            ),
+          ),
+          child: Text(
+            'widget',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.teal,
+            ),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.red,
+              width: 2,
+            ),
+          ),
+        child: Icon(
+            Icons.home,
+           size: 50,
+            color: Colors.teal,
+         ),
+        ),
+      ],
     );
   }
 }
