@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 void main() => runApp(const Lab1());
 
@@ -62,48 +60,33 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const Text(
-      "Hello, Flutter!",
+    return Text(
+      "Hello Flutter!",
       style: TextStyle(
-        fontSize: 45,
-        color: Colors.teal,
-        fontWeight: FontWeight.bold,
-      )
+          fontSize: 100, color: Colors.red, fontWeight: FontWeight.bold),
     );
   }
 
   Widget exercise2() {
-    return const Icon(
-      Icons.stars,
-      size: 100,
-      color: Colors.teal,
-    );
+    return Icon(Icons.home, size: 100, color: Colors.blue);
   }
 
   Widget exercise3() {
-    return const Image(
-      image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
-    );
-  }
-
-  isPressed() {
-    print("pressed");
+    return Image.network(
+        "https://www.w-dog.ru/wallpapers/10/1/500321873866125/priroda-les-trava.jpg");
   }
 
   Widget exercise4() {
     return TextButton(
-      onPressed: isPressed(),
-      child: const Text("Click here"),
-    );
+        onPressed: () {
+          print('tapped');
+        },
+        child: const Text('Tap me!'));
   }
 
   Widget exercise5() {
-    return Column(
-      children: [
-        
-        Container(child: const Text("This is star!")),
-        Container(child: const Icon(Icons.stars)),
-      ]
+    return const FlutterLogo(
+      size: 100,
     );
   }
 }
