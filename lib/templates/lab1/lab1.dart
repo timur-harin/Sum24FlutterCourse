@@ -60,27 +60,28 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
+    return Text(
+      "Hello Flutter!",
+      style: TextStyle(
+          fontSize: 100, color: Colors.red, fontWeight: FontWeight.bold),
     );
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Icon(Icons.home, size: 100, color: Colors.blue);
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return Image.network(
+        "https://www.w-dog.ru/wallpapers/10/1/500321873866125/priroda-les-trava.jpg");
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
-    );
+    return TextButton(
+        onPressed: () {
+          print('tapped');
+        },
+        child: const Text('Tap me!'));
   }
 
   Widget exercise5() {
