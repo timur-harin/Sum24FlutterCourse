@@ -90,7 +90,7 @@ mixin JsonSerializable on Book {
 }
 
 double calculateArea({required double length, required double width, String shape = "rectangle"}) {
-  if (shape == "circle") {  
+  if (shape == "circle") {
     return 3.14 * length * length;
   } else {
     return length * width;
