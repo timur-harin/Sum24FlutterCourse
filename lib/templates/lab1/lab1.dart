@@ -22,7 +22,7 @@ class LAb1HomePage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: const Icon(Icons.stars),
-        title: const Text('Lab 1'),
+        title: const Text('Lab 2'),
         backgroundColor: Colors.teal,
         elevation: 4,
       ),
@@ -39,7 +39,7 @@ class LAb1HomePage extends StatelessWidget {
           ),
           exercise1(),
           const SizedBox(
-              height: 25,
+            height: 25,
           ),
           exercise2(),
           const SizedBox(
@@ -60,76 +60,32 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return Container(
-      child: const Text(
-        "Hello flutter!",
-        style: TextStyle(
-          fontSize: 35,
-          color: Colors.blue,
-          fontWeight: FontWeight.bold,
-        ))
+    return const FlutterLogo(
+      size: 100,
     );
   }
 
   Widget exercise2() {
-    return const Icon(
-      Icons.home,
-      size: 50,
-      color: Colors.blue,
+    return const FlutterLogo(
+      size: 100,
     );
   }
 
   Widget exercise3() {
-    return const Image(
-      image: NetworkImage('https://images.theconversation.com/files/540430/original/file-20230801-25-3ylj74.jpeg?ixlib=rb-4.1.0&rect=201%2C0%2C3322%2C1661&q=45&auto=format&w=668&h=324&fit=crop'),
-      width: 700,
-      height: 300,
+    return const FlutterLogo(
+      size: 100,
     );
   }
 
   Widget exercise4() {
-    return TextButton(
-        onPressed: () {
-          print('Pressed');
-        },
-        child: const Text('Tap me!'));
+    return const FlutterLogo(
+      size: 100,
+    );
   }
 
   Widget exercise5() {
-    return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.blue,
-              width: 5,
-            ),
-          ),
-          padding: EdgeInsets.all(40),
-          margin: EdgeInsets.fromLTRB(12, 10, 12, 20),
-          child: const Text("Wonderful Megalodon!",
-            style: TextStyle(
-                color: Colors.blue,
-                fontSize: 45,
-                fontWeight: FontWeight.bold),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.blue,
-              width: 5,
-            ),
-          ),
-          padding: EdgeInsets.fromLTRB(10, 15, 10, 30),
-          margin: EdgeInsets.all(40),
-          child: const Icon(
-            Icons.star,
-            size: 50,
-            color: Colors.blue,
-          ),
-        )
-      ]
+    return const FlutterLogo(
+      size: 100,
     );
   }
 }
