@@ -60,13 +60,15 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const Text(
-      "Hello, Inno!", style: TextStyle(color: Colors.red, fontSize: 20, fontStyle: FontStyle.italic),
-
+    return Text(
+      "Hello Flutter!",
+      style: TextStyle(
+          fontSize: 100, color: Colors.red, fontWeight: FontWeight.bold),
     );
   }
 
   Widget exercise2() {
+
     return const Icon(Icons.grade, size: 40, color: Colors.yellow,);
   }
 
@@ -79,6 +81,20 @@ class LAb1HomePage extends StatelessWidget {
     TextButton button = TextButton(onPressed: () => print("hello"), child: const Text("press me"));
     return button;
   }
+
+  /*Widget exercise3() {
+    return Image.network(
+        "https://www.w-dog.ru/wallpapers/10/1/500321873866125/priroda-les-trava.jpg");
+  }*/
+
+ /* Widget exercise4() {
+    return TextButton(
+        onPressed: () {
+          print('tapped');
+        },
+        child: const Text('Tap me!'));
+>>>>>>> 2f3c4e6363673b6216ba7e9d2cb2df8cab3703f2
+  }*/
 
   Widget exercise5() {
     Column column = Column(children: [
