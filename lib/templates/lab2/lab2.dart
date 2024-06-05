@@ -9,9 +9,9 @@ void main() {
 
   print(book.toJson()["title"]);
 
-  print(calculateArea(2.0, 4.0));
-  print(calculateArea(21.0, 0.0, shape: "circle"));
-  print(calculateArea(21.0, 0.0, shape: "lol"));
+  print(calculateArea(length: 2.0, width: 4.0));
+  print(calculateArea(length: 21.0, width: 0.0, shape: "circle"));
+  print(calculateArea(length: 21.0, width: 0.0, shape: "lol"));
 
   User user = User("Aleksandr", 18, null);
   user.printUserDetails();
@@ -32,7 +32,7 @@ class Book with JsonSerializable {
 }
 
 class FictionBook extends Book {
-  String? genre;
+  final String genre;
 
   FictionBook(String title, String author, int numberOfPages, this.genre)
       : super(title, author, numberOfPages);
@@ -59,7 +59,7 @@ mixin JsonSerializable {
   }
 }
 
-double calculateArea(double length, double width, {String shape = "rectangle"}) {
+double calculateArea({required double length, required double width, String shape = "rectangle"}) {
   switch(shape) {
     case("rectangle"):
       return length * width;
