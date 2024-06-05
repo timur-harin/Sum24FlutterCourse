@@ -60,7 +60,6 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-<<<<<<< HEAD
     return const Text(
       "Hello Flutter!",
       style: TextStyle(
@@ -68,53 +67,32 @@ class LAb1HomePage extends StatelessWidget {
         color: Color.fromARGB(255, 128, 215, 56),
         fontWeight: FontWeight.normal,
       ),
-=======
-    return Text(
-      "Hello Flutter!",
-      style: TextStyle(
-          fontSize: 100, color: Colors.red, fontWeight: FontWeight.bold),
->>>>>>> 2f3c4e6363673b6216ba7e9d2cb2df8cab3703f2
     );
   }
 
   Widget exercise2() {
-<<<<<<< HEAD
     return const Icon(
       Icons.home,
       size: 43,
       color: Colors.blueGrey,
     );
-=======
-    return Icon(Icons.home, size: 100, color: Colors.blue);
->>>>>>> 2f3c4e6363673b6216ba7e9d2cb2df8cab3703f2
   }
 
   Widget exercise3() {
     return Image.network(
-<<<<<<< HEAD
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZeDjxzRrdZi8UQtbEHQdqCrwETxCz5GwMog&s",
       width: 300,
       height: 300,
     );
-=======
-        "https://www.w-dog.ru/wallpapers/10/1/500321873866125/priroda-les-trava.jpg");
->>>>>>> 2f3c4e6363673b6216ba7e9d2cb2df8cab3703f2
   }
 
   Widget exercise4() {
     return TextButton(
-<<<<<<< HEAD
       onPressed: () {
         print("Pressed");
       },
         child: Text("Button"),
     );
-=======
-        onPressed: () {
-          print('tapped');
-        },
-        child: const Text('Tap me!'));
->>>>>>> 2f3c4e6363673b6216ba7e9d2cb2df8cab3703f2
   }
 
   Widget exercise5() {
