@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 void main() => runApp(const Lab1());
 
@@ -22,7 +24,7 @@ class LAb1HomePage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: const Icon(Icons.stars),
-        title: const Text('Lab 2'),
+        title: const Text('Lab 1'),
         backgroundColor: Colors.teal,
         elevation: 4,
       ),
@@ -60,32 +62,57 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const FlutterLogo(
-      size: 100,
+    return const Text(
+      'Hello Flutter!',
+      style: TextStyle(
+        fontSize: 50,
+        color: Colors.amber,
+        fontWeight: FontWeight.bold
+      )
+
     );
   }
 
   Widget exercise2() {
-    return const FlutterLogo(
-      size: 100,
+    return const Icon(
+      Icons.save,
+      size: 80,
+      color: Color.fromARGB(255, 255, 115, 0)
     );
   }
 
   Widget exercise3() {
-    return const FlutterLogo(
-      size: 100,
+    return const Image(
+      image: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmCy16nhIbV3pI1qLYHMJKwbH2458oiC9EmA&s'),
+      width: 100,
+      height: 100,
+      fit: BoxFit.cover
     );
   }
 
   Widget exercise4() {
-    return const FlutterLogo(
-      size: 100,
+    return TextButton(
+      onPressed: () {
+        print('Pressed');
+      },
+      child: const Text('Press me')
     );
   }
 
   Widget exercise5() {
-    return const FlutterLogo(
-      size: 100,
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.all(10),
+          color: Colors.yellow,
+          child: const Text('Hello World'),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8),
+          color: Colors.green,
+          child: const Icon(Icons.egg),
+        )
+      ],
     );
   }
 }
