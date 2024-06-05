@@ -65,15 +65,10 @@ class LAb1HomePage extends StatelessWidget {
       "Hello Flutter!",
       style: TextStyle(fontWeight: FontWeight.bold,
     fontSize: 18, color: Colors.brown),
-    return Text(
-      "Hello Flutter!",
-      style: TextStyle(
-          fontSize: 100, color: Colors.red, fontWeight: FontWeight.bold),
     );
   }
 
   Widget exercise2() {
-    return Icon(Icons.home, size: 100, color: Colors.blue);
     return const Icon(
       Icons.account_box_rounded,
       size: 52,
@@ -88,8 +83,7 @@ class LAb1HomePage extends StatelessWidget {
     height: 200, 
     fit: BoxFit.cover,
     );
-    return Image.network(
-        "https://www.w-dog.ru/wallpapers/10/1/500321873866125/priroda-les-trava.jpg");
+
   }
 
   Widget exercise4() {
@@ -105,11 +99,7 @@ class LAb1HomePage extends StatelessWidget {
       ),
     ],
   );
-    return TextButton(
-        onPressed: () {
-          print('tapped');
-        },
-        child: const Text('Tap me!'));
+  
   }
 
   Widget exercise5() {
