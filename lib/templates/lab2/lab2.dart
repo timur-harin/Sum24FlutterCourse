@@ -1,12 +1,12 @@
-class Book with JsonSerializable {
+class Book with ConvertibleToJson {
   String title;
   String author;
-  int numberOfPages;
+  int pageCount;
 
-  Book(this.title, this.author, this.numberOfPages);
+  Book(this.title, this.author, this.pageCount);
 
-  void bookDetails() {
-    print('Title: $title, Author: $author, Pages: $numberOfPages');
+  void displayBookInfo() {
+    print('Title: $title, Author: $author, Page Count: $pageCount');
   }
 
   @override
@@ -14,31 +14,31 @@ class Book with JsonSerializable {
     return {
       'title': title,
       'author': author,
-      'numberOfPages': numberOfPages
+      'pageCount': pageCount
     };
   }
 }
 
+class Novel extends Book {
+  String category;
 
-class FictionBook extends Book {
-  String genre;
+  Novel(String title, String author, int pageCount, this.category) 
+      : super(title, author, pageCount);
 
-  FictionBook(String title, String author, int numberOfPages, this.genre) 
-      : super(title, author, numberOfPages);
-
-  @override
-  void bookDetails() {
-    print('Title: $title, Author: $author, Pages: $numberOfPages, Genre: $genre');
+  @overrides
+  void displayBookInfo() {
+    print('Title: $title, Author: $author, Page Count: $pageCount, Genre: $category');
   }
 }
 
-mixin JsonSerializable {
+mixin ConvertibleToJson {
   Map<String, dynamic> toJson();
 }
 
-double calculateArea({required double length, required double width, String shape = 'rectangle'}) {
+double computeArea({required double length, required double width, String shape = 'rectangle'}) {
+  const double pi = 3.14;
   if (shape == 'circle') {
-    return 3.14 * length * length;
+    return pi * length * length;
   } else {
     return length * width;
   }
@@ -49,30 +49,30 @@ class User {
   int? age;
   String? email;
 
+
   User({required this.name, this.age, this.email});
 
-  void printUserDetails() {
-    String ageString = age?.toString() ?? 'N/A';
-    String emailString = email ?? 'N/A';
+
+  void showUserInfo() {
+    String ageInfo = age?.toString() ?? 'N/A';
+    String emailInfo = email ?? 'N/A';
     print('Name: $name');
-    print('Age: $ageString');
-    print('Email: $emailString');
+    print('Age: $ageInfo');
+    print('Email: $emailInfo');
   }
 }
 
 void main() {
-  Book book = Book('1984', 'George Orwell', 328);
-  book.bookDetails();
-  print(book.toJson());
+  Book myBook = Book('Brave New World', 'Aldous Huxley', 311);
+  myBook.displayBookInfo();
+  print(myBook.toJson());
 
-  FictionBook fictionBook = FictionBook('Dune', 'Frank Herbert', 412, 'Science Fiction');
-  fictionBook.bookDetails();
+  Novel myNovel = Novel('The Hobbit', 'J.R.R. Tolkien', 310, 'Fantasy');
+  myNovel.displayBookInfo();
 
+  print(computeArea(length: 7.0, width: 14.0)); // Rectangle area
+  print(computeArea(length: 7.0, width: 0, shape: 'circle')); // Circle area
 
-  print(calculateArea(length: 5.0, width: 10.0));
-  print(calculateArea(length: 5.0, width: 0, shape: 'circle'));
-
-  User user = User(name: 'Max', age: null, email: 'max@example.com');
-  user.printUserDetails();
+  User newUser = User(name: 'Bob', age: null, email: 'bob@example.com');
+  newUser.showUserInfo();
 }
-
