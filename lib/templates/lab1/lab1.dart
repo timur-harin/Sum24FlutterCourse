@@ -62,12 +62,19 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
+<<<<<<< HEAD
     return const Text("Hello Flutter", 
       textDirection: TextDirection.ltr,
       style: TextStyle(color: Colors.red,
         fontWeight: FontWeight.bold,
         fontSize: 40
       ),
+=======
+    return Text(
+      "Hello Flutter!",
+      style: TextStyle(
+          fontSize: 100, color: Colors.red, fontWeight: FontWeight.bold),
+>>>>>>> 2f3c4e6363673b6216ba7e9d2cb2df8cab3703f2
     );
   }
 
