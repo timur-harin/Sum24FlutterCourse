@@ -6,9 +6,9 @@ void main() {
 }
 
 class Book {
-  String? title;
-  String? author;
-  int? numberOfPages;
+  final String title;
+  final String author;
+  final int numberOfPages;
 
   Book(this.title, this.author, this.numberOfPages);
 
@@ -20,7 +20,7 @@ class Book {
 }
 
 class FictionBook extends Book {
-  String? genre;
+  final String genre;
 
   FictionBook(String title, String author, int numberOfPages, this.genre)
       : super(title, author, numberOfPages);
