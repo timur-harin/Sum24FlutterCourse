@@ -60,37 +60,26 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const Text(
-      "Hello, world!",
-      style: TextStyle(
-        fontSize: 30,
-        color: Colors.green,
-        fontWeight: FontWeight.bold
-      )
+    return const FlutterLogo(
+      size: 100,
     );
   }
 
   Widget exercise2() {
-    return const Icon(
-      Icons.phone_android_rounded,
-      size: 50,
-      color: Colors.purple,
+    return const FlutterLogo(
+      size: 100,
     );
   }
 
   Widget exercise3() {
-    return const Image(
-      image: NetworkImage("https://steamuserimages-a.akamaihd.net/ugc/931558048644462852/43896ACB32A364E4F86855909BAEA92CD7136F48/?imw=512&amp;imh=288&amp;ima=fit&amp;impolicy=Letterbox&amp;imcolor=%23000000&amp;letterbox=true"),
-      width: 400,
-      height: 200,
-      fit: BoxFit.fitHeight,
+    return const FlutterLogo(
+      size: 100,
     );
   }
 
   Widget exercise4() {
-    return TextButton(
-      onPressed: onPressed,
-      child: const Text("the кнопкааа"),
+    return const FlutterLogo(
+      size: 100,
     );
   }
 
