@@ -2,7 +2,11 @@ import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
 import 'dart:ui_web';
 
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:flutter/widgets.dart';
+=======
+import 'package:group_button/group_button.dart';
+>>>>>>> 2f3c4e6363673b6216ba7e9d2cb2df8cab3703f2
 
 void main() => runApp(const Lab1());
 
@@ -12,6 +16,7 @@ class Lab1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+<<<<<<< HEAD
       home: LAb1HomePage(),
     );
   }
@@ -100,6 +105,21 @@ class LAb1HomePage extends StatelessWidget {
   Widget exercise5() {
     return const FlutterLogo(
       size: 100,
+=======
+      home: Scaffold(
+        body: Center(
+          child: Column(
+            children: [
+              Text('Hello World!'),
+              GroupButton(
+                isRadio: false,
+                buttons: ["12:00", "13:00", "14:30", "18:00", "19:00", "21:40"],
+              )
+            ],
+          ),
+        ),
+      ),
+>>>>>>> 2f3c4e6363673b6216ba7e9d2cb2df8cab3703f2
     );
   }
 }
