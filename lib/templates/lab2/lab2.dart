@@ -29,6 +29,9 @@ void main() {
 
   User userWithoutEmail = User(name: "Woolfer0097", age: 18);
   userWithoutEmail.printUserDetails();
+
+  // User userWithoutName = User(age: 18, email: "Woolfer0097@yandex.ru");
+  // userWithoutName.printUserDetails();
 }
 
 class Book with JsonSerializable {
