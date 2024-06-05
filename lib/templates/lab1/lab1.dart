@@ -77,7 +77,7 @@ class LAb1HomePage extends StatelessWidget {
 
   Widget exercise3() {
     return const Image(
-      image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+      width: 100, height: 100, image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
     );
   }
 
@@ -95,8 +95,8 @@ class LAb1HomePage extends StatelessWidget {
   Widget exercise5() {
     return Column(
       children: [
-        Container(child: const Text("This is home Icon in Container!")),
-        Container(child: const Icon(Icons.home)),
+        Container(color: Colors.blue, padding: const EdgeInsets.all(50), child: const Text("This is home Icon in Container!")),
+        Container(color: Colors.red, margin: const EdgeInsets.all(100), child: const Icon(Icons.home)),
       ]
     );
   }
