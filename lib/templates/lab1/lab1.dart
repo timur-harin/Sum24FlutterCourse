@@ -1,9 +1,4 @@
-import 'dart:async';
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 void main() => runApp(const Lab1());
 
@@ -65,51 +60,33 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const Text(
-      'Hello Flutter!',
+    return Text(
+      "Hello Flutter!",
       style: TextStyle(
-        fontSize: 40,
-        color: Colors.blue, 
-        fontWeight: FontWeight.bold),
+          fontSize: 100, color: Colors.red, fontWeight: FontWeight.bold),
     );
   }
 
   Widget exercise2() {
-    return const Icon( 
-      Icons.dangerous,
-      size: 100,
-      color: Colors.amber,
-    );
+    return Icon(Icons.home, size: 100, color: Colors.blue);
   }
 
   Widget exercise3() {
     return Image.network(
-      'https://camo.githubusercontent.com/2374b035dd69d701b0351bc57b360f1f9fccdb736a389150ae76d9ec6b1f3c4c/68747470733a2f2f692e70696e696d672e636f6d2f6f726967696e616c732f39612f31352f30662f39613135306634656466336161613362356563343137666339373063353337322e676966',
-      fit: BoxFit.fill,
-      width: 100, 
-      height: 50,
-    );
+        "https://www.w-dog.ru/wallpapers/10/1/500321873866125/priroda-les-trava.jpg");
   }
 
   Widget exercise4() {
-    // ignore: avoid_print
-    return TextButton(onPressed: () => print("Pressed"), style: TextButton.styleFrom(backgroundColor: Colors.deepOrange),
-     child: const Text('Tap me'),
-    );
+    return TextButton(
+        onPressed: () {
+          print('tapped');
+        },
+        child: const Text('Tap me!'));
   }
 
   Widget exercise5() {
-    return Container(
-      padding: const EdgeInsets.all(40.0),
-      margin: const EdgeInsets.all(20.0),
-      decoration: const BoxDecoration(
-        color: Colors.purple,
-      ),
-      child: Column(
-      children: <Container> [
-        Container(child: const Text('the text')),
-        Container(child: const Icon(Icons.face))]
-      )
-    ); 
+    return const FlutterLogo(
+      size: 100,
+    );
   }
 }
