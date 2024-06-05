@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 
 void main() {
-  FictionBook fictionBook = FictionBook("Pu-pu-puu", "Aleksandr Isupov", 21, "Fiction");
-  fictionBook.bookDetails();
+  Book book = Book("Pu-pu-puu", "Aleksandr Isupov", 21);
+  book.bookDetails();
 }
 
 class Book {
@@ -19,17 +19,8 @@ class Book {
   }
 }
 
-class FictionBook extends Book {
-  final String genre;
-
-  FictionBook(String title, String author, int numberOfPages, this.genre)
-      : super(title, author, numberOfPages);
-
-  @override
-  void bookDetails() {
-     super.bookDetails();
-     print("Genre: $genre");
-  }
+class FictionBook {
+  // your code here
 }
 
 mixin JsonSerializable {
