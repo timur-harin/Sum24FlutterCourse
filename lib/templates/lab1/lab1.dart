@@ -62,13 +62,13 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
+
     return const Text("Hello Flutter!",
       style: TextStyle(
         color: Colors.cyan,
         fontSize: 100,
         fontWeight: FontWeight.normal
       ),
-
     );
   }
 
@@ -83,7 +83,8 @@ class LAb1HomePage extends StatelessWidget {
 
   Widget exercise3() {
     return const Image(
-      image: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqJxPznJUf7ginHrFwVaxHPJ4TXxaeepJu6A&s"),
+      image: NetworkImage(
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqJxPznJUf7ginHrFwVaxHPJ4TXxaeepJu6A&s"),
       width: 750,
       height: 925,
       fit: BoxFit.cover,
