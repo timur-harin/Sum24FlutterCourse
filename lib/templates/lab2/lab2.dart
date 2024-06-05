@@ -2,9 +2,9 @@
 
 class Book with JsonSerializable{
   // your code here
-  String? title;
-  String? author;
-  int? numberOfPages;
+  final String title;
+  final String author;
+  final int numberOfPages;
   Book(this.title, this.author, this.numberOfPages);
   void bookDetails(){
     print("Title: $title\nAuthor: $author\nPages: $numberOfPages\n");
@@ -14,7 +14,7 @@ class Book with JsonSerializable{
 
 class FictionBook extends Book{
   // your code here
-  String genre = "";
+  final String genre;
   FictionBook(super.title, super.author, super.numberOfPages, this.genre);
   @override
   void bookDetails() {
