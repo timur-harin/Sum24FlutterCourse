@@ -61,41 +61,28 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const Text(
-      'Hello Flutter!',
+    return Text(
+      "Hello Flutter!",
       style: TextStyle(
-        fontSize: 50,
-        color: Colors.black,
-        fontWeight: FontWeight.bold,
-      ),
+          fontSize: 100, color: Colors.red, fontWeight: FontWeight.bold),
     );
   }
 
   Widget exercise2() {
-    return const Icon(
-      Icons.monitor_heart,
-      size: 50,
-      color: Colors.red,
-    );
+    return Icon(Icons.home, size: 100, color: Colors.blue);
   }
 
   Widget exercise3() {
-    return const Image(
-      image: NetworkImage(
-          'https://avatars.mds.yandex.net/i?id=fbc6c0d87f9036610d1713409ac67fa0719b96d5-5101230-images-thumbs&n=13'),
-      width: 800,
-      height: 600,
-      fit: BoxFit.cover,
-    );
+    return Image.network(
+        "https://www.w-dog.ru/wallpapers/10/1/500321873866125/priroda-les-trava.jpg");
   }
 
   Widget exercise4() {
     return TextButton(
-      child: const Text('Button... hleba'),
-      onPressed: () {
-        print('Pressed');
-      },
-    );
+        onPressed: () {
+          print('tapped');
+        },
+        child: const Text('Tap me!'));
   }
 
   Widget exercise5() {
