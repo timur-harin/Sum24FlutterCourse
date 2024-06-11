@@ -6,23 +6,46 @@ import 'notifier.dart';
 class HydrationScreen extends ConsumerWidget {
   const HydrationScreen({super.key});
 
-  @override
+ @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO - Add ref.watch and use provider to get the water intake
-    // final waterIntake =
+    final waterIntake = ref.watch(waterIntakeProvider);
+    final waterIntakeLevel = (waterIntake / 2000).clamp(0.0, 1.0); // Ensure it is between 0.0 and 1.0
+
     return Scaffold(
-      // TODO add AppBar with Icon to reset the water intake as actions parameter of AppBar
+      appBar: AppBar(
+        title: const Text('Hydration Tracker'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              ref.read(waterIntakeProvider.notifier).reset();
+            },
+          ),
+        ],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // TODO - Add text to display the water intake
-            // TODO add HydrationWidget to display the water intake and put waterIntake into it
-            // Add more UI components if necessary
+            Text(
+              'Water Intake: ${waterIntake.toStringAsFixed(1)} ml',
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            SizedBox(
+              height: 200,
+              width: 100,
+              child: HydrationWidget(waterIntakeLevel: waterIntakeLevel),
+            ),
           ],
         ),
       ),
-      // TODO - Add floating action button to increment the water intake using ref.read(waterIntakeProvider.notifier).increment(x)
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          ref.read(waterIntakeProvider.notifier).increment(250);
+        },
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
