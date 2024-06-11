@@ -10,18 +10,23 @@ class WaterProgressPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // TODO - Using size and waterIntakeLevel to calculate the water level
-    // final waterLevel =
+    // Using size and waterIntakeLevel to calculate the water level
+    final double waterLevel = size.height * waterIntakeLevel / 100;
 
     final paint = Paint()
       ..color = Colors.blueAccent.withOpacity(0.5)
       ..style = PaintingStyle.fill;
 
-    // TODO - Draw the water level on the canvas using rectangle and size from waterLevel
-    // canvas.drawRect(
-    //   Rect.fromLTRB(left, top, right, bottom)
-    //   paint,
-    // );
+    // Draw the water level on the canvas using rectangle and size from waterLevel
+    canvas.drawRect(
+      Rect.fromLTRB(
+        0, //left
+        waterLevel, //top
+        size.width, //right
+        size.height, // bottom
+      ),
+      paint,
+    );
   }
 
   @override
