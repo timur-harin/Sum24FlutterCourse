@@ -19,7 +19,7 @@ class WaterBalanceApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // TODO to run app - change to needed screen widget
-      home: WaterBalanceApp(),
+      home: HydrationScreen(),
     );
   }
 }
