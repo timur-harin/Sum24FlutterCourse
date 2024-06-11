@@ -8,21 +8,53 @@ class HydrationScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO - Add ref.watch and use provider to get the water intake
-    // final waterIntake =
+    final waterIntake = ref.watch(waterIntakeProvider);
+
     return Scaffold(
-      // TODO add AppBar with Icon to reset the water intake as actions parameter of AppBar
+      appBar: AppBar(
+        title: const Text('Hydration tracker', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.water_drop_outlined,
+              size: 35,
+            ),
+            onPressed: () {
+              ref.read(waterIntakeProvider.notifier).reset();
+            },
+          ),
+        ],
+      ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            // TODO - Add text to display the water intake
-            // TODO add HydrationWidget to display the water intake and put waterIntake into it
-            // Add more UI components if necessary
+            Text(
+              'Water intake: $waterIntake ml',
+              style: const TextStyle(fontSize: 20),
+            ),
+            const SizedBox(height: 10,),
+            HydrationWidget(waterIntake: waterIntake),
           ],
         ),
       ),
-      // TODO - Add floating action button to increment the water intake using ref.read(waterIntakeProvider.notifier).increment(x)
+      floatingActionButton: SizedBox(
+        width: 70,
+        height: 70,
+        child: FloatingActionButton(
+          onPressed: () {
+            ref.read(waterIntakeProvider.notifier).increment(250); 
+          },
+          tooltip: 'Increment',
+          backgroundColor: Colors.white,
+          child: const Icon(
+            Icons.water_drop_sharp,
+            size: 40,
+            color: Colors.black,
+          ),
+        ),
+      ),
     );
   }
 }
