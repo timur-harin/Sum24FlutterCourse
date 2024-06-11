@@ -15,10 +15,7 @@ class MainApp extends StatelessWidget {
           child: Column(
             children: [
               Text('Hello World!'),
-              GroupButton(
-                isRadio: false,
-                buttons: ["12:00", "13:00", "14:30", "18:00", "19:00", "21:40"],
-              )
+             
             ],
           ),
         ),
