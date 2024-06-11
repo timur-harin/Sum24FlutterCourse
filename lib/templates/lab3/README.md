@@ -18,4 +18,4 @@ Design a WaterProgressPainter that shows progress as a background.
 Set up a reset button in AppBar of App.
 
 **Using SharedPreferences for Local Storage:**
-Leverage SharedPreferences to store the user's water level. When the guardian returns to the app, they are greeted with a already saved water level.
+    Leverage SharedPreferences to store the user's water level. When the guardian returns to the app, they are greeted with a already saved water level.
