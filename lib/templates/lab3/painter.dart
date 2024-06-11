@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class WaterProgressPainter extends CustomPainter {
   final double waterIntakeLevel;
+  final double INCREASE_RATE = 0.1;
 
   WaterProgressPainter({
     required this.waterIntakeLevel,
@@ -11,17 +12,15 @@ class WaterProgressPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // TODO - Using size and waterIntakeLevel to calculate the water level
-    // final waterLevel =
+    final waterLevel = (1 - waterIntakeLevel) * size.height;
 
     final paint = Paint()
       ..color = Colors.blueAccent.withOpacity(0.5)
       ..style = PaintingStyle.fill;
 
     // TODO - Draw the water level on the canvas using rectangle and size from waterLevel
-    // canvas.drawRect(
-    //   Rect.fromLTRB(left, top, right, bottom)
-    //   paint,
-    // );
+    final rect = Rect.fromLTRB(0, waterLevel, size.width, size.height);
+    canvas.drawRect(rect, paint);
   }
 
   @override
