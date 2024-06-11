@@ -25,7 +25,7 @@ class HydrationScreen extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("water intake: $waterIntake"),
+            Text("water intake: ${waterIntake / 100 * 2000} ml"),
             // DONE add HydrationWidget to display the water intake and put waterIntake into it
             HydrationWidget(waterIntakeLevel: waterIntake.toDouble()),
             // Add more UI components if necessary
