@@ -1,4 +1,3 @@
-// Your existing imports
 import 'package:flutter/material.dart';
 
 class WaterProgressPainter extends CustomPainter {
@@ -10,22 +9,22 @@ class WaterProgressPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // TODO - Using size and waterIntakeLevel to calculate the water level
-    // final waterLevel =
+    final waterLevel = size.height * (1 - waterIntakeLevel);
 
     final paint = Paint()
       ..color = Colors.blueAccent.withOpacity(0.5)
       ..style = PaintingStyle.fill;
 
-    // TODO - Draw the water level on the canvas using rectangle and size from waterLevel
-    // canvas.drawRect(
-    //   Rect.fromLTRB(left, top, right, bottom)
-    //   paint,
-    // );
+    canvas.drawRect(
+      Rect.fromLTRB(0, waterLevel, size.width, size.height),
+      paint,
+    );
   }
 
   @override
-  bool shouldRepaint(covariant WaterProgressPainter oldDelegate) => true;
+  bool shouldRepaint(covariant WaterProgressPainter oldDelegate) {
+    return oldDelegate.waterIntakeLevel != waterIntakeLevel;
+  }
 }
 
 class WaterPainterWidget extends StatefulWidget {
@@ -44,6 +43,7 @@ class WaterPainterState extends State<WaterPainterWidget> {
       painter: WaterProgressPainter(
         waterIntakeLevel: widget.waterIntakeLevel,
       ),
+      child: Container(),
     );
   }
 }
