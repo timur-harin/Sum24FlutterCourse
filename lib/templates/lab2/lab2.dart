@@ -49,6 +49,7 @@ mixin JsonSerializable {
   }
 }
 
+<<<<<<< HEAD
 double calculateArea(double length, double width, {String shape = 'rectagle'}) {
   if (shape == 'circle') {
     return 3.14 * length * length;
@@ -60,6 +61,8 @@ double calculateArea(double length, double width, {String shape = 'rectagle'}) {
   
 }
 
+=======
+>>>>>>> e62954dd0a09b5882ce38a3e42d385ba256d0577
 class User{
   String name;
   int? age;
