@@ -18,7 +18,7 @@ class WaterBalanceApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Balance water',
+      title: 'waterBalance ',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

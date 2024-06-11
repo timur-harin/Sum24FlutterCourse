@@ -11,7 +11,7 @@ class HydrationScreen extends ConsumerWidget {
     final waterIntake = ref.watch(waterIntakeProvider);
       return Scaffold(
       appBar: AppBar(
-        title: Text('Balance water'),
+        title: Text('WaterBalance'),
         actions: [
           IconButton(
             icon: Icon(Icons.refresh),
@@ -32,7 +32,7 @@ class HydrationScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => ref.read(waterIntakeProvider.notifier).increment(0.5),
-        tooltip: 'add watter',
+        tooltip: '+ water',
         child: Icon(Icons.add),),
       );
   }
