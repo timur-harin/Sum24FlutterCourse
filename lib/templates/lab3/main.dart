@@ -4,8 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
   runApp(
-    // TODO to enable riverpod - add ProviderScope
-    WaterBalanceApp(),
+     ProviderScope(
+      child: WaterBalanceApp(),
+    ),
   );
 }
 
@@ -19,8 +20,7 @@ class WaterBalanceApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // TODO to run app - change to needed screen widget
-      home: null,
+      home: HydrationScreen(),
     );
   }
 }
