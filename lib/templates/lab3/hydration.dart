@@ -17,7 +17,7 @@ class HydrationWidgetState extends State<HydrationWidget> {
     return SizedBox(
       width: size.width,
       height: size.height - 200,
-      child: WaterPainterWidget(waterIntakeLevel: widget.waterIntakeLevel),
+      child: WaterPainterWidget(waterIntakeLevel: widget.waterIntakeLevel / 2000),
     );
   }
 }
