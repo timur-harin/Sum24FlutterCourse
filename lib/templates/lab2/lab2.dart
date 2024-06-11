@@ -53,6 +53,9 @@ class User{
   String? email;
 
   User(this.name);
+  User.ageOnly(this.name, this.age);
+  User.allOfThem(this.name, this.age, this.email);
+  User.emailOnly(this.name, this.email);
 
   void printUserDetails() {
     print('Name: $name');
@@ -91,10 +94,15 @@ void main() {
 
   //Task 5
   User? user;
+  User? u;
   user = User("Aleksei");
   user.printUserDetails();
 
   user.email = 'a.fominykh@innopolis.university';
   user.age = 18;
   user.printUserDetails();
+
+  u = User.ageOnly("name", 19);
+  u.printUserDetails();
+  
 }
