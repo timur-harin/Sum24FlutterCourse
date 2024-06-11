@@ -2,26 +2,28 @@
 import 'package:flutter/material.dart';
 
 class WaterProgressPainter extends CustomPainter {
-  final double waterIntakeLevel;
+  final double waterIntakeRatio;
 
   WaterProgressPainter({
-    required this.waterIntakeLevel,
+    required this.waterIntakeRatio,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
-    // TODO - Using size and waterIntakeLevel to calculate the water level
-    // final waterLevel =
+    final waterLevel = size.height * (1.0 - waterIntakeRatio);
 
     final paint = Paint()
       ..color = Colors.blueAccent.withOpacity(0.5)
       ..style = PaintingStyle.fill;
 
-    // TODO - Draw the water level on the canvas using rectangle and size from waterLevel
-    // canvas.drawRect(
-    //   Rect.fromLTRB(left, top, right, bottom)
-    //   paint,
-    // );
+    canvas.drawRect(
+      Rect.fromLTRB(
+          size.topLeft(const Offset(0, 0)).dx,
+          size.topLeft(Offset(0, waterLevel)).dy,
+          size.bottomRight(const Offset(0, 0)).dx,
+          size.bottomRight(const Offset(0, 0)).dy),
+      paint,
+    );
   }
 
   @override
@@ -29,9 +31,9 @@ class WaterProgressPainter extends CustomPainter {
 }
 
 class WaterPainterWidget extends StatefulWidget {
-  final double waterIntakeLevel;
+  final double waterIntakeRatio;
 
-  const WaterPainterWidget({super.key, required this.waterIntakeLevel});
+  const WaterPainterWidget({super.key, required this.waterIntakeRatio});
 
   @override
   WaterPainterState createState() => WaterPainterState();
@@ -42,7 +44,7 @@ class WaterPainterState extends State<WaterPainterWidget> {
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: WaterProgressPainter(
-        waterIntakeLevel: widget.waterIntakeLevel,
+        waterIntakeRatio: widget.waterIntakeRatio,
       ),
     );
   }
