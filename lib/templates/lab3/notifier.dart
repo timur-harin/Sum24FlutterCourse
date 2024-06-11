@@ -19,16 +19,19 @@ class WaterIntakeNotifier extends StateNotifier<double> {
   }
 
   void _loadWaterIntake() async {
-    // TODO - Load the water intake from _localStorageService using await
-    // state =
+    final storedWaterIntake = await _localStorageService.getWaterIntake();
+    state = storedWaterIntake ?? 0;
   }
 
   void increment(double amount) async {
+    if (state < 2000){
     state += amount;
-    // TODO - Save the water intake into _localStorageService using saveWaterIntake
+    }
+    await _localStorageService.saveWaterIntake(state);
   }
 
   void reset() async {
-    // TODO - reset state and save it into _localStorageService using saveWaterIntake
+    state = 0;
+    await _localStorageService.saveWaterIntake(state);
   }
 }
