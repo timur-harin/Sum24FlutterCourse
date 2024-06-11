@@ -25,25 +25,11 @@ class FictionBook extends Book{
 }
 
 mixin JsonSerializable {
-  Map<String, dynamic> toJson() {
-    String? title;
-    String? author;
-    int? numberOfPages;
-    return {
-      'title': title,
-      'author': author,
-      'numberOfPages': numberOfPages
-    };
-  }
+  // your code here
 }
 
-double calculateArea({double? length, double? width, String type = 'rectangle'}) {
-  if (type == 'rectangle') {
-    return length! * width!;
-  } else if (type == 'circle') {
-    return 3.14 * length! * length!;
-  }
-  return 0;
+double calculateArea(){
+  // your code here
 }
 
 class User{
