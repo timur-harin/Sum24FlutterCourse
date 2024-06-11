@@ -5,12 +5,17 @@ class LocalStorageService {
 
   Future<void> saveWaterIntake(double intake) async {
     final prefs = await SharedPreferences.getInstance();
-    // TODO - Save the water intake into prefs  
+    await prefs.setDouble("WaterLevel", intake);
   }
 
   Future<double> getWaterIntake() async {
     final prefs = await SharedPreferences.getInstance();
     // TODO - Get the water intake from prefs, remove 'return 0.0'
-    return 0.0;
+    final double? waterIntake = prefs.getDouble("WaterLevel");
+    if (waterIntake != null) {
+      return waterIntake;
+    } else {
+      return 0.0;
+    }
   }
 }
