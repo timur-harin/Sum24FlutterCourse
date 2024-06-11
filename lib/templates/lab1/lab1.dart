@@ -60,6 +60,7 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
+<<<<<<< HEAD
 <<<<<<< HEAD:lib/templates/lab1.dart
 
     return const Text(
@@ -149,3 +150,34 @@ class LAb1HomePage extends StatelessWidget {
 
 }
 
+=======
+    return const FlutterLogo(
+      size: 100,
+    );
+  }
+
+  Widget exercise2() {
+    return const FlutterLogo(
+      size: 100,
+    );
+  }
+
+  Widget exercise3() {
+    return const FlutterLogo(
+      size: 100,
+    );
+  }
+
+  Widget exercise4() {
+    return const FlutterLogo(
+      size: 100,
+    );
+  }
+
+  Widget exercise5() {
+    return const FlutterLogo(
+      size: 100,
+    );
+  }
+}
+>>>>>>> e62954dd0a09b5882ce38a3e42d385ba256d0577
