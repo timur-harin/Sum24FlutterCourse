@@ -21,10 +21,7 @@ class LAb1HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: const Icon(Icons.stars),
-        title: const Text('Lab 2'),
-        backgroundColor: Colors.teal,
-        elevation: 4,
+        title: const Text('Lab 1'),
       ),
       body: myWidget(),
     );
@@ -60,16 +57,22 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
+<<<<<<< HEAD
     return const Text(
       "Hello Flutter!",
       style: TextStyle(
           color: Color.fromARGB(255, 255, 0, 0),
           fontSize: 40,
           fontWeight: FontWeight.bold),
+=======
+    return const FlutterLogo(
+      size: 100,
+>>>>>>> e62954dd0a09b5882ce38a3e42d385ba256d0577
     );
   }
 
   Widget exercise2() {
+<<<<<<< HEAD
     return const Icon(Icons.home,
         size: 200, color: Color.fromARGB(255, 0, 255, 0));
   }
@@ -85,6 +88,23 @@ class LAb1HomePage extends StatelessWidget {
   Widget exercise4() {
     return TextButton(
         onPressed: () => (print("Pressed")), child: const Text("press it"));
+=======
+    return const FlutterLogo(
+      size: 100,
+    );
+  }
+
+  Widget exercise3() {
+    return const FlutterLogo(
+      size: 100,
+    );
+  }
+
+  Widget exercise4() {
+    return const FlutterLogo(
+      size: 100,
+    );
+>>>>>>> e62954dd0a09b5882ce38a3e42d385ba256d0577
   }
 
   Widget exercise5() {

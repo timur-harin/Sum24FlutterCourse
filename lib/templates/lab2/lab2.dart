@@ -32,6 +32,7 @@ mixin ConvertibleToJson {
   Map<String, dynamic> toJson();
 }
 
+<<<<<<< HEAD
 double computeArea(
     {required double length,
     required double width,
@@ -73,4 +74,8 @@ void main() {
 
   User newUser = User(name: 'Bob', age: null, email: 'bob@example.com');
   newUser.showUserInfo();
+=======
+class User{
+  // your code here
+>>>>>>> e62954dd0a09b5882ce38a3e42d385ba256d0577
 }
