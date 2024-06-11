@@ -62,7 +62,6 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-
     return const Text("Hello Flutter!",
       style: TextStyle(
         color: Colors.cyan,
