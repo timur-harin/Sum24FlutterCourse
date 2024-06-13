@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'storage.dart';
 
 final localStorageServiceProvider = Provider<LocalStorageService>((ref) {
@@ -13,7 +14,6 @@ final waterIntakeProvider =
 
 class WaterIntakeNotifier extends StateNotifier<double> {
   final LocalStorageService _localStorageService;
-
   WaterIntakeNotifier(this._localStorageService) : super(0) {
     _loadWaterIntake();
   }
