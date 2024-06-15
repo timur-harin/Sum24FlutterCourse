@@ -96,9 +96,7 @@ class HomeScreen extends StatelessWidget {
             title: Text(previousSessions[index].name),
             subtitle:
                 Text('Duration: ${previousSessions[index].duration} minutes'),
-            // Add more details about each session as needed
             onTap: () {
-              // Navigate to the Session Details Screen when the list item is tapped
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -113,14 +111,13 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navigate to the Session Preferences Screen when the button is pressed
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => SessionPreferencesScreen()));
         },
-        child: Icon(Icons.add),
         tooltip: 'Start New Session',
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -129,13 +126,13 @@ class HomeScreen extends StatelessWidget {
 class SessionDetailsScreen extends StatelessWidget {
   final ShowerSession session;
 
-  SessionDetailsScreen({required this.session});
+  const SessionDetailsScreen({super.key, required this.session});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Session Details'),
+        title: const Text('Session Details'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -152,6 +149,8 @@ class SessionDetailsScreen extends StatelessWidget {
 }
 
 class SessionPreferencesScreen extends StatefulWidget {
+  const SessionPreferencesScreen({super.key});
+
   @override
   _SessionPreferencesScreenState createState() =>
       _SessionPreferencesScreenState();
@@ -174,7 +173,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Session Preferences'),
+        title: const Text('Session Preferences'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -187,7 +186,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                 });
               },
               keyboardType: TextInputType.text,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Session name',
               ),
             ),
@@ -198,7 +197,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                 });
               },
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Session Duration (minutes)',
               ),
             ),
@@ -209,7 +208,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                 });
               },
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Session Duration (seconds)',
               ),
             ),
@@ -220,7 +219,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                 });
               },
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Hot Phase Duration (minutes)',
               ),
             ),
@@ -231,7 +230,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                 });
               },
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Hot Phase Duration (seconds)',
               ),
             ),
@@ -242,7 +241,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                 });
               },
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Cold Phase Duration (minutes)',
               ),
             ),
@@ -253,7 +252,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                 });
               },
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Cold Phase Duration (seconds)',
               ),
             ),
@@ -307,7 +306,7 @@ class SessionOverviewScreen extends StatelessWidget {
   final int coldPhaseDuration;
   final String name;
 
-  SessionOverviewScreen({
+  const SessionOverviewScreen({super.key,
     required this.sessionDuration,
     required this.hotPhaseDuration,
     required this.coldPhaseDuration,
@@ -341,7 +340,7 @@ class SessionOverviewScreen extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('Begin Session'),
+              child: const Text('Begin Session'),
             ),
           ],
         ),
@@ -356,7 +355,7 @@ class ActiveSessionScreen extends StatefulWidget {
   final int coldPhaseDuration;
   final String name;
 
-  ActiveSessionScreen({
+  const ActiveSessionScreen({super.key,
     required this.sessionDuration,
     required this.hotPhaseDuration,
     required this.coldPhaseDuration,
@@ -492,7 +491,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
                 //   ),
                 // );
               },
-              child: Text('Pause'),
+              child: const Text('Pause'),
             ),
             ElevatedButton(
               onPressed: () {
@@ -529,7 +528,7 @@ class SessionSummaryScreen extends StatefulWidget {
   final int coldPhaseDuration;
   final String name;
 
-  SessionSummaryScreen({
+  const SessionSummaryScreen({super.key,
     required this.sessionDuration,
     required this.hotPhaseDuration,
     required this.coldPhaseDuration,
@@ -563,7 +562,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                 });
               },
               keyboardType: TextInputType.text,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Comments',
               ),
             ),
