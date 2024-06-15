@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'timer.dart';
+import 'timer_screen.dart';
 
 class Preferences extends StatefulWidget {
   @override
@@ -126,7 +126,7 @@ class PreferencesState extends State<Preferences> {
             onPressed: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => new TimerShower(preferencesState: new PreferencesState(duration, minTemp, maxTemp))),
+                  MaterialPageRoute(builder: (context) => TimerPage(preferencesState: PreferencesState(duration, minTemp, maxTemp))),
               );
             },
             child: const Text('Start'),
