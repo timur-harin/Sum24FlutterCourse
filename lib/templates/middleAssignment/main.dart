@@ -1,3 +1,4 @@
+import 'package:education/templates/middleAssignment/homeScreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,10 +13,9 @@ class MiddleAssigmentApp extends StatelessWidget {
     return MaterialApp(
       title: 'Middle Assigment',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: const Color.fromARGB(255, 54, 84, 109),
       ),
-      // TODO - complete assignment
-      home: null,
+      home: const HomeScreen(),
     );
   }
 }
