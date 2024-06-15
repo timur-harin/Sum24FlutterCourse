@@ -1,43 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'NewCycleScreen.dart';
+import 'StartNewCycleTab.dart';
+import 'SettingsTab.dart';
+import 'HistoryTab.dart';
 
-class HomeScreen extends ConsumerWidget{
-  const HomeScreen({super.key});
+class Home extends StatefulWidget{
+  const Home({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+
+  int _currentIndex = 0;
+
+  final tabs = [
+    CycleTab().newCycle(),
+    HistoryTab().tab(),
+    SettingsTab().tab()
+  ];
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
-        leading: const Icon(
-          Icons.shower_outlined,
-          color: Colors.cyanAccent,
-        ),
         title: const Text(
-          "Shower Cycles",
+            "Contrast Shower Manager",
           style: TextStyle(
-            color: Colors.black
+            color: Colors.white
+          )
+        ),
+        backgroundColor: Colors.blue,
+        centerTitle: true,
+      ),
+      body: tabs[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.shower_outlined,
+              color: Colors.white,
+            ),
+            label: "Home",
           ),
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-                onPressed: ,
-                child: Text(
-                  "Start new shower cycle"
-                ))
-          ],
-        ),
-      ),
+          BottomNavigationBarItem(
+            icon: Icon (
+              Icons.list_alt_outlined,
+              color: Colors.white,
+            ),
+            label: "History",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+            label: "Settings"
+          )
+        ],
+        backgroundColor: Colors.blue,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      )
     );
   }
-  
-  void buildNewCycleScreen() {
-    NewCycleScreen().build(context, ref)
-  }
-
 }

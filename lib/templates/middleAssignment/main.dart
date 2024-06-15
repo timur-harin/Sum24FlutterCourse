@@ -12,12 +12,13 @@ class MiddleAssigmentApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Middle Assigment',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       // TODO - complete assignment
-      home: const HomeScreen(),
+      home: const Home(),
     );
   }
 }
