@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'homeScreen.dart';
 
 void main() {
-  runApp(const MiddleAssigmentApp());
+  runApp(const ProviderScope(child: MiddleAssigmentApp()));
 }
 
 class MiddleAssigmentApp extends StatelessWidget {
@@ -15,7 +17,7 @@ class MiddleAssigmentApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // TODO - complete assignment
-      home: null,
+      home: const HomeScreen(),
     );
   }
 }
