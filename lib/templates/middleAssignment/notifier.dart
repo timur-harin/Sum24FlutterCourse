@@ -19,7 +19,7 @@ class showerSessionNotifier extends StateNotifier<List<ShowerSession>> {
   }
 
   void _loadSessions() async {
-    Future<void> _loadSessions() async {
+    Future<void> loadSessions() async {
     state = await _localStorageService.getSessions();
     }
   }

@@ -4,7 +4,7 @@ import 'package:education/templates/middleAssignment/storage.dart';
 
 
 class HomeScreen extends ConsumerWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -12,7 +12,9 @@ class HomeScreen extends ConsumerWidget {
 
   return Scaffold(
     appBar: AppBar(
-      title: const Text('Contrast Showers'),
+      title: Text('Contrast Showers',),
+      backgroundColor: Color(0xFF24305E),
+      foregroundColor: Colors.white,
     ),
     body: FutureBuilder<List<ShowerSession>>(
         future: localStorageService.getSessions(),
@@ -42,17 +44,19 @@ class HomeScreen extends ConsumerWidget {
           ); 
         }
       ),
-      /*
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          /*
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const AddSessionScreen()),
           );
+          */
         },
         child: const Icon(Icons.add),
+        backgroundColor: Color(0xFF24305E),
+        foregroundColor: Colors.white,
       ),
-      */
     );
   }
 }

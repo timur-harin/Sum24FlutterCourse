@@ -1,5 +1,6 @@
 import 'package:education/templates/middleAssignment/homeScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MiddleAssigmentApp());
@@ -13,7 +14,9 @@ class MiddleAssigmentApp extends StatelessWidget {
     return MaterialApp(
       title: 'Middle Assigment',
       theme: ThemeData(
-        primaryColor: const Color.fromARGB(255, 54, 84, 109),
+        primaryColor: const Color(0xFF24305E),
+        scaffoldBackgroundColor: Color.fromARGB(255, 235, 245, 250),
+        textTheme: GoogleFonts.kanitTextTheme(),
       ),
       home: const HomeScreen(),
     );
