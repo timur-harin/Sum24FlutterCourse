@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:education/templates/middleAssignment/storage.dart';
+import 'package:education/templates/middleAssignment/addSessionScreen.dart';
 
 
 class HomeScreen extends ConsumerWidget {
@@ -46,12 +47,10 @@ class HomeScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          /*
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const AddSessionScreen()),
           );
-          */
         },
         child: const Icon(Icons.add),
         backgroundColor: Color(0xFF24305E),
