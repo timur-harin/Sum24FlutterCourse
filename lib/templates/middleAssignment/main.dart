@@ -15,7 +15,7 @@ class MiddleAssigmentApp extends StatelessWidget {
       title: 'Middle Assigment',
       theme: ThemeData(
         primaryColor: const Color(0xFF24305E),
-        scaffoldBackgroundColor: Color.fromARGB(255, 235, 245, 250),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 235, 245, 250),
         textTheme: GoogleFonts.kanitTextTheme(),
       ),
       home: const HomeScreen(),

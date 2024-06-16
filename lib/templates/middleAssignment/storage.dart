@@ -28,13 +28,13 @@ class ShowerPhase {
 
   Map<String, dynamic> toJson() => {
         'name': name,
-        'duration': duration.inSeconds,
+        'duration': duration.inMinutes,
       };
 
   factory ShowerPhase.fromJson(Map<String, dynamic> json) {
     return ShowerPhase(
       name: json['name'],
-      duration: Duration(seconds: json['duration']),
+      duration: Duration(minutes: json['duration']),
     );
   }
 }
@@ -43,18 +43,27 @@ class LocalStorageService {
   static const _sessionKey = 'showerSessions';
 
   Future<void> saveSessions(List<ShowerSession> sessions) async {
-    final prefs = await SharedPreferences.getInstance();
-    final sessionData = sessions.map((session) => session.toJson()).toList();
-    prefs.setString(_sessionKey, sessionData.toString());
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final sessionData = json.encode(sessions.map((session) => session.toJson()).toList());
+      await prefs.setString(_sessionKey, sessionData);
+    } catch (e) {
+      print('Error saving sessions: $e');
+    }
   }
 
-    Future<List<ShowerSession>> getSessions() async {
-    final prefs = await SharedPreferences.getInstance();
-    final sessionString = prefs.getString(_sessionKey);
-    if (sessionString != null) {
-      final sessionData = List<Map<String, dynamic>>.from(json.decode(sessionString));
-      return sessionData.map((data) => ShowerSession.fromJson(data)).toList();
+  Future<List<ShowerSession>> getSessions() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final sessionString = prefs.getString(_sessionKey);
+      if (sessionString != null) {
+        final List<dynamic> sessionData = json.decode(sessionString);
+        return sessionData.map((data) => ShowerSession.fromJson(data)).toList();
+      }
+      return [];
+    } catch (e) {
+      print('Error getting sessions: $e');
+      return [];
     }
-    return [];
   }
 }

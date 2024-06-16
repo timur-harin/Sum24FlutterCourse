@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AddSessionScreen extends StatefulWidget {
-  const AddSessionScreen({Key? key}) : super(key: key);
+  const AddSessionScreen({super.key});
 
   @override
   _AddSessionScreenState createState() => _AddSessionScreenState();
@@ -25,6 +25,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
 
 
   void _addPhase() {
+    final dialogFormKey = GlobalKey<FormState>();
     showDialog(
       context: context, 
       builder: (context) {
@@ -34,12 +35,17 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-            title: const Text('Add Phase'),
+            title: const Text(
+              'Add Phase',
+              style: TextStyle(
+                color: Color(0xFF24305E),
+              ),
+            ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Form(
-                  key: _formKey,
+                  key: dialogFormKey,
                   child: Column(
                     children: [
                       DropdownButtonFormField<String>(
@@ -104,41 +110,155 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
             actions: [
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        Navigator.canPop(context) ? Navigator.pop(context) : null;
                       },
-                      child: const Text('Cancel'),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(
+                          color: Color(0xFF24305E),
+                        ),
+                      ),
                     ),
                     TextButton(
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
+                        if (dialogFormKey.currentState!.validate()) {
                           final name = selectedPhaseName;
                           final duration = int.tryParse(durationController.text) ?? 0;
                           if (name != null && duration > 0) {
                             setState(() {
-                              _phases.add(ShowerPhase(name: name, duration: Duration(minutes: duration)));
+                              final newPhase = ShowerPhase(name: name, duration: Duration(minutes: duration));
+                              Navigator.of(context).pop(newPhase);
                             });
                           }
-                          Navigator.of(context).pop();
                         }
                       },
-                      child: const Text('Add'),
+                      child: const Text(
+                        'Add',
+                        style: TextStyle(
+                          color: Color(0xFF24305E),
+                        ),
+                      ),
                     ),
                   ],
-          );
+            );
           },
         );
+      },
+    ).then((newPhase) {
+      if (newPhase != null) {
+        setState(() {
+          _phases.add(newPhase);
+        });
       }
-    );
+    });
   }
 
-  void _saveSession() async {
-    if (_formKey.currentState!.validate()) {
-      final localStorageService = LocalStorageService();
-      final newSession = ShowerSession(date: _selectedDate!, phases: _phases);
-      await localStorageService.saveSessions([newSession]);
-      Navigator.pop(context);
-    }
+void _saveSession(BuildContext context) async {
+  if (_phases.isEmpty) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(
+          'Error',
+          style: TextStyle(
+            color: Color(0xFF24305E),
+          ),  
+        ),
+        content: const Text(
+          'Please add at least one phase before saving the session.',
+          style: TextStyle(
+            color: Color(0xFF24305E),
+          ),  
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text(
+              'OK',
+              style: TextStyle(
+                color: Color(0xFF24305E),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    return;
   }
+
+  try {
+    ShowerSession session = ShowerSession(date: _selectedDate!, phases: _phases);
+    LocalStorageService localStorageService = LocalStorageService();
+    List<ShowerSession> sessions = await localStorageService.getSessions();
+    sessions.add(session);
+    await localStorageService.saveSessions(sessions);
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(
+          'Success',
+          style: TextStyle(
+            color: Color(0xFF24305E),
+          ),
+        ),
+        content: const Text(
+          'The session has been saved successfully.',
+          style: TextStyle(
+            color: Color(0xFF24305E),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
+            child: const Text(
+              'OK',
+              style: TextStyle(
+                color: Color(0xFF24305E),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    
+  } catch (e) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(
+          'Error',
+          style: TextStyle(
+            color: Color(0xFF24305E),
+          ),
+        ),
+        content: Text(
+          'Failed to save the session: $e',
+          style: const TextStyle(
+            color: Color(0xFF24305E),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text(
+              'OK',
+              style: TextStyle(
+                color: Color(0xFF24305E),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -191,7 +311,8 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                   child: const Text('Add Phase'),
               ),
               const SizedBox(height: 16.0,),
-              Expanded(
+              Flexible(
+                fit: FlexFit.loose,
                 child: ListView.builder(
                   itemCount: _phases.length,
                   itemBuilder: (context, index) {
@@ -200,7 +321,9 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                       title: Text(
                         phase.name,
                         style: TextStyle(
-                              color: phase.name == 'hot' ? const Color(0xFFF76C6c) : const Color(0xFF374785),
+                              color: phase.name == 'hot' 
+                              ? const Color(0xFFF76C6c) 
+                              : const Color(0xFF374785),
                         ),
                       ),
                       subtitle: Text('${phase.duration.inMinutes} minutes'),
@@ -209,7 +332,9 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                 ),
               ),
               ElevatedButton(
-                onPressed: _saveSession,
+                onPressed: () {
+                  _saveSession(context);
+                },
                 style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF24305E)),
                     foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
