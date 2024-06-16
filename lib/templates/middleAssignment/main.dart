@@ -25,55 +25,50 @@ class MiddleAssigmentApp extends StatelessWidget {
 }
 
 class ShowerSession {
-  final int sessionDuration;
-  final int hotPhaseDuration;
-  final int coldPhaseDuration;
   final String name;
   final String comments;
+  final List<TemperaturePhase> temperaturePhases;
 
   ShowerSession({
-    required this.sessionDuration,
-    required this.hotPhaseDuration,
-    required this.coldPhaseDuration,
     required this.name,
     required this.comments,
+    required this.temperaturePhases,
   });
 
-  get duration => sessionDuration;
-
-  get temperaturePhases => [
-        TemperaturePhase(temperature: 'Hot', duration: hotPhaseDuration),
-        TemperaturePhase(temperature: 'Cold', duration: coldPhaseDuration),
-      ];
+  int get duration =>
+      temperaturePhases.fold(0, (prev, phase) => prev + phase.duration);
 
   Map<String, dynamic> toMap() {
     return {
-      'sessionDuration': sessionDuration,
-      'hotPhaseDuration': hotPhaseDuration,
-      'coldPhaseDuration': coldPhaseDuration,
       'name': name,
       'comments': comments,
+      'temperaturePhases':
+          temperaturePhases.map((phase) => phase.toMap()).toList(),
     };
   }
 
   factory ShowerSession.fromMap(Map<String, dynamic> map) {
+    var temperaturePhasesFromMap = (map['temperaturePhases'] as List)
+        .map((item) => TemperaturePhase.fromMap(item))
+        .toList();
     return ShowerSession(
-      sessionDuration: map['sessionDuration'],
-      hotPhaseDuration: map['hotPhaseDuration'],
-      coldPhaseDuration: map['coldPhaseDuration'],
       name: map['name'],
       comments: map['comments'],
+      temperaturePhases: temperaturePhasesFromMap,
     );
   }
+
+  String toJson() => json.encode(toMap());
+
+  factory ShowerSession.fromJson(String source) =>
+      ShowerSession.fromMap(json.decode(source));
 }
 
 final showerSessionProvider = StateProvider<ShowerSession>((ref) {
   return ShowerSession(
-    sessionDuration: 0,
-    hotPhaseDuration: 0,
-    coldPhaseDuration: 0,
     name: '',
     comments: '',
+    temperaturePhases: [],
   );
 });
 
@@ -82,6 +77,20 @@ class TemperaturePhase {
   int duration;
 
   TemperaturePhase({required this.temperature, required this.duration});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'temperature': temperature,
+      'duration': duration,
+    };
+  }
+
+  factory TemperaturePhase.fromMap(Map<String, dynamic> map) {
+    return TemperaturePhase(
+      temperature: map['temperature'],
+      duration: map['duration'],
+    );
+  }
 }
 
 class UserPreferences {
@@ -184,7 +193,6 @@ class SessionDetailsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
-            Text('Session Duration: ${session.duration} seconds'),
             ...session.temperaturePhases.map((phase) => Text(
                 'Phase: ${phase.temperature}, Duration: ${phase.duration} seconds')),
             Text('Comments: ${session.comments}'),
@@ -205,16 +213,8 @@ class SessionPreferencesScreen extends StatefulWidget {
 
 class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
   String name = '';
-  int sessionDurationSec = 0;
-  int sessionDurationMin = 0;
-  int hotPhaseDurationSec = 0;
-  int coldPhaseDurationSec = 0;
-  int hotPhaseDurationMin = 0;
-  int coldPhaseDurationMin = 0;
-
-  int sessionDuration = 0;
-  int hotPhaseDuration = 0;
-  int coldPhaseDuration = 0;
+  List<TemperaturePhase> phaseDurations = [];
+  bool isHotPhase = true;
 
   @override
   Widget build(BuildContext context) {
@@ -237,100 +237,53 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                 labelText: 'Session name',
               ),
             ),
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  sessionDurationMin = int.tryParse(value) ?? 0;
-                });
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: phaseDurations.length,
+              itemBuilder: (context, index) {
+                return TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      phaseDurations[index].duration = int.tryParse(value) ?? 0;
+                    });
+                  },
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText:
+                        'Phase ${phaseDurations[index].temperature} Duration (seconds)',
+                  ),
+                );
               },
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Session Duration (minutes)',
-              ),
-            ),
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  sessionDurationSec = int.tryParse(value) ?? 0;
-                });
-              },
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Session Duration (seconds)',
-              ),
-            ),
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  hotPhaseDurationMin = int.tryParse(value) ?? 0;
-                });
-              },
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Hot Phase Duration (minutes)',
-              ),
-            ),
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  hotPhaseDurationSec = int.tryParse(value) ?? 0;
-                });
-              },
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Hot Phase Duration (seconds)',
-              ),
-            ),
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  coldPhaseDurationMin = int.tryParse(value) ?? 0;
-                });
-              },
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Cold Phase Duration (minutes)',
-              ),
-            ),
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  coldPhaseDurationSec = int.tryParse(value) ?? 0;
-                });
-              },
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Cold Phase Duration (seconds)',
-              ),
             ),
             ElevatedButton(
               onPressed: () {
-                sessionDuration = sessionDurationMin * 60 + sessionDurationSec;
-                hotPhaseDuration =
-                    hotPhaseDurationMin * 60 + hotPhaseDurationSec;
-                coldPhaseDuration =
-                    coldPhaseDurationMin * 60 + coldPhaseDurationSec;
-                if (sessionDuration > 0 &&
-                    hotPhaseDuration > 0 &&
-                    coldPhaseDuration > 0 &&
-                    sessionDurationSec < 60 &&
-                    hotPhaseDurationSec < 60 &&
-                    coldPhaseDurationSec < 60 &&
-                    name.isNotEmpty &&
-                    sessionDuration == hotPhaseDuration + coldPhaseDuration) {
+                setState(() {
+                  phaseDurations.add(TemperaturePhase(
+                    temperature: isHotPhase ? 'Hot' : 'Cold',
+                    duration: 0,
+                  ));
+                  isHotPhase = !isHotPhase;
+                });
+              },
+              child: const Text('Add Phase'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (phaseDurations.every((phase) => phase.duration > 0) &&
+                    name.isNotEmpty) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => SessionOverviewScreen(
-                        sessionDuration: sessionDuration,
-                        hotPhaseDuration: hotPhaseDuration,
-                        coldPhaseDuration: coldPhaseDuration,
-                        name: name,
+                        session: ShowerSession(
+                          name: name,
+                          comments: '',
+                          temperaturePhases: phaseDurations,
+                        ),
                       ),
                     ),
                   );
                 } else {
-                  // Show an error message if the durations are not properly set
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                         content: Text(
@@ -348,42 +301,38 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
 }
 
 class SessionOverviewScreen extends StatelessWidget {
-  final int sessionDuration;
-  final int hotPhaseDuration;
-  final int coldPhaseDuration;
-  final String name;
+  final ShowerSession session;
 
   const SessionOverviewScreen({
     super.key,
-    required this.sessionDuration,
-    required this.hotPhaseDuration,
-    required this.coldPhaseDuration,
-    required this.name,
+    required this.session,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Session "$name" Overview'),
+        title: Text('Session "${session.name}" Overview'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
-            Text('Session Duration: $sessionDuration seconds'),
-            Text('Hot Phase Duration: $hotPhaseDuration seconds'),
-            Text('Cold Phase Duration: $coldPhaseDuration seconds'),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: session.temperaturePhases.length,
+              itemBuilder: (context, index) {
+                return Text(
+                    'Phase: ${session.temperaturePhases[index].temperature}, Duration: ${session.temperaturePhases[index].duration} seconds');
+              },
+            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ActiveSessionScreen(
-                      sessionDuration: sessionDuration,
-                      hotPhaseDuration: hotPhaseDuration,
-                      coldPhaseDuration: coldPhaseDuration,
-                      name: name,
+                      session: session,
                     ),
                   ),
                 );
@@ -398,17 +347,11 @@ class SessionOverviewScreen extends StatelessWidget {
 }
 
 class ActiveSessionScreen extends StatefulWidget {
-  final int sessionDuration;
-  final int hotPhaseDuration;
-  final int coldPhaseDuration;
-  final String name;
+  final ShowerSession session;
 
   const ActiveSessionScreen({
     super.key,
-    required this.sessionDuration,
-    required this.hotPhaseDuration,
-    required this.coldPhaseDuration,
-    required this.name,
+    required this.session,
   });
 
   @override
@@ -419,30 +362,33 @@ class TimerController extends ChangeNotifier {
   late Timer _timer;
   int _remainingTime;
   String _currentPhase;
+  List<TemperaturePhase> _phases;
+  int _currentPhaseIndex;
 
-  TimerController(
-      {required int sessionDuration,
-      required int hotPhaseDuration,
-      required int coldPhaseDuration})
-      : _remainingTime = sessionDuration,
-        // sessionDuration is now in seconds
-        _currentPhase = 'Hot' {
-    _startTimer(hotPhaseDuration, coldPhaseDuration);
+  TimerController({required List<TemperaturePhase> phases})
+      : _remainingTime = phases.first.duration,
+        _currentPhase = phases.first.temperature,
+        _phases = phases,
+        _currentPhaseIndex = 0 {
+    _startTimer();
   }
 
   int get remainingTime => _remainingTime;
 
   String get currentPhase => _currentPhase;
 
-  void _startTimer(int hotPhaseDuration, int coldPhaseDuration) {
+  void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _remainingTime--;
-      if (_remainingTime == hotPhaseDuration) {
-        // hotPhaseDuration is now in seconds
-        _currentPhase = 'Cold';
-      } else if (_remainingTime == 0) {
-        _currentPhase = 'End';
-        _timer.cancel();
+      if (_remainingTime == 0) {
+        _currentPhaseIndex++;
+        if (_currentPhaseIndex < _phases.length) {
+          _currentPhase = _phases[_currentPhaseIndex].temperature;
+          _remainingTime = _phases[_currentPhaseIndex].duration;
+        } else {
+          _currentPhase = 'End';
+          _timer.cancel();
+        }
       }
       notifyListeners();
     });
@@ -456,21 +402,21 @@ class TimerController extends ChangeNotifier {
 }
 
 class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
-  late TimerController _timerController;
+  late TimerController _phaseTimerController;
+  late TimerController _overallTimerController;
   double _opacity = 1.0;
 
   @override
   void initState() {
     super.initState();
-    _timerController = TimerController(
-        sessionDuration: widget.sessionDuration,
-        // sessionDuration is now in seconds
-        hotPhaseDuration: widget.hotPhaseDuration,
-        // hotPhaseDuration is now in seconds
-        coldPhaseDuration:
-            widget.coldPhaseDuration); // coldPhaseDuration is now in seconds
+    _phaseTimerController =
+        TimerController(phases: widget.session.temperaturePhases);
+    _overallTimerController = TimerController(phases: [
+      TemperaturePhase(
+          temperature: 'Overall', duration: widget.session.duration)
+    ]);
     Timer.periodic(const Duration(milliseconds: 500), (timer) {
-      if (_timerController.currentPhase == 'End') {
+      if (_phaseTimerController.currentPhase == 'End') {
         setState(() {
           _opacity = _opacity == 1.0 ? 0.0 : 1.0;
         });
@@ -482,23 +428,25 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Active Session: ${widget.name}'),
+        title: Text('Active Session: ${widget.session.name}'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Session Duration: ${widget.sessionDuration} seconds'),
-            // Display sessionDuration in seconds
-            Text('Hot Phase Duration: ${widget.hotPhaseDuration} seconds'),
-            // Display hotPhaseDuration in seconds
-            Text('Cold Phase Duration: ${widget.coldPhaseDuration} seconds'),
-            // Display coldPhaseDuration in seconds
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.session.temperaturePhases.length,
+              itemBuilder: (context, index) {
+                return Text(
+                    'Phase: ${widget.session.temperaturePhases[index].temperature}, Duration: ${widget.session.temperaturePhases[index].duration} seconds');
+              },
+            ),
             AnimatedBuilder(
-              animation: _timerController,
+              animation: _phaseTimerController,
               builder: (context, child) {
                 Duration remaining =
-                    Duration(seconds: _timerController.remainingTime);
+                    Duration(seconds: _phaseTimerController.remainingTime);
                 String minutes = remaining.inMinutes
                     .remainder(60)
                     .toString()
@@ -514,12 +462,34 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
                     '$minutes:$seconds',
                     style: TextStyle(
                       fontSize: 48.0,
-                      color: _timerController.currentPhase == 'Hot'
+                      color: _phaseTimerController.currentPhase == 'Hot'
                           ? Colors.red
-                          : _timerController.currentPhase == 'Cold'
+                          : _phaseTimerController.currentPhase == 'Cold'
                               ? Colors.blue
                               : Colors.green,
                     ),
+                  ),
+                );
+              },
+            ),
+            AnimatedBuilder(
+              animation: _overallTimerController,
+              builder: (context, child) {
+                Duration remaining =
+                    Duration(seconds: _overallTimerController.remainingTime);
+                String minutes = remaining.inMinutes
+                    .remainder(60)
+                    .toString()
+                    .padLeft(2, '0');
+                String seconds = remaining.inSeconds
+                    .remainder(60)
+                    .toString()
+                    .padLeft(2, '0');
+                return Text(
+                  'Overall Time: $minutes:$seconds',
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    color: Colors.black,
                   ),
                 );
               },
@@ -546,22 +516,25 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
               onPressed: () {
                 // TODO: end button in the middle of the training
                 int actualSessionDuration =
-                    widget.sessionDuration - _timerController.remainingTime;
-                double hotColdRatio = widget.hotPhaseDuration /
-                    (widget.hotPhaseDuration + widget.coldPhaseDuration);
-                int actualHotPhaseDuration =
-                    (actualSessionDuration * hotColdRatio).round();
-                int actualColdPhaseDuration =
-                    actualSessionDuration - actualHotPhaseDuration;
+                    widget.session.duration - _overallTimerController.remainingTime;
+                int actualHotPhaseDuration = widget.session.temperaturePhases
+                        .firstWhere((phase) => phase.temperature == 'Hot')
+                        .duration -
+                    _overallTimerController.remainingTime;
+                int actualColdPhaseDuration = widget.session.temperaturePhases
+                        .firstWhere((phase) => phase.temperature == 'Cold')
+                        .duration -
+                    _overallTimerController.remainingTime;
 
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SessionSummaryScreen(
-                      sessionDuration: actualSessionDuration,
-                      hotPhaseDuration: actualHotPhaseDuration,
-                      coldPhaseDuration: actualColdPhaseDuration,
-                      name: widget.name,
+                      session: ShowerSession(
+                        name: widget.session.name,
+                        comments: '',
+                        temperaturePhases: widget.session.temperaturePhases,
+                      ),
                     ),
                   ),
                 );
@@ -576,23 +549,18 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
 
   @override
   void dispose() {
-    _timerController.dispose();
+    _phaseTimerController.dispose();
+    _overallTimerController.dispose();
     super.dispose();
   }
 }
 
 class SessionSummaryScreen extends StatefulWidget {
-  final int sessionDuration;
-  final int hotPhaseDuration;
-  final int coldPhaseDuration;
-  final String name;
+  final ShowerSession session;
 
   const SessionSummaryScreen({
     super.key,
-    required this.sessionDuration,
-    required this.hotPhaseDuration,
-    required this.coldPhaseDuration,
-    required this.name,
+    required this.session,
   });
 
   @override
@@ -606,15 +574,14 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Session ${widget.name} Summary'),
+        title: Text('Session ${widget.session.name} Summary'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
-            Text('Session Duration: ${widget.sessionDuration} seconds'),
-            Text('Hot Phase Duration: ${widget.hotPhaseDuration} seconds'),
-            Text('Cold Phase Duration: ${widget.coldPhaseDuration} seconds'),
+            ...widget.session.temperaturePhases.map((phase) => Text(
+                'Phase: ${phase.temperature}, Duration: ${phase.duration} seconds')),
             TextField(
               onChanged: (value) {
                 setState(() {
@@ -629,16 +596,14 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
             ElevatedButton(
               onPressed: () async {
                 final newSession = ShowerSession(
-                  sessionDuration: widget.sessionDuration,
-                  hotPhaseDuration: widget.hotPhaseDuration,
-                  coldPhaseDuration: widget.coldPhaseDuration,
-                  name: widget.name,
+                  name: widget.session.name,
                   comments: comments,
+                  temperaturePhases: widget.session.temperaturePhases,
                 );
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 List<String> sessionStrings =
                     prefs.getStringList('sessions') ?? [];
-                sessionStrings.add(jsonEncode(newSession.toMap()));
+                sessionStrings.add(newSession.toJson());
                 await prefs.setStringList('sessions', sessionStrings);
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
