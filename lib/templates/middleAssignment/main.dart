@@ -1,12 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-//part 'shower_session.g.dart';
-
-void main()  {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const ProviderScope(child: MiddleAssigmentApp()));
 }
 
@@ -20,13 +19,12 @@ class MiddleAssigmentApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // TODO - complete assignment
       home: HomeScreen(),
     );
   }
 }
 
-class ShowerSession extends HiveObject {
+class ShowerSession {
   final int sessionDuration;
   final int hotPhaseDuration;
   final int coldPhaseDuration;
@@ -47,8 +45,27 @@ class ShowerSession extends HiveObject {
         TemperaturePhase(temperature: 'Hot', duration: hotPhaseDuration),
         TemperaturePhase(temperature: 'Cold', duration: coldPhaseDuration),
       ];
-}
 
+  Map<String, dynamic> toMap() {
+    return {
+      'sessionDuration': sessionDuration,
+      'hotPhaseDuration': hotPhaseDuration,
+      'coldPhaseDuration': coldPhaseDuration,
+      'name': name,
+      'comments': comments,
+    };
+  }
+
+  factory ShowerSession.fromMap(Map<String, dynamic> map) {
+    return ShowerSession(
+      sessionDuration: map['sessionDuration'],
+      hotPhaseDuration: map['hotPhaseDuration'],
+      coldPhaseDuration: map['coldPhaseDuration'],
+      name: map['name'],
+      comments: map['comments'],
+    );
+  }
+}
 
 final showerSessionProvider = StateProvider<ShowerSession>((ref) {
   return ShowerSession(
@@ -64,8 +81,6 @@ class TemperaturePhase {
   String temperature;
   int duration;
 
-  // other properties...
-
   TemperaturePhase({required this.temperature, required this.duration});
 }
 
@@ -73,15 +88,32 @@ class UserPreferences {
   int preferredSessionDuration;
   List<TemperaturePhase> preferredTemperatureIntervals;
 
-  // other properties...
-
   UserPreferences(
       {required this.preferredSessionDuration,
       required this.preferredTemperatureIntervals});
 }
 
-class HomeScreen extends StatelessWidget {
-  final List<ShowerSession> previousSessions = [];
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late Future<List<ShowerSession>> _previousSessions;
+
+  @override
+  void initState() {
+    super.initState();
+    _previousSessions = _getPreviousSessions();
+  }
+
+  Future<List<ShowerSession>> _getPreviousSessions() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> sessionStrings = prefs.getStringList('sessions') ?? [];
+    return sessionStrings.map((sessionString) {
+      return ShowerSession.fromMap(jsonDecode(sessionString));
+    }).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,32 +121,46 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Contrast Shower Companion'),
       ),
-      body: ListView.builder(
-        itemCount: previousSessions.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(previousSessions[index].name),
-            subtitle:
-                Text('Duration: ${previousSessions[index].duration} minutes'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SessionDetailsScreen(
-                    session: previousSessions[index],
-                  ),
-                ),
-              );
-            },
-          );
+      body: FutureBuilder(
+        future: _previousSessions,
+        builder: (context, AsyncSnapshot<List<ShowerSession>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(snapshot.data![index].name),
+                  subtitle: Text(
+                      'Duration: ${snapshot.data![index].duration} seconds'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SessionDetailsScreen(
+                          session: snapshot.data![index],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          }
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => SessionPreferencesScreen()));
+          setState(() {
+            _previousSessions = _getPreviousSessions();
+          });
         },
         tooltip: 'Start New Session',
         child: const Icon(Icons.add),
@@ -138,9 +184,10 @@ class SessionDetailsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
-            Text('Session Duration: ${session.duration} minutes'),
+            Text('Session Duration: ${session.duration} seconds'),
             ...session.temperaturePhases.map((phase) => Text(
                 'Phase: ${phase.temperature}, Duration: ${phase.duration} seconds')),
+            Text('Comments: ${session.comments}'),
           ],
         ),
       ),
@@ -306,7 +353,8 @@ class SessionOverviewScreen extends StatelessWidget {
   final int coldPhaseDuration;
   final String name;
 
-  const SessionOverviewScreen({super.key,
+  const SessionOverviewScreen({
+    super.key,
     required this.sessionDuration,
     required this.hotPhaseDuration,
     required this.coldPhaseDuration,
@@ -355,7 +403,8 @@ class ActiveSessionScreen extends StatefulWidget {
   final int coldPhaseDuration;
   final String name;
 
-  const ActiveSessionScreen({super.key,
+  const ActiveSessionScreen({
+    super.key,
     required this.sessionDuration,
     required this.hotPhaseDuration,
     required this.coldPhaseDuration,
@@ -495,13 +544,23 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
             ),
             ElevatedButton(
               onPressed: () {
+                // TODO: end button in the middle of the training
+                int actualSessionDuration =
+                    widget.sessionDuration - _timerController.remainingTime;
+                double hotColdRatio = widget.hotPhaseDuration /
+                    (widget.hotPhaseDuration + widget.coldPhaseDuration);
+                int actualHotPhaseDuration =
+                    (actualSessionDuration * hotColdRatio).round();
+                int actualColdPhaseDuration =
+                    actualSessionDuration - actualHotPhaseDuration;
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SessionSummaryScreen(
-                      sessionDuration: widget.sessionDuration,
-                      hotPhaseDuration: widget.hotPhaseDuration,
-                      coldPhaseDuration: widget.coldPhaseDuration,
+                      sessionDuration: actualSessionDuration,
+                      hotPhaseDuration: actualHotPhaseDuration,
+                      coldPhaseDuration: actualColdPhaseDuration,
                       name: widget.name,
                     ),
                   ),
@@ -528,7 +587,8 @@ class SessionSummaryScreen extends StatefulWidget {
   final int coldPhaseDuration;
   final String name;
 
-  const SessionSummaryScreen({super.key,
+  const SessionSummaryScreen({
+    super.key,
     required this.sessionDuration,
     required this.hotPhaseDuration,
     required this.coldPhaseDuration,
@@ -567,7 +627,19 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
+                final newSession = ShowerSession(
+                  sessionDuration: widget.sessionDuration,
+                  hotPhaseDuration: widget.hotPhaseDuration,
+                  coldPhaseDuration: widget.coldPhaseDuration,
+                  name: widget.name,
+                  comments: comments,
+                );
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                List<String> sessionStrings =
+                    prefs.getStringList('sessions') ?? [];
+                sessionStrings.add(jsonEncode(newSession.toMap()));
+                await prefs.setStringList('sessions', sessionStrings);
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
               child: const Text('Back to Home'),
