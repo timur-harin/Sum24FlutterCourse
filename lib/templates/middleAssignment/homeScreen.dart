@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'StartNewCycleTab.dart';
 import 'SettingsTab.dart';
 import 'HistoryTab.dart';
@@ -15,10 +14,10 @@ class _HomeState extends State<Home> {
 
   int _currentIndex = 0;
 
-  final tabs = [
-    CycleTab().newCycle(),
-    HistoryTab().tab(),
-    SettingsTab().tab()
+  final tabs = <StatelessWidget>[
+    const CycleTab(),
+    const HistoryTab(),
+    const SettingsTab()
   ];
 
   @override
@@ -34,7 +33,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.blue,
         centerTitle: true,
       ),
-      body: tabs[_currentIndex],
+      body: tabs[_currentIndex].build(context),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
