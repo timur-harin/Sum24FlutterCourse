@@ -64,7 +64,7 @@ class HomeScreen extends ConsumerWidget {
                     return Container(
                       margin: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color: Color(0xFFF8E9A1),
+                        color: Color.fromARGB(255, 213, 235, 255),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: CustomExpansionTile(
@@ -82,7 +82,7 @@ class HomeScreen extends ConsumerWidget {
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                         color: phase.name == 'hot' 
-                                        ? const Color(0xFFF76C6c) 
+                                        ? Color.fromARGB(255, 155, 36, 36) 
                                         : const Color(0xFF374785),
                                   ),
                                 ),
