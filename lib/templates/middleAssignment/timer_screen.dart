@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:education/templates/middleAssignment/storage.dart';
 import 'dart:math';
+import 'package:audioplayers/audioplayers.dart';
 
 class TimerScreen extends StatefulWidget {
   final List<ShowerPhase> phases;
@@ -21,6 +22,22 @@ class _TimerScreenState extends State<TimerScreen> {
   late final int _totalTime;
   late int _phaseTimeLeft;
   bool _isTimerPaused = false;
+
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
+  Future<void> playSound() async {
+    const String soundPathHot = 'assets/sounds/hot shower.mp3';
+    const String soundPathCold = 'assets/sounds/cold shower.mp3';
+    const String soundPathTimer = 'assets/sounds/timer.mp3';
+
+    if (widget.phases[_currentPhaseIndex].name == "hot") {
+      await _audioPlayer.play(AssetSource(soundPathHot));
+    } else if (widget.phases[_currentPhaseIndex].name == "cold") {
+      await _audioPlayer.play(AssetSource(soundPathCold));
+    } else {
+      await _audioPlayer.play(AssetSource(soundPathTimer));
+    }
+  }
 
   void pauseTimer() {
     if (_timer.isActive) {
@@ -60,9 +77,11 @@ class _TimerScreenState extends State<TimerScreen> {
           if (_phaseTimeLeft == 0 && _currentPhaseIndex < widget.phases.length - 1) {
             _currentPhaseIndex++;
             _phaseTimeLeft = _phaseDurations[_currentPhaseIndex];
+            playSound();
           }
         } else {
           _timer.cancel();
+          playSound();
           print("Timer Complete");
         }
       });
