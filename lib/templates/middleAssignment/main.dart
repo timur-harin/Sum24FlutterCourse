@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'button.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -161,18 +162,18 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: gradientButton(
         onPressed: () async {
           await Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => SessionPreferencesScreen()));
+                  builder: (context) => const SessionPreferencesScreen()));
           setState(() {
             _previousSessions = _getPreviousSessions();
           });
         },
-        tooltip: 'Start New Session',
-        child: const Icon(Icons.add),
+        label: 'Start New Session',
+        gradientColors: [Colors.green, Colors.greenAccent],
       ),
     );
   }
@@ -241,21 +242,51 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
               shrinkWrap: true,
               itemCount: phaseDurations.length,
               itemBuilder: (context, index) {
-                return TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      phaseDurations[index].duration = int.tryParse(value) ?? 0;
-                    });
-                  },
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText:
-                        'Phase ${phaseDurations[index].temperature} Duration (seconds)',
-                  ),
+                return Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            phaseDurations[index].duration =
+                                int.tryParse(value) ?? 0;
+                          });
+                        },
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText:
+                              'Phase ${phaseDurations[index].temperature} Duration (seconds)',
+                        ),
+                      ),
+                    ),
+                    gradientButton(
+                      label: 'Change temperature',
+                      onPressed: () {
+                        setState(() {
+                          phaseDurations[index].temperature =
+                              phaseDurations[index].temperature == 'Hot'
+                                  ? 'Cold'
+                                  : 'Hot';
+                        });
+                      },
+                      gradientColors: phaseDurations[index].temperature == 'Hot'
+                          ? [Colors.red, Colors.redAccent]
+                          : [Colors.blue, Colors.blueAccent],
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {
+                        setState(() {
+                          phaseDurations.removeAt(index);
+                        });
+                      },
+                    ),
+                  ],
                 );
               },
             ),
-            ElevatedButton(
+            gradientButton(
+              label: 'Add Phase',
               onPressed: () {
                 setState(() {
                   phaseDurations.add(TemperaturePhase(
@@ -265,9 +296,13 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                   isHotPhase = !isHotPhase;
                 });
               },
-              child: const Text('Add Phase'),
+              gradientColors: isHotPhase
+                  ? [Colors.red, Colors.redAccent]
+                  : [Colors.blue, Colors.blueAccent],
             ),
-            ElevatedButton(
+
+            gradientButton(
+              label: 'Next',
               onPressed: () {
                 if (phaseDurations.every((phase) => phase.duration > 0) &&
                     name.isNotEmpty) {
@@ -290,8 +325,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                             'Please enter valid durations for all fields')),
                   );
                 }
-              },
-              child: const Text('Next'),
+              }, gradientColors: [Colors.green, Colors.greenAccent],
             ),
           ],
         ),
@@ -326,7 +360,9 @@ class SessionOverviewScreen extends StatelessWidget {
                     'Phase: ${session.temperaturePhases[index].temperature}, Duration: ${session.temperaturePhases[index].duration} seconds');
               },
             ),
-            ElevatedButton(
+
+            gradientButton(
+              label: 'Begin Session',
               onPressed: () {
                 Navigator.push(
                   context,
@@ -337,7 +373,7 @@ class SessionOverviewScreen extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text('Begin Session'),
+              gradientColors: [Colors.green, Colors.greenAccent],
             ),
           ],
         ),
@@ -496,7 +532,8 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
             ),
             // TODO: Display a large, animated timer indicating the current phase
             // TODO: Provide visual cues for phase transitions
-            ElevatedButton(
+            gradientButton(
+              label: 'Pause',
               onPressed: () {
                 // TODO: Implement pause functionality
                 // Navigator.push(
@@ -510,13 +547,14 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
                 //   ),
                 // );
               },
-              child: const Text('Pause'),
+              gradientColors: [Colors.grey, Colors.blueGrey],
             ),
-            ElevatedButton(
+            gradientButton(
+              label: 'End Session',
               onPressed: () {
                 // TODO: end button in the middle of the training
-                int actualSessionDuration =
-                    widget.session.duration - _overallTimerController.remainingTime;
+                int actualSessionDuration = widget.session.duration -
+                    _overallTimerController.remainingTime;
                 int actualHotPhaseDuration = widget.session.temperaturePhases
                         .firstWhere((phase) => phase.temperature == 'Hot')
                         .duration -
@@ -539,7 +577,9 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
                   ),
                 );
               },
-              child: const Text('End Session'),
+              gradientColors: _overallTimerController.remainingTime == 0
+                  ? [Colors.green, Colors.greenAccent]
+                  : [Colors.red, Colors.redAccent]
             ),
           ],
         ),
@@ -593,7 +633,8 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                 labelText: 'Comments',
               ),
             ),
-            ElevatedButton(
+            gradientButton(
+              label: 'Save Session',
               onPressed: () async {
                 final newSession = ShowerSession(
                   name: widget.session.name,
@@ -607,7 +648,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                 await prefs.setStringList('sessions', sessionStrings);
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
-              child: const Text('Back to Home'),
+              gradientColors: [Colors.green, Colors.greenAccent],
             ),
           ],
         ),
