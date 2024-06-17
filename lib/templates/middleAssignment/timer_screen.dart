@@ -27,18 +27,24 @@ class _TimerScreenState extends State<TimerScreen> {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   Future<void> playSound() async {
-    const String soundPathHot = 'assets/sounds/hot shower.mp3';
-    const String soundPathCold = 'assets/sounds/cold shower.mp3';
-    const String soundPathTimer = 'assets/sounds/timer.mp3';
+  if (_currentPhaseIndex < widget.phases.length) {
+    String soundPath;
+    String phaseName = widget.phases[_currentPhaseIndex].name;
 
-    if (widget.phases[_currentPhaseIndex].name == "hot") {
-      await _audioPlayer.play(AssetSource(soundPathHot));
-    } else if (widget.phases[_currentPhaseIndex].name == "cold") {
-      await _audioPlayer.play(AssetSource(soundPathCold));
+    if (phaseName == "hot") {
+      soundPath = 'sounds/hot_shower.mp3';
     } else {
-      await _audioPlayer.play(AssetSource(soundPathTimer));
+      soundPath = 'sounds/cold_shower.mp3';
+    }
+    await _audioPlayer.play(AssetSource(soundPath));
+
+    if (_currentPhaseIndex == widget.phases.length - 1) {
+      await _audioPlayer.play(AssetSource('sounds/timer.mp3'));
     }
   }
+}
+
+
 
   void pauseTimer() {
     if (_timer.isActive) {
@@ -69,25 +75,48 @@ class _TimerScreenState extends State<TimerScreen> {
 
 
   void startTimer() {
-    _currentTime = 0;
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-        if (_currentTime < _totalTime) {
-          _currentTime++;
-          _phaseTimeLeft--;
-          _progress = _currentTime / _totalTime;
-          if (_phaseTimeLeft == 0 && _currentPhaseIndex < widget.phases.length - 1) {
-            _currentPhaseIndex++;
-            _phaseTimeLeft = _phaseDurations[_currentPhaseIndex];
-            playSound();
-          }
-        } else {
-          _timer.cancel();
+  _currentTime = 0;
+  _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    setState(() {
+      if (_currentTime < _totalTime) {
+        _currentTime++;
+        _phaseTimeLeft--;
+        _progress = _currentTime / _totalTime;
+        if (_phaseTimeLeft == 0 && _currentPhaseIndex < widget.phases.length - 1) {
+          _currentPhaseIndex++;
+          _phaseTimeLeft = _phaseDurations[_currentPhaseIndex];
           playSound();
         }
-      });
+      } else {
+        _timer.cancel();
+        playSound();
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Session Complete"),
+              content: const Text("The session has ended."),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text("OK"),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomeScreen(),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
     });
-  }
+  });
+}
+
 
 
 

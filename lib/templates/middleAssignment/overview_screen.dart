@@ -88,9 +88,6 @@ class _SessionDetailsScreenState extends State<SessionDetailsScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                setState(() {
-                  _isSaved = true;
-                });
               },
               child: const Text(
                 'OK',
@@ -180,6 +177,9 @@ class _SessionDetailsScreenState extends State<SessionDetailsScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     _saveSession(context);
+                    setState(() {
+                      _isSaved = true;
+                    });
                   },
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF24305E)),

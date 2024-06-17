@@ -24,3 +24,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/sounds/hot_shower.mp3
+    - assets/sounds/cold_shower.mp3
+    - assets/sounds/timer.mp3
