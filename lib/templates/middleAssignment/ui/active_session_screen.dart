@@ -1,53 +1,12 @@
 import 'dart:async';
 
+import 'package:education/templates/middleAssignment/ui/summary_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../custom_render_object.dart';
 import '../data/providers/session_provider.dart';
 
-// class ActiveSessionScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     final session = context.watch<SessionProvider>().currentSession;
-//
-//     if (session == null) {
-//       // Handle the case where the session is null, e.g. by navigating back to the home screen
-//       return Scaffold(
-//         body: Center(
-//           child: ElevatedButton(
-//             onPressed: () {
-//               Navigator.pop(context);
-//             },
-//             child: Text('Back to Home'),
-//           ),
-//         ),
-//       );
-//     }
-//
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Active Session'),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             Text('Current Phase: ${session?.phases[0].temperature}°C'),
-//             Text('Remaining Time: ${session!.duration ~/ 60} minutes'),
-//             ElevatedButton(
-//               onPressed: () {
-//                 context.read<SessionProvider>().endSession();
-//                 Navigator.pop(context);
-//               },
-//               child: Text('End Session'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 
 class ActiveSessionScreen extends StatefulWidget {
@@ -107,7 +66,11 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
             ElevatedButton(
               onPressed: () {
                 context.read<SessionProvider>().endSession();
-                Navigator.pop(context);
+                // Navigator.pop(context);
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SummaryScreen(
+                  time: session.duration - session.remainingTime!,
+
+                )));
               },
               child: Text('End Session'),
             ),
