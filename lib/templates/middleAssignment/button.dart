@@ -10,13 +10,13 @@ Widget gradientButton({
       gradient: LinearGradient(
         colors: gradientColors,
       ),
-      borderRadius: BorderRadius.circular(8.0),
+      borderRadius: BorderRadius.circular(5.0),
     ),
     child: MaterialButton(
       onPressed: onPressed,
       child: Text(
         label,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
     ),
   );

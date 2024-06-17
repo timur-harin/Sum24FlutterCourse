@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'button.dart';
+import 'star_rating.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,11 +30,13 @@ class ShowerSession {
   final String name;
   final String comments;
   final List<TemperaturePhase> temperaturePhases;
+  final double rating;
 
   ShowerSession({
     required this.name,
     required this.comments,
     required this.temperaturePhases,
+    required this.rating,
   });
 
   int get duration =>
@@ -45,6 +48,7 @@ class ShowerSession {
       'comments': comments,
       'temperaturePhases':
           temperaturePhases.map((phase) => phase.toMap()).toList(),
+      'rating': rating,
     };
   }
 
@@ -56,6 +60,7 @@ class ShowerSession {
       name: map['name'],
       comments: map['comments'],
       temperaturePhases: temperaturePhasesFromMap,
+      rating: map['rating'],
     );
   }
 
@@ -70,6 +75,7 @@ final showerSessionProvider = StateProvider<ShowerSession>((ref) {
     name: '',
     comments: '',
     temperaturePhases: [],
+    rating: 0.0,
   );
 });
 
@@ -135,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
         future: _previousSessions,
         builder: (context, AsyncSnapshot<List<ShowerSession>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
@@ -197,6 +203,7 @@ class SessionDetailsScreen extends StatelessWidget {
             ...session.temperaturePhases.map((phase) => Text(
                 'Phase: ${phase.temperature}, Duration: ${phase.duration} seconds')),
             Text('Comments: ${session.comments}'),
+            Text('Rating: ${session.rating}'),
           ],
         ),
       ),
@@ -281,10 +288,12 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                         });
                       },
                     ),
+                    const Padding(padding: EdgeInsets.all(2.0)),
                   ],
                 );
               },
             ),
+            const Padding(padding: EdgeInsets.all(2.0)),
             gradientButton(
               label: 'Add Phase',
               onPressed: () {
@@ -300,6 +309,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                   ? [Colors.red, Colors.redAccent]
                   : [Colors.blue, Colors.blueAccent],
             ),
+            const Padding(padding: EdgeInsets.all(2.0)),
             gradientButton(
               label: 'Next',
               onPressed: () {
@@ -313,6 +323,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                           name: name,
                           comments: '',
                           temperaturePhases: phaseDurations,
+                          rating: 0.0,
                         ),
                       ),
                     ),
@@ -435,14 +446,16 @@ class TimerController extends ChangeNotifier {
   }
 
   void _pauseTimer() {
-    _state = TimerState.paused;
-    _timer?.cancel();
-    _timer = null;
-    notifyListeners();
+    if (remainingTime > 0) {
+      _state = TimerState.paused;
+      _timer?.cancel();
+      _timer = null;
+      notifyListeners();
+    }
   }
 
   void _unpauseTimer() {
-    if (_timer == null) {
+    if (_timer == null && remainingTime > 0) {
       _state = TimerState.running;
       _startTimer();
       notifyListeners();
@@ -542,7 +555,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
                     .padLeft(2, '0');
                 return Text(
                   'Overall Time: $minutes:$seconds',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 24.0,
                     color: Colors.black,
                   ),
@@ -565,7 +578,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
                         size: 48.0,
                         color: _phaseTimerController.state == TimerState.paused
                             ? Colors.green
-                            : Colors.red,
+                            : Colors.grey,
                       ),
                       onPressed: () {
                         if (_phaseTimerController.state == TimerState.paused) {
@@ -630,6 +643,7 @@ class SessionSummaryScreen extends StatefulWidget {
 
 class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
   String comments = '';
+  double rating = 0.0; // Add this line to hold the current rating
 
   @override
   Widget build(BuildContext context) {
@@ -654,6 +668,21 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                 labelText: 'Comments',
               ),
             ),
+            const Padding(padding: EdgeInsets.all(2.0)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                const Text('Rate this session: '),
+                StarRating(
+                  rating: rating,
+                  // Use the rating variable here
+                  onRatingChanged: (newRating) =>
+                      setState(() => rating = newRating),
+                  // Update the rating variable when the rating changes
+                  color: Colors.yellow,
+                ),
+              ],
+            ),
             gradientButton(
               label: 'Save Session',
               onPressed: () async {
@@ -661,6 +690,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                   name: widget.session.name,
                   comments: comments,
                   temperaturePhases: widget.session.temperaturePhases,
+                  rating: rating,
                 );
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 List<String> sessionStrings =
