@@ -4,6 +4,7 @@ import 'dart:convert';
 class ShowerSession {
   late final DateTime date;
   late final List<ShowerPhase> phases;
+  
 
   ShowerSession({required this.date, required this.phases});
 

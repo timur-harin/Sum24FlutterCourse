@@ -1,6 +1,7 @@
 import 'package:education/templates/middleAssignment/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:education/templates/middleAssignment/timer_screen.dart';
 
 class AddSessionScreen extends StatefulWidget {
   const AddSessionScreen({super.key});
@@ -22,7 +23,6 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
     _selectedDate = DateTime.now();
     _dateController.text = DateFormat('dd/MM/yyyy').format(_selectedDate!);
   }
-
 
   void _addPhase() {
     final dialogFormKey = GlobalKey<FormState>();
@@ -190,6 +190,7 @@ void _saveSession(BuildContext context) async {
 
   try {
     ShowerSession session = ShowerSession(date: _selectedDate!, phases: _phases);
+
     LocalStorageService localStorageService = LocalStorageService();
     List<ShowerSession> sessions = await localStorageService.getSessions();
     sessions.add(session);
@@ -345,6 +346,17 @@ void _saveSession(BuildContext context) async {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => TimerScreen(phases: _phases,)),
+            );
+        },
+        backgroundColor: const Color(0xFF24305E),
+        foregroundColor: Colors.white,
+        child: const Icon(Icons.timer),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
