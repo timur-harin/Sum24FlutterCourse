@@ -82,7 +82,7 @@ class HomeScreen extends ConsumerWidget {
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
                                         color: phase.name == 'hot' 
-                                        ? Color.fromARGB(255, 155, 36, 36) 
+                                        ? const Color.fromARGB(255, 155, 36, 36) 
                                         : const Color(0xFF374785),
                                   ),
                                 ),

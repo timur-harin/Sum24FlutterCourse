@@ -14,6 +14,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
   final _formKey = GlobalKey<FormState>();
   final _dateController = TextEditingController();
   final List<ShowerPhase> _phases = [];
+  bool _isSaved = false;
 
   DateTime? _selectedDate;
   
@@ -59,7 +60,7 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
                             child: Text(
                               'hot',
                               style: TextStyle(
-                                color: Color(0xFFF76C6c),
+                                color: Color.fromARGB(255, 155, 36, 36),
                               ),
                             ),
                           ),
@@ -214,6 +215,9 @@ void _saveSession(BuildContext context) async {
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
+              setState(() {
+                _isSaved = true;
+              });
             },
             child: const Text(
               'OK',
@@ -322,7 +326,7 @@ void _saveSession(BuildContext context) async {
                         phase.name,
                         style: TextStyle(
                               color: phase.name == 'hot' 
-                              ? const Color(0xFFF76C6c) 
+                              ? const Color.fromARGB(255, 155, 36, 36) 
                               : const Color(0xFF374785),
                         ),
                       ),
@@ -347,9 +351,43 @@ void _saveSession(BuildContext context) async {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
+          if (_phases.isEmpty) {
+            showDialog(
+              context: context, 
+              builder: (BuildContext) {
+                return AlertDialog(
+                  title: const Text("Phases are not added"),
+                  content: const Text('Please add at least one phase before saving the session.'),
+                  actions: <Widget> [
+                    TextButton(
+                      child: const Text("OK"),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  ],
+                );
+              }
+            );
+          } else if (!_isSaved) {
+            showDialog(
+              context: context, 
+              builder: (BuildContext) {
+                return AlertDialog(
+                  title: const Text("Session is not saved"),
+                  content: const Text("Please save the session before starting the timer"),
+                  actions: <Widget> [
+                    TextButton(
+                      child: const Text("OK"),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  ],
+                );
+              }
+            );
+          } else {
+            Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => TimerScreen(phases: _phases,)),
             );
+          }
         },
         backgroundColor: const Color(0xFF24305E),
         foregroundColor: Colors.white,

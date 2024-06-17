@@ -82,7 +82,7 @@ class _TimerScreenState extends State<TimerScreen> {
     int remainingSeconds = remainingTime % 60;
 
     String formattedTime = '${remainingMinutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
-    Color phaseColor = widget.phases[_currentPhaseIndex].name == "cold" ? Color(0xFF374785) : Color(0xFFF76C6c);
+    Color phaseColor = widget.phases[_currentPhaseIndex].name == "cold" ? const Color(0xFF374785) : const Color.fromARGB(255, 155, 36, 36);
 
     return Scaffold(
       appBar: AppBar(
