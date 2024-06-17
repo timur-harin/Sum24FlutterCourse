@@ -75,7 +75,7 @@ class HomeScreen extends ConsumerWidget {
 
                           return CustomExpansionTile(
                             title: 'Session $sessionIndex',
-                            children: session.phases.map((phase) {
+                            children: session.phases.reversed.map((phase) {
                               return ListTile(
                                 title: Text(
                                   phase.name,
@@ -105,17 +105,20 @@ class HomeScreen extends ConsumerWidget {
         },
       ),
 
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: ElevatedButton(
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const AddSessionScreen()),
           );
         },
-        backgroundColor: const Color(0xFF24305E),
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.add),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF24305E), // Background color
+          foregroundColor: Colors.white,
+        ),
+        child: Text('Start New Session'),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
