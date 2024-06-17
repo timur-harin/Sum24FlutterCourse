@@ -167,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
           await Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const SessionPreferencesScreen()));
+                  builder: (context) => SessionPreferencesScreen()));
           setState(() {
             _previousSessions = _getPreviousSessions();
           });
@@ -300,7 +300,6 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                   ? [Colors.red, Colors.redAccent]
                   : [Colors.blue, Colors.blueAccent],
             ),
-
             gradientButton(
               label: 'Next',
               onPressed: () {
@@ -325,7 +324,8 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                             'Please enter valid durations for all fields')),
                   );
                 }
-              }, gradientColors: [Colors.green, Colors.greenAccent],
+              },
+              gradientColors: [Colors.green, Colors.greenAccent],
             ),
           ],
         ),
@@ -360,7 +360,6 @@ class SessionOverviewScreen extends StatelessWidget {
                     'Phase: ${session.temperaturePhases[index].temperature}, Duration: ${session.temperaturePhases[index].duration} seconds');
               },
             ),
-
             gradientButton(
               label: 'Begin Session',
               onPressed: () {
@@ -394,12 +393,15 @@ class ActiveSessionScreen extends StatefulWidget {
   _ActiveSessionScreenState createState() => _ActiveSessionScreenState();
 }
 
+enum TimerState { paused, running }
+
 class TimerController extends ChangeNotifier {
-  late Timer _timer;
+  Timer? _timer;
   int _remainingTime;
   String _currentPhase;
   List<TemperaturePhase> _phases;
   int _currentPhaseIndex;
+  late TimerState _state = TimerState.running;
 
   TimerController({required List<TemperaturePhase> phases})
       : _remainingTime = phases.first.duration,
@@ -413,6 +415,8 @@ class TimerController extends ChangeNotifier {
 
   String get currentPhase => _currentPhase;
 
+  TimerState get state => _state;
+
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _remainingTime--;
@@ -423,16 +427,31 @@ class TimerController extends ChangeNotifier {
           _remainingTime = _phases[_currentPhaseIndex].duration;
         } else {
           _currentPhase = 'End';
-          _timer.cancel();
+          _timer?.cancel();
         }
       }
       notifyListeners();
     });
   }
 
+  void _pauseTimer() {
+    _state = TimerState.paused;
+    _timer?.cancel();
+    _timer = null;
+    notifyListeners();
+  }
+
+  void _unpauseTimer() {
+    if (_timer == null) {
+      _state = TimerState.running;
+      _startTimer();
+      notifyListeners();
+    }
+  }
+
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 }
@@ -532,55 +551,57 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
             ),
             // TODO: Display a large, animated timer indicating the current phase
             // TODO: Provide visual cues for phase transitions
-            gradientButton(
-              label: 'Pause',
-              onPressed: () {
-                // TODO: Implement pause functionality
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => SessionPausedScreen(
-                //       sessionDuration: widget.sessionDuration,
-                //       hotPhaseDuration: widget.hotPhaseDuration,
-                //       coldPhaseDuration: widget.coldPhaseDuration,
-                //     ),
-                //   ),
-                // );
-              },
-              gradientColors: [Colors.grey, Colors.blueGrey],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                AnimatedBuilder(
+                  animation: _phaseTimerController,
+                  builder: (context, child) {
+                    return IconButton(
+                      icon: Icon(
+                        _phaseTimerController.state == TimerState.paused
+                            ? Icons.play_arrow
+                            : Icons.pause,
+                        size: 48.0,
+                        color: _phaseTimerController.state == TimerState.paused
+                            ? Colors.green
+                            : Colors.red,
+                      ),
+                      onPressed: () {
+                        if (_phaseTimerController.state == TimerState.paused) {
+                          _phaseTimerController._unpauseTimer();
+                          _overallTimerController._unpauseTimer();
+                        } else {
+                          _phaseTimerController._pauseTimer();
+                          _overallTimerController._pauseTimer();
+                        }
+                      },
+                    );
+                  },
+                ),
+              ],
             ),
             gradientButton(
-              label: 'End Session',
-              onPressed: () {
-                // TODO: end button in the middle of the training
-                int actualSessionDuration = widget.session.duration -
-                    _overallTimerController.remainingTime;
-                int actualHotPhaseDuration = widget.session.temperaturePhases
-                        .firstWhere((phase) => phase.temperature == 'Hot')
-                        .duration -
-                    _overallTimerController.remainingTime;
-                int actualColdPhaseDuration = widget.session.temperaturePhases
-                        .firstWhere((phase) => phase.temperature == 'Cold')
-                        .duration -
-                    _overallTimerController.remainingTime;
+                label: 'End Session',
+                onPressed: () {
+                  int timeLeft = _overallTimerController.remainingTime;
+                  // Stop the timers
+                  _phaseTimerController.dispose();
+                  _overallTimerController.dispose();
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SessionSummaryScreen(
-                      session: ShowerSession(
-                        name: widget.session.name,
-                        comments: '',
-                        temperaturePhases: widget.session.temperaturePhases,
+                  // Navigate to the SessionSummaryScreen
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SessionSummaryScreen(
+                        session: widget.session,
                       ),
                     ),
-                  ),
-                );
-              },
-              gradientColors: _overallTimerController.remainingTime == 0
-                  ? [Colors.green, Colors.greenAccent]
-                  : [Colors.red, Colors.redAccent]
-            ),
+                  );
+                },
+                gradientColors: _overallTimerController.remainingTime == 0
+                    ? [Colors.green, Colors.greenAccent]
+                    : [Colors.red, Colors.redAccent]),
           ],
         ),
       ),
