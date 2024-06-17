@@ -1,7 +1,12 @@
+import 'package:education/templates/middleAssignment/LoadingScreen.dart';
+import 'package:education/templates/middleAssignment/homeScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/adapters.dart';
 
-void main() {
-  runApp(const MiddleAssigmentApp());
+void main() async {
+  await Hive.initFlutter();
+  runApp(const ProviderScope(child: MiddleAssigmentApp()));
 }
 
 class MiddleAssigmentApp extends StatelessWidget {
@@ -15,7 +20,7 @@ class MiddleAssigmentApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // TODO - complete assignment
-      home: null,
+      home: LoadingScreen(),
     );
   }
 }
