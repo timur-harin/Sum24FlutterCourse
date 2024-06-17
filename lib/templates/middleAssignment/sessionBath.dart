@@ -8,6 +8,7 @@ class sessionBath extends HiveObject {
   List<String> duration;
   @HiveField(1)
   List<DateTime> timeStart;
+<<<<<<< HEAD
   @HiveField(2)
   List<String> phase_duration;
 
@@ -20,5 +21,13 @@ class sessionBath extends HiveObject {
     duration = List.from(duration)..add(InDuration);
     timeStart = List.from(timeStart)..add(DateTime.now());
     phase_duration = List.from(phase_duration)..add(InPhase_duration);
+=======
+
+  sessionBath({this.duration = const [], this.timeStart = const []});
+
+  void startSession(String InDuration) {
+    duration = List.from(duration)..add(InDuration);
+    timeStart = List.from(timeStart)..add(DateTime.now());
+>>>>>>> eef26d5 (mid assigment commit 1)
   }
 }

@@ -8,8 +8,12 @@ class Sessionsettings extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+<<<<<<< HEAD
     TextEditingController _controller1 = TextEditingController();
     TextEditingController _controller2 = TextEditingController();
+=======
+    TextEditingController _controller = TextEditingController();
+>>>>>>> eef26d5 (mid assigment commit 1)
     final sessions = ref.watch(SessionProvider);
 
     return Scaffold(
@@ -43,7 +47,11 @@ class Sessionsettings extends ConsumerWidget {
               height: 15,
             ),
             TextField(
+<<<<<<< HEAD
               controller: _controller1,
+=======
+              controller: _controller,
+>>>>>>> eef26d5 (mid assigment commit 1)
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                   fillColor: Color.fromRGBO(53, 175, 212, 1),
@@ -52,6 +60,7 @@ class Sessionsettings extends ConsumerWidget {
                     color: Color.fromRGBO(0, 0, 0, 0.8),
                     fontSize: 18,
                   ),
+<<<<<<< HEAD
                   labelText: 'Shower duration in minutes',
                   counterStyle: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
                   border: OutlineInputBorder(
@@ -70,6 +79,9 @@ class Sessionsettings extends ConsumerWidget {
                     fontSize: 18,
                   ),
                   labelText: 'Shower phase duration in seconds',
+=======
+                  labelText: 'Shower duration',
+>>>>>>> eef26d5 (mid assigment commit 1)
                   counterStyle: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
                   border: OutlineInputBorder(
                       borderSide: BorderSide(
@@ -81,6 +93,7 @@ class Sessionsettings extends ConsumerWidget {
             ),
             TextButton(
               onPressed: () {
+<<<<<<< HEAD
                 if (!_controller1.text.toString().isEmpty &&
                     !_controller2.text.toString().isEmpty) {
                   sessions.startSession(_controller1.text.toString(),
@@ -91,6 +104,14 @@ class Sessionsettings extends ConsumerWidget {
                       MaterialPageRoute(
                           builder: (context) => (const SessionCreation())));
                 }
+=======
+                sessions.startSession(_controller.text.toString());
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => (SessionCreation())));
+>>>>>>> eef26d5 (mid assigment commit 1)
               },
               style: const ButtonStyle(
                   backgroundColor:
