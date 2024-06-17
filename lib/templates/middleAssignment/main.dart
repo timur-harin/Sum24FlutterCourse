@@ -1,16 +1,20 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'button.dart';
-import 'circle_progress_bar.dart';
 import 'star_rating.dart';
+import 'theme.dart';
+import 'package:provider/provider.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const ProviderScope(child: MiddleAssigmentApp()));
+  runApp(ChangeNotifierProvider(
+    create: (context) => ThemeProvider(),
+    child: const riverpod.ProviderScope(child: MiddleAssigmentApp()),
+  ));
 }
 
 class MiddleAssigmentApp extends StatelessWidget {
@@ -18,11 +22,14 @@ class MiddleAssigmentApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
       title: 'Middle Assigment',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      darkTheme: ThemeData.dark(),
+      themeMode: themeProvider.themeMode,
       home: HomeScreen(),
     );
   }
@@ -72,7 +79,7 @@ class ShowerSession {
       ShowerSession.fromMap(json.decode(source));
 }
 
-final showerSessionProvider = StateProvider<ShowerSession>((ref) {
+final showerSessionProvider = riverpod.StateProvider<ShowerSession>((ref) {
   return ShowerSession(
     name: '',
     comments: '',
@@ -135,15 +142,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Contrast Shower Companion'),
+        actions: <Widget>[
+          Switch.adaptive(
+            value: themeProvider.isDarkMode,
+            onChanged: (value) {
+              themeProvider.toggleTheme(value);
+            },
+          ),
+        ],
       ),
       body: FutureBuilder(
         future: _previousSessions,
         builder: (context, AsyncSnapshot<List<ShowerSession>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
@@ -537,22 +553,6 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
                   if (_phaseTimerController.currentPhase != 'End') {
                     return Column(
                       children: [
-                        SizedBox(
-                          width: 400,
-                          height: 400,
-                          child: CircleProgressBar(
-                            value: _phaseTimerController.remainingTime /
-                                widget
-                                    .session
-                                    .temperaturePhases[_phaseTimerController
-                                        ._currentPhaseIndex]
-                                    .duration,
-                            totalDuration:
-                                Duration(seconds: widget.session.duration),
-                            backgroundColor: Colors.grey,
-                            foregroundColor: color,
-                          ),
-                        ),
                         AnimatedBuilder(
                           animation: _overallTimerController,
                           builder: (context, child) {
@@ -574,39 +574,6 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
                               ),
                             );
                           },
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            AnimatedBuilder(
-                              animation: _phaseTimerController,
-                              builder: (context, child) {
-                                return IconButton(
-                                  icon: Icon(
-                                    _phaseTimerController.state ==
-                                            TimerState.paused
-                                        ? Icons.play_arrow
-                                        : Icons.pause,
-                                    size: 48.0,
-                                    color: _phaseTimerController.state ==
-                                            TimerState.paused
-                                        ? Colors.green
-                                        : Colors.grey,
-                                  ),
-                                  onPressed: () {
-                                    if (_phaseTimerController.state ==
-                                        TimerState.paused) {
-                                      _phaseTimerController._unpauseTimer();
-                                      _overallTimerController._unpauseTimer();
-                                    } else {
-                                      _phaseTimerController._pauseTimer();
-                                      _overallTimerController._pauseTimer();
-                                    }
-                                  },
-                                );
-                              },
-                            ),
-                          ],
                         ),
                         AnimatedBuilder(
                           animation: _phaseTimerController,
@@ -640,6 +607,33 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
                             );
                           },
                         ),
+                        AnimatedBuilder(
+                          animation: _phaseTimerController,
+                          builder: (context, child) {
+                            return IconButton(
+                              icon: Icon(
+                                _phaseTimerController.state == TimerState.paused
+                                    ? Icons.play_arrow
+                                    : Icons.pause,
+                                size: 48.0,
+                                color: _phaseTimerController.state ==
+                                        TimerState.paused
+                                    ? Colors.green
+                                    : Colors.grey,
+                              ),
+                              onPressed: () {
+                                if (_phaseTimerController.state ==
+                                    TimerState.paused) {
+                                  _phaseTimerController._unpauseTimer();
+                                  _overallTimerController._unpauseTimer();
+                                } else {
+                                  _phaseTimerController._pauseTimer();
+                                  _overallTimerController._pauseTimer();
+                                }
+                              },
+                            );
+                          },
+                        ),
                         gradientButton(
                             label: 'End Session',
                             onPressed: () {
@@ -669,16 +663,6 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
                     return Stack(
                       alignment: Alignment.center,
                       children: [
-                        SizedBox(
-                          width: 400,
-                          height: 400,
-                          child: CircleProgressBar(
-                            value: 0,
-                            totalDuration: const Duration(seconds: 0),
-                            backgroundColor: Colors.green,
-                            foregroundColor: Colors.green,
-                          ),
-                        ),
                         gradientButton(
                             label: 'End Session',
                             onPressed: () {

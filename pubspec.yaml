@@ -16,6 +16,7 @@ dependencies:
   shared_preferences: ^2.2.3
   hive_flutter: ^1.1.0
   path_provider: ^2.0.5
+  provider: ^6.0.1
 
 dev_dependencies:
   hive_generator: ^2.0.1
