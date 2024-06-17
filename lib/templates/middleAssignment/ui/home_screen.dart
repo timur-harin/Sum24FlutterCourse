@@ -17,17 +17,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreen extends State<HomeScreen> {
-  late Future<List<SessionHistory?>> futureSessionHistory;
+  late Future<List<SessionHistory>> futureSessionHistory;
+
   @override
   void initState() {
     super.initState();
     futureSessionHistory = getSessionHistoryData();
-    setState(() {});
   }
-
-
-
-
 
   Future<List<SessionHistory>> getSessionHistoryData() async {
     var prefs = await SharedPreferences.getInstance();
@@ -43,16 +39,15 @@ class _HomeScreen extends State<HomeScreen> {
     return historyList;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      appBar: AppBar(title: Text('Contrast Shower Companion')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-              Text('Welcome to the Contrast Shower Companion'),
+            Text('Welcome to the Contrast Shower Companion'),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -68,45 +63,44 @@ class _HomeScreen extends State<HomeScreen> {
             SizedBox(
               height: 500,
               child: FutureBuilder(
-                  future: futureSessionHistory,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
-                    } else if (snapshot.hasError || snapshot.data == null) {
-                      return const Text('Ошибка при загрузке истории');
-                    } else {
-                      final sessionHistoryList = snapshot.data!;
+                future: futureSessionHistory,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError || snapshot.data == null) {
+                    return const Text('Ошибка при загрузке истории');
+                  } else {
+                    final sessionHistoryList = snapshot.data!;
 
-                      return ListView.builder(
-                          itemCount: sessionHistoryList.length,
-                          itemBuilder: (context, index) {
-                            final sessionHistory = sessionHistoryList[index];
-                            return GestureDetector(
-                                child: Container(
-                                  margin: const  EdgeInsets.all(20),
-                                  padding: const EdgeInsets.all(20),
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: const Color.fromARGB(255, 118, 255, 123),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Text('Total time: ${sessionHistory?.time} min'),
-                                      const SizedBox(width: 10,),
-                                      Text('rate: ${sessionHistory?.rating}'),
-                                      Icon(Icons.star, color: Colors.yellow,),
-                                    ],
-                                  ),
-                                )
-                            );
-                          }
-                      );
-                    }
+                    return ListView.builder(
+                      itemCount: sessionHistoryList.length,
+                      itemBuilder: (context, index) {
+                        final sessionHistory = sessionHistoryList[index];
+                        return GestureDetector(
+                          child: Container(
+                            margin: const EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(20),
+                            height: 80,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color.fromARGB(255, 118, 255, 123),
+                            ),
+                            child: Row(
+                              children: [
+                                Text('Total time: ${sessionHistory.time} min'),
+                                const SizedBox(width: 10,),
+                                Text('rate: ${sessionHistory.rating}'),
+                                Icon(Icons.star, color: Colors.yellow,),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
                   }
+                },
               ),
             ),
-
           ],
         ),
       ),

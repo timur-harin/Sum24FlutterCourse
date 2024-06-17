@@ -23,35 +23,8 @@ class SummaryScreen extends StatefulWidget {
 }
 
 class _SummaryScreenState extends State<SummaryScreen> {
-  List<SessionHistory> historyList = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _loadSessionHistory();
-  }
-
-  Future<void> _loadSessionHistory() async {
-    historyList = await getSessionHistoryData();
-    setState(() {}); // Update the UI with the new data
-  }
-
-
-  Future<List<SessionHistory>> getSessionHistoryData() async {
-    var prefs = await SharedPreferences.getInstance();
-    final encodedHistoryList = prefs.getStringList('sessionHistoryData');
-
-    if (encodedHistoryList == null) return [];
-
-    final historyList = encodedHistoryList.map((encodedHistory) {
-      final decodedHistory = json.decode(encodedHistory);
-      return SessionHistory.fromJson(decodedHistory);
-    }).toList();
-
-    return historyList;
-  }
-
   double rate = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +47,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 color: Colors.amber,
               ),
               onRatingUpdate: (rating) {
-
                 rate = rating;
                 print(rating);
               },
@@ -82,10 +54,10 @@ class _SummaryScreenState extends State<SummaryScreen> {
             SizedBox(height: 20,),
             TextButton(
                 onPressed: () async {
-                  await _setSessionHistoryData(historyList);
+                  await _setSessionHistoryData();
                   Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-                  },
-                  child: Text('Save')
+                },
+                child: Text('Save')
             ),
           ],
         ),
@@ -93,20 +65,16 @@ class _SummaryScreenState extends State<SummaryScreen> {
     );
   }
 
-  Future _setSessionHistoryData(List<SessionHistory> historyList) async {
+  Future<void> _setSessionHistoryData() async {
     var prefs = await SharedPreferences.getInstance();
-
     final sessionHistoryData = SessionHistory(time: widget.time, rating: rate);
-    historyList.add(sessionHistoryData);
 
-    final encodedHistoryList = historyList.map((history) => json.encode(history.toJson())).toList();
-    prefs.setStringList('sessionHistoryData', encodedHistoryList);
+    final encodedHistoryList = prefs.getStringList('sessionHistoryData');
+    if (encodedHistoryList == null) {
+      prefs.setStringList('sessionHistoryData', [json.encode(sessionHistoryData.toJson())]);
+    } else {
+      encodedHistoryList.add(json.encode(sessionHistoryData.toJson()));
+      prefs.setStringList('sessionHistoryData', encodedHistoryList);
+    }
   }
-
-  Future<void> _storeSessionHistoryData(List<SessionHistory> historyList) async {
-    var prefs = await SharedPreferences.getInstance();
-    final encodedHistoryList = historyList.map((history) => json.encode(history.toJson())).toList();
-    prefs.setStringList('sessionHistoryData', encodedHistoryList);
-  }
-
 }
