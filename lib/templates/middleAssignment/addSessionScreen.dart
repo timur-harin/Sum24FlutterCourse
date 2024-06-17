@@ -1,7 +1,7 @@
 import 'package:education/templates/middleAssignment/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:education/templates/middleAssignment/timer_screen.dart';
+import 'package:education/templates/middleAssignment/overview_screen.dart';
 
 class AddSessionScreen extends StatefulWidget {
   const AddSessionScreen({super.key});
@@ -14,8 +14,6 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
   final _formKey = GlobalKey<FormState>();
   final _dateController = TextEditingController();
   final List<ShowerPhase> _phases = [];
-  bool _isSaved = false;
-
   DateTime? _selectedDate;
   
   @override
@@ -154,116 +152,6 @@ class _AddSessionScreenState extends State<AddSessionScreen> {
     });
   }
 
-void _saveSession(BuildContext context) async {
-  if (_phases.isEmpty) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text(
-          'Error',
-          style: TextStyle(
-            color: Color(0xFF24305E),
-          ),  
-        ),
-        content: const Text(
-          'Please add at least one phase before saving the session.',
-          style: TextStyle(
-            color: Color(0xFF24305E),
-          ),  
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text(
-              'OK',
-              style: TextStyle(
-                color: Color(0xFF24305E),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-    return;
-  }
-
-  try {
-    ShowerSession session = ShowerSession(date: _selectedDate!, phases: _phases);
-
-    LocalStorageService localStorageService = LocalStorageService();
-    List<ShowerSession> sessions = await localStorageService.getSessions();
-    sessions.add(session);
-    await localStorageService.saveSessions(sessions);
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text(
-          'Success',
-          style: TextStyle(
-            color: Color(0xFF24305E),
-          ),
-        ),
-        content: const Text(
-          'The session has been saved successfully.',
-          style: TextStyle(
-            color: Color(0xFF24305E),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              setState(() {
-                _isSaved = true;
-              });
-            },
-            child: const Text(
-              'OK',
-              style: TextStyle(
-                color: Color(0xFF24305E),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-    
-  } catch (e) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text(
-          'Error',
-          style: TextStyle(
-            color: Color(0xFF24305E),
-          ),
-        ),
-        content: Text(
-          'Failed to save the session: $e',
-          style: const TextStyle(
-            color: Color(0xFF24305E),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text(
-              'OK',
-              style: TextStyle(
-                color: Color(0xFF24305E),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -337,63 +225,59 @@ void _saveSession(BuildContext context) async {
               ),
               ElevatedButton(
                 onPressed: () {
-                  _saveSession(context);
+                  if (_phases.isEmpty) {
+                    showDialog(
+                      context: context, 
+                      builder: (BuildContext) {
+                        return AlertDialog(
+                          title: const Text(
+                            "Phases are not added",
+                            style: TextStyle(
+                              color: Color(0xFF24305E),
+                            ),
+                            ),
+                          content: const Text(
+                            'Please add at least one phase before viewing the session.',
+                            style: TextStyle(
+                              color: Color(0xFF24305E),
+                            ),
+                            ),
+                          actions: <Widget> [
+                            TextButton(
+                              child: const Text(
+                                "OK",
+                                style: TextStyle(
+                                  color: Color(0xFF24305E),
+                                ),
+                              ),
+                              onPressed: () => Navigator.of(context).pop(),
+                            )
+                          ],
+                        );
+                      }
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SessionDetailsScreen(
+                          phases: _phases,
+                          sessionDate: _selectedDate!,
+                        ),
+                      ),
+                    );
+                  }
                 },
                 style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF24305E)),
-                    foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
-                  ),
-                child: const Text('Save Session'),
+                  backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF24305E)),
+                  foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+                ),
+                child: const Text('View Session'),
               ),
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          if (_phases.isEmpty) {
-            showDialog(
-              context: context, 
-              builder: (BuildContext) {
-                return AlertDialog(
-                  title: const Text("Phases are not added"),
-                  content: const Text('Please add at least one phase before saving the session.'),
-                  actions: <Widget> [
-                    TextButton(
-                      child: const Text("OK"),
-                      onPressed: () => Navigator.of(context).pop(),
-                    )
-                  ],
-                );
-              }
-            );
-          } else if (!_isSaved) {
-            showDialog(
-              context: context, 
-              builder: (BuildContext) {
-                return AlertDialog(
-                  title: const Text("Session is not saved"),
-                  content: const Text("Please save the session before starting the timer"),
-                  actions: <Widget> [
-                    TextButton(
-                      child: const Text("OK"),
-                      onPressed: () => Navigator.of(context).pop(),
-                    )
-                  ],
-                );
-              }
-            );
-          } else {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => TimerScreen(phases: _phases,)),
-            );
-          }
-        },
-        backgroundColor: const Color(0xFF24305E),
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.timer),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

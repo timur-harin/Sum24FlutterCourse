@@ -16,22 +16,22 @@ Now, with the Contrast Shower Companion in hand, anyone could embark on this tra
 ## Assignment Requirements:
 
 
-### Content and Design (5 points):
+### Content and Design (5 points): done
 
 Design the main screen to display the user's shower session history and a button to begin a new session.
 Create a detailed screen for active sessions, showing the current temperature phase and remaining time.
 
-### Theme (2 points):
+### Theme (2 points): done
 
 Craft a soothing and invigorating theme that captures the essence of the contrast shower experience.
 Include visual cues that represent temperature changes (e.g., blue for cold, red for hot).
 
-### Navigation (2 points):
+### Navigation (2 points): in progress
 
 Implement a simple flow that guides the user from the home screen to starting a shower session with minimal steps.
 Provide clear visual back and exit options.
 
-### Custom Render Object (3 points):
+### Custom Render Object (3 points): in progress
 
 Design a custom animated widget that visually represents the transition between hot and cold phases of the shower.
 
@@ -41,12 +41,12 @@ Design a custom animated widget that visually represents the transition between 
 Model the logic using classes such as ShowerSession, TemperaturePhase, and UserPreferences. Use mixins,abstracts ans so on ...
 
 
-## Riverpod State Management (3 points):
+## Riverpod State Management (3 points): done
 
 Utilize Riverpod for state management to handle user preferences, session states, and history.
 
 
-### Points for Offline Storing History (3 point):
+### Points for Offline Storing History (3 point): done
 
 Use local storage, such as SharedPreferences or Hive, to persist the user's shower history.
 Ensure that the app can retrieve and display the stored history even when offline.

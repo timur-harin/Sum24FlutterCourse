@@ -64,7 +64,7 @@ class HomeScreen extends ConsumerWidget {
                     return Container(
                       margin: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 213, 235, 255),
+                        color: const Color.fromARGB(255, 213, 235, 255),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: CustomExpansionTile(
@@ -89,7 +89,7 @@ class HomeScreen extends ConsumerWidget {
                                 subtitle: Text(
                                   '${phase.duration.inMinutes} minutes',
                                   textAlign: TextAlign.left,
-                                  style: TextStyle(color: const Color(0xFF24305E)),
+                                  style: const TextStyle(color: const Color(0xFF24305E)),
                                 ),
                               );
                             }).toList(),
@@ -113,10 +113,10 @@ class HomeScreen extends ConsumerWidget {
           );
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF24305E), // Background color
+          backgroundColor: const Color(0xFF24305E),
           foregroundColor: Colors.white,
         ),
-        child: Text('Start New Session'),
+        child: const Text('Start New Session'),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

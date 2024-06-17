@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:education/templates/middleAssignment/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:education/templates/middleAssignment/storage.dart';
 import 'dart:math';
@@ -64,7 +65,8 @@ class _TimerScreenState extends State<TimerScreen> {
     _totalTime = _phaseDurations.fold(0, (sum, duration) => sum + duration);
     _phaseTimeLeft = _phaseDurations.isNotEmpty ? _phaseDurations.first : 0;
     startTimer();
-  }
+    }
+
 
   void startTimer() {
     _currentTime = 0;
@@ -82,11 +84,12 @@ class _TimerScreenState extends State<TimerScreen> {
         } else {
           _timer.cancel();
           playSound();
-          print("Timer Complete");
         }
       });
     });
   }
+
+
 
   @override 
   void dispose() {
