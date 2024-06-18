@@ -8,7 +8,8 @@ class Sessionsettings extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    TextEditingController _controller = TextEditingController();
+    TextEditingController _controller1 = TextEditingController();
+    TextEditingController _controller2 = TextEditingController();
     final sessions = ref.watch(SessionProvider);
 
     return Scaffold(
@@ -42,7 +43,7 @@ class Sessionsettings extends ConsumerWidget {
               height: 15,
             ),
             TextField(
-              controller: _controller,
+              controller: _controller1,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                   fillColor: Color.fromRGBO(53, 175, 212, 1),
@@ -51,7 +52,24 @@ class Sessionsettings extends ConsumerWidget {
                     color: Color.fromRGBO(0, 0, 0, 0.8),
                     fontSize: 18,
                   ),
-                  labelText: 'Shower duration',
+                  labelText: 'Shower duration in minutes',
+                  counterStyle: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color.fromRGBO(0, 0, 0, 1), width: 5),
+                      borderRadius: BorderRadius.all(Radius.circular(40)))),
+            ),
+            TextField(
+              controller: _controller2,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                  fillColor: Color.fromRGBO(53, 175, 212, 1),
+                  filled: true,
+                  labelStyle: TextStyle(
+                    color: Color.fromRGBO(0, 0, 0, 0.8),
+                    fontSize: 18,
+                  ),
+                  labelText: 'Shower phase duration in seconds',
                   counterStyle: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
                   border: OutlineInputBorder(
                       borderSide: BorderSide(
@@ -63,12 +81,16 @@ class Sessionsettings extends ConsumerWidget {
             ),
             TextButton(
               onPressed: () {
-                sessions.startSession(_controller.text.toString());
+                if (!_controller1.text.toString().isEmpty &&
+                    !_controller2.text.toString().isEmpty) {
+                  sessions.startSession(_controller1.text.toString(),
+                      _controller2.text.toString());
 
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => (SessionCreation())));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => (const SessionCreation())));
+                }
               },
               style: const ButtonStyle(
                   backgroundColor:
