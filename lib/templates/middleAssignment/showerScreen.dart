@@ -15,12 +15,19 @@ class ShowerScreen extends ConsumerWidget{
       body: Center(
         child: Column(
           children: [
-
-
+            Text("Phases left: 6", style: TextStyle(fontSize: 25),),
+            Text("COLD!", style: TextStyle(fontSize: 25))
           ],
         ),
       ),
-      //backgroundColor: Colors.cyanAccent,
+      bottomNavigationBar: BottomNavigationBar(
+        items: const<BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.arrow_circle_right), label: "next phase"),
+          BottomNavigationBarItem(icon: Icon(Icons.pause), label: "pause"),
+          BottomNavigationBarItem(icon: Icon(Icons.flag), label: "finish")
+        ],
+      ),
+      backgroundColor: Colors.lightBlue,
     );
   }
 }

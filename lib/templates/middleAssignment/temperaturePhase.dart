@@ -35,13 +35,7 @@ class TemperaturePhase extends State<TemperatureWidget>{
                 else{temperature = "cold";}
               });
             }),
-            TextButton(
-                onPressed: (){setState(() {
 
-                });},
-                child: Text("Remove", style: TextStyle(color: Colors.black),),
-
-            )
           ],
         ),
       color: color_,
