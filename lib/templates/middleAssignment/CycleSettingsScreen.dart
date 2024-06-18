@@ -20,7 +20,7 @@ class _CycleSettingsScreen extends State<CycleSettingsScreen> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.push(
+              Navigator.pop(
                   context,
                   MaterialPageRoute(
                       builder: (context) => const Home()

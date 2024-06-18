@@ -17,8 +17,10 @@ class MiddleAssigmentApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // TODO - complete assignment
-      home: const Home(),
+      initialRoute: '/home',
+      routes: {
+        '/home': (context) => const Home(),
+      },
     );
   }
 }
