@@ -29,12 +29,21 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+
             ElevatedButton(
               onPressed: () async {
                 // TODO
                 // Exercise 1 - Perform an async operation using async/await
                 String result = await fetchData();
                 print(result);
+                
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: Text('Todo'),
+                    content: Text(result),
+                  ),
+                );
               },
               child: Text('Async/Await Task'),
             ),
@@ -55,6 +64,19 @@ class MyHomePage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () async {
+                // Make an HTTP request using the HTTP package
+                // and print the response
+                http.Response response = await http.get(
+                  Uri.parse('https://jsonplaceholder.typicode.com/todos/1'),
+                );
+                final todo = response.body;
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: Text('Todo'),
+                    content: Text(todo),
+                  ),
+                );
                 // TODO 
                 // Exercise 4 - Make an HTTP request using the HTTP package
               },
@@ -62,8 +84,19 @@ class MyHomePage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () async {
+                final response = await Dio().get('https://jsonplaceholder.typicode.com/todos/1');
+                final todo = response.data.toString();
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: Text('Todo'),
+                    content: Text(todo),
+                  ),
+                );
+                
                 // TODO
                 // Exercise 5 - Make an HTTP request using Dio and show it in App Screen
+
               },
               child: Text('Dio Task'),
             ),
@@ -75,10 +108,11 @@ class MyHomePage extends StatelessWidget {
 }
 
 Future<String> fetchData() async {
-  // TODO get json from url and show as text
-  // 'https://jsonplaceholder.typicode.com/posts/1'
-
-  return 'data';
+  final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
+  if (response.statusCode == 200) {
+    return response.body;
+  }
+  return 'No data D:';
 }
 
 final counterProvider = StateProvider<int>((ref) => 0);
