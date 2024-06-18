@@ -100,7 +100,7 @@ class HomeScreen extends ConsumerWidget {
                                   style: Theme.of(context).textTheme.titleMedium?.copyWith(color: const Color(0xFF24305E)),
                                 ),
                                 subtitle: Text(
-                                  session.feedback!,
+                                  session.feedback!.trim(),
                                   style: const TextStyle(color: const Color(0xFF24305E)),
                                 ),
                               ),

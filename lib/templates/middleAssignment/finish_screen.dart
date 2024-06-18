@@ -67,7 +67,41 @@ class _FinishScreenState extends State<FinishScreen> {
               ),
               maxLines: null,
             ),
-            const SizedBox(height: 20), 
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.currentSession.phases.length,
+                itemBuilder: (context, index) {
+                  final phase = widget.currentSession.phases[index];
+                  return ListTile(
+                    title: Text(
+                      phase.name,
+                      style: TextStyle(
+                        color: phase.name == 'hot'
+                            ? const Color.fromARGB(255, 155, 36, 36)
+                            : const Color(0xFF374785),
+                      ),
+                    ),
+                    subtitle: Text('Duration: ${phase.duration.inMinutes} minutes'),
+                  );
+                },
+              ),
+            ),
+            ListTile(
+              title: const Text(
+                "Total Time:",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF374785),
+                ),
+              ),
+              subtitle: Text(
+                '${widget.currentSession.phases.fold<int>(0, (previousValue, element) => previousValue + element.duration.inMinutes)} minutes',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF374785),
+                ),
+              ),
+            ),
           ],
         ),
       ),
