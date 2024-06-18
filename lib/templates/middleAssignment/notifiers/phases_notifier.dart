@@ -1,35 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final phasesProvider = StateNotifierProvider<PhasesNotifier, List<Phase>>((ref) => PhasesNotifier());
+final phasesProvider = StateNotifierProvider<PhasesNotifier, List<Phase>>(
+    (ref) => PhasesNotifier());
 
 class PhasesNotifier extends StateNotifier<List<Phase>> {
   PhasesNotifier() : super(_initialPhases());
 
   static List<Phase> _initialPhases() => [
-    Phase(type: 'hot', duration: 0, controller: TextEditingController()),
-    Phase(type: 'cold', duration: 0, controller: TextEditingController()),
-  ];
+        Phase(
+            type: 'hot',
+            minutes: 0,
+            seconds: 0,
+            minutesController: TextEditingController(),
+            secondsController: TextEditingController()),
+        Phase(
+            type: 'cold',
+            minutes: 0,
+            seconds: 0,
+            minutesController: TextEditingController(),
+            secondsController: TextEditingController()),
+      ];
 
   void addPhase() {
     state = [
       ...state,
-      Phase(type: state.last.type == 'hot' ? 'cold' : 'hot', duration: 0, controller: TextEditingController()),
+      Phase(
+          type: state.last.type == 'hot' ? 'cold' : 'hot',
+          minutes: 0,
+          seconds: 0,
+          minutesController: TextEditingController(),
+          secondsController: TextEditingController()),
     ];
   }
 
-  void updatePhaseDuration(int index, String value) {
-    state[index].duration = value.isNotEmpty ? int.parse(value) : 0;
+  void updatePhaseDurationMinutes(int index, String value) {
+    state[index].minutes = value.isNotEmpty ? int.parse(value) : 0;
+    state = [...state];
+  }
+
+  void updatePhaseDurationSeconds(int index, String value) {
+    state[index].seconds = value.isNotEmpty ? int.parse(value) : 0;
     state = [...state];
   }
 
   int getTotalDuration() {
-    return state.fold(0, (int total, phase) => total + phase.duration);
+    return state.fold(
+        0, (int total, phase) => total + phase.minutes * 60 + phase.seconds);
   }
 
   void reset() {
     for (var phase in state) {
-      phase.controller.clear();
+      phase.minutesController.clear();
+      phase.secondsController.clear();
     }
     state = _initialPhases();
   }
@@ -37,8 +60,14 @@ class PhasesNotifier extends StateNotifier<List<Phase>> {
 
 class Phase {
   final String type;
-  int duration;
-  final TextEditingController controller;
-
-  Phase({required this.type, required this.duration, required this.controller});
+  int minutes;
+  int seconds;
+  final TextEditingController minutesController;
+  final TextEditingController secondsController;
+  Phase(
+      {required this.type,
+      required this.minutes,
+      required this.seconds,
+      required this.minutesController,
+      required this.secondsController});
 }

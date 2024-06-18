@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import '../small_widgets/gradient_appbar.dart';
 
 import '../screens/session_overview_screen.dart';
@@ -23,7 +25,7 @@ class PreferencesScreen extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Total Duration: ${ref.read(phasesProvider.notifier).getTotalDuration()} minutes',
+              'Total Duration: ${ref.read(phasesProvider.notifier).getTotalDuration() ~/ 60} minutes ${ref.read(phasesProvider.notifier).getTotalDuration() % 60} seconds',
               style: const TextStyle(color: Colors.black),
             ),
             ListView.builder(
@@ -31,22 +33,60 @@ class PreferencesScreen extends ConsumerWidget {
               itemCount: phases.length,
               itemBuilder: (context, index) {
                 final phase = phases[index];
-                return TextField(
-                  controller: phase.controller,
-                  decoration: InputDecoration(
-                    labelText:
-                        '${phase.type[0].toUpperCase()}${phase.type.substring(1)} Phase ${index + 1} Duration (minutes)',
-                    labelStyle: TextStyle(
-                        color: phase.type == 'hot' ? Colors.red : Colors.cyan),
-                  ),
-                  keyboardType: TextInputType.number,
-                  style: TextStyle(
-                      color: phase.type == 'hot' ? Colors.red : Colors.cyan),
-                  onChanged: (value) {
-                    ref
-                        .read(phasesProvider.notifier)
-                        .updatePhaseDuration(index, value);
-                  },
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: phase.minutesController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        decoration: InputDecoration(
+                          labelText:
+                              '${phase.type[0].toUpperCase()}${phase.type.substring(1)} Phase ${index + 1} Duration (minutes)',
+                          labelStyle: TextStyle(
+                              color: phase.type == 'hot'
+                                  ? Colors.red
+                                  : Colors.cyan),
+                        ),
+                        style: TextStyle(
+                            color:
+                                phase.type == 'hot' ? Colors.red : Colors.cyan),
+                        onChanged: (value) {
+                          ref
+                              .read(phasesProvider.notifier)
+                              .updatePhaseDurationMinutes(index, value);
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: phase.secondsController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        decoration: InputDecoration(
+                          labelText:
+                              '${phase.type[0].toUpperCase()}${phase.type.substring(1)} Phase ${index + 1} Duration (seconds)',
+                          labelStyle: TextStyle(
+                              color: phase.type == 'hot'
+                                  ? Colors.red
+                                  : Colors.cyan),
+                        ),
+                        style: TextStyle(
+                            color:
+                                phase.type == 'hot' ? Colors.red : Colors.cyan),
+                        onChanged: (value) {
+                          ref
+                              .read(phasesProvider.notifier)
+                              .updatePhaseDurationSeconds(index, value);
+                        },
+                      ),
+                    ),
+                  ],
                 );
               },
             ),
@@ -63,7 +103,8 @@ class PreferencesScreen extends ConsumerWidget {
               onPressed: () {
                 List<Phase> phases = ref.read(phasesProvider);
 
-                if (phases.any((phase) => phase.duration == 0)) {
+                if (phases
+                    .any((phase) => phase.minutes == 0 && phase.seconds == 0)) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text(
@@ -76,11 +117,11 @@ class PreferencesScreen extends ConsumerWidget {
 
                 List<int> hotPhaseDurations = phases
                     .where((phase) => phase.type == 'hot')
-                    .map((phase) => phase.duration)
+                    .map((phase) => phase.minutes * 60 + phase.seconds)
                     .toList();
                 List<int> coldPhaseDurations = phases
                     .where((phase) => phase.type == 'cold')
-                    .map((phase) => phase.duration)
+                    .map((phase) => phase.minutes * 60 + phase.seconds)
                     .toList();
 
                 int totalDuration =

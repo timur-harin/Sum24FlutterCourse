@@ -46,7 +46,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
       vsync: this,
     )..repeat(reverse: true);
 
-    _duration = Duration(minutes: widget.hotPhaseDurations[_hotPhaseIndex]);
+    _duration = Duration(minutes: widget.hotPhaseDurations[_hotPhaseIndex] ~/ 60, seconds: widget.hotPhaseDurations[_hotPhaseIndex] % 60);
     startTimer();
   }
 
@@ -61,7 +61,8 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
                 timer.cancel();
               });
               _duration = Duration(
-                minutes: widget.coldPhaseDurations[_coldPhaseIndex++],
+                minutes: widget.coldPhaseDurations[_coldPhaseIndex++] ~/ 60,
+                seconds: widget.coldPhaseDurations[_coldPhaseIndex++] % 60,
               );
               startTimer();
             } else {
@@ -74,7 +75,8 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
                 timer.cancel();
               });
               _duration = Duration(
-                minutes: widget.hotPhaseDurations[_hotPhaseIndex++],
+                minutes: widget.hotPhaseDurations[_hotPhaseIndex++] ~/ 60,
+                seconds: widget.hotPhaseDurations[_hotPhaseIndex++] % 60,
               );
               startTimer();
             } else {
@@ -89,9 +91,6 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
         } else {
           _duration = _duration - const Duration(seconds: 1);
           _timeSpent++;
-          print("Is hot? $_isHotPhase, hot index: $_hotPhaseIndex, cold index: $_coldPhaseIndex");
-          print("Hot durations: ${widget.hotPhaseDurations}");
-          print("Cold durations: ${widget.coldPhaseDurations}");
         }
       });
     });
