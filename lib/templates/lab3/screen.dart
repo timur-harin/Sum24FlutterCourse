@@ -12,11 +12,11 @@ class HydrationScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Hydration Tracker'),
+        title: const Text('Hydration Tracker'),
         backgroundColor: Colors.purple,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
             onPressed: () => ref.read(waterIntakeProvider.notifier).reset(),
           ),
         ],
@@ -43,7 +43,7 @@ class HydrationScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => ref.read(waterIntakeProvider.notifier).increment(0.5),
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

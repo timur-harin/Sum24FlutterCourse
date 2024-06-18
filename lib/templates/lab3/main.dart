@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
   runApp(
-    ProviderScope(
+    const ProviderScope(
       child: WaterBalanceApp(),
     ),
   );
@@ -20,7 +20,7 @@ class WaterBalanceApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HydrationScreen(),
+      home: const HydrationScreen(),
     );
   }
 }
