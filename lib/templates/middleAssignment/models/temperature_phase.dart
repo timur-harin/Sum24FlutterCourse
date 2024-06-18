@@ -1,0 +1,1 @@
+enum TemperaturePhase { hot, cold }
