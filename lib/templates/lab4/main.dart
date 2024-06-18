@@ -39,24 +39,19 @@ class MyHomePage extends StatelessWidget {
               child: Text('Async/Await Task'),
             ),
             ElevatedButton(
-              onPressed: () {
-                // Exercise 2 - Use Provider for state management
-                // Increment the counter
-              },
+              onPressed: () => {},
               child: Text('Provider Task'),
             ),
-            ElevatedButton(
-              onPressed: () {
-                // TODO
-                // Exercise 3 - Use Riverpod for state management
-                // Increment the counter
-              },
-              child: Text('Riverpod Task'),
-            ),
+            CounterDisplay(),
             ElevatedButton(
               onPressed: () async {
-                // TODO 
-                // Exercise 4 - Make an HTTP request using the HTTP package
+                var url = Uri.parse('https://jsonplaceholder.typicode.com/posts/1');
+                var response = await http.get(url);
+                if (response.statusCode == 200) {
+                  print(response.body);
+                } else {
+                  print("Failed: ${response.statusCode}");
+                }
               },
               child: Text('HTTP Task'),
             ),
@@ -77,13 +72,32 @@ class MyHomePage extends StatelessWidget {
 Future<String> fetchData() async {
   // TODO get json from url and show as text
   // 'https://jsonplaceholder.typicode.com/posts/1'
-
+  Dio dio = Dio();
+  var url = Uri.parse('https://jsonplaceholder.typicode.com/posts/1');
+  var response = await dio.get(url.toString());
+  if (response.statusCode == 200) {
+    return response.data;
+  } else {
+    print("Request failed (code ${response.statusCode})");
+  }
   return 'data';
 }
 
 final counterProvider = StateProvider<int>((ref) => 0);
 
-// TODO create a state notifier
-// final 
-
-// TODO create class for state notifier
+// Task 3
+class CounterDisplay extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    var counterValue = ref.watch(counterProvider);
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () => ref.read(counterProvider.notifier).state++,
+          child: Text('Riverpod Task'),
+        ),
+        Text("$counterValue")
+      ],
+    );
+  }
+}
