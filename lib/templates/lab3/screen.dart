@@ -41,7 +41,7 @@ class HydrationScreen extends ConsumerWidget {
         icon: const Icon(Icons.add),
         onPressed: () {
           // TODO - Add ref.read(waterIntakeProvider.notifier).increment(x)
-          ref.read(waterIntakeProvider.notifier).increment(1);
+          ref.read(waterIntakeProvider.notifier).increment(10);
         },
       ),
     );

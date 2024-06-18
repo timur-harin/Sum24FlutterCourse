@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:education/templates/middleAssignment/HomePage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const MiddleAssigmentApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    const ProviderScope(
+      child: MiddleAssigmentApp()
+      ),
+  );
 }
 
 class MiddleAssigmentApp extends StatelessWidget {
@@ -14,8 +21,7 @@ class MiddleAssigmentApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // TODO - complete assignment
-      home: null,
+      home: HomePage(),
     );
   }
 }
