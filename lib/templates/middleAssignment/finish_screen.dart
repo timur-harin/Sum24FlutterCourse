@@ -110,10 +110,6 @@ class _FinishScreenState extends State<FinishScreen> {
             setState(() {
               _endSession();
             });
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const HomeScreen()),
-            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF24305E),

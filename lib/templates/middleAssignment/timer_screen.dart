@@ -205,14 +205,12 @@ class _TimerScreenState extends State<TimerScreen> {
                             "Session Complete",
                              style: TextStyle(
                                   color: Color(0xFF24305E),
-                                  backgroundColor: Colors.white,
                                 ),
                             ),
                           content: const Text(
                             "The session has ended.",
                              style: TextStyle(
                                   color: Color(0xFF24305E),
-                                  backgroundColor: Colors.white,
                                 ),
                             ),
                           actions: <Widget>[
