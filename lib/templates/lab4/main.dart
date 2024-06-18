@@ -18,72 +18,104 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter Tasks'),
+        title: const Text('Flutter Tasks'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text(
+              'Counter with Provider ${ref.watch(counterProvider)}',
+            ),
+            Text(
+              'Counter with Riverpod ${ref.watch(counterRiverpodProvider)}',
+            ),
             ElevatedButton(
               onPressed: () async {
-                // TODO
-                // Exercise 1 - Perform an async operation using async/await
                 String result = await fetchData();
-                print(result);
+                _dialogBuilder(context, result);
+                //print(result);
               },
-              child: Text('Async/Await Task'),
+              child: const Text('Async/Await Task'),
             ),
             ElevatedButton(
               onPressed: () {
-                // Exercise 2 - Use Provider for state management
-                // Increment the counter
+                ref.read(counterProvider.notifier).state++;
               },
-              child: Text('Provider Task'),
+              child: const Text('Provider Task'),
             ),
             ElevatedButton(
               onPressed: () {
-                // TODO
-                // Exercise 3 - Use Riverpod for state management
-                // Increment the counter
+                ref.read(counterRiverpodProvider.notifier).increment();
               },
-              child: Text('Riverpod Task'),
+              child: const Text('Riverpod Task'),
             ),
             ElevatedButton(
               onPressed: () async {
-                // TODO 
-                // Exercise 4 - Make an HTTP request using the HTTP package
+                String result = await fetchData();
+                _dialogBuilder(context, result);
               },
-              child: Text('HTTP Task'),
+              child: const Text('HTTP Task'),
             ),
             ElevatedButton(
               onPressed: () async {
-                // TODO
-                // Exercise 5 - Make an HTTP request using Dio and show it in App Screen
+                Response response = await Dio().get('https://jsonplaceholder.typicode.com/posts/1');
+                _dialogBuilder(context, response.data.toString());
               },
-              child: Text('Dio Task'),
+              child: const Text('Dio Task'),
             ),
           ],
         ),
       ),
     );
   }
+
+  Future<void> _dialogBuilder(BuildContext context, String result) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Task Complete'),
+          content: Text(result),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 Future<String> fetchData() async {
-  // TODO get json from url and show as text
-  // 'https://jsonplaceholder.typicode.com/posts/1'
-
-  return 'data';
+  final url = Uri.parse('https://jsonplaceholder.typicode.com/posts/1');
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    return response.body;
+  } else {
+    return 'Error: ${response.statusCode}';
+  }
 }
 
 final counterProvider = StateProvider<int>((ref) => 0);
 
-// TODO create a state notifier
-// final 
+class CounterState extends StateNotifier<int> {
+  CounterState() : super(0);
+  void increment() => state++;
+}
 
-// TODO create class for state notifier
+final counterRiverpodProvider = StateNotifierProvider<CounterState, int>(
+  (ref) => CounterState(),
+);
