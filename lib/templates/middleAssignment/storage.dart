@@ -69,4 +69,52 @@ class LocalStorageService {
       return [];
     }
   }
+
+  Future<void> deleteSession(DateTime sessionDate) async {
+    try {
+      final sessions = await getSessions();
+      sessions.removeWhere((session) => session.date == sessionDate);
+      await saveSessions(sessions);
+    } catch (e) {
+      print('Error deleting session: $e');
+    }
+  }
+
+  Future<void> updateSession(ShowerSession updatedSession) async {
+    try {
+      final sessions = await getSessions();
+      final index = sessions.indexWhere((session) => session.date == updatedSession.date);
+      if (index != -1) {
+        sessions[index] = updatedSession;
+        await saveSessions(sessions);
+      }
+    } catch (e) {
+      print('Error updating session: $e');
+    }
+  }
+
+  Future<ShowerSession?> getLastSession() async {
+    try {
+      final sessions = await getSessions();
+      if (sessions.isNotEmpty) {
+        return sessions.last;
+      }
+    } catch (e) {
+      print('Error getting last session: $e');
+    }
+    return null;
+  }
+
+  Future<void> updateLastSession(ShowerSession updatedSession) async {
+    try {
+      final sessions = await getSessions();
+      if (sessions.isNotEmpty) {
+        sessions[sessions.length - 1] = updatedSession;
+        await saveSessions(sessions);
+      }
+    } catch (e) {
+      print('Error updating last session: $e');
+    }
+  }
+
 }

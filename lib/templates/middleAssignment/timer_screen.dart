@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:education/templates/middleAssignment/finish_screen.dart';
-import 'package:education/templates/middleAssignment/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:education/templates/middleAssignment/storage.dart';
 import 'dart:math';
@@ -222,14 +221,13 @@ class _TimerScreenState extends State<TimerScreen> {
                                 "OK",
                                 style: TextStyle(
                                   color: Color(0xFF24305E),
-                                  backgroundColor: Colors.white,
                                 ),
                               ),
                               onPressed: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const HomeScreen(),
+                                    builder: (context) => FinishScreen(currentSession: ShowerSession(date: widget.sessionDate, phases: widget.phases)),
                                   ),
                                 );
                               },

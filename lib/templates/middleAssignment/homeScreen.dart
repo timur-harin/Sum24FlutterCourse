@@ -73,26 +73,42 @@ class HomeScreen extends ConsumerWidget {
                           final sessionIndex = sessionEntry.key + 1;
                           final session = sessionEntry.value;
 
-                          return CustomExpansionTile(
-                            title: 'Session $sessionIndex',
-                            children: session.phases.map((phase) {
-                              return ListTile(
+                          List<Widget> sessionChildren = session.phases.map((phase) {
+                            return ListTile(
+                              title: Text(
+                                phase.name,
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                      color: phase.name == 'hot' 
+                                      ? const Color.fromARGB(255, 155, 36, 36) 
+                                      : const Color(0xFF374785),
+                                ),
+                              ),
+                              subtitle: Text(
+                                '${phase.duration.inMinutes} minutes',
+                                textAlign: TextAlign.left,
+                                style: const TextStyle(color: const Color(0xFF24305E)),
+                              ),
+                            );
+                          }).toList();
+
+                          if (session.feedback != null && session.feedback!.isNotEmpty) {
+                            sessionChildren.add(
+                              ListTile(
                                 title: Text(
-                                  phase.name,
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                        color: phase.name == 'hot' 
-                                        ? const Color.fromARGB(255, 155, 36, 36) 
-                                        : const Color(0xFF374785),
-                                  ),
+                                  "Feedback",
+                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(color: const Color(0xFF24305E)),
                                 ),
                                 subtitle: Text(
-                                  '${phase.duration.inMinutes} minutes',
-                                  textAlign: TextAlign.left,
+                                  session.feedback!,
                                   style: const TextStyle(color: const Color(0xFF24305E)),
                                 ),
-                              );
-                            }).toList(),
+                              ),
+                            );
+                          }
+                          return CustomExpansionTile(
+                            title: 'Session $sessionIndex',
+                            children: sessionChildren,
                           );
                         }).toList(),
                       ),

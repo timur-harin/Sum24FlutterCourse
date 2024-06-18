@@ -33,13 +33,18 @@ class _FinishScreenState extends State<FinishScreen> {
   }
 
   void _endSession() {
+    setState(() {
+      widget.currentSession.feedback = _feedbackController.text;
+      LocalStorageService().updateLastSession(widget.currentSession);
+    });
+
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const HomeScreen()),
       (Route<dynamic> route) => false,
     );
   }
-
+    
   @override
   Widget build(BuildContext context) { 
     return Scaffold(
@@ -62,16 +67,27 @@ class _FinishScreenState extends State<FinishScreen> {
               ),
               maxLines: null,
             ),
-            const SizedBox(height: 20),
-            Center(
-              child: ElevatedButton(
-                onPressed: _endSession,
-                child: const Text('End Session'),
-              ),
-            ),  
+            const SizedBox(height: 20), 
           ],
         ),
       ),
+      floatingActionButton: ElevatedButton(
+          onPressed: () {
+            setState(() {
+              _endSession();
+            });
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF24305E),
+            foregroundColor: Colors.white,
+          ),
+          child: const Text('End Session'),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
