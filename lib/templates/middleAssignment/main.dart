@@ -93,6 +93,14 @@ class _HomePageState extends State<HomePage> {
     await _resetSession();
   }
 
+  void _pauseTimer() {
+    timer?.cancel();
+  }
+
+  void _resumeTimer() {
+    _startTimer();
+  }
+
   Future<void> _resetSession() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('isHotWater');
@@ -172,6 +180,17 @@ class _HomePageState extends State<HomePage> {
                     textStyle: const TextStyle(fontSize: 18),
                   ),
                   child: const Text('Остановить'),
+                ),
+                
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: _resumeTimer,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(fontSize: 18),
+                  ),
+                  child: const Text('Продолжить'),
                 ),
                 const SizedBox(height: 20),
                 Center(
