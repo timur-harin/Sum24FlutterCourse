@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:education/templates/middleAssignment/mainScreen.dart';
 
 void main() {
   runApp(const MiddleAssigmentApp());
@@ -15,7 +16,7 @@ class MiddleAssigmentApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // TODO - complete assignment
-      home: null,
+      home: MainScreen(),
     );
   }
 }
