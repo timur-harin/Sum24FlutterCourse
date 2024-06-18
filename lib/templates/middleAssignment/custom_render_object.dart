@@ -35,16 +35,16 @@ class _TemperaturePhaseIndicatorState extends State<TemperaturePhaseIndicator> w
       animation: _animation,
       builder: (context, child) {
         return Container(
-          width: 50,
-          height: 50,
+          width: 200,
+          height: 200,
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
+            shape: BoxShape.rectangle,
             color: widget.temperature > 30? Colors.red : Colors.blue,
           ),
           child: Center(
             child: Text(
               '${widget.temperature}°C',
-              style: TextStyle(fontSize: 15),
+              style: TextStyle(fontSize: 50),
             ),
           ),
         );

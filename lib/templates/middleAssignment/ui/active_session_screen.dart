@@ -18,13 +18,20 @@ class ActiveSessionScreen extends StatefulWidget {
 class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
   Timer? _timer;
   int _sessionPhase = 0;
+  bool _isPaused = false;
 
   @override
   void initState() {
     super.initState();
     _timer = Timer.periodic(Duration(minutes: 1), (timer) {
-      context.read<SessionProvider>().updateRemainingTime();
-      if (_sessionPhase == 0) { _sessionPhase = 1;} else {_sessionPhase = 0;}
+      if (!_isPaused) {
+        context.read<SessionProvider>().updateRemainingTime();
+        if (_sessionPhase == 0) {
+          _sessionPhase = 1;
+        } else {
+          _sessionPhase = 0;
+        }
+      }
     });
   }
 
@@ -62,31 +69,61 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
           children: <Widget>[
             TemperaturePhaseIndicator(temperature: session.phases[_sessionPhase].temperature),
             SizedBox(height: 20),
-            Text('Remaining Time: ${session.remainingTime} minutes'),
-            LinearTimer(
-              duration: Duration(minutes: session.duration),
-              forward: true,
-              minHeight: 4,
-              color: Colors.red,
-              onTimerEnd: () {
-                context.read<SessionProvider>().endSession();
-                // Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SummaryScreen(
-                  time: session.duration - session.remainingTime!,
+          
+            Stack(
+              alignment: Alignment.center,
+              children: [
 
-                )));
-              },
+                Container(
+                  width: 120, // adjust the size as needed
+                  height: 120, // adjust the size as needed
+                  child: CircularProgressIndicator(
+                    value: (session.duration - session.remainingTime!) / session.duration,
+                    strokeWidth: 10,
+                    backgroundColor: Colors.grey,
+                    valueColor: AlwaysStoppedAnimation(Colors.red),
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    '${session.remainingTime} min',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                ),
+              ],
             ),
-
-
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _isPaused =!_isPaused;
+                });
+                if (_isPaused) {
+                  _timer?.cancel();
+                } else {
+                  _timer = Timer.periodic(Duration(minutes: 1), (timer) {
+                    context.read<SessionProvider>().updateRemainingTime();
+                    if (_sessionPhase == 0) {
+                      _sessionPhase = 1;
+                    } else {
+                      _sessionPhase = 0;
+                    }
+                  });
+                }
+              },
+              child: _isPaused? Text('Resume') : Text('Pause'),
+            ),
             ElevatedButton(
               onPressed: () {
                 context.read<SessionProvider>().endSession();
-                // Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SummaryScreen(
-                  time: session.duration - session.remainingTime!,
-
-                )));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SummaryScreen(
+                      time: session.duration - session.remainingTime!,
+                    ),
+                  ),
+                );
               },
               child: Text('End Session'),
             ),
@@ -95,8 +132,6 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
       ),
     );
   }
-
-
 }
 
 
