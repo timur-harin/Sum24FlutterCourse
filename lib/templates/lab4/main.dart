@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:education/templates/lab4/task_1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -18,9 +21,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final counter = ref.watch(counterProvider);
+    final notifier = ref.watch(stateNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter Tasks'),
@@ -31,39 +37,43 @@ class MyHomePage extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               onPressed: () async {
-                // TODO
-                // Exercise 1 - Perform an async operation using async/await
                 String result = await fetchData();
-                print(result);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Task1(text: result)));
               },
               child: Text('Async/Await Task'),
             ),
             ElevatedButton(
               onPressed: () {
-                // Exercise 2 - Use Provider for state management
-                // Increment the counter
+                ref.read(counterProvider.notifier).state++;
               },
-              child: Text('Provider Task'),
+              child: Text('Provider Task: $counter'),
             ),
             ElevatedButton(
               onPressed: () {
-                // TODO
-                // Exercise 3 - Use Riverpod for state management
-                // Increment the counter
+                notifier.increment();
               },
-              child: Text('Riverpod Task'),
+              child: Text('Riverpod Task: ${notifier.counter}'),
             ),
             ElevatedButton(
               onPressed: () async {
-                // TODO 
-                // Exercise 4 - Make an HTTP request using the HTTP package
+                final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
+                if (response.statusCode == 200) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Task1(text: response.body)));
+                } else {
+                  print('Failed to load Data');
+                }
               },
               child: Text('HTTP Task'),
             ),
             ElevatedButton(
               onPressed: () async {
-                // TODO
-                // Exercise 5 - Make an HTTP request using Dio and show it in App Screen
+                final dio = Dio();
+                final response = await dio.get('https://jsonplaceholder.typicode.com/posts/1');
+                if (response.statusCode == 200) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Task1(text: response.data.toString())));
+                } else {
+                  print('Failed to load Data');
+                }
               },
               child: Text('Dio Task'),
             ),
@@ -75,15 +85,27 @@ class MyHomePage extends StatelessWidget {
 }
 
 Future<String> fetchData() async {
-  // TODO get json from url and show as text
-  // 'https://jsonplaceholder.typicode.com/posts/1'
+  final link = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
 
-  return 'data';
+  if (link.statusCode == 200) {
+    return utf8.decode(link.bodyBytes); // Преобразование Uint8List в строку
+  } else {
+    throw Exception('Failed to load Data');
+  }
 }
 
 final counterProvider = StateProvider<int>((ref) => 0);
 
-// TODO create a state notifier
-// final 
+// Исправленный StateNotifier
+class CounterNotifier extends ChangeNotifier {
+  int _counter = 0;
 
-// TODO create class for state notifier
+  int get counter => _counter;
+
+  void increment() {
+    _counter++;
+    notifyListeners();
+  }
+}
+
+final stateNotifierProvider = ChangeNotifierProvider((ref) => CounterNotifier());
