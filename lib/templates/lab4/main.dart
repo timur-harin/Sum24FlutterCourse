@@ -4,70 +4,113 @@ import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
+final riverpodCounterProvider =
+    StateNotifierProvider<RiverpodCounterNotifier, int>(
+        (ref) => RiverpodCounterNotifier());
+
+class RiverpodCounterNotifier extends StateNotifier<int> {
+  RiverpodCounterNotifier() : super(0);
+
+  void increment() {
+    state++;
+  }
+}
+
+final counterProvider = StateProvider<int>((ref) => 0);
+final httpDataProvider = StateProvider<String?>((ref) => null);
+final dioDataProvider = StateProvider<String?>((ref) => null);
+
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
-      child: MaterialApp(
-        home: MyHomePage(),
+    return MaterialApp(
+      title: 'Flutter Demo cool app',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
+      home: MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    int counter = ref.watch(counterProvider);
+    int riverpodCounter = ref.watch(riverpodCounterProvider);
+    String? httpData = ref.watch(httpDataProvider);
+    String? dioData = ref.watch(dioDataProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter Tasks'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () async {
-                // TODO
-                // Exercise 1 - Perform an async operation using async/await
-                String result = await fetchData();
-                print(result);
-              },
-              child: Text('Async/Await Task'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Exercise 2 - Use Provider for state management
-                // Increment the counter
-              },
-              child: Text('Provider Task'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // TODO
-                // Exercise 3 - Use Riverpod for state management
-                // Increment the counter
-              },
-              child: Text('Riverpod Task'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                // TODO 
-                // Exercise 4 - Make an HTTP request using the HTTP package
-              },
-              child: Text('HTTP Task'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                // TODO
-                // Exercise 5 - Make an HTTP request using Dio and show it in App Screen
-              },
-              child: Text('Dio Task'),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    String result = await fetchData();
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(result)));
+                  } catch (e) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text('Error: $e')));
+                  }
+                },
+                child: Text('Async/Await Task'),
+              ),
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  ref.read(counterProvider.notifier).state++;
+                },
+                child: Text('Provider Task'),
+              ),
+              Text('Provider Counter Value: $counter'),
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  ref.read(riverpodCounterProvider.notifier).increment();
+                },
+                child: Text('Riverpod Task'),
+              ),
+              Text('Riverpod Counter Value: $riverpodCounter'),
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () async {
+                  await fetchHttpData(ref);
+                },
+                child: Text('HTTP Task'),
+              ),
+              if (httpData != null)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(httpData, textAlign: TextAlign.center),
+                ),
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () async {
+                  await fetchDioData(ref);
+                },
+                child: Text('Dio Task'),
+              ),
+              if (dioData != null)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(dioData, textAlign: TextAlign.center),
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -75,15 +118,35 @@ class MyHomePage extends StatelessWidget {
 }
 
 Future<String> fetchData() async {
-  // TODO get json from url and show as text
-  // 'https://jsonplaceholder.typicode.com/posts/1'
-
-  return 'data';
+  try {
+    final response =
+        await Dio().get('https://jsonplaceholder.typicode.com/posts/1');
+    return response.data.toString();
+  } catch (e) {
+    throw Exception('Failed to load data: $e');
+  }
 }
 
-final counterProvider = StateProvider<int>((ref) => 0);
+Future<void> fetchHttpData(WidgetRef ref) async {
+  try {
+    final response = await http
+        .get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
+    if (response.statusCode == 200) {
+      ref.read(httpDataProvider.notifier).state = response.body;
+    } else {
+      ref.read(httpDataProvider.notifier).state = 'Failed to load data';
+    }
+  } catch (e) {
+    ref.read(httpDataProvider.notifier).state = 'Error: $e';
+  }
+}
 
-// TODO create a state notifier
-// final 
-
-// TODO create class for state notifier
+Future<void> fetchDioData(WidgetRef ref) async {
+  try {
+    final response =
+        await Dio().get('https://jsonplaceholder.typicode.com/posts/1');
+    ref.read(dioDataProvider.notifier).state = response.data.toString();
+  } catch (e) {
+    ref.read(dioDataProvider.notifier).state = 'Error: $e';
+  }
+}

@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:networking/providers/provider.dart';
-import 'package:networking/ui/pages/finish_page.dart';
-import 'package:networking/ui/pages/main_page.dart';
-import 'package:networking/ui/pages/workout_page.dart';
-import 'package:provider/provider.dart';
 
 void main() {
   runApp(
