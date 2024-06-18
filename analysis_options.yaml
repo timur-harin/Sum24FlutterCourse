@@ -1,1 +1,4 @@
+analyzer:
+  errors:
+    use_function_type_syntax_for_parameters: ignore
 include: package:flutter_lints/flutter.yaml
