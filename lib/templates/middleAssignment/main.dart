@@ -1,7 +1,9 @@
+import 'package:education/templates/middleAssignment/homePage.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MiddleAssigmentApp());
+
 }
 
 class MiddleAssigmentApp extends StatelessWidget {
@@ -12,10 +14,12 @@ class MiddleAssigmentApp extends StatelessWidget {
     return MaterialApp(
       title: 'Middle Assigment',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
       ),
       // TODO - complete assignment
-      home: null,
+      home: const HomePage(),
+
     );
   }
+  
 }
