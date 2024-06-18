@@ -19,17 +19,20 @@ class sessionBathAdapter extends TypeAdapter<sessionBath> {
     return sessionBath(
       duration: (fields[0] as List).cast<String>(),
       timeStart: (fields[1] as List).cast<DateTime>(),
+      phase_duration: (fields[2] as List).cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, sessionBath obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.duration)
       ..writeByte(1)
-      ..write(obj.timeStart);
+      ..write(obj.timeStart)
+      ..writeByte(2)
+      ..write(obj.phase_duration);
   }
 
   @override

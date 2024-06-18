@@ -9,10 +9,14 @@ class SessionCreation extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sessions = ref.watch(SessionProvider);
-
     return Clocks(
-      time: sessions.duration.last,
-      onIncrement: ref.read(SessionProvider.notifier).increment,
-    );
+        time: sessions.duration.last,
+        phase: sessions.phase_duration.last,
+        onIncrement: ref.read(SessionProvider.notifier).increment,
+        prevent: () {
+          sessions.duration.removeLast();
+          sessions.phase_duration.removeLast();
+          sessions.timeStart.removeLast();
+        });
   }
 }
