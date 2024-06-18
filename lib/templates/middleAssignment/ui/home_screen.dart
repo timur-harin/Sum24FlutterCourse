@@ -5,7 +5,6 @@ import 'package:education/templates/middleAssignment/ui/session_preferences_scre
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -25,7 +24,6 @@ class _HomeScreen extends State<HomeScreen> {
   Future<List<SessionHistory>> getSessionHistoryData() async {
     var prefs = await SharedPreferences.getInstance();
     final encodedHistoryList = prefs.getStringList('sessionHistoryData');
-
 
     if (encodedHistoryList == null) return [];
 
@@ -51,7 +49,8 @@ class _HomeScreen extends State<HomeScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SessionPreferencesScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => SessionPreferencesScreen()),
                 );
               },
               child: Text('Start New Session'),
@@ -70,33 +69,46 @@ class _HomeScreen extends State<HomeScreen> {
                   } else {
                     final sessionHistoryList = snapshot.data!.reversed.toList();
 
-
                     return ListView.builder(
                       itemCount: sessionHistoryList.length,
                       itemBuilder: (context, index) {
                         final sessionHistory = sessionHistoryList[index];
                         return GestureDetector(
                           child: Container(
-                            margin: const EdgeInsets.all(20),
-                            padding: const EdgeInsets.all(20),
-                            height: 80,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color.fromARGB(255, 118, 255, 123),
-                            ),
-                            child: Column(
-                              children:[ Row(
-                              children: [
-                                Text('Total time: ${sessionHistory.time} min'),
-                                const SizedBox(width: 10,),
-                                Text('Count of phases: ${sessionHistory.countOfPhases}'),
-                                const SizedBox(width: 10,),
-                              ],
+                              margin: const EdgeInsets.all(20),
+                              padding: const EdgeInsets.all(20),
+                              height: 85,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: const Color.fromARGB(255, 118, 255, 123),
                               ),
-                                Text('Rating: ${sessionHistory.rating}')
-                            ],
-                            )
-                          ),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                          'Total time: ${sessionHistory.time} min'),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                          'Count of phases: ${sessionHistory.countOfPhases}'),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text('Rating: ${sessionHistory.rating}'),
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.yellow,
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              )),
                         );
                       },
                     );
