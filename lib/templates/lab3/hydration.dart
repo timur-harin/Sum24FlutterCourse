@@ -7,7 +7,7 @@ class HydrationWidget extends StatefulWidget {
   const HydrationWidget({super.key, required this.waterIntakeLevel});
 
   @override
-  HydrationWidgetState createState() => HydrationWidgetState();
+  HydrationWidgetState homePageState() => HydrationWidgetState();
 }
 
 class HydrationWidgetState extends State<HydrationWidget> {

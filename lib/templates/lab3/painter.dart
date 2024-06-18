@@ -34,7 +34,7 @@ class WaterPainterWidget extends StatefulWidget {
   const WaterPainterWidget({super.key, required this.waterIntakeLevel});
 
   @override
-  WaterPainterState createState() => WaterPainterState();
+  WaterPainterState homePageState() => WaterPainterState();
 }
 
 class WaterPainterState extends State<WaterPainterWidget> {
