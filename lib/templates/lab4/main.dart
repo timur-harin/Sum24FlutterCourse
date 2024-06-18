@@ -18,9 +18,19 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends ConsumerStatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends ConsumerState<MyHomePage> {
+  var data;
+
   @override
   Widget build(BuildContext context) {
+    final providerCounter = ref.watch(counterProvider);
+    final riverpodCounter = ref.watch(riverpodCounterProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter Tasks'),
@@ -33,8 +43,11 @@ class MyHomePage extends StatelessWidget {
               onPressed: () async {
                 // TODO
                 // Exercise 1 - Perform an async operation using async/await
+                data = await Future.delayed(Duration(seconds: 1));
                 String result = await fetchData();
-                print(result);
+                setState(() {
+                  data = result;
+                });
               },
               child: Text('Async/Await Task'),
             ),
@@ -42,21 +55,31 @@ class MyHomePage extends StatelessWidget {
               onPressed: () {
                 // Exercise 2 - Use Provider for state management
                 // Increment the counter
+                ref.read(counterProvider.notifier).increment();
               },
-              child: Text('Provider Task'),
+              child: Text('Provider Task: ${providerCounter.counter}'),
             ),
             ElevatedButton(
               onPressed: () {
                 // TODO
                 // Exercise 3 - Use Riverpod for state management
                 // Increment the counter
+                ref.read(riverpodCounterProvider.notifier).increment();
               },
-              child: Text('Riverpod Task'),
+              child: Text('Riverpod Task: $riverpodCounter'),
             ),
             ElevatedButton(
               onPressed: () async {
-                // TODO 
+                // TODO
                 // Exercise 4 - Make an HTTP request using the HTTP package
+                final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
+                if (response.statusCode == 200) {
+                  setState(() {
+                    data = response.body;
+                  });
+                } else {
+                  throw Exception('Failed to load data');
+                }
               },
               child: Text('HTTP Task'),
             ),
@@ -64,9 +87,18 @@ class MyHomePage extends StatelessWidget {
               onPressed: () async {
                 // TODO
                 // Exercise 5 - Make an HTTP request using Dio and show it in App Screen
+                final response = await Dio().get('https://jsonplaceholder.typicode.com/posts/1');
+                if (response.statusCode == 200) {
+                  setState(() {
+                    data = response.data.toString();
+                  });
+                } else {
+                  throw Exception('Failed to load data');
+                }
               },
               child: Text('Dio Task'),
             ),
+            Text(data ?? ''),
           ],
         ),
       ),
@@ -77,13 +109,33 @@ class MyHomePage extends StatelessWidget {
 Future<String> fetchData() async {
   // TODO get json from url and show as text
   // 'https://jsonplaceholder.typicode.com/posts/1'
-
-  return 'data';
+  final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
+  if (response.statusCode == 200) {
+    return response.body;
+  } else {
+    throw Exception('Failed to load data');
+  }
 }
 
-final counterProvider = StateProvider<int>((ref) => 0);
+final counterProvider = ChangeNotifierProvider<Counter>((ref) => Counter());
 
-// TODO create a state notifier
-// final 
+class Counter extends ChangeNotifier {
+  int _counter = 0;
 
-// TODO create class for state notifier
+  int get counter => _counter;
+
+  void increment() {
+    _counter++;
+    notifyListeners();
+  }
+}
+
+final riverpodCounterProvider = StateNotifierProvider<CounterNotifier, int>((ref) => CounterNotifier());
+
+class CounterNotifier extends StateNotifier<int> {
+  CounterNotifier() : super(0);
+
+  void increment() {
+    state++;
+  }
+}
