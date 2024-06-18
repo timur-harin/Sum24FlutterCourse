@@ -123,13 +123,10 @@ Future<String> fetchHttpData() async {
 }
 
 Future<String> fetchDioData() async {
-  try {
-    var response =
-        await Dio().get('https://jsonplaceholder.typicode.com/posts/1');
-    return response.data.toString();
-  } catch (e) {
-    throw Exception('Failed to load data');
-  }
+ 
+    var response =await Dio().get('https://jsonplaceholder.typicode.com/posts/1');
+        return response.data.toString();
+  
 }
 
 final counterProvider = StateProvider<int>((ref) => 0);
