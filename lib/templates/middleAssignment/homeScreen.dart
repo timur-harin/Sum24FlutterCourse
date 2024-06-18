@@ -75,7 +75,7 @@ class HomeScreen extends ConsumerWidget {
 
                           return CustomExpansionTile(
                             title: 'Session $sessionIndex',
-                            children: session.phases.reversed.map((phase) {
+                            children: session.phases.map((phase) {
                               return ListTile(
                                 title: Text(
                                   phase.name,

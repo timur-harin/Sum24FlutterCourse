@@ -27,23 +27,22 @@ class _TimerScreenState extends State<TimerScreen> {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   Future<void> playSound() async {
-  if (_currentPhaseIndex < widget.phases.length) {
-    String soundPath;
-    String phaseName = widget.phases[_currentPhaseIndex].name;
+    if (_currentPhaseIndex < widget.phases.length) {
+      String soundPath;
+      String phaseName = widget.phases[_currentPhaseIndex].name;
 
-    if (phaseName == "hot") {
-      soundPath = 'sounds/hot_shower.mp3';
-    } else {
-      soundPath = 'sounds/cold_shower.mp3';
-    }
-    await _audioPlayer.play(AssetSource(soundPath));
+      if (phaseName == "hot") {
+        soundPath = 'sounds/hot_shower.mp3';
+      } else {
+        soundPath = 'sounds/cold_shower.mp3';
+      }
+      await _audioPlayer.play(AssetSource(soundPath));
 
-    if (_currentPhaseIndex == widget.phases.length - 1) {
-      await _audioPlayer.play(AssetSource('sounds/timer.mp3'));
+      if (_currentPhaseIndex == widget.phases.length - 1) {
+        await _audioPlayer.play(AssetSource('sounds/timer.mp3'));
+      }
     }
   }
-}
-
 
 
   void pauseTimer() {
@@ -76,7 +75,7 @@ class _TimerScreenState extends State<TimerScreen> {
 
   void startTimer() {
   _currentTime = 0;
-  _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+  _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
     setState(() {
       if (_currentTime < _totalTime) {
         _currentTime++;
@@ -94,11 +93,26 @@ class _TimerScreenState extends State<TimerScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text("Session Complete"),
-              content: const Text("The session has ended."),
+              title: const Text(
+                "Session Complete",
+                style: TextStyle(
+                  color: Color(0xFF24305E),
+                ),  
+              ),
+              content: const Text(
+                "The session has ended.",
+                style: TextStyle(
+                  color: Color(0xFF24305E),
+                ),
+              ),
               actions: <Widget>[
                 TextButton(
-                  child: const Text("OK"),
+                  child: const Text(
+                    "OK",
+                    style: TextStyle(
+                      color: Color(0xFF24305E),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
