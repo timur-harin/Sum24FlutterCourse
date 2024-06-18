@@ -28,9 +28,8 @@ class MyHomePage extends ConsumerWidget {
         appBar: AppBar(
           title: const Text('Flutter Tasks'),
         ),
-        body: Column(
-          children: <Widget>[
-            Container(
+        body: SingleChildScrollView(
+          child: Container(
               alignment: Alignment.topCenter,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -67,7 +66,7 @@ class MyHomePage extends ConsumerWidget {
                         // Exercise 3 - Use Riverpod for state management
                         // Increment the counter
                         ref
-                            .watch(RiverpodStateNotifierProvider.notifier)
+                            .watch(riverpodStateNotifierProvider.notifier)
                             .increment();
                       },
                       child: const Text('Riverpod Task'),
@@ -77,8 +76,13 @@ class MyHomePage extends ConsumerWidget {
                     margin: const EdgeInsets.all(widgetMargin),
                     child: ElevatedButton(
                       onPressed: () async {
-                        // TODO
-                        // Exercise 4 - Make an HTTP request using the HTTP package
+                        // TODO Exercise 4 - Make an HTTP request using the HTTP package
+                        ref.watch(httpTaskProvider.notifier).state =
+                            "Loading...";
+                        final response = await http.get(Uri.parse(
+                            'https://jsonplaceholder.typicode.com/posts/11'));
+                        ref.watch(httpTaskProvider.notifier).state =
+                            response.body.toString();
                       },
                       child: const Text('HTTP Task'),
                     ),
@@ -87,8 +91,7 @@ class MyHomePage extends ConsumerWidget {
                     margin: const EdgeInsets.all(widgetMargin),
                     child: ElevatedButton(
                       onPressed: () async {
-                        // TODO
-                        // Exercise 5 - Make an HTTP request using Dio and show it in App Screen
+                        // TODO  Exercise 5 - Make an HTTP request using Dio and show it in App Screen
                       },
                       child: const Text('Dio Task'),
                     ),
@@ -103,15 +106,21 @@ class MyHomePage extends ConsumerWidget {
                         vertical: widgetMargin, horizontal: widgetMargin * 3),
                     child: Text("Counter value: ${ref.watch(counterProvider)}"),
                   ),
-                 Container(
+                  Container(
                     margin: const EdgeInsets.symmetric(
                         vertical: widgetMargin, horizontal: widgetMargin * 3),
-                    child: Text("Riverpod counter value: ${ref.watch(RiverpodStateNotifierProvider)}"),
+                    child: Text(
+                        "Riverpod counter value: ${ref.watch(riverpodStateNotifierProvider)}"),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                        vertical: widgetMargin, horizontal: widgetMargin * 3),
+                    child: Text(
+                        "Http task response:\n ${ref.watch(httpTaskProvider)}"),
                   ),
                 ],
               ),
             ),
-          ],
         ));
   }
 }
@@ -134,6 +143,8 @@ Future<String> fetchData() async {
 // TODO create a state notifier
 final responseProvider = StateProvider((ref) => "Nothing to show here");
 final counterProvider = StateProvider((ref) => 0);
+final httpTaskProvider =
+    StateProvider((ref) => "No https request was made, yet");
 
 // TODO create class for state notifier
 class RiverpodStateNotifier extends StateNotifier<int> {
@@ -144,5 +155,5 @@ class RiverpodStateNotifier extends StateNotifier<int> {
   }
 }
 
-final RiverpodStateNotifierProvider =
+final riverpodStateNotifierProvider =
     StateNotifierProvider((ref) => RiverpodStateNotifier(10));
