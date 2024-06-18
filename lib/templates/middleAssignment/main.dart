@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -497,7 +496,6 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
   late ValueNotifier<String> _currentPhaseNotifier;
   late Color _backgroundColor;
   late int _phaseDuration;
-  late AnimationController _animationController;
 
   double _opacity = 1.0;
 
@@ -517,13 +515,37 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
             : _phaseTimerController.currentPhase == 'Cold'
                 ? Colors.blue
                 : Colors.green);
-    _backgroundColor = _progressBarColor.value;
+    _backgroundColor = _phaseTimerController.currentPhase == 'Hot'
+        ? Colors.red.shade200
+        : _phaseTimerController.currentPhase == 'Cold'
+            ? Colors.blue.shade200
+            : Colors.green.shade200;
     _phaseDuration = _phaseTimerController.remainingTime;
-    _animationController = AnimationController(
-      duration: const Duration(seconds: 5),
-      vsync: this,
-    )..repeat();
-    // other code...
+    _phaseTimerController.addListener(() {
+      if (_currentPhaseNotifier.value == 'Hot') {
+        _progressBarColor.value = Colors.red.shade200;
+      } else if (_currentPhaseNotifier.value == 'Cold') {
+        _progressBarColor.value = Colors.blue.shade200;
+      } else {
+        _progressBarColor.value = Colors.green.shade200;
+      }
+      if (_phaseTimerController.remainingTime <= 3) {
+        setState(() {
+          _backgroundColor = Colors.white;
+        });
+      } else {
+        setState(() {
+          _backgroundColor = _progressBarColor.value;
+        });
+      }
+    });
+    Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      if (_phaseTimerController.currentPhase == 'End') {
+        setState(() {
+          _opacity = _opacity == 1.0 ? 0.0 : 1.0;
+        });
+      }
+    });
   }
 
   @override
@@ -531,26 +553,9 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
     return ValueListenableBuilder<String>(
       valueListenable: _currentPhaseNotifier,
       builder: (context, currentPhase, child) {
-        return AnimatedBuilder(
-          animation: _animationController,
-          builder: (context, child) {
-            return Transform.rotate(
-              angle: _animationController.value * 2.0 * pi,
-              child: child,
-            );
-          },
-          child: AnimatedContainer(
-            duration: const Duration(seconds: 5),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  _backgroundColor,
-                  Colors.white,
-                ],
-              ),
-            ),
+        return AnimatedContainer(
+          duration: const Duration(seconds: 5),
+          color: _backgroundColor,
           child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
@@ -727,7 +732,6 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
               ),
             ),
           ),
-        ),
         );
       },
     );
