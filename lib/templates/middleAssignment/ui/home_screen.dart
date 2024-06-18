@@ -70,7 +70,8 @@ class _HomeScreen extends State<HomeScreen> {
                   } else if (snapshot.hasError || snapshot.data == null) {
                     return const Text('Ошибка при загрузке истории');
                   } else {
-                    final sessionHistoryList = snapshot.data!;
+                    final sessionHistoryList = snapshot.data!.reversed.toList();
+
 
                     return ListView.builder(
                       itemCount: sessionHistoryList.length,

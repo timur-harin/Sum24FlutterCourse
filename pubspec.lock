@@ -128,6 +128,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  linear_timer:
+    dependency: "direct main"
+    description:
+      name: linear_timer
+      sha256: d8707448e9464c7436565791406b9b73a785ce09c5c3dd870b8c5cd9755355d5
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   lints:
     dependency: transitive
     description:

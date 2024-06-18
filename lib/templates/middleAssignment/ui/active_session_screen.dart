@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:education/templates/middleAssignment/ui/summary_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:linear_timer/linear_timer.dart';
 import 'package:provider/provider.dart';
 
 import '../custom_render_object.dart';
@@ -62,12 +63,27 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
             TemperaturePhaseIndicator(temperature: session.phases[_sessionPhase].temperature),
             SizedBox(height: 20),
             Text('Remaining Time: ${session.remainingTime} minutes'),
+            LinearTimer(
+              duration: Duration(minutes: session.duration),
+              forward: true,
+              minHeight: 4,
+              color: Colors.red,
+              onTimerEnd: () {
+                context.read<SessionProvider>().endSession();
+                // Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SummaryScreen(
+                  time: session.duration - session.remainingTime!,
+
+                )));
+              },
+            ),
+
 
             ElevatedButton(
               onPressed: () {
                 context.read<SessionProvider>().endSession();
                 // Navigator.pop(context);
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SummaryScreen(
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SummaryScreen(
                   time: session.duration - session.remainingTime!,
 
                 )));
