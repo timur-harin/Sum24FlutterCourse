@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:networking/data/workout.dart';
+/*import 'package:networking/data/workout.dart';
 
 class WorkoutProvider extends ChangeNotifier {
   int _number = 0;
@@ -17,4 +17,4 @@ class WorkoutProvider extends ChangeNotifier {
   }
 
   
-}
+}*/

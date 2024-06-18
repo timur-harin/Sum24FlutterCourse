@@ -1,4 +1,4 @@
-import 'dart:async';
+/*import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:networking/data/workout.dart';
@@ -84,3 +84,4 @@ class _WorkoutPageState extends State<WorkoutPage> {
     );
   }
 }
+*/
