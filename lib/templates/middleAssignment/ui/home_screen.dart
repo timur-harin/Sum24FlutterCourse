@@ -3,11 +3,8 @@ import 'dart:convert';
 import 'package:education/templates/middleAssignment/data/providers/session_history.dart';
 import 'package:education/templates/middleAssignment/ui/session_preferences_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../data/models/shower_session.dart';
-import '../data/providers/user_preferences_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,6 +25,7 @@ class _HomeScreen extends State<HomeScreen> {
   Future<List<SessionHistory>> getSessionHistoryData() async {
     var prefs = await SharedPreferences.getInstance();
     final encodedHistoryList = prefs.getStringList('sessionHistoryData');
+
 
     if (encodedHistoryList == null) return [];
 
@@ -86,14 +84,18 @@ class _HomeScreen extends State<HomeScreen> {
                               borderRadius: BorderRadius.circular(20),
                               color: const Color.fromARGB(255, 118, 255, 123),
                             ),
-                            child: Row(
+                            child: Column(
+                              children:[ Row(
                               children: [
                                 Text('Total time: ${sessionHistory.time} min'),
                                 const SizedBox(width: 10,),
-                                Text('rate: ${sessionHistory.rating}'),
-                                Icon(Icons.star, color: Colors.yellow,),
+                                Text('Count of phases: ${sessionHistory.countOfPhases}'),
+                                const SizedBox(width: 10,),
                               ],
-                            ),
+                              ),
+                                Text('Rating: ${sessionHistory.rating}')
+                            ],
+                            )
                           ),
                         );
                       },

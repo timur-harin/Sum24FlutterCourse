@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:education/templates/middleAssignment/ui/summary_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:linear_timer/linear_timer.dart';
 import 'package:provider/provider.dart';
 
 import '../custom_render_object.dart';
@@ -18,12 +17,13 @@ class ActiveSessionScreen extends StatefulWidget {
 class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
   Timer? _timer;
   int _sessionPhase = 0;
+  int _countOfPhases = 0;
   bool _isPaused = false;
 
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(Duration(minutes: 1), (timer) {
+    _timer = Timer.periodic(Duration(seconds: context.read<SessionProvider>().currentSession!.interval), (timer) {
       if (!_isPaused) {
         context.read<SessionProvider>().updateRemainingTime();
         if (_sessionPhase == 0) {
@@ -31,6 +31,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
         } else {
           _sessionPhase = 0;
         }
+        _countOfPhases += 1;
       }
     });
   }
@@ -43,8 +44,8 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final session = context.watch<SessionProvider>().currentSession;
 
+    final session = context.watch<SessionProvider>().currentSession;
     if (session == null) {
       // Handle the case where the session is null, e.g. by navigating back to the home screen
       return Scaffold(
@@ -69,7 +70,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
           children: <Widget>[
             TemperaturePhaseIndicator(temperature: session.phases[_sessionPhase].temperature),
             SizedBox(height: 20),
-          
+
             Stack(
               alignment: Alignment.center,
               children: [
@@ -101,13 +102,14 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
                 if (_isPaused) {
                   _timer?.cancel();
                 } else {
-                  _timer = Timer.periodic(Duration(minutes: 1), (timer) {
+                  _timer = Timer.periodic(Duration(seconds: session.interval), (timer) {
                     context.read<SessionProvider>().updateRemainingTime();
                     if (_sessionPhase == 0) {
                       _sessionPhase = 1;
                     } else {
                       _sessionPhase = 0;
                     }
+                    _countOfPhases += 1;
                   });
                 }
               },
@@ -120,6 +122,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => SummaryScreen(
+                      countOfPhases: _countOfPhases,
                       time: session.duration - session.remainingTime!,
                     ),
                   ),

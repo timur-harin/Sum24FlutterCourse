@@ -5,15 +5,15 @@ import 'package:education/templates/middleAssignment/data/providers/session_hist
 import 'package:education/templates/middleAssignment/ui/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../data/providers/user_preferences_provider.dart';
 
 class SummaryScreen extends StatefulWidget {
   final int time;
+  final int countOfPhases;
 
   const SummaryScreen({
+    required this.countOfPhases,
     required this.time,
     super.key,
   });
@@ -34,6 +34,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Total time: ${widget.time} min', style: TextStyle(fontSize: 25),),
+            const SizedBox(height: 20,),
+            Text('Count of phases: ${widget.countOfPhases}', style: TextStyle(fontSize: 20),),
             const SizedBox(height: 20,),
             RatingBar.builder(
               initialRating: 3,
@@ -67,7 +69,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
   Future<void> _setSessionHistoryData() async {
     var prefs = await SharedPreferences.getInstance();
-    final sessionHistoryData = SessionHistory(time: widget.time, rating: rate);
+    final sessionHistoryData = SessionHistory(countOfPhases: widget.countOfPhases,
+        time: widget.time, rating: rate);
 
     final encodedHistoryList = prefs.getStringList('sessionHistoryData');
     if (encodedHistoryList == null) {

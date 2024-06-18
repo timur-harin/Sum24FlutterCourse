@@ -15,6 +15,7 @@ class SessionPreferencesScreen extends StatefulWidget {
 class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
   final _formKey = GlobalKey<FormState>();
   int _duration = 10;
+  int _interval = 5;
   int _hotTemperature = 40;
   int _coldTemperature = 10;
 
@@ -37,6 +38,16 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                 return null;
               },
               onSaved: (value) => _duration = int.parse(value!),
+            ),
+            TextFormField(
+              decoration: InputDecoration(labelText: 'Interval (seconds)'),
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please enter an interval';
+                }
+                return null;
+              },
+              onSaved: (value) => _interval = int.parse(value!),
             ),
             TextFormField(
               decoration: InputDecoration(labelText: 'Hot Temperature (°C)'),
@@ -64,6 +75,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                   _formKey.currentState?.save();
                   final session = ShowerSession(
                     id: 2,
+                    interval: _interval,
                     duration: _duration,
                     phases: [
                       TemperaturePhase(id: 1, temperature: _hotTemperature, duration: _duration ~/ 2),
