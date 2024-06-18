@@ -18,9 +18,18 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends ConsumerStatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends ConsumerState<MyHomePage> {
+  String _displayedData = '';
+
   @override
   Widget build(BuildContext context) {
+    final count = ref.watch(counterProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter Tasks'),
@@ -31,10 +40,13 @@ class MyHomePage extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               onPressed: () async {
-                // TODO
                 // Exercise 1 - Perform an async operation using async/await
                 String result = await fetchData();
                 print(result);
+
+                setState(() {
+                  _displayedData = result;
+                });
               },
               child: Text('Async/Await Task'),
             ),
@@ -42,31 +54,58 @@ class MyHomePage extends StatelessWidget {
               onPressed: () {
                 // Exercise 2 - Use Provider for state management
                 // Increment the counter
+                ref.read(counterProvider.notifier).state++;
               },
-              child: Text('Provider Task'),
+              child: Text('Provider Task, count: $count'),
             ),
-            ElevatedButton(
-              onPressed: () {
-                // TODO
-                // Exercise 3 - Use Riverpod for state management
-                // Increment the counter
+            Consumer(
+              builder: (context, ref, child) {
+                final counterNotifier = ref.watch(counterNotifierProvider);
+                return Column(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        // Exercise 3 - Use ChangeNotifier for state management
+                        ref.read(counterNotifierProvider.notifier).increment();
+                      },
+                      child: Text('Riverpod Task, count: ${counterNotifier.counter}'),
+                    ),
+                  ],
+                );
               },
-              child: Text('Riverpod Task'),
             ),
             ElevatedButton(
               onPressed: () async {
-                // TODO 
                 // Exercise 4 - Make an HTTP request using the HTTP package
+                final response = await http.get(
+                    Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
+                if (response.statusCode == 200) {
+                  setState(() {
+                    _displayedData = response.body;
+                  });
+                } else {
+                  throw Exception('Failed to load data');
+                }
               },
               child: Text('HTTP Task'),
             ),
             ElevatedButton(
               onPressed: () async {
-                // TODO
-                // Exercise 5 - Make an HTTP request using Dio and show it in App Screen
+                // Exercise 5 - Make an HTTP request using the Dio package
+                final dio = Dio();
+                final response = await dio
+                    .get('https://jsonplaceholder.typicode.com/posts/1');
+                if (response.statusCode == 200) {
+                  setState(() {
+                    _displayedData = response.data.toString();
+                  });
+                } else {
+                  throw Exception('Failed to load data');
+                }
               },
               child: Text('Dio Task'),
             ),
+            Text(_displayedData),
           ],
         ),
       ),
@@ -75,15 +114,28 @@ class MyHomePage extends StatelessWidget {
 }
 
 Future<String> fetchData() async {
-  // TODO get json from url and show as text
-  // 'https://jsonplaceholder.typicode.com/posts/1'
+  final response =
+      await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
 
-  return 'data';
+  if (response.statusCode == 200) {
+    return response.body;
+  } else {
+    throw Exception('Failed to load data');
+  }
 }
 
 final counterProvider = StateProvider<int>((ref) => 0);
 
-// TODO create a state notifier
-// final 
+class CounterNotifier with ChangeNotifier {
+  int _counter = 0;
 
-// TODO create class for state notifier
+  int get counter => _counter;
+
+  void increment() {
+    _counter++;
+    notifyListeners();
+  }
+}
+
+final counterNotifierProvider =
+    ChangeNotifierProvider<CounterNotifier>((ref) => CounterNotifier());
