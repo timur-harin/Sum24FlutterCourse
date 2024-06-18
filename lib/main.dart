@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
-import 'package:provider/provider.dart';
 
 final dio = Dio();
 
@@ -124,6 +123,12 @@ class MyHomePage extends ConsumerWidget {
                       vertical: widgetMargin, horizontal: widgetMargin * 3),
                   child: Text(
                       "Http task response:\n ${ref.watch(httpTaskProvider)}"),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                      vertical: widgetMargin, horizontal: widgetMargin * 3),
+                  child: Text(
+                      "Dio task response:\n ${ref.watch(dioTaskProvider)}"),
                 ),
               ],
             ),
