@@ -7,4 +7,8 @@ Here is an example of a Flutter task with 5 exercises that cover:
 - HTTP requests using the HTTP package
 -  HTTP requests using Dio
 
+<<<<<<< HEAD
 Each exercise has TODO comments to guide you through the implementation.
+=======
+Each exercise has TODO comments to guide you through the implementation.
+>>>>>>> 260b2ab (lab 4)
