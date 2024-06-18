@@ -3,8 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 
+final pageProvider = StateProvider<String?>((ref) {
+  return null;
+});
+
 void main() {
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -18,9 +22,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends ConsumerWidget {
+
+  String? textForTaskOne;
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter Tasks'),
@@ -31,10 +38,8 @@ class MyHomePage extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               onPressed: () async {
-                // TODO
-                // Exercise 1 - Perform an async operation using async/await
                 String result = await fetchData();
-                print(result);
+                ref.read(pageProvider.notifier).state = result;
               },
               child: Text('Async/Await Task'),
             ),
@@ -77,8 +82,13 @@ class MyHomePage extends StatelessWidget {
 Future<String> fetchData() async {
   // TODO get json from url and show as text
   // 'https://jsonplaceholder.typicode.com/posts/1'
+  final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
 
-  return 'data';
+  if (response.statusCode == 200) {
+    return response.body;
+  } else {
+    throw Exception("Failed to load data");
+  }
 }
 
 final counterProvider = StateProvider<int>((ref) => 0);
