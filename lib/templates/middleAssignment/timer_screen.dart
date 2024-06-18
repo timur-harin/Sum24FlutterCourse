@@ -117,9 +117,6 @@ class _TimerScreenState extends State<TimerScreen> {
   });
 }
 
-
-
-
   @override 
   void dispose() {
     _timer.cancel();
@@ -137,7 +134,7 @@ class _TimerScreenState extends State<TimerScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Timer Screen'),
+        title: const Text('Timer'),
         backgroundColor: const Color(0xFF24305E),
         foregroundColor: Colors.white,
       ),
@@ -162,20 +159,77 @@ class _TimerScreenState extends State<TimerScreen> {
               ),
             ),
             const SizedBox(height: 50),
-            ElevatedButton(
-              onPressed: () {
-                if (_isTimerPaused) {
-                  resumeTimer();
-                } else {
-                  pauseTimer();
-                }
-              },
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF24305E)),
-                foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
-              ),
-              child: Text(_isTimerPaused ? 'Resume' : 'Pause'),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    if (_isTimerPaused) {
+                      resumeTimer();
+                    } else {
+                      pauseTimer();
+                    }
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF24305E)),
+                    foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+                  ),
+                  child: Text(
+                    _isTimerPaused ? 'Resume' : 'Pause',
+                    ),
+                ),
+                const SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text(
+                            "Session Complete",
+                             style: TextStyle(
+                                  color: Color(0xFF24305E),
+                                  backgroundColor: Colors.white,
+                                ),
+                            ),
+                          content: const Text(
+                            "The session has ended.",
+                             style: TextStyle(
+                                  color: Color(0xFF24305E),
+                                  backgroundColor: Colors.white,
+                                ),
+                            ),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text(
+                                "OK",
+                                style: TextStyle(
+                                  color: Color(0xFF24305E),
+                                  backgroundColor: Colors.white,
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const HomeScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all<Color>(const Color(0xFF24305E)),
+                    foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+                  ),
+                  child: const Text('End Early'),
+                ),
+              ],
+            )
           ],
         )
       ),

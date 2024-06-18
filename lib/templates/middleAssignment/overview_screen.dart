@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:education/templates/middleAssignment/storage.dart';
 import 'package:education/templates/middleAssignment/timer_screen.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class SessionDetailsScreen extends StatefulWidget {
@@ -8,10 +11,10 @@ class SessionDetailsScreen extends StatefulWidget {
   final DateTime sessionDate;
 
   const SessionDetailsScreen({
-    Key? key,
+    super.key,
     required this.phases,
     required this.sessionDate,
-  }) : super(key: key);
+  });
 
   @override
   _SessionDetailsScreenState createState() => _SessionDetailsScreenState();
@@ -149,28 +152,55 @@ class _SessionDetailsScreenState extends State<SessionDetailsScreen> {
           children: [
             Text(
               'Date: $formattedDate',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontSize: 20, 
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF374785),
+                ),
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: ListView.builder(
-                itemCount: widget.phases.length,
-                itemBuilder: (context, index) {
-                  final phase = widget.phases[index];
-                  return ListTile(
-                    title: Text(
-                      phase.name,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: widget.phases.length,
+                      itemBuilder: (context, index) {
+                        final phase = widget.phases[index];
+                        return ListTile(
+                          title: Text(
+                            phase.name,
+                            style: TextStyle(
+                              color: phase.name == 'hot'
+                                  ? const Color.fromARGB(255, 155, 36, 36)
+                                  : const Color(0xFF374785),
+                            ),
+                          ),
+                          subtitle: Text('Duration: ${phase.duration.inMinutes} minutes'),
+                        );
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: const Text(
+                      "Total Time:",
                       style: TextStyle(
-                              color: phase.name == 'hot' 
-                              ? const Color.fromARGB(255, 155, 36, 36) 
-                              : const Color(0xFF374785),
-                        ),
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF374785),
                       ),
-                    subtitle: Text('Duration: ${phase.duration.inMinutes} minutes'),
-                  );
-                },
+                    ),
+                    subtitle: Text(
+                      '${widget.phases.fold<int>(0, (previousValue, element) => previousValue + element.duration.inMinutes)} minutes',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF374785),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
+
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 7.0),
