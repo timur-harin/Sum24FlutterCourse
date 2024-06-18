@@ -1,11 +1,11 @@
+import 'package:education/templates/lab3/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 void main() {
   runApp(
-    const ProviderScope(
-      child: WaterBalanceApp()
+    ProviderScope(
+      child: WaterBalanceApp(),
     ),
   );
 }
@@ -20,13 +20,8 @@ class WaterBalanceApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Hydration tracker",
-          ),
-        ),
-      ),
+      home: HydrationScreen(),
+      
     );
   }
 }
