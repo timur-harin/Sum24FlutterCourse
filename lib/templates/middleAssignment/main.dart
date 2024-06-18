@@ -79,11 +79,11 @@ class _HomePageState extends State<HomePage> {
 
 
 
-    EventList customEventsList(List<CustomEvent> contrastShowerDays)
+  //   EventList customEventsList(List<CustomEvent> contrastShowerDays)
 
-  EventList<Event> events = new EventList<Event>(events: {
-    new DateTime(2024, 6, 5),
-  });
+  // EventList<Event> events = new EventList<Event>(events: {
+  //   new DateTime(2024, 6, 5),
+  // });
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                   const TextStyle(color: Colors.black, fontSize: 20.0),
               weekdayTextStyle:
                   const TextStyle(color: Colors.black, fontSize: 15.0),
-              markedDatesMap: customEvents(contrastShowerDays),
+              //markedDatesMap: customEvents(contrastShowerDays),
               ),
           ),
         ));

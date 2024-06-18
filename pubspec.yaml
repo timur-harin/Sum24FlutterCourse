@@ -7,14 +7,18 @@ environment:
   sdk: ">=3.4.1 <4.0.0"
 
 dependencies:
+  dio: ^5.4.3+1
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.5.1
+  http: ^1.2.1
   riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
   shared_preferences: ^2.2.3
   flutter_calendar_carousel: ^2.1.4
-  table_calendar: ^3.0.8
+  dio: ^5.4.3+1
+  http: ^1.2.1
+  provider: ^6.0.1
 
 dev_dependencies:
   flutter_test:
