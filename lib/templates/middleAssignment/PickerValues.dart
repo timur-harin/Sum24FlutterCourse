@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Pickervalues {
+class PickerValues {
   List<Text> values() {
     return [
       const Text("1"),
