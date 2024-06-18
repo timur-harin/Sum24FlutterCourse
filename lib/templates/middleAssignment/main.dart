@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,7 +8,7 @@ import 'button.dart';
 import 'star_rating.dart';
 import 'theme.dart';
 import 'package:provider/provider.dart';
-
+import 'package:gradient_coloured_buttons/gradient_coloured_buttons.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -186,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
       ),
-      floatingActionButton: gradientButton(
+      floatingActionButton: GradientButton(
         onPressed: () async {
           await Navigator.push(
               context,
@@ -196,8 +197,8 @@ class _HomeScreenState extends State<HomeScreen> {
             _previousSessions = _getPreviousSessions();
           });
         },
-        label: 'Start New Session',
-        gradientColors: [Colors.green, Colors.greenAccent],
+        text: 'Start New Session',
+        gradientColors: [Colors.green, Colors.green.shade300],
       ),
     );
   }
@@ -284,8 +285,8 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                         ),
                       ),
                     ),
-                    gradientButton(
-                      label: 'Change temperature',
+                    GradientButton(
+                      text: 'Change temperature',
                       onPressed: () {
                         setState(() {
                           phaseDurations[index].temperature =
@@ -295,8 +296,8 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                         });
                       },
                       gradientColors: phaseDurations[index].temperature == 'Hot'
-                          ? [Colors.red, Colors.redAccent]
-                          : [Colors.blue, Colors.blueAccent],
+                          ? [Colors.red, Colors.red.shade300]
+                          : [Colors.blue, Colors.blue.shade300],
                     ),
                     IconButton(
                       icon: const Icon(Icons.delete),
@@ -312,8 +313,8 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
               },
             ),
             const Padding(padding: EdgeInsets.all(2.0)),
-            gradientButton(
-              label: 'Add Phase',
+            GradientButton(
+              text: 'Add Phase',
               onPressed: () {
                 setState(() {
                   phaseDurations.add(TemperaturePhase(
@@ -324,12 +325,12 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                 });
               },
               gradientColors: isHotPhase
-                  ? [Colors.red, Colors.redAccent]
-                  : [Colors.blue, Colors.blueAccent],
+                  ? [Colors.red, Colors.red.shade300]
+                  : [Colors.blue, Colors.blue.shade300],
             ),
             const Padding(padding: EdgeInsets.all(2.0)),
-            gradientButton(
-              label: 'Next',
+            GradientButton(
+              text: 'Next',
               onPressed: () {
                 if (phaseDurations.every((phase) => phase.duration > 0) &&
                     name.isNotEmpty) {
@@ -354,7 +355,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                   );
                 }
               },
-              gradientColors: [Colors.green, Colors.greenAccent],
+              gradientColors: [Colors.green, Colors.green.shade300],
             ),
           ],
         ),
@@ -389,8 +390,8 @@ class SessionOverviewScreen extends StatelessWidget {
                     'Phase: ${session.temperaturePhases[index].temperature}, Duration: ${session.temperaturePhases[index].duration} seconds');
               },
             ),
-            gradientButton(
-              label: 'Begin Session',
+            GradientButton(
+              text: 'Begin Session',
               onPressed: () {
                 Navigator.push(
                   context,
@@ -401,7 +402,7 @@ class SessionOverviewScreen extends StatelessWidget {
                   ),
                 );
               },
-              gradientColors: [Colors.green, Colors.greenAccent],
+              gradientColors: [Colors.green, Colors.green.shade300],
             ),
           ],
         ),
@@ -431,6 +432,7 @@ class TimerController extends ChangeNotifier {
   List<TemperaturePhase> _phases;
   int _currentPhaseIndex;
   late TimerState _state = TimerState.running;
+  ValueNotifier<String> currentPhaseNotifier = ValueNotifier<String>('Hot');
 
   TimerController({required List<TemperaturePhase> phases})
       : _remainingTime = phases.first.duration,
@@ -452,10 +454,10 @@ class TimerController extends ChangeNotifier {
       if (_remainingTime == 0) {
         _currentPhaseIndex++;
         if (_currentPhaseIndex < _phases.length) {
-          _currentPhase = _phases[_currentPhaseIndex].temperature;
+          currentPhaseNotifier.value = _phases[_currentPhaseIndex].temperature;
           _remainingTime = _phases[_currentPhaseIndex].duration;
         } else {
-          _currentPhase = 'End';
+          currentPhaseNotifier.value = 'End';
           _timer?.cancel();
         }
       }
@@ -492,6 +494,10 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
   late TimerController _phaseTimerController;
   late TimerController _overallTimerController;
   late ValueNotifier<Color> _progressBarColor;
+  late ValueNotifier<String> _currentPhaseNotifier;
+  late Color _backgroundColor;
+  late int _phaseDuration;
+  late AnimationController _animationController;
 
   double _opacity = 1.0;
 
@@ -500,6 +506,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
     super.initState();
     _phaseTimerController =
         TimerController(phases: widget.session.temperaturePhases);
+    _currentPhaseNotifier = _phaseTimerController.currentPhaseNotifier;
     _overallTimerController = TimerController(phases: [
       TemperaturePhase(
           temperature: 'Overall', duration: widget.session.duration)
@@ -510,191 +517,219 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
             : _phaseTimerController.currentPhase == 'Cold'
                 ? Colors.blue
                 : Colors.green);
-    _phaseTimerController.addListener(() {
-      if (_phaseTimerController.currentPhase == 'Hot') {
-        _progressBarColor.value = Colors.red;
-      } else if (_phaseTimerController.currentPhase == 'Cold') {
-        _progressBarColor.value = Colors.blue;
-      } else {
-        _progressBarColor.value = Colors.green;
-      }
-    });
-    Timer.periodic(const Duration(milliseconds: 500), (timer) {
-      if (_phaseTimerController.currentPhase == 'End') {
-        setState(() {
-          _opacity = _opacity == 1.0 ? 0.0 : 1.0;
-        });
-      }
-    });
+    _backgroundColor = _progressBarColor.value;
+    _phaseDuration = _phaseTimerController.remainingTime;
+    _animationController = AnimationController(
+      duration: const Duration(seconds: 5),
+      vsync: this,
+    )..repeat();
+    // other code...
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Active Session: ${widget.session.name}'),
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: widget.session.temperaturePhases.length,
-                itemBuilder: (context, index) {
-                  return Text(
-                      'Phase: ${widget.session.temperaturePhases[index].temperature}, Duration: ${widget.session.temperaturePhases[index].duration} seconds');
-                },
+    return ValueListenableBuilder<String>(
+      valueListenable: _currentPhaseNotifier,
+      builder: (context, currentPhase, child) {
+        return AnimatedBuilder(
+          animation: _animationController,
+          builder: (context, child) {
+            return Transform.rotate(
+              angle: _animationController.value * 2.0 * pi,
+              child: child,
+            );
+          },
+          child: AnimatedContainer(
+            duration: const Duration(seconds: 5),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  _backgroundColor,
+                  Colors.white,
+                ],
               ),
-              ValueListenableBuilder<Color>(
-                valueListenable: _progressBarColor,
-                builder: (context, color, child) {
-                  if (_phaseTimerController.currentPhase != 'End') {
-                    return Column(
-                      children: [
-                        AnimatedBuilder(
-                          animation: _overallTimerController,
-                          builder: (context, child) {
-                            Duration remaining = Duration(
-                                seconds: _overallTimerController.remainingTime);
-                            String minutes = remaining.inMinutes
-                                .remainder(60)
-                                .toString()
-                                .padLeft(2, '0');
-                            String seconds = remaining.inSeconds
-                                .remainder(60)
-                                .toString()
-                                .padLeft(2, '0');
-                            return Text(
-                              'Total time left: $minutes:$seconds',
-                              style: const TextStyle(
-                                fontSize: 30.0,
-                                color: Colors.black,
+            ),
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              title: Text('Active Session: ${widget.session.name}'),
+            ),
+            body: SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: widget.session.temperaturePhases.length,
+                      itemBuilder: (context, index) {
+                        return Text(
+                            'Phase: ${widget.session.temperaturePhases[index].temperature}, Duration: ${widget.session.temperaturePhases[index].duration} seconds');
+                      },
+                    ),
+                    ValueListenableBuilder<Color>(
+                      valueListenable: _progressBarColor,
+                      builder: (context, color, child) {
+                        if (currentPhase != 'End') {
+                          return Column(
+                            children: [
+                              AnimatedBuilder(
+                                animation: _overallTimerController,
+                                builder: (context, child) {
+                                  Duration remaining = Duration(
+                                      seconds: _overallTimerController
+                                          .remainingTime);
+                                  String minutes = remaining.inMinutes
+                                      .remainder(60)
+                                      .toString()
+                                      .padLeft(2, '0');
+                                  String seconds = remaining.inSeconds
+                                      .remainder(60)
+                                      .toString()
+                                      .padLeft(2, '0');
+                                  return Text(
+                                    'Total time left: $minutes:$seconds',
+                                    style: const TextStyle(
+                                      fontSize: 30.0,
+                                      color: Colors.black,
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                        ),
-                        AnimatedBuilder(
-                          animation: _phaseTimerController,
-                          builder: (context, child) {
-                            Duration remaining = Duration(
-                                seconds: _phaseTimerController.remainingTime);
-                            String minutes = remaining.inMinutes
-                                .remainder(60)
-                                .toString()
-                                .padLeft(2, '0');
-                            String seconds = remaining.inSeconds
-                                .remainder(60)
-                                .toString()
-                                .padLeft(2, '0');
-                            return AnimatedOpacity(
-                              opacity: _opacity,
-                              duration: const Duration(milliseconds: 500),
-                              child: Text(
-                                '$minutes:$seconds',
-                                style: TextStyle(
-                                  fontSize: 48.0,
-                                  color: _phaseTimerController.currentPhase ==
-                                          'Hot'
-                                      ? Colors.red
-                                      : _phaseTimerController.currentPhase ==
-                                              'Cold'
-                                          ? Colors.blue
-                                          : Colors.green,
-                                ),
+                              AnimatedBuilder(
+                                animation: _phaseTimerController,
+                                builder: (context, child) {
+                                  Duration remaining = Duration(
+                                      seconds:
+                                          _phaseTimerController.remainingTime);
+                                  String minutes = remaining.inMinutes
+                                      .remainder(60)
+                                      .toString()
+                                      .padLeft(2, '0');
+                                  String seconds = remaining.inSeconds
+                                      .remainder(60)
+                                      .toString()
+                                      .padLeft(2, '0');
+                                  return AnimatedOpacity(
+                                    opacity: _opacity,
+                                    duration: const Duration(milliseconds: 500),
+                                    child: Text(
+                                      '$minutes:$seconds',
+                                      style: TextStyle(
+                                        fontSize: 48.0,
+                                        color: currentPhase == 'Hot'
+                                            ? Colors.red
+                                            : currentPhase == 'Cold'
+                                                ? Colors.blue
+                                                : Colors.green,
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                        ),
-                        AnimatedBuilder(
-                          animation: _phaseTimerController,
-                          builder: (context, child) {
-                            return IconButton(
-                              icon: Icon(
-                                _phaseTimerController.state == TimerState.paused
-                                    ? Icons.play_arrow
-                                    : Icons.pause,
-                                size: 48.0,
-                                color: _phaseTimerController.state ==
-                                        TimerState.paused
-                                    ? Colors.green
-                                    : Colors.grey,
+                              AnimatedBuilder(
+                                animation: _phaseTimerController,
+                                builder: (context, child) {
+                                  return IconButton(
+                                    icon: Icon(
+                                      _phaseTimerController.state ==
+                                              TimerState.paused
+                                          ? Icons.play_arrow
+                                          : Icons.pause,
+                                      size: 48.0,
+                                      color: _phaseTimerController.state ==
+                                              TimerState.paused
+                                          ? Colors.green
+                                          : Colors.grey,
+                                    ),
+                                    onPressed: () {
+                                      if (_phaseTimerController.state ==
+                                          TimerState.paused) {
+                                        _phaseTimerController._unpauseTimer();
+                                        _overallTimerController._unpauseTimer();
+                                      } else {
+                                        _phaseTimerController._pauseTimer();
+                                        _overallTimerController._pauseTimer();
+                                      }
+                                    },
+                                  );
+                                },
                               ),
-                              onPressed: () {
-                                if (_phaseTimerController.state ==
-                                    TimerState.paused) {
-                                  _phaseTimerController._unpauseTimer();
-                                  _overallTimerController._unpauseTimer();
-                                } else {
-                                  _phaseTimerController._pauseTimer();
-                                  _overallTimerController._pauseTimer();
-                                }
-                              },
-                            );
-                          },
-                        ),
-                        gradientButton(
-                            label: 'End Session',
-                            onPressed: () {
-                              int timeLeft =
-                                  _overallTimerController.remainingTime;
-                              // Stop the timers
-                              _phaseTimerController.dispose();
-                              _overallTimerController.dispose();
+                              GradientButton(
+                                  text: 'End Session',
+                                  onPressed: () {
+                                    int timeLeft =
+                                        _overallTimerController.remainingTime;
+                                    // Stop the timers
+                                    _phaseTimerController.dispose();
+                                    _overallTimerController.dispose();
 
-                              // Navigate to the SessionSummaryScreen
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SessionSummaryScreen(
-                                    session: widget.session,
-                                  ),
-                                ),
-                              );
-                            },
-                            gradientColors:
-                                _overallTimerController.remainingTime == 0
-                                    ? [Colors.green, Colors.greenAccent]
-                                    : [Colors.red, Colors.redAccent]),
-                      ],
-                    );
-                  } else {
-                    return Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        gradientButton(
-                            label: 'End Session',
-                            onPressed: () {
-                              int timeLeft =
-                                  _overallTimerController.remainingTime;
-                              // Stop the timers
-                              _phaseTimerController.dispose();
-                              _overallTimerController.dispose();
+                                    // Navigate to the SessionSummaryScreen
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            SessionSummaryScreen(
+                                          session: widget.session,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  gradientColors:
+                                      _overallTimerController.remainingTime == 0
+                                          ? [
+                                              Colors.green,
+                                              Colors.green.shade300
+                                            ]
+                                          : [Colors.red, Colors.red.shade300]),
+                            ],
+                          );
+                        } else {
+                          return Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              GradientButton(
+                                  text: 'End Session',
+                                  onPressed: () {
+                                    int timeLeft =
+                                        _overallTimerController.remainingTime;
+                                    // Stop the timers
+                                    _phaseTimerController.dispose();
+                                    _overallTimerController.dispose();
 
-                              // Navigate to the SessionSummaryScreen
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SessionSummaryScreen(
-                                    session: widget.session,
-                                  ),
-                                ),
-                              );
-                            },
-                            gradientColors:
-                                _overallTimerController.remainingTime == 0
-                                    ? [Colors.green, Colors.greenAccent]
-                                    : [Colors.red, Colors.redAccent]),
-                      ],
-                    );
-                  }
-                },
+                                    // Navigate to the SessionSummaryScreen
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            SessionSummaryScreen(
+                                          session: widget.session,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  gradientColors:
+                                      _overallTimerController.remainingTime == 0
+                                          ? [
+                                              Colors.green,
+                                              Colors.green.shade300
+                                            ]
+                                          : [Colors.red, Colors.red.shade300]),
+                            ],
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ],
+            ),
           ),
         ),
-      ),
+        );
+      },
     );
   }
 
@@ -761,8 +796,8 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                 ),
               ],
             ),
-            gradientButton(
-              label: 'Save Session',
+            GradientButton(
+              text: 'Save Session',
               onPressed: () async {
                 final newSession = ShowerSession(
                   name: widget.session.name,
@@ -777,7 +812,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                 await prefs.setStringList('sessions', sessionStrings);
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
-              gradientColors: [Colors.green, Colors.greenAccent],
+              gradientColors: [Colors.green, Colors.green.shade300],
             ),
           ],
         ),

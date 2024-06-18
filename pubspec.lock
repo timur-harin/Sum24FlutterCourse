@@ -248,6 +248,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  gradient_coloured_buttons:
+    dependency: "direct main"
+    description:
+      name: gradient_coloured_buttons
+      sha256: f778f58b0bb6086008c170ad84dbd85925c3134e9e232a3b5f1758cb119e1c6d
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   graphs:
     dependency: transitive
     description:
