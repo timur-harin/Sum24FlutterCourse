@@ -86,19 +86,22 @@ class _FinishScreenState extends State<FinishScreen> {
                 },
               ),
             ),
-            ListTile(
-              title: const Text(
-                "Total Time:",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF374785),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 80.0),
+              child: ListTile(
+                title: const Text(
+                  "Total Time:",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF374785),
+                  ),
                 ),
-              ),
-              subtitle: Text(
-                '${widget.currentSession.phases.fold<int>(0, (previousValue, element) => previousValue + element.duration.inMinutes)} minutes',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF374785),
+                subtitle: Text(
+                  '${widget.currentSession.phases.fold<int>(0, (previousValue, element) => previousValue + element.duration.inMinutes)} minutes',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF374785),
+                  ),
                 ),
               ),
             ),

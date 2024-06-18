@@ -241,8 +241,10 @@ class _SessionDetailsScreenState extends State<SessionDetailsScreen> {
               }
             );
           } else {
-            Navigator.of(context).push(
+            Navigator.pushAndRemoveUntil(
+              context,
               MaterialPageRoute(builder: (context) => TimerScreen(phases: widget.phases, sessionDate: widget.sessionDate)),
+              (Route<dynamic> route) => false,
             );
           }
         },

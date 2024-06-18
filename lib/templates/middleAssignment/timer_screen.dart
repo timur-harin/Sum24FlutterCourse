@@ -71,7 +71,7 @@ class _TimerScreenState extends State<TimerScreen> {
     _totalTime = _phaseDurations.fold(0, (sum, duration) => sum + duration);
     _phaseTimeLeft = _phaseDurations.isNotEmpty ? _phaseDurations.first : 0;
     startTimer();
-    }
+  }
 
 
   void startTimer() {
@@ -116,11 +116,10 @@ class _TimerScreenState extends State<TimerScreen> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => FinishScreen(currentSession: session),
-                      ),
+                      MaterialPageRoute(builder: (context) => FinishScreen(currentSession: session)),
+                      (Route<dynamic> route) => false,
                     );
                   },
                 ),
@@ -222,11 +221,10 @@ class _TimerScreenState extends State<TimerScreen> {
                                 ),
                               ),
                               onPressed: () {
-                                Navigator.push(
+                                Navigator.pushAndRemoveUntil(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) => FinishScreen(currentSession: ShowerSession(date: widget.sessionDate, phases: widget.phases)),
-                                  ),
+                                  MaterialPageRoute(builder: (context) => FinishScreen(currentSession: ShowerSession(date: widget.sessionDate, phases: widget.phases))),
+                                  (Route<dynamic> route) => false,
                                 );
                               },
                             ),
