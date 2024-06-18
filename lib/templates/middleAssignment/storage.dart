@@ -4,19 +4,21 @@ import 'dart:convert';
 class ShowerSession {
   late final DateTime date;
   late final List<ShowerPhase> phases;
-  
+  String? feedback;
 
-  ShowerSession({required this.date, required this.phases});
+  ShowerSession({required this.date, required this.phases, this.feedback = ''});
 
    Map<String, dynamic> toJson() => {
         'date': date.toIso8601String(),
         'phases': phases.map((phase) => phase.toJson()).toList(),
+        'feedback': feedback,
       };
 
   factory ShowerSession.fromJson(Map<String, dynamic> json) {
     return ShowerSession(
       date: DateTime.parse(json['date']),
       phases: (json['phases'] as List).map((phaseJson) => ShowerPhase.fromJson(phaseJson)).toList(),
+      feedback: json['feedback'],
     );
   }
 }

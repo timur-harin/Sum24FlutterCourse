@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:education/templates/middleAssignment/finish_screen.dart';
 import 'package:education/templates/middleAssignment/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:education/templates/middleAssignment/storage.dart';
@@ -7,8 +8,9 @@ import 'package:audioplayers/audioplayers.dart';
 
 class TimerScreen extends StatefulWidget {
   final List<ShowerPhase> phases;
+  final DateTime sessionDate;
 
-  const TimerScreen({Key? key, required this.phases}) : super(key: key);
+  const TimerScreen({Key? key, required this.phases, required this.sessionDate}) : super(key: key);
 
   @override
   _TimerScreenState createState() => _TimerScreenState();
@@ -74,8 +76,9 @@ class _TimerScreenState extends State<TimerScreen> {
 
 
   void startTimer() {
-  _currentTime = 0;
-  _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _currentTime = 0;
+    ShowerSession session = ShowerSession(date: widget.sessionDate, phases: widget.phases);
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
     setState(() {
       if (_currentTime < _totalTime) {
         _currentTime++;
@@ -117,7 +120,7 @@ class _TimerScreenState extends State<TimerScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
+                        builder: (context) => FinishScreen(currentSession: session),
                       ),
                     );
                   },
