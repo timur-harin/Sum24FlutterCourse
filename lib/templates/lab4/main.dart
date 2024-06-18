@@ -7,9 +7,9 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ProviderScope(
       child: MaterialApp(
         home: MyHomePage(),
@@ -18,10 +18,13 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends ConsumerWidget {
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final counter = ref.read(counterProvider);
     return Scaffold(
+
       appBar: AppBar(
         title: Text('Flutter Tasks'),
       ),
@@ -31,39 +34,97 @@ class MyHomePage extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               onPressed: () async {
-                // TODO
-                // Exercise 1 - Perform an async operation using async/await
                 String result = await fetchData();
                 print(result);
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Scaffold(
+                        body: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('$result'),
+                            ElevatedButton(
+                                onPressed:(){
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('close'),
+                            )
+                          ],
+                        )
+                      );
+                    }
+                );
               },
               child: Text('Async/Await Task'),
             ),
             ElevatedButton(
               onPressed: () {
-                // Exercise 2 - Use Provider for state management
-                // Increment the counter
+                ref.read(counterProvider.notifier).state++;
+                int res = ref.watch(counterProvider);
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    content: Text(res.toString()),
+                  ),
+                );
               },
               child: Text('Provider Task'),
             ),
             ElevatedButton(
               onPressed: () {
-                // TODO
-                // Exercise 3 - Use Riverpod for state management
-                // Increment the counter
+                ref.read(Provider.notifier).increment();
               },
-              child: Text('Riverpod Task'),
+              child: Text('Riverpod Task ' + ref.watch(Provider).toString()),
             ),
             ElevatedButton(
               onPressed: () async {
-                // TODO 
-                // Exercise 4 - Make an HTTP request using the HTTP package
+                String result = await fetchData();
+                print(result);
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Scaffold(
+                          body: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('$result'),
+                              ElevatedButton(
+                                onPressed:(){
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('close'),
+                              )
+                            ],
+                          )
+                      );
+                    }
+                );
               },
               child: Text('HTTP Task'),
             ),
             ElevatedButton(
               onPressed: () async {
-                // TODO
-                // Exercise 5 - Make an HTTP request using Dio and show it in App Screen
+                String result = await fetchDioData();
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Scaffold(
+                          body: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('$result'),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Close'),
+                              )
+                            ],
+                          )
+                      );
+                    }
+                );
               },
               child: Text('Dio Task'),
             ),
@@ -75,15 +136,34 @@ class MyHomePage extends StatelessWidget {
 }
 
 Future<String> fetchData() async {
-  // TODO get json from url and show as text
-  // 'https://jsonplaceholder.typicode.com/posts/1'
-
-  return 'data';
+  final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
+  if (response.statusCode == 200){
+    return response.body;
+  }
+  else{
+    throw Exception('Failed');
+  }
 }
-
 final counterProvider = StateProvider<int>((ref) => 0);
 
-// TODO create a state notifier
-// final 
+final Provider = StateNotifierProvider<Notifier, int>((ref) {
+  return Notifier();
 
-// TODO create class for state notifier
+});
+
+class Notifier extends StateNotifier<int> {
+  Notifier() : super(0);
+
+  void increment() {
+    state++;
+  }
+}
+Future<String> fetchDioData() async {
+  try {
+    final response = await Dio().get('https://jsonplaceholder.typicode.com/posts/1');
+    return response.data.toString();
+  } catch (e) {
+    return "Error: $e";
+  }
+}
+
