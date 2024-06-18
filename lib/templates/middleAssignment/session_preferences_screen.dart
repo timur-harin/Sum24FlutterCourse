@@ -1,9 +1,4 @@
-import 'dart:convert';
-
 import 'session_overview_screen.dart';
-
-import 'session_details_screen.dart';
-import 'theme.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_coloured_buttons/gradient_coloured_buttons.dart';
 import 'main.dart';

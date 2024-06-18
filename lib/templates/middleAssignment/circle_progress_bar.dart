@@ -8,13 +8,13 @@ class CircleProgressBar extends StatefulWidget {
   final double value;
   final Duration totalDuration;
 
-  CircleProgressBar({
-    Key? key,
+  const CircleProgressBar({
+    super.key,
     required this.backgroundColor,
     required this.foregroundColor,
     required this.value,
     required this.totalDuration,
-  }) : super(key: key);
+  });
 
   @override
   CircleProgressBarState createState() => CircleProgressBarState();
@@ -98,10 +98,10 @@ class CircleProgressBarState extends State<CircleProgressBar>
 
     if (widget.value != oldWidget.value) {
       double beginValue =
-          valueTween?.evaluate(_controller) ?? oldWidget?.value ?? 0;
+          valueTween.evaluate(_controller);
       valueTween = Tween<double>(
         begin: beginValue,
-        end: widget.value ?? 1,
+        end: widget.value,
       );
       foregroundColorTween = ColorTween(
         begin: oldWidget.foregroundColor,
@@ -133,8 +133,6 @@ class CircleProgressBarState extends State<CircleProgressBar>
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = widget.backgroundColor;
-    final foregroundColor = widget.foregroundColor;
     return AspectRatio(
       aspectRatio: 1,
       child: AnimatedBuilder(
@@ -142,7 +140,7 @@ class CircleProgressBarState extends State<CircleProgressBar>
         child: Container(),
         builder: (context, child) {
           final foregroundColor =
-              foregroundColorTween?.evaluate(curve) ?? widget.foregroundColor;
+              foregroundColorTween.evaluate(curve) ?? widget.foregroundColor;
 
           return CustomPaint(
             foregroundPainter: CircleProgressBarPainter(

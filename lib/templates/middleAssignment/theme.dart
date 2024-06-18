@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class ThemeProvider extends ChangeNotifier {
   ThemeMode themeMode = ThemeMode.light;
 
-  bool get isDarkMode {
+  bool isDarkMode(BuildContext context) {
     if (themeMode == ThemeMode.system) {
-      final brightness = WidgetsBinding.instance?.window.platformBrightness;
+      final brightness = MediaQuery.of(context).platformBrightness;
       return brightness == Brightness.dark;
     } else {
       return themeMode == ThemeMode.dark;

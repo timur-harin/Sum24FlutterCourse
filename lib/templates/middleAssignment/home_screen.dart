@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 import 'main.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -35,10 +37,10 @@ class _HomeScreenState extends State<HomeScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Contrast Shower Companion'),
+        title: const Text('Contrast Shower Companion'),
         actions: <Widget>[
           Switch.adaptive(
-            value: themeProvider.isDarkMode,
+            value: themeProvider.isDarkMode(context),
             onChanged: (value) {
               themeProvider.toggleTheme(value);
             },
@@ -56,20 +58,24 @@ class _HomeScreenState extends State<HomeScreen> {
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(snapshot.data![index].name),
-                  subtitle: Text(
-                      'Duration: ${snapshot.data![index].duration} seconds'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SessionDetailsScreen(
-                          session: snapshot.data![index],
+                return Card(
+                  // Wrap ListTile with a Card widget
+                  child: ListTile(
+                    title: Text(snapshot.data![index].name),
+                    subtitle: Text(
+                        'Duration: ${snapshot.data![index].duration} seconds'),
+                    trailing: Text('Rating: ${snapshot.data![index].rating}'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SessionDetailsScreen(
+                            session: snapshot.data![index],
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 );
               },
             );
@@ -81,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
           await Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => SessionPreferencesScreen()));
+                  builder: (context) => const SessionPreferencesScreen()));
           setState(() {
             _previousSessions = _getPreviousSessions();
           });

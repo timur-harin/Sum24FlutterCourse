@@ -1,14 +1,9 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'button.dart';
 import 'home_screen.dart';
-import 'star_rating.dart';
 import 'theme.dart';
 import 'package:provider/provider.dart';
-import 'package:gradient_coloured_buttons/gradient_coloured_buttons.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +26,7 @@ class MiddleAssigmentApp extends StatelessWidget {
       ),
       darkTheme: ThemeData.dark(),
       themeMode: themeProvider.themeMode,
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }

@@ -25,17 +25,16 @@ class StarRating extends StatelessWidget {
     } else if (index > rating - 1 && index < rating) {
       icon = Icon(
         Icons.star_half,
-        color: color ?? Theme.of(context).primaryColor,
+        color: color,
       );
     } else {
       icon = Icon(
         Icons.star,
-        color: color ?? Theme.of(context).primaryColor,
+        color: color,
       );
     }
     return InkResponse(
-      onTap:
-          onRatingChanged == null ? null : () => onRatingChanged(index + 1.0),
+      onTap: () => onRatingChanged(index + 1.0),
       child: icon,
     );
   }
