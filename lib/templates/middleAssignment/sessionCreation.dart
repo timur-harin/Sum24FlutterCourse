@@ -10,6 +10,7 @@ class SessionCreation extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final sessions = ref.watch(SessionProvider);
 <<<<<<< HEAD
+<<<<<<< HEAD
     return Clocks(
         time: sessions.duration.last,
         phase: sessions.phase_duration.last,
@@ -26,5 +27,16 @@ class SessionCreation extends ConsumerWidget {
       onIncrement: ref.read(SessionProvider.notifier).increment,
     );
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+    return Clocks(
+        time: sessions.duration.last,
+        phase: sessions.phase_duration.last,
+        onIncrement: ref.read(SessionProvider.notifier).increment,
+        prevent: () {
+          sessions.duration.removeLast();
+          sessions.phase_duration.removeLast();
+          sessions.timeStart.removeLast();
+        });
+>>>>>>> 8a0517b (mid assig second comit)
   }
 }

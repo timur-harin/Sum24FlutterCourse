@@ -9,11 +9,16 @@ class Sessionsettings extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 <<<<<<< HEAD
+<<<<<<< HEAD
     TextEditingController _controller1 = TextEditingController();
     TextEditingController _controller2 = TextEditingController();
 =======
     TextEditingController _controller = TextEditingController();
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+    TextEditingController _controller1 = TextEditingController();
+    TextEditingController _controller2 = TextEditingController();
+>>>>>>> 8a0517b (mid assig second comit)
     final sessions = ref.watch(SessionProvider);
 
     return Scaffold(
@@ -48,10 +53,14 @@ class Sessionsettings extends ConsumerWidget {
             ),
             TextField(
 <<<<<<< HEAD
+<<<<<<< HEAD
               controller: _controller1,
 =======
               controller: _controller,
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+              controller: _controller1,
+>>>>>>> 8a0517b (mid assig second comit)
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                   fillColor: Color.fromRGBO(53, 175, 212, 1),
@@ -61,6 +70,9 @@ class Sessionsettings extends ConsumerWidget {
                     fontSize: 18,
                   ),
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8a0517b (mid assig second comit)
                   labelText: 'Shower duration in minutes',
                   counterStyle: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
                   border: OutlineInputBorder(
@@ -79,9 +91,12 @@ class Sessionsettings extends ConsumerWidget {
                     fontSize: 18,
                   ),
                   labelText: 'Shower phase duration in seconds',
+<<<<<<< HEAD
 =======
                   labelText: 'Shower duration',
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+>>>>>>> 8a0517b (mid assig second comit)
                   counterStyle: TextStyle(color: Color.fromRGBO(0, 0, 0, 1)),
                   border: OutlineInputBorder(
                       borderSide: BorderSide(
@@ -94,10 +109,14 @@ class Sessionsettings extends ConsumerWidget {
             TextButton(
               onPressed: () {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8a0517b (mid assig second comit)
                 if (!_controller1.text.toString().isEmpty &&
                     !_controller2.text.toString().isEmpty) {
                   sessions.startSession(_controller1.text.toString(),
                       _controller2.text.toString());
+<<<<<<< HEAD
 
                   Navigator.push(
                       context,
@@ -112,6 +131,14 @@ class Sessionsettings extends ConsumerWidget {
                     MaterialPageRoute(
                         builder: (context) => (SessionCreation())));
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => (const SessionCreation())));
+                }
+>>>>>>> 8a0517b (mid assig second comit)
               },
               style: const ButtonStyle(
                   backgroundColor:
