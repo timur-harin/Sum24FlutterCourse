@@ -38,7 +38,7 @@ Design a custom animated widget that visually represents the transition between 
 
 ## Classes and OOP Realization (2 points):
 
-Model the logic using classes such as ShowerSession, TemperaturePhase, and UserPreferences. Use mixins,abstracts ans so on ...
+Model the logic using classes such as ShowerSession, TemperaturePhase, and UserPreferences. Use mixins,abstracts and so on ...
 
 
 ## Riverpod State Management (3 points):
