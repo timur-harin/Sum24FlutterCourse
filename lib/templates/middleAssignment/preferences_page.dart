@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'timer_screen.dart';
+import 'timer_page.dart';
 
 class Preferences extends StatefulWidget {
   @override
@@ -23,7 +23,6 @@ class PreferencesState extends State<Preferences> {
           end: Alignment.bottomLeft,
           colors: [
             Color.fromARGB(209, 68, 137, 255),
-            Color.fromARGB(106, 155, 39, 176),
             Color.fromARGB(213, 255, 82, 82),
           ],
         ),
@@ -73,9 +72,9 @@ class PreferencesState extends State<Preferences> {
               onPressed: () => {
                 if (minTemp + 1 <= maxTemp) {
                   setState(() {minTemp++;})
-                  } else {
-                    setState(() {minTemp = maxTemp;})
-                  }
+                } else {
+                  setState(() {minTemp = maxTemp;})
+                }
               },
               child: const Text('+'),
               onLongPress: () => {if (minTemp + 5 <= maxTemp) {
@@ -86,12 +85,15 @@ class PreferencesState extends State<Preferences> {
                 },
             ),
             ElevatedButton(
-              onPressed: () => {setState(() {minTemp--;})},
+              onPressed: () => {
+                if (minTemp - 1 >= 0) setState(() {minTemp--;})},
               child: const Text('-'),
-              onLongPress: () => {setState(() {
-              minTemp -= 5;
-              }
-              )
+              onLongPress: () => {
+                if (minTemp - 5 >= 0) {
+                 setState(() {minTemp -= 5;})
+                } else {
+                  setState(() {minTemp = 0;})
+                }
               },
             ),
           ],
@@ -99,9 +101,16 @@ class PreferencesState extends State<Preferences> {
       Row(children: [
         const Text('              Choose maximal temperature:  '),
         ElevatedButton(
-          onPressed: () => {setState(() {maxTemp++;})},
+          onPressed: () => {
+            if (maxTemp + 1 <= 75) setState(() {maxTemp++;})},
           child: const Text('+'),
-          onLongPress: () => {setState(() {maxTemp += 5;})},
+          onLongPress: () => {
+            if (maxTemp + 5 <= 75) {
+             setState(() {maxTemp += 5;})
+            } else {
+              setState(() {maxTemp = 75;})
+            }
+             },
         ),
         ElevatedButton(
           onPressed: () => {

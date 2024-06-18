@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:education/templates/middleAssignment/results_screen.dart';
+import 'package:education/templates/middleAssignment/results_page.dart';
 import 'package:flutter/material.dart';
-import 'preferences.dart';
-import 'results_screen.dart';
+import 'preferences_page.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class TimerPage extends StatefulWidget {
   final PreferencesState preferencesState;
@@ -12,6 +12,7 @@ class TimerPage extends StatefulWidget {
 }
 
 class TimerPageState extends State<TimerPage> {
+  Color _backgroundColor = const Color.fromARGB(213, 255, 82, 82);
   final PreferencesState preferencesState;
   late int _minutes;
   late int _seconds;
@@ -60,6 +61,10 @@ class TimerPageState extends State<TimerPage> {
     );
   }
 
+  void playSound() async {
+    final player = AudioPlayer();
+    await player.play('assets/Sound_11084.wav');
+  }
 
   void _startTimer() {
     _isRunning = true;
@@ -67,6 +72,12 @@ class TimerPageState extends State<TimerPage> {
     _isHide = true;
     Timer.periodic(const Duration(seconds: 1), (timer)  {
       if (!_isPaused) {
+      if (secondsLeft == (_minutes * 60) ~/ 2) {
+          setState(() {
+            _backgroundColor = const Color.fromARGB(209, 68, 137, 255);
+          });
+          playSound();
+        }
         if (_secondsCopy == 0 && _minutesCopy != 0) {
           setState(() {
             _minutesCopy--;
@@ -78,12 +89,11 @@ class TimerPageState extends State<TimerPage> {
         } else if (_minutesCopy == 0 && _secondsCopy == 0) {
           _toResultScreen();
         } else if (_secondsCopy > 0) {
-
           setState(() {
             secondsLeft++;
             _secondsCopy--;
           });
-        }
+        } 
       }
     });
 
@@ -92,8 +102,10 @@ class TimerPageState extends State<TimerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: _backgroundColor,
       appBar: AppBar(
-        title: const Text('Timer for shower'),
+        title: const Text('Session'),
+        backgroundColor: const Color.fromARGB(255, 62, 160, 185),
       ),
       body: Center(
         child: Column(
@@ -101,7 +113,8 @@ class TimerPageState extends State<TimerPage> {
           children: <Widget> [
             Text(
               '${_minutesCopy.toString().padLeft(2,'0')}:${_secondsCopy.toString().padLeft(2, '0')}',
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: const TextStyle(fontSize: 50),
+              
             ),
             const SizedBox(height: 20),
             Row(
