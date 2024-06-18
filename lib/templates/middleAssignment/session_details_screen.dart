@@ -16,8 +16,8 @@ class SessionDetailsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
-            ...session.temperaturePhases.map((phase) => Text(
-                'Phase: ${phase.temperature}, Duration: ${phase.duration} seconds')),
+            Text(
+                'Total session duration: ${session.overallDuration} seconds'),
             Text('Comments: ${session.comments}'),
             Text('Rating: ${session.rating}'),
           ],

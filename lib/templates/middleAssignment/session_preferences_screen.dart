@@ -116,6 +116,8 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                           comments: '',
                           temperaturePhases: phaseDurations,
                           rating: 0.0,
+                          overallDuration: phaseDurations.fold(
+                              0, (prev, phase) => prev + phase.duration),
                         ),
                       ),
                     ),

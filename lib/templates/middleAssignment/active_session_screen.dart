@@ -88,173 +88,179 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
             appBar: AppBar(
               title: Text('Active Session: ${widget.session.name}'),
             ),
-            body: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: widget.session.temperaturePhases.length,
-                      itemBuilder: (context, index) {
-                        return Text(
-                            'Phase: ${widget.session.temperaturePhases[index].temperature}, Duration: ${widget.session.temperaturePhases[index].duration} seconds');
-                      },
-                    ),
-                    ValueListenableBuilder<Color>(
-                      valueListenable: _progressBarColor,
-                      builder: (context, color, child) {
-                        if (currentPhase != 'End') {
-                          return Column(
-                            children: [
-                              AnimatedBuilder(
-                                animation: _overallTimerController,
-                                builder: (context, child) {
-                                  Duration remaining = Duration(
-                                      seconds: _overallTimerController
-                                          .remainingTime);
-                                  String minutes = remaining.inMinutes
-                                      .remainder(60)
-                                      .toString()
-                                      .padLeft(2, '0');
-                                  String seconds = remaining.inSeconds
-                                      .remainder(60)
-                                      .toString()
-                                      .padLeft(2, '0');
-                                  return Text(
-                                    'Total time left: $minutes:$seconds',
-                                    style: const TextStyle(
-                                      fontSize: 30.0,
-                                      color: Colors.black,
-                                    ),
-                                  );
-                                },
-                              ),
-                              AnimatedBuilder(
-                                animation: _phaseTimerController,
-                                builder: (context, child) {
-                                  Duration remaining = Duration(
-                                      seconds:
-                                          _phaseTimerController.remainingTime);
-                                  String minutes = remaining.inMinutes
-                                      .remainder(60)
-                                      .toString()
-                                      .padLeft(2, '0');
-                                  String seconds = remaining.inSeconds
-                                      .remainder(60)
-                                      .toString()
-                                      .padLeft(2, '0');
-                                  return AnimatedOpacity(
-                                    opacity: _opacity,
-                                    duration: const Duration(milliseconds: 500),
-                                    child: Text(
-                                      '$minutes:$seconds',
-                                      style: TextStyle(
-                                        fontSize: 48.0,
-                                        color: currentPhase == 'Hot'
-                                            ? Colors.red
-                                            : currentPhase == 'Cold'
-                                                ? Colors.blue
-                                                : Colors.green,
+            body: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: Theme.of(context).brightness == Brightness.dark
+                      ? [Colors.black, Colors.grey]
+                      : [Colors.white, Colors.grey[200]!],
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: widget.session.temperaturePhases.length,
+                        itemBuilder: (context, index) {
+                          return Text(
+                              'Phase: ${widget.session.temperaturePhases[index].temperature}, Duration: ${widget.session.temperaturePhases[index].duration} seconds');
+                        },
+                      ),
+                      ValueListenableBuilder<Color>(
+                        valueListenable: _progressBarColor,
+                        builder: (context, color, child) {
+                          if (currentPhase != 'End') {
+                            return Column(
+                              children: [
+                                AnimatedBuilder(
+                                  animation: _overallTimerController,
+                                  builder: (context, child) {
+                                    Duration remaining = Duration(
+                                        seconds: _overallTimerController
+                                            .remainingTime);
+                                    String minutes = remaining.inMinutes
+                                        .remainder(60)
+                                        .toString()
+                                        .padLeft(2, '0');
+                                    String seconds = remaining.inSeconds
+                                        .remainder(60)
+                                        .toString()
+                                        .padLeft(2, '0');
+                                    return Text(
+                                      'Total time left: $minutes:$seconds',
+                                      style: const TextStyle(
+                                        fontSize: 30.0,
+                                        color: Colors.black,
                                       ),
-                                    ),
-                                  );
-                                },
-                              ),
-                              AnimatedBuilder(
-                                animation: _phaseTimerController,
-                                builder: (context, child) {
-                                  return IconButton(
-                                    icon: Icon(
-                                      _phaseTimerController.state ==
-                                              TimerState.paused
-                                          ? Icons.play_arrow
-                                          : Icons.pause,
-                                      size: 48.0,
-                                      color: _phaseTimerController.state ==
-                                              TimerState.paused
-                                          ? Colors.green
-                                          : Colors.grey,
-                                    ),
+                                    );
+                                  },
+                                ),
+                                AnimatedBuilder(
+                                  animation: _phaseTimerController,
+                                  builder: (context, child) {
+                                    Duration remaining = Duration(
+                                        seconds: _phaseTimerController
+                                            .remainingTime);
+                                    String minutes = remaining.inMinutes
+                                        .remainder(60)
+                                        .toString()
+                                        .padLeft(2, '0');
+                                    String seconds = remaining.inSeconds
+                                        .remainder(60)
+                                        .toString()
+                                        .padLeft(2, '0');
+                                    return AnimatedOpacity(
+                                      opacity: _opacity,
+                                      duration:
+                                          const Duration(milliseconds: 500),
+                                      child: Text(
+                                        '$minutes:$seconds',
+                                        style: TextStyle(
+                                          fontSize: 48.0,
+                                          color: currentPhase == 'Hot'
+                                              ? Colors.red
+                                              : currentPhase == 'Cold'
+                                                  ? Colors.blue
+                                                  : Colors.green,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                AnimatedBuilder(
+                                  animation: _phaseTimerController,
+                                  builder: (context, child) {
+                                    return IconButton(
+                                      icon: Icon(
+                                        _phaseTimerController.state ==
+                                                TimerState.paused
+                                            ? Icons.play_arrow
+                                            : Icons.pause,
+                                        size: 48.0,
+                                        color: _phaseTimerController.state ==
+                                                TimerState.paused
+                                            ? Colors.green
+                                            : Colors.grey,
+                                      ),
+                                      onPressed: () {
+                                        if (_phaseTimerController.state ==
+                                            TimerState.paused) {
+                                          _phaseTimerController.unpauseTimer();
+                                          _overallTimerController
+                                              .unpauseTimer();
+                                        } else {
+                                          _phaseTimerController.pauseTimer();
+                                          _overallTimerController.pauseTimer();
+                                        }
+                                      },
+                                    );
+                                  },
+                                ),
+                                GradientButton(
+                                    text: 'End Session',
                                     onPressed: () {
-                                      if (_phaseTimerController.state ==
-                                          TimerState.paused) {
-                                        _phaseTimerController.unpauseTimer();
-                                        _overallTimerController.unpauseTimer();
-                                      } else {
-                                        _phaseTimerController.pauseTimer();
-                                        _overallTimerController.pauseTimer();
-                                      }
+                                      int timeSpent = widget.session.duration -
+                                          _overallTimerController.remainingTime;
+                                      _phaseTimerController.dispose();
+                                      _overallTimerController.dispose();
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              SessionSummaryScreen(
+                                            session: widget.session,
+                                            timeSpent:
+                                                timeSpent, // Pass the timeSpent here
+                                          ),
+                                        ),
+                                      );
                                     },
-                                  );
-                                },
-                              ),
-                              GradientButton(
-                                  text: 'End Session',
-                                  onPressed: () {
-                                    int timeLeft =
-                                        _overallTimerController.remainingTime;
-                                    // Stop the timers
-                                    _phaseTimerController.dispose();
-                                    _overallTimerController.dispose();
-
-                                    // Navigate to the SessionSummaryScreen
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            SessionSummaryScreen(
-                                          session: widget.session,
+                                    gradientColors: _overallTimerController
+                                                .remainingTime ==
+                                            0
+                                        ? [Colors.green, Colors.green.shade300]
+                                        : [Colors.red, Colors.red.shade300]),
+                              ],
+                            );
+                          } else {
+                            return Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                GradientButton(
+                                    text: 'End Session',
+                                    onPressed: () {
+                                      int timeSpent = widget.session.duration;
+                                      _phaseTimerController.dispose();
+                                      _overallTimerController.dispose();
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              SessionSummaryScreen(
+                                            session: widget.session,
+                                            timeSpent:
+                                                timeSpent, // Pass the timeSpent here
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                  gradientColors:
-                                      _overallTimerController.remainingTime == 0
-                                          ? [
-                                              Colors.green,
-                                              Colors.green.shade300
-                                            ]
-                                          : [Colors.red, Colors.red.shade300]),
-                            ],
-                          );
-                        } else {
-                          return Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              GradientButton(
-                                  text: 'End Session',
-                                  onPressed: () {
-                                    int timeLeft =
-                                        _overallTimerController.remainingTime;
-                                    // Stop the timers
-                                    _phaseTimerController.dispose();
-                                    _overallTimerController.dispose();
-
-                                    // Navigate to the SessionSummaryScreen
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            SessionSummaryScreen(
-                                          session: widget.session,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  gradientColors:
-                                      _overallTimerController.remainingTime == 0
-                                          ? [
-                                              Colors.green,
-                                              Colors.green.shade300
-                                            ]
-                                          : [Colors.red, Colors.red.shade300]),
-                            ],
-                          );
-                        }
-                      },
-                    ),
-                  ],
+                                      );
+                                    },
+                                    gradientColors: _overallTimerController
+                                                .remainingTime ==
+                                            0
+                                        ? [Colors.green, Colors.green.shade300]
+                                        : [Colors.red, Colors.red.shade300]),
+                              ],
+                            );
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

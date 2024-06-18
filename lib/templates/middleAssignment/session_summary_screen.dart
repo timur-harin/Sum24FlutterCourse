@@ -6,10 +6,12 @@ import 'main.dart';
 
 class SessionSummaryScreen extends StatefulWidget {
   final ShowerSession session;
+  final int timeSpent;
 
   const SessionSummaryScreen({
     super.key,
     required this.session,
+    required this.timeSpent,
   });
 
   @override
@@ -18,7 +20,7 @@ class SessionSummaryScreen extends StatefulWidget {
 
 class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
   String comments = '';
-  double rating = 0.0; // Add this line to hold the current rating
+  double rating = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +32,8 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
-            ...widget.session.temperaturePhases.map((phase) => Text(
-                'Phase: ${phase.temperature}, Duration: ${phase.duration} seconds')),
+            Text(
+                'Session duration: ${widget.timeSpent} seconds'),
             TextField(
               onChanged: (value) {
                 setState(() {
@@ -66,6 +68,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                   comments: comments,
                   temperaturePhases: widget.session.temperaturePhases,
                   rating: rating,
+                  overallDuration: widget.timeSpent,
                 );
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 List<String> sessionStrings =

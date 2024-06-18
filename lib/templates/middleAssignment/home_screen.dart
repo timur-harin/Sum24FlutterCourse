@@ -59,11 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 return Card(
-                  // Wrap ListTile with a Card widget
                   child: ListTile(
                     title: Text(snapshot.data![index].name),
                     subtitle: Text(
-                        'Duration: ${snapshot.data![index].duration} seconds'),
+                        'Duration: ${snapshot.data![index].overallDuration} seconds'),
                     trailing: Text('Rating: ${snapshot.data![index].rating}'),
                     onTap: () {
                       Navigator.push(

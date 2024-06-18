@@ -36,12 +36,14 @@ class ShowerSession {
   final String comments;
   final List<TemperaturePhase> temperaturePhases;
   final double rating;
+  final int overallDuration;
 
   ShowerSession({
     required this.name,
     required this.comments,
     required this.temperaturePhases,
     required this.rating,
+    required this.overallDuration,
   });
 
   int get duration =>
@@ -66,6 +68,7 @@ class ShowerSession {
       comments: map['comments'],
       temperaturePhases: temperaturePhasesFromMap,
       rating: map['rating'],
+      overallDuration: map['overallDuration'] ?? 0,
     );
   }
 
@@ -81,6 +84,7 @@ final showerSessionProvider = riverpod.StateProvider<ShowerSession>((ref) {
     comments: '',
     temperaturePhases: [],
     rating: 0.0,
+    overallDuration: 0,
   );
 });
 
