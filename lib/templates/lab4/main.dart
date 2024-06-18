@@ -18,9 +18,11 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends ConsumerWidget {
+  const MyHomePage({super.key});
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter Tasks'),
@@ -40,13 +42,15 @@ class MyHomePage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
+                ref.read(counterProvider.notifier).state++;
                 // Exercise 2 - Use Provider for state management
                 // Increment the counter
               },
-              child: Text('Provider Task'),
+              child: Text('Provider Task ${ref.watch(counterProvider)}'),
             ),
             ElevatedButton(
               onPressed: () {
+                ref.read(counterProvider.notifier);
                 // TODO
                 // Exercise 3 - Use Riverpod for state management
                 // Increment the counter
@@ -75,14 +79,31 @@ class MyHomePage extends StatelessWidget {
 }
 
 Future<String> fetchData() async {
+  var url = Uri.parse('https://jsonplaceholder.typicode.com/posts/1');
+  var response = await http.get(url);
+
+
   // TODO get json from url and show as text
   // 'https://jsonplaceholder.typicode.com/posts/1'
 
-  return 'data';
+  return response.body;
 }
 
 final counterProvider = StateProvider<int>((ref) => 0);
+final counterNotifier = StateNotifierProvider<CounterNotifier, int>((ref) {
+  return CounterNotifier(0);
+});
 
+
+class CounterNotifier extends StateNotifier<int> {
+  CounterNotifier(super.state);
+
+  void increment() {
+    state++;
+  }
+
+
+}
 // TODO create a state notifier
 // final 
 
