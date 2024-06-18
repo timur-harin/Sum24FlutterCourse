@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'homePage_screen.dart';
 
 void main() {
-  runApp(const MiddleAssigmentApp());
+  runApp(
+    ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
-class MiddleAssigmentApp extends StatelessWidget {
-  const MiddleAssigmentApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Middle Assigment',
+      title: 'Contrast Shower',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // TODO - complete assignment
-      home: null,
+      home: HomepageScreen(),
     );
   }
 }
