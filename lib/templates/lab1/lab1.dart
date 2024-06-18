@@ -23,6 +23,7 @@ class LAb1HomePage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Lab 1'),
+        title: const Text('Lab 1'),
       ),
       body: myWidget(),
     );
