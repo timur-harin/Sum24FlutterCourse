@@ -50,7 +50,8 @@ class MyHomePage extends ConsumerWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                ref.read(counterProvider.notifier);
+                ref.read(counterNotifier.notifier).increment();
+                print('Riverpod Task ${ref.watch(counterNotifier)}');
                 // TODO
                 // Exercise 3 - Use Riverpod for state management
                 // Increment the counter
@@ -59,18 +60,19 @@ class MyHomePage extends ConsumerWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                // TODO 
-                // Exercise 4 - Make an HTTP request using the HTTP package
+                await httpTask();
               },
               child: Text('HTTP Task'),
             ),
             ElevatedButton(
               onPressed: () async {
-                // TODO
-                // Exercise 5 - Make an HTTP request using Dio and show it in App Screen
+                Map<String, dynamic> result = await dioTask();
+                ref.read(responseProvider.notifier).state = result["response"].toString();
+                ref.read(statusCodeProvider.notifier).state = result["status_code"];
               },
               child: Text('Dio Task'),
             ),
+            Text(ref.watch(responseProvider)),
           ],
         ),
       ),
@@ -89,10 +91,31 @@ Future<String> fetchData() async {
   return response.body;
 }
 
+Future<String> httpTask() async {
+  var url = Uri.parse('https://jsonplaceholder.typicode.com/posts/1');
+  var response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    return response.body;
+  } else {
+    return "Error. Status code ${response.statusCode}";
+  }
+}
+
+
+Future<Map<String, dynamic>> dioTask() async {
+  final dio = Dio();
+  final response = await dio.get('https://jsonplaceholder.typicode.com/posts/1');
+  // print(response);
+  return {"status_code": response.statusCode, "response": response.data};
+}
+
 final counterProvider = StateProvider<int>((ref) => 0);
 final counterNotifier = StateNotifierProvider<CounterNotifier, int>((ref) {
   return CounterNotifier(0);
 });
+final responseProvider = StateProvider<String>((ref) => "no response");
+final statusCodeProvider = StateProvider<int>((ref) => 404);
 
 
 class CounterNotifier extends StateNotifier<int> {
