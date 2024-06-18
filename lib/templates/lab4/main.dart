@@ -1,6 +1,8 @@
+
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
+import 'package:http;ab/http.dart' as http;
 import 'package:dio/dio.dart';
 
 void main() {
@@ -18,9 +20,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final counter = ref.watch(counterProvider);
+    final notifier = ref.watch(stateNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter Tasks'),
@@ -29,44 +34,11 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ElevatedButton(
-              onPressed: () async {
-                // TODO
-                // Exercise 1 - Perform an async operation using async/await
-                String result = await fetchData();
-                print(result);
-              },
-              child: Text('Async/Await Task'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Exercise 2 - Use Provider for state management
-                // Increment the counter
-              },
-              child: Text('Provider Task'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // TODO
-                // Exercise 3 - Use Riverpod for state management
-                // Increment the counter
-              },
-              child: Text('Riverpod Task'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                // TODO 
-                // Exercise 4 - Make an HTTP request using the HTTP package
-              },
-              child: Text('HTTP Task'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                // TODO
-                // Exercise 5 - Make an HTTP request using Dio and show it in App Screen
-              },
-              child: Text('Dio Task'),
-            ),
+            AsyncAwaitTaskButton(),
+            ProviderTaskButton(ref: ref, counter: counter),
+            RiverpodTaskButton(notifier: notifier),
+            HttpTaskButton(),
+            DioTaskButton(),
           ],
         ),
       ),
@@ -74,16 +46,128 @@ class MyHomePage extends StatelessWidget {
   }
 }
 
-Future<String> fetchData() async {
-  // TODO get json from url and show as text
-  // 'https://jsonplaceholder.typicode.com/posts/1'
+class AsyncAwaitTaskButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        String result = await fetchData();
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Task1(text: result)));
+      },
+      child: Text('Async/Await Task'),
+    );
+  }
 
-  return 'data';
+  Future<String> fetchData() async {
+    final link = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
+
+    if (link.statusCode == 200) {
+      return utf8.decode(link.bodyBytes); // Преобразование Uint8List в строку
+    } else {
+      throw Exception('Failed to load Data');
+    }
+  }
+}
+
+class ProviderTaskButton extends StatelessWidget {
+  final int counter; // Добавляем counter как параметр
+  final WidgetRef ref;
+
+  const ProviderTaskButton({Key? key, required this.counter, required this.ref}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        ref.read(counterProvider.notifier).state++;
+      },
+      child: Text('Provider Task: $counter'), // Теперь counter определен
+    );
+  }
+}
+
+class RiverpodTaskButton extends StatelessWidget {
+  final CounterNotifier notifier;
+
+  const RiverpodTaskButton({Key? key, required this.notifier}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        notifier.increment();
+      },
+      child: Text('Riverpod Task: ${notifier.counter}'),
+    );
+  }
+}
+
+class HttpTaskButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
+        if (response.statusCode == 200) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => Task1(text: response.body)));
+        } else {
+          print('Failed to load Data');
+        }
+      },
+      child: Text('HTTP Task'),
+    );
+  }
+}
+
+class DioTaskButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        final dio = Dio();
+        final response = await dio.get('https://jsonplaceholder.typicode.com/posts/1');
+        if (response.statusCode == 200) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => Task1(text: response.data.toString())));
+        } else {
+          print('Failed to load Data');
+        }
+      },
+      child: Text('Dio Task'),
+    );
+  }
+}
+
+class Task1 extends StatelessWidget {
+  final String text;
+  const Task1({Key? key, required this.text}) : super(key: key);
+
+@override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(text)
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 final counterProvider = StateProvider<int>((ref) => 0);
 
-// TODO create a state notifier
-// final 
+class CounterNotifier extends ChangeNotifier {
+  int _counter = 0;
 
-// TODO create class for state notifier
+  int get counter => _counter;
+
+  void increment() {
+    _counter++;
+    notifyListeners();
+  }
+}
+
+final stateNotifierProvider = ChangeNotifierProvider((ref) => CounterNotifier());
