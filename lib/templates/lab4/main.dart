@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -18,9 +18,11 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends ConsumerWidget {
+  const MyHomePage({super.key});
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter Tasks'),
@@ -31,39 +33,64 @@ class MyHomePage extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               onPressed: () async {
-                // TODO
-                // Exercise 1 - Perform an async operation using async/await
                 String result = await fetchData();
                 print(result);
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Alert!!!'),
+                        content: Text(result),
+                      );
+                    });
               },
               child: Text('Async/Await Task'),
             ),
             ElevatedButton(
               onPressed: () {
-                // Exercise 2 - Use Provider for state management
-                // Increment the counter
+                ref.watch(counterProvider.notifier).state++;
               },
-              child: Text('Provider Task'),
+              child:
+                  Text('Provider Task, counter: ${ref.watch(counterProvider)}'),
             ),
             ElevatedButton(
               onPressed: () {
-                // TODO
-                // Exercise 3 - Use Riverpod for state management
-                // Increment the counter
+                ref.watch(counterProviderRP.notifier).add(1);
               },
-              child: Text('Riverpod Task'),
+              child: Text(
+                  'Riverpod Task, counter: ${ref.watch(counterProviderRP)}'),
             ),
             ElevatedButton(
               onPressed: () async {
-                // TODO 
-                // Exercise 4 - Make an HTTP request using the HTTP package
+                final url =
+                    Uri.parse('https://jsonplaceholder.typicode.com/posts/11');
+
+                final response = await http.get(url);
+
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Alert!!!'),
+                        content: Text(response.body.toString()),
+                      );
+                    });
               },
               child: Text('HTTP Task'),
             ),
             ElevatedButton(
               onPressed: () async {
-                // TODO
-                // Exercise 5 - Make an HTTP request using Dio and show it in App Screen
+                final url =
+                    Uri.parse('https://jsonplaceholder.typicode.com/posts/8');
+                final response = await Dio().get(url.toString());
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Alert!!!'),
+                        content: Text(response.data.toString()),
+                      );
+                    });
               },
               child: Text('Dio Task'),
             ),
@@ -75,15 +102,25 @@ class MyHomePage extends StatelessWidget {
 }
 
 Future<String> fetchData() async {
-  // TODO get json from url and show as text
-  // 'https://jsonplaceholder.typicode.com/posts/1'
+  final url = Uri.parse('https://jsonplaceholder.typicode.com/posts/1');
 
-  return 'data';
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    return response.body;
+  } else {
+    return 'Request failed with status: ${response.statusCode}.';
+  }
 }
 
 final counterProvider = StateProvider<int>((ref) => 0);
 
-// TODO create a state notifier
-// final 
+class CounterState extends StateNotifier<int> {
+  CounterState(super.state);
+  void add(int value) {
+    state += value;
+  }
+}
 
-// TODO create class for state notifier
+final counterProviderRP =
+    StateNotifierProvider<CounterState, int>((ref) => CounterState(0));
