@@ -15,6 +15,5 @@ class WorkoutProvider extends ChangeNotifier {
     _workouts.add(workout);
     notifyListeners();
   }
-
-  
+ 
 }
