@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'PickerValues.dart';
 import 'homeScreen.dart';
+import 'ShowerCycle.dart';
+import 'storage.dart';
 
 class CycleSettingsScreen extends StatefulWidget{
   const CycleSettingsScreen({super.key});
@@ -11,16 +13,39 @@ class CycleSettingsScreen extends StatefulWidget{
 }
 
 class _CycleSettingsScreen extends State<CycleSettingsScreen> {
-  int _coldCycleLength = 0;
-  int _hotCycleLength = 0;
-  int _numberOfCycles = 0;
+  int _coldCycleLength = 1;
+  int _hotCycleLength = 1;
+  int _numberOfCycles = 1;
+  bool _extraShowerPhase = false;
+  String _beginningPhase = "Hot water";
+  Color _beginningPhaseColor = Colors.red;
+
+  final LocalStorage _localStorage = LocalStorage();
+
+  void _saveShowerCycle() async {
+    ShowerCycle showerCycle = ShowerCycle(
+        hotWaterMinutes: _hotCycleLength,
+        coldWaterMinutes: _coldCycleLength,
+        numberOfCycles: _numberOfCycles,
+        startingPhase: _beginningPhase,
+        includeAdditionalTemperatureChange: _extraShowerPhase
+    );
+
+    await _localStorage.saveShower(showerCycle);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Shower cycle saved successfully!')),
+    );
+
+    // Navigate back to the home screen and update the history
+    Navigator.pop(context, true);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.push(
+              Navigator.pop(
                   context,
                   MaterialPageRoute(
                       builder: (context) => const Home()
@@ -122,14 +147,65 @@ class _CycleSettingsScreen extends State<CycleSettingsScreen> {
           const SizedBox(
             height: 30,
           ),
-          ElevatedButton(
-              onPressed: () {},
-              child: IconButton(
-                icon: const Icon(
-                  Icons.play_arrow,
-                  color: Colors.blue,
+          Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Extra shower phase: ",
                 ),
-                onPressed: () {},
+                Checkbox(
+                    value: _extraShowerPhase,
+                    activeColor: Colors.blue,
+                    hoverColor: Colors.cyan,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _extraShowerPhase = value!;
+                      });
+                    }
+                )
+              ],
+            ),
+          ),
+          Center(
+            child: CupertinoButton(
+              color: _beginningPhaseColor,
+              child: Text("Beginning phase: $_beginningPhase"),
+              onPressed: () => showCupertinoModalPopup(
+                context: context,
+                builder: (_) => SizedBox(
+                  width: double.infinity,
+                  height: 250,
+                  child: CupertinoPicker(
+                    backgroundColor: Colors.white,
+                    itemExtent: 30,
+                    scrollController: FixedExtentScrollController(
+                        initialItem: _beginningPhase == "Hot water" ? 0 : 1
+                    ),
+                    children: const [
+                      Text("Hot water"),
+                      Text("Cold water"),
+                    ],
+                    onSelectedItemChanged: (int value) {
+                      setState(() {
+                        _beginningPhase = value == 0 ? "Hot water" : "Cold water";
+                        _beginningPhaseColor = value == 0 ? Colors.red : Colors.blue;
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+
+          ElevatedButton(
+              onPressed: _saveShowerCycle,
+              child: const Icon(
+                Icons.play_arrow,
+                color: Colors.blue,
               )
           )
         ]
