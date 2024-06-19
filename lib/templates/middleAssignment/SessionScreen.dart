@@ -3,18 +3,78 @@ import 'dart:async';
 import 'HistoryScreen.dart';
 import 'SessionSummary.dart';
 
-class SessionScreen extends StatefulWidget {
+abstract class Phase {
+  int get duration;
+}
+
+class HotPhase implements Phase {
+  @override
+  final int duration;
+  HotPhase(this.duration);
+}
+
+class ColdPhase implements Phase {
+  @override
+  final int duration;
+  ColdPhase(this.duration);
+}
+
+mixin PhaseManagement on StatefulWidget {
+  late Phase currentPhase;
+  bool isHotPhase = true;
+
+  void updatePhase(ShowerSession session) {
+    currentPhase = isHotPhase 
+        ? HotPhase(session.preferences.hotWaterDuration)
+        : ColdPhase(session.preferences.coldWaterDuration);
+  }
+
+  void switchPhase(ShowerSession session) {
+    isHotPhase = !isHotPhase;
+    session.phasesCompleted++;
+    updatePhase(session);
+  }
+}
+
+class UserPreferences {
   final int sessionDuration;
   final int hotWaterDuration;
   final int coldWaterDuration;
   final bool startWithHotWater;
-  int phasesCompleted = 0;
-  SessionScreen({
+
+  UserPreferences({
     required this.sessionDuration,
     required this.hotWaterDuration,
     required this.coldWaterDuration,
     required this.startWithHotWater,
   });
+}
+
+class ShowerSession {
+  final UserPreferences preferences;
+  int phasesCompleted = 0;
+  bool _hotPhase;
+
+  ShowerSession(this.preferences)
+      : _hotPhase = preferences.startWithHotWater {
+    _updatePhase();
+  }
+
+  void _updatePhase() {
+    // Implementation for internal phase update
+  }
+
+  int get phaseDuration => _hotPhase 
+      ? preferences.hotWaterDuration 
+      : preferences.coldWaterDuration;
+  
+  bool get isHotPhase => _hotPhase;
+}
+
+class SessionScreen extends StatefulWidget with PhaseManagement {
+  final UserPreferences preferences;
+
+  SessionScreen({required this.preferences});
 
   @override
   _SessionScreenState createState() => _SessionScreenState();
@@ -22,20 +82,20 @@ class SessionScreen extends StatefulWidget {
 
 class _SessionScreenState extends State<SessionScreen> {
   Timer? _timer;
-  int _start = 0;
-  int _phaseTime = 0;
+  int _elapsedTime = 0;
+  int _phaseElapsedTime = 0;
   bool _sessionStarted = false;
-  late bool _hotPhase;
-  late int _phaseDuration;
   bool _isPaused = false;
+  late ShowerSession _session;
   SessionHistory historyScreen = SessionHistory();
   int _phaseTimer = 0;
+
   @override
   void initState() {
     super.initState();
-    _hotPhase = widget.startWithHotWater;
-    _phaseDuration = _hotPhase ? widget.hotWaterDuration : widget.coldWaterDuration;
-    _phaseTimer =  _phaseDuration;
+    _session = ShowerSession(widget.preferences);
+    widget.updatePhase(_session);
+    _phaseTimer = widget.currentPhase.duration;
   }
 
   @override
@@ -46,32 +106,31 @@ class _SessionScreenState extends State<SessionScreen> {
 
   void _switchPhase() {
     setState(() {
-      _hotPhase = !_hotPhase;
-      _phaseDuration = _hotPhase ? widget.hotWaterDuration : widget.coldWaterDuration;
-      widget.phasesCompleted++;
+      widget.switchPhase(_session);
+      _phaseTimer = widget.currentPhase.duration;
     });
   }
 
-  void phaseTimer() {
-    if (_phaseTime >= _phaseDuration) {
+  void _phaseTimerHandler() {
+    if (_phaseElapsedTime >= widget.currentPhase.duration) {
       _switchPhase();
-      _phaseTime = 0;
+      _phaseElapsedTime = 0;
     }
   }
 
-  void startTimer() {
+  void _startTimer() {
     const oneSec = Duration(seconds: 1);
     _timer?.cancel();
-    
+
     _timer = Timer.periodic(
       oneSec,
       (Timer timer) => setState(
         () {
-          _start++;
-          _phaseTime++;
-          _phaseTimer =  _phaseDuration - _phaseTime;
-          phaseTimer();
-          if (_start >= widget.sessionDuration) {
+          _elapsedTime++;
+          _phaseElapsedTime++;
+          _phaseTimer = widget.currentPhase.duration - _phaseElapsedTime;
+          _phaseTimerHandler();
+          if (_elapsedTime >= widget.preferences.sessionDuration) {
             _stopSession();
           }
         },
@@ -82,28 +141,23 @@ class _SessionScreenState extends State<SessionScreen> {
   void _startSession() {
     setState(() {
       _sessionStarted = true;
-      startTimer();
+      _startTimer();
     });
   }
 
   void _stopSession() {
     _timer?.cancel();
-    SessionScreen session = SessionScreen(
-      sessionDuration: widget.sessionDuration,
-      hotWaterDuration: widget.hotWaterDuration,
-      coldWaterDuration: widget.coldWaterDuration,
-      startWithHotWater: widget.startWithHotWater,
-    );
-    historyScreen.addSession(session);
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SummaryScreen(session: session)),
+      MaterialPageRoute(
+        builder: (context) => SessionSummary(session: _session),
+      ),
     );
-  } 
+  }
 
   void _pauseOrResumeTimer() {
     if (_isPaused) {
-      startTimer();
+      _startTimer();
     } else {
       _timer?.cancel();
     }
@@ -114,10 +168,11 @@ class _SessionScreenState extends State<SessionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int minutes = _start ~/ 60;
-    int seconds = _start % 60;
+    int minutes = _elapsedTime ~/ 60;
+    int seconds = _elapsedTime % 60;
     int phaseTimerMinutes = _phaseTimer ~/ 60;
     int phaseTimerSeconds = _phaseTimer % 60;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Session Screen'),
@@ -129,36 +184,37 @@ class _SessionScreenState extends State<SessionScreen> {
             radius: 1.0,
             colors: [
               Colors.white,
-              _hotPhase ? Colors.red : Colors.blue,
+              widget.isHotPhase ? Colors.red : Colors.blue,
             ],
           ),
         ),
         child: Center(
-          child: Column (
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-              "Session Duration: ${widget.sessionDuration}",
-              style: const TextStyle(
-                fontSize: 16.0,
-                color: Colors.black,
-              ),
-              ),
-              Text(
-                "Hot Water Duration: ${widget.hotWaterDuration}",
+                "Session Duration: ${widget.preferences.sessionDuration}",
                 style: const TextStyle(
                   fontSize: 16.0,
                   color: Colors.black,
                 ),
               ),
               Text(
-                "Cold Water Duration: ${widget.coldWaterDuration}",
+                "Hot Water Duration: ${widget.preferences.hotWaterDuration}",
                 style: const TextStyle(
                   fontSize: 16.0,
                   color: Colors.black,
                 ),
               ),
-              Text(widget.startWithHotWater ? 'Start with Hot Water' : 'Start with Cold Water',
+              Text(
+                "Cold Water Duration: ${widget.preferences.coldWaterDuration}",
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                widget.preferences.startWithHotWater ? 'Start with Hot Water' : 'Start with Cold Water',
                 style: const TextStyle(
                   fontSize: 16.0,
                   color: Colors.black,
@@ -169,7 +225,7 @@ class _SessionScreenState extends State<SessionScreen> {
                 '${phaseTimerMinutes}m ${phaseTimerSeconds}s',
                 style: TextStyle(
                   fontSize: 50.0,
-                  color: _hotPhase ? Colors.red : Colors.blue,
+                  color: widget.isHotPhase ? Colors.red : Colors.blue,
                 ),
               ),
               Text(
@@ -178,17 +234,23 @@ class _SessionScreenState extends State<SessionScreen> {
               ),
               ElevatedButton(
                 onPressed: _sessionStarted ? null : _startSession,
-                child: Text('Start Session'),
+                child: const Text(
+                  'Start Session',
+                  style: TextStyle(color: Colors.amber),
+                ),
               ),
               SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _sessionStarted ? _pauseOrResumeTimer : null,
-                child: Text(_isPaused ? 'Resume Timer' : 'Pause Timer'),
+                child: Text(
+                  _isPaused ? 'Resume Timer' : 'Pause Timer',
+                  style: const TextStyle(color: Colors.amber),
+                ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _sessionStarted ? _stopSession : null,
-                child: Text('End Session'),
+                child: const Text('End Session', style: TextStyle(color: Colors.amber),),
               ),
             ],
           ),
