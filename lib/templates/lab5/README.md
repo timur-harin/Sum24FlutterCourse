@@ -8,6 +8,6 @@
 
 - for using freezed for use post https://jsonplaceholder.typicode.com/users
 
-- generated route flutter app with undifined page with cat status code using api
+- generated route flutter app with undefined page with cat status code using api
 
 -  put argument in route navigation
