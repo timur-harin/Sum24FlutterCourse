@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             ElevatedButton(
-              child: Text('Show Cat Status'),
+              child: Text('Cat Status'),
               onPressed: () {
                 Navigator.pushNamed(context, '/${_controller.text}');
               },
