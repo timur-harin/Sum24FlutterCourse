@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'screen.dart';
 
 void main() {
-  runApp(const MiddleAssigmentApp());
+  runApp(
+    const ProviderScope(
+      child: MiddleAssigmentApp(),
+    ),
+  );
 }
 
 class MiddleAssigmentApp extends StatelessWidget {
@@ -11,11 +18,11 @@ class MiddleAssigmentApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Middle Assigment',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // TODO - complete assignment
-      home: null,
+      home: const HomeScreen(),
     );
   }
 }
