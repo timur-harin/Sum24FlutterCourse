@@ -26,15 +26,7 @@ class _Sessionsettings extends State<SessionSettings> {
     return Scaffold(
       backgroundColor: Color(0xFFFFFFE0), // Light yellow background
       appBar: AppBar(
-        title: Text("AppBar"),
-        backgroundColor: Colors.green,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            // Session input box
-            TextField(
+        title: TextField(
               decoration: InputDecoration(
                 hintText: "Session Title",
                 filled: true,
@@ -44,6 +36,12 @@ class _Sessionsettings extends State<SessionSettings> {
                 ),
               ),
             ),
+        backgroundColor: Colors.blue[400],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
             SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
@@ -78,20 +76,57 @@ class _Sessionsettings extends State<SessionSettings> {
                 },
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Text("START"),
-                ),
-                SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: _addBox,
-                  child: Text("ADD"),
-                ),
-              ],
+            Container(
+              height: 65,
+              width: 250,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                color: Colors.blue[400],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Spacer(),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text(
+                      "START",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.all(15.0),
+                      backgroundColor: Colors.blue[600],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0), // Rounded border for the button
+                      ),
+                    ),
+                  ),
+                  Spacer(),
+                  ElevatedButton(
+                    onPressed: _addBox,
+                    child: Text(
+                      "ADD",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.all(15.0),
+                      backgroundColor: Colors.blue[600],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0), // Rounded border for the button
+                      ),
+                    ),
+                  ),
+                  Spacer(),
+                ],
+              ),
             ),
+            SizedBox(height: 50),
           ],
         ),
       ),
