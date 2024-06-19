@@ -8,25 +8,26 @@
             "name": "lab3",
             "request": "launch",
             "type": "dart",
-            "program": "lib/templates/lab3/main.dart"
+            "deviceId": "chrome",
+            "program": "lib/lab_templates/lab3/main.dart"
         },
         {
             "name": "lab2",
             "request": "launch",
             "type": "dart",
-            "program": "lib/templates/lab2/lab2.dart"
+            "program": "lib/lab_templates/lab2/lab2.dart"
         },
         {
             "name": "lab1",
             "request": "launch",
             "type": "dart",
-            "program": "lib/templates/lab1/lab1.dart"
+            "program": "lib/lab_templates/lab1/lab1.dart"
         },
         {
             "name": "middleAssignment",
             "request": "launch",
             "type": "dart",
-            "program": "lib/templates/middleAssignment/main.dart"
+            "program": "lib/lab_templates/middleAssignment/main.dart"
         }
     ]
 }

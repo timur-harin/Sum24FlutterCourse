@@ -1,4 +1,4 @@
-import 'package:education/templates/lab3/painter.dart';
+import 'package:education/lab_templates/lab3/painter.dart';
 import 'package:flutter/material.dart';
 
 class HydrationWidget extends StatefulWidget {
