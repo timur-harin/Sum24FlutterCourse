@@ -1,0 +1,11 @@
+dependencies:
+  flutter:
+    sdk: flutter
+  freezed_annotation: ^2.1.0
+  json_annotation: ^4.7.0
+  http: ^0.13.3
+
+dev_dependencies:
+  build_runner: ^2.1.7
+  freezed: ^2.1.0
+  json_serializable: ^6.1.5
