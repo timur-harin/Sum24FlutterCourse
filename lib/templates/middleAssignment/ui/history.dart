@@ -27,8 +27,8 @@ class HistoryItem {
   }
 }
 
-class SessionHistoryScreen extends ConsumerWidget {
-  const SessionHistoryScreen({super.key});
+class SessionHistoryList extends ConsumerWidget {
+  const SessionHistoryList({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -52,8 +52,10 @@ class SessionHistoryScreen extends ConsumerWidget {
                           ),
                         );
                       },
-                      separatorBuilder: (context, index) => const
-                      Divider(indent: 64.0, endIndent: 16.0,),
+                      separatorBuilder: (context, index) => const Divider(
+                        indent: 64.0,
+                        endIndent: 16.0,
+                      ),
                     ))
             : const Center(
                 child: Text('There\'s nothing yet'),

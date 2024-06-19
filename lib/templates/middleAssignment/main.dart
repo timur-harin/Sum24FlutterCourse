@@ -1,4 +1,4 @@
-import 'package:education/templates/middleAssignment/screens/history.dart';
+import 'package:education/templates/middleAssignment/ui/history.dart';
 import 'package:education/templates/middleAssignment/screens/session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +24,7 @@ class _MiddleAssignmentAppState extends State<MiddleAssigmentApp> {
   int _index = 0;
   static const List<Widget> _screens = [
     ShowerSessionScreen(),
-    SessionHistoryScreen(),
+    SessionHistory(),
   ];
 
   @override
