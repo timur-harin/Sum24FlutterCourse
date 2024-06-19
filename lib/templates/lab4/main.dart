@@ -35,8 +35,8 @@ class MyHomePage extends StatelessWidget {
           // mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             const Text("You tapped this many times:"),
-            provider.Consumer(builder: (context, counter, child) => Text(
-              "${counter?.value}"),),
+            provider.Consumer<Counter>(builder: (context, counter, child) => Text(
+              "${counter.value}"),),
             ElevatedButton(
               onPressed: () async {
                 String result = await fetchData();
@@ -109,7 +109,7 @@ Future<String> fetchData() async {
 }
 
 Future<String> fetchDataWithHTTP() async {
-  final response = await http.get(Uri.parse("https://jsonplaceholder.typicode.com/posts/1"))
+  final response = await http.get(Uri.parse("https://jsonplaceholder.typicode.com/posts/1"));
 
   return "${response.statusCode} with ${response.toString()}.";
 }
