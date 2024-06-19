@@ -1,11 +1,11 @@
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'dart:convert';
 
 class Post {
   //http://jsonplaceholder.typicode.com/posts
 
   final int userId;
-  final String id;
+  final int id;
   final String title;
   final String body;
 
@@ -35,7 +35,18 @@ class Post {
 }
 
 Future<List<Post>> fetchPosts() async {
-  // TODO task 1.2 to make this function for url http://jsonplaceholder.typicode.com/posts
-  // // Using fabric from class
-  return [];
+  // Task 1.2
+
+  final List<Post> postsList = [];
+  final response = await get(Uri.parse("http://jsonplaceholder.typicode.com/posts"));
+
+  if (response.statusCode == 200) {
+    List<dynamic> posts = jsonDecode(response.body);
+    for (var post in posts) {
+      postsList.add(Post.fromJson(post));
+    }
+    return postsList;
+  } else {
+    throw Exception('Failed to load posts. Status: ${response.statusCode}');
+  }
 }
