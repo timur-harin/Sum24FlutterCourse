@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
+import 'package:provider/provider.dart' as provider;
+import 'theme.dart';
+import 'app_bar.dart';
 
 class SessionDetailsScreen extends StatelessWidget {
   final ShowerSession session;
@@ -9,15 +12,12 @@ class SessionDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Session Details'),
-      ),
+      appBar: CustomAppBar(title: 'Session "${session.name}" Details'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
-            Text(
-                'Total session duration: ${session.overallDuration} seconds'),
+            Text('Total session duration: ${session.overallDuration} seconds'),
             Text('Comments: ${session.comments}'),
             Text('Rating: ${session.rating}'),
           ],

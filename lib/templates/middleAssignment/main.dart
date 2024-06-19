@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'home_screen.dart';
 import 'theme.dart';
 import 'package:provider/provider.dart';
+import 'shared_preferences_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,6 +57,7 @@ class ShowerSession {
       'temperaturePhases':
           temperaturePhases.map((phase) => phase.toMap()).toList(),
       'rating': rating,
+      'overallDuration': overallDuration,
     };
   }
 
@@ -117,3 +119,4 @@ class UserPreferences {
       {required this.preferredSessionDuration,
       required this.preferredTemperatureIntervals});
 }
+

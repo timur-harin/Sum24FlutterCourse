@@ -7,6 +7,7 @@ import 'package:gradient_coloured_buttons/gradient_coloured_buttons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'main.dart';
+import 'app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,19 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Contrast Shower Companion'),
-        actions: <Widget>[
-          Switch.adaptive(
-            value: themeProvider.isDarkMode(context),
-            onChanged: (value) {
-              themeProvider.toggleTheme(value);
-            },
-          ),
-        ],
-      ),
+      appBar: CustomAppBar(title: 'Home'),
       body: FutureBuilder(
         future: _previousSessions,
         builder: (context, AsyncSnapshot<List<ShowerSession>> snapshot) {
@@ -63,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: Text(snapshot.data![index].name),
                     subtitle: Text(
                         'Duration: ${snapshot.data![index].overallDuration} seconds'),
+                    // Display overallDuration here
                     trailing: Text('Rating: ${snapshot.data![index].rating}'),
                     onTap: () {
                       Navigator.push(

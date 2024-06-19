@@ -2,6 +2,9 @@ import 'session_overview_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_coloured_buttons/gradient_coloured_buttons.dart';
 import 'main.dart';
+import 'package:provider/provider.dart' as provider;
+import 'theme.dart';
+import 'app_bar.dart';
 
 class SessionPreferencesScreen extends StatefulWidget {
   const SessionPreferencesScreen({super.key});
@@ -19,9 +22,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Session Preferences'),
-      ),
+      appBar: CustomAppBar(title: 'Session Preferences'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

@@ -2,7 +2,9 @@ import 'active_session_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_coloured_buttons/gradient_coloured_buttons.dart';
 import 'main.dart';
-
+import 'package:provider/provider.dart' as provider;
+import 'theme.dart';
+import 'app_bar.dart';
 class SessionOverviewScreen extends StatelessWidget {
   final ShowerSession session;
 
@@ -14,9 +16,7 @@ class SessionOverviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Session "${session.name}" Overview'),
-      ),
+      appBar: CustomAppBar(title: 'Session "${session.name}" Overview'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

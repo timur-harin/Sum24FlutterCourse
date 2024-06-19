@@ -1,8 +1,13 @@
+import 'package:education/templates/middleAssignment/shared_preferences_service.dart';
+
 import 'star_rating.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_coloured_buttons/gradient_coloured_buttons.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'main.dart';
+import 'package:provider/provider.dart' as provider;
+import 'theme.dart';
+import 'app_bar.dart';
 
 class SessionSummaryScreen extends StatefulWidget {
   final ShowerSession session;
@@ -16,24 +21,25 @@ class SessionSummaryScreen extends StatefulWidget {
 
   @override
   _SessionSummaryScreenState createState() => _SessionSummaryScreenState();
+
+  get _timeSpent => timeSpent;
 }
 
 class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
   String comments = '';
   double rating = 0.0;
+  int timeSpent = 0;
+  final prefs = SharedPreferencesService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Session ${widget.session.name} Summary'),
-      ),
+      appBar: CustomAppBar(title: 'Session "${widget.session.name}" Summary'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
-            Text(
-                'Session duration: ${widget.timeSpent} seconds'),
+            Text('Session duration: ${widget.timeSpent} seconds'),
             TextField(
               onChanged: (value) {
                 setState(() {
@@ -52,10 +58,8 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
                 const Text('Rate this session: '),
                 StarRating(
                   rating: rating,
-                  // Use the rating variable here
                   onRatingChanged: (newRating) =>
                       setState(() => rating = newRating),
-                  // Update the rating variable when the rating changes
                   color: Colors.yellow,
                 ),
               ],
@@ -63,16 +67,15 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
             GradientButton(
               text: 'Save Session',
               onPressed: () async {
-                final newSession = ShowerSession(
+                ShowerSession newSession = ShowerSession(
                   name: widget.session.name,
                   comments: comments,
                   temperaturePhases: widget.session.temperaturePhases,
                   rating: rating,
                   overallDuration: widget.timeSpent,
                 );
-                SharedPreferences prefs = await SharedPreferences.getInstance();
                 List<String> sessionStrings =
-                    prefs.getStringList('sessions') ?? [];
+                    await prefs.getStringList('sessions') ?? [];
                 sessionStrings.add(newSession.toJson());
                 await prefs.setStringList('sessions', sessionStrings);
                 Navigator.popUntil(context, (route) => route.isFirst);

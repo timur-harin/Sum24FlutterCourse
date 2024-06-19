@@ -400,6 +400,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  neon_widgets:
+    dependency: "direct main"
+    description:
+      name: neon_widgets
+      sha256: "782f43b576b47c192eabd08ff66e16d136d339044ebe441337183dd4dc629daf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   nested:
     dependency: transitive
     description:
