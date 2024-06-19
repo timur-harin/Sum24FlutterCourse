@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:education/livecoding/networking/data/workout.dart';
+import 'package:education/livecoding/networking/providers/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:networking/data/workout.dart';
-import 'package:networking/providers/provider.dart';
 import 'package:provider/provider.dart';
 
 class WorkoutPage extends StatefulWidget {
@@ -61,7 +61,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
               start = DateTime.now();
               startTimer(number_cycles, number);
             },
-            child: Text('Start')),
+            child: const Text('Start')),
         Text('Time: $time_left '),
         Text('Cycles: $number_cycles'),
         ElevatedButton(
@@ -78,7 +78,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
             ));
             Navigator.of(context).pushNamed('/finish');
           },
-          child: Text('Finish'),
+          child: const Text('Finish'),
         )
       ]),
     );
