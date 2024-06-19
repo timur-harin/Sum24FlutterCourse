@@ -1,11 +1,37 @@
-// TODO add dependencies
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Post {
-  // TODO task 1 to make this class for url http://jsonplaceholder.typicode.com/posts
+  //http://jsonplaceholder.typicode.com/posts
 
-  factory Post.fromJson(Map<String, dynamic> json) {}
+  final int userId;
+  final String id;
+  final String title;
+  final String body;
 
-  factory Post.toJson(Post post) {}
+  Post({
+    required this.userId,
+    required this.id,
+    required this.title,
+    required this.body, });
+
+  factory Post.fromJson(Map<String, dynamic> json) {
+    return Post(
+      userId: json['userId'],
+      id: json['id'],
+      title: json['title'],
+      body: json['body'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+      data['userId'] = this.userId;
+      data['id'] = this.id;
+      data['title'] = this.title;
+      data['body'] = this.body;
+      return data;
+  }
 }
 
 Future<List<Post>> fetchPosts() async {
