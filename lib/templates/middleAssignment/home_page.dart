@@ -57,9 +57,8 @@ class ContrastShowerScreenHome extends ConsumerWidget {
             const Text('Welcome to Contrast Shower Helper', style: TextStyle(fontSize: 30),),
             const Text('Previous shower session:', style: TextStyle(fontSize: 30),),
             const SizedBox(height: 15),
-            Text("Time in shower: ${ref.watch(sessionProvider)} seconds"),
-            Text("Minimal temperature: ${ref.watch(riverpod).minTemp.toString()}"),
-            Text("Maximal temperature: ${ref.watch(riverpod).maxTemp.toString()}"),
+            Text("Time in shower: ${ref.watch(sessionProvider).elementAt(0)} seconds"),
+            Text("Number of switches: ${ref.watch(sessionProvider).elementAt(1)}"),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -76,32 +75,4 @@ class ContrastShowerScreenHome extends ConsumerWidget {
     ),
     );
   }
-}
-
-class SessionInformarion {
-  final int duration;
-  final int minTemp;
-  final int maxTemp;
-
-  SessionInformarion({required this.duration, required this.minTemp, required this.maxTemp});
-
-  Map<String, dynamic> toStart() {
-    return {
-      'duration': duration,
-      'minTemp': minTemp,
-      'maxTemp': maxTemp,
-    };
-  }
-
-  factory SessionInformarion.fromStart(Map<String, dynamic> json) {
-    return SessionInformarion(
-      duration: json['duration'],
-      minTemp: json['minTemp'],
-      maxTemp: json['maxTemp'],
-    );
-  }
-
-  String toJson() => json.encode(toStart());
-
-  factory SessionInformarion.fromJson(String source) => SessionInformarion.fromStart(json.decode(source));
 }

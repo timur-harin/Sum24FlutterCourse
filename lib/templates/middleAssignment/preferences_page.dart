@@ -3,16 +3,16 @@ import 'timer_page.dart';
 
 class Preferences extends StatefulWidget {
   @override
-  PreferencesState createState() => PreferencesState(10, 5, 10);
+  PreferencesState createState() => PreferencesState(10, 5);
 }
 
 class PreferencesState extends State<Preferences> {
 
-  PreferencesState(this.duration, this.minTemp, this.maxTemp);
+  PreferencesState(this.duration, this.switches, {this.waterType = "Hot"});
 
   int duration;
-  int minTemp;
-  int maxTemp;
+  int switches;
+  String waterType;
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +44,12 @@ class PreferencesState extends State<Preferences> {
             leading: const Icon(Icons.timer),
           ),
           ListTile(
-            title: Text('Temperature intervals: from $minTemp°C to $maxTemp°C'),
-            leading: const Icon(Icons.thermostat),
+            title: Text('Number of cycles: $switches'),
+            leading: const Icon(Icons.rotate_left),
+          ),
+          ListTile(
+            title: Text('Start with: $waterType water'), 
+            leading: const Icon(Icons.thermostat), 
           ),
           const Text('Settings:  ', style: TextStyle(fontSize: 20)),
           Row(
@@ -67,75 +71,45 @@ class PreferencesState extends State<Preferences> {
             ],
           ),
           Row(children: [
-            const Text('              Choose minimal temperature:  '),
+            const Text('              Choose number of switchs: '),
             ElevatedButton(
               onPressed: () => {
-                if (minTemp + 1 <= maxTemp) {
-                  setState(() {minTemp++;})
-                } else {
-                  setState(() {minTemp = maxTemp;})
-                }
+                if (switches < 20) {setState(() {switches++;})} 
               },
               child: const Text('+'),
-              onLongPress: () => {if (minTemp + 5 <= maxTemp) {
-                setState(() {minTemp += 5;})
-                } else {
-                  setState(() {minTemp = maxTemp;})
-                }
-                },
             ),
             ElevatedButton(
               onPressed: () => {
-                if (minTemp - 1 >= 0) setState(() {minTemp--;})},
+                if (switches > 1) setState(() {switches--;})},
               child: const Text('-'),
-              onLongPress: () => {
-                if (minTemp - 5 >= 0) {
-                 setState(() {minTemp -= 5;})
-                } else {
-                  setState(() {minTemp = 0;})
-                }
-              },
             ),
           ],
-      ),
-      Row(children: [
-        const Text('              Choose maximal temperature:  '),
-        ElevatedButton(
-          onPressed: () => {
-            if (maxTemp + 1 <= 75) setState(() {maxTemp++;})},
-          child: const Text('+'),
-          onLongPress: () => {
-            if (maxTemp + 5 <= 75) {
-             setState(() {maxTemp += 5;})
-            } else {
-              setState(() {maxTemp = 75;})
-            }
-             },
         ),
-        ElevatedButton(
-          onPressed: () => {
-            if(maxTemp - 1 >= minTemp) { 
-              setState(() {maxTemp--;})
-              } else {
-                setState(() {maxTemp = minTemp;})
-              }
+        Row(children: [
+            const Text('              What kind of water to start with? '),
+            ElevatedButton(
+              onPressed: () => {
+                 setState(() {
+                   waterType = "Hot";
+                 }),
               },
-          child: const Text('-'),
-          onLongPress: () => {
-            if(maxTemp - 5 >= minTemp) { 
-              setState(() { maxTemp -= 5;})
-            } else {
-              setState(() { maxTemp = minTemp;})
-            } 
-            },
+              child: const Text('Hot'),
+            ),
+            ElevatedButton(
+              onPressed: () => {
+                setState(() {
+                   waterType = "Cold";
+                 }),
+              },
+              child: const Text('Cold'),
+            ),
+          ],
         ),
-      ],
-      ),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => TimerPage(preferencesState: PreferencesState(duration, minTemp, maxTemp))),
+                  MaterialPageRoute(builder: (context) => TimerPage(preferencesState: PreferencesState(duration, switches, waterType: waterType))),
               );
             },
             child: const Text('Start'),
@@ -145,7 +119,7 @@ class PreferencesState extends State<Preferences> {
     ),
   ],
 )
-    ),
+),
     );
   }
 }

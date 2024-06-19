@@ -38,17 +38,10 @@ class ResultsPage extends ConsumerWidget {
             Text('You were in the shower for: ${secondsLeft ~/ 60} minutes and ${secondsLeft % 60} seconds',
              style: const TextStyle(fontSize: 15),),
             const SizedBox(height: 20),
-            Text('Minimum Temperature: ${timerPageState.preferencesState.minTemp}',
-             style: const TextStyle(fontSize: 15),),
-            const SizedBox(height: 20),
-            Text('Maximum Temperature: ${timerPageState.preferencesState.maxTemp}',
-             style: const TextStyle(fontSize: 15),),
-            const SizedBox(height: 20),
-            
+            Text('Each process took: ${secondsLeft ~/ timerPageState.preferencesState.switches} seconds'),            
             ElevatedButton(
               onPressed: () async {
-                print("{secondsLeft: $secondsLeft, minTemp: ${timerPageState.preferencesState.minTemp}, maxTemp: ${timerPageState.preferencesState.maxTemp} }");
-                ref.read(sessionProvider.notifier).saving(secondsLeft, timerPageState.preferencesState.minTemp, timerPageState.preferencesState.maxTemp);
+                ref.read(sessionProvider.notifier).saving(secondsLeft, timerPageState.preferencesState.switches);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ContrastShowerScreenHome()),

@@ -9,11 +9,11 @@ class TimerPage extends StatefulWidget {
   final PreferencesState preferencesState;
   const TimerPage({Key? key, required this.preferencesState}) : super(key: key);
   @override
-  TimerPageState createState() => TimerPageState(preferencesState: PreferencesState(preferencesState.duration, preferencesState.minTemp, preferencesState.maxTemp));
+  TimerPageState createState() => TimerPageState(preferencesState: PreferencesState(preferencesState.duration, preferencesState.switches));
 }
 
 class TimerPageState extends State<TimerPage> {
-  Color _backgroundColor = const Color.fromARGB(213, 255, 82, 82);
+  Color? _backgroundColor;
   final PreferencesState preferencesState;
   late int _minutes;
   late int _seconds;
@@ -33,6 +33,8 @@ class TimerPageState extends State<TimerPage> {
     _secondsCopy = _seconds;
     _minutesCopy = _minutes;
   }
+
+  //Color _backgroundColor = (preferencesState.waterType != "Hot") ? const Color.fromARGB(209, 68, 137, 255) : const Color.fromARGB(213, 255, 82, 82);
   
 
   void _pauseTimer() {
@@ -57,8 +59,7 @@ class TimerPageState extends State<TimerPage> {
        => ResultsPage(timerPageState:
         TimerPageState(preferencesState:
          PreferencesState(preferencesState.duration,
-          preferencesState.minTemp,
-           preferencesState.maxTemp)), secondsLeft: secondsLeft,),
+          preferencesState.switches)), secondsLeft: secondsLeft),
       ),
     );
   }
@@ -68,16 +69,26 @@ class TimerPageState extends State<TimerPage> {
     await player.play('assets/Sound_11084.wav');
   }
 
+  void switchColor() {
+    if (_backgroundColor == const Color.fromARGB(209, 68, 137, 255)) {
+      setState(() {
+        _backgroundColor = const Color.fromARGB(213, 255, 82, 82);
+      }); 
+    } else {
+      setState(() {
+        _backgroundColor = const Color.fromARGB(209, 68, 137, 255);
+      });
+    }
+  }
+
   void _startTimer() {
     _isRunning = true;
     _isPaused = false;
     _isHide = true;
     Timer.periodic(const Duration(seconds: 1), (timer)  {
       if (!_isPaused) {
-      if (secondsLeft == (_minutes * 60) ~/ 2) {
-          setState(() {
-            _backgroundColor = const Color.fromARGB(209, 68, 137, 255);
-          });
+      if (secondsLeft == (_minutes * 60) ~/ preferencesState.switches) {
+          switchColor();
           playSound();
         }
         if (_secondsCopy == 0 && _minutesCopy != 0) {
