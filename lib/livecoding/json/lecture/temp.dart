@@ -45,14 +45,14 @@ void postJson(TODO todo) async {
 
 void putJson(TODO todo) async {
   final url = Uri.parse('https://jsonplaceholder.typicode.com/posts/1');
-  
+
   final response = await http.put(
     url,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(todo.toJson()),
-  );  
+  );
 
   if (response.statusCode == 200) {
     print('TODO updated');
@@ -61,7 +61,6 @@ void putJson(TODO todo) async {
     throw Exception('Failed to update TODO');
   }
 }
-
 
 void patchJson(TODO todo) async {
   final url = Uri.parse('https://jsonplaceholder.typicode.com/posts/1');
@@ -80,9 +79,9 @@ void patchJson(TODO todo) async {
   } else {
     throw Exception('Failed to patch TODO');
   }
-} 
+}
 
-void deleteJson (TODO todo) async {
+void deleteJson(TODO todo) async {
   final url = Uri.parse('https://jsonplaceholder.typicode.com/posts/1');
 
   final response = await http.delete(url);
