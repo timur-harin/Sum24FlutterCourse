@@ -145,16 +145,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.18.0"
-<<<<<<< HEAD
-  device_screen_size:
-    dependency: "direct main"
-    description:
-      name: device_screen_size
-      sha256: b9ccf65a2d12d83b5527e9e5129232bc7cdb6c1b51a1caeb08049c071e26b5b9
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.2"
-=======
   convert:
     dependency: transitive
     description:
@@ -179,7 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.6"
->>>>>>> 95a0f0c42591414f64cd95146a862254b446631b
+  device_screen_size:
+    dependency: "direct main"
+    description:
+      name: device_screen_size
+      sha256: b9ccf65a2d12d83b5527e9e5129232bc7cdb6c1b51a1caeb08049c071e26b5b9
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   dio:
     dependency: "direct main"
     description:
