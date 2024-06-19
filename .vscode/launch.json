@@ -5,28 +5,53 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "navigation-example",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/livecoding/navigation/main.dart",
+            "deviceId": "chrome",
+        },
+        {
+            "name": "lab5",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "deviceId": "chrome",
+        },
+        {
+            "name": "lab4",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/templates/lab4/main.dart",
+            "deviceId": "chrome",
+        },
+        {
             "name": "lab3",
             "request": "launch",
             "type": "dart",
-            "program": "lib/templates/lab3/main.dart"
+            "program": "lib/templates/lab3/main.dart",
+            "deviceId": "chrome",
         },
         {
             "name": "lab2",
             "request": "launch",
             "type": "dart",
-            "program": "lib/templates/lab2/lab2.dart"
+            "program": "lib/templates/lab2/lab2.dart",
+            "deviceId": "chrome",
         },
         {
             "name": "lab1",
             "request": "launch",
             "type": "dart",
-            "program": "lib/templates/lab1/lab1.dart"
+            "program": "lib/templates/lab1/lab1.dart",
+            "deviceId": "chrome",
         },
         {
             "name": "middleAssignment",
             "request": "launch",
             "type": "dart",
-            "program": "lib/templates/middleAssignment/main.dart"
+            "program": "lib/templates/middleAssignment/main.dart",
+            "deviceId": "chrome",
         }
     ]
 }
