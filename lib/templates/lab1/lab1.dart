@@ -58,6 +58,7 @@ class LAb1HomePage extends StatelessWidget {
 
   Widget exercise1() {
 <<<<<<< HEAD
+<<<<<<< HEAD
     return const FlutterLogo(
       size: 100,
 =======
@@ -68,11 +69,42 @@ class LAb1HomePage extends StatelessWidget {
           fontSize: 40,
           fontWeight: FontWeight.bold),
 >>>>>>> 0e16554 (lab1 Antipov Dmitrii ISE01)
+=======
+    return const Text(
+      "Hello Flutter!",
+      style: TextStyle(
+          color: Color.fromARGB(255, 255, 0, 0),
+          fontSize: 40,
+          fontWeight: FontWeight.bold),
+=======
+    return const FlutterLogo(
+      size: 100,
+>>>>>>> e62954dd0a09b5882ce38a3e42d385ba256d0577
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
     );
   }
 
   Widget exercise2() {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    return const Icon(Icons.home,
+        size: 200, color: Color.fromARGB(255, 0, 255, 0));
+  }
+
+  Widget exercise3() {
+    return Image.network(
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Wiki_Test_Image.jpg/800px-Wiki_Test_Image.jpg",
+        width: 100,
+        height: 100,
+        fit: BoxFit.cover);
+  }
+
+  Widget exercise4() {
+    return TextButton(
+        onPressed: () => (print("Pressed")), child: const Text("press it"));
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
     return const FlutterLogo(
       size: 100,
     );
@@ -88,6 +120,7 @@ class LAb1HomePage extends StatelessWidget {
     return const FlutterLogo(
       size: 100,
     );
+<<<<<<< HEAD
 =======
     return const Icon(Icons.home,
         size: 200, color: Color.fromARGB(255, 0, 255, 0));
@@ -105,6 +138,9 @@ class LAb1HomePage extends StatelessWidget {
     return TextButton(
         onPressed: () => (print("Pressed")), child: const Text("press it"));
 >>>>>>> 0e16554 (lab1 Antipov Dmitrii ISE01)
+=======
+>>>>>>> e62954dd0a09b5882ce38a3e42d385ba256d0577
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
   }
 
   Widget exercise5() {
