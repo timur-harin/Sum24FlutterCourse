@@ -13,6 +13,10 @@ class DisplayedSessionsCount extends StateNotifier<int> {
   void increment() {
     state += 3;
   }
+
+  void reset() {
+    state = 3;
+  }
 }
 
 final displayedSessionsCountProvider =
@@ -35,16 +39,20 @@ class HomeScreen extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           const SizedBox(height: 120),
-          Center(
-            child: GradientButton(
-              buttonText: 'Start New Session',
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => const PreferencesScreen(),
-                  ),
-                );
-              },
+          Transform.scale(
+            scale: 1.8,
+            child: Center(
+              child: GradientButton(
+                buttonText: 'Start New Session',
+                onPressed: () {
+                  ref.read(displayedSessionsCountProvider.notifier).reset();
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const PreferencesScreen(),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
           const SizedBox(height: 80),
@@ -61,10 +69,10 @@ class HomeScreen extends ConsumerWidget {
             child: ListView.builder(
               itemCount: min(displayedSessionsCount, previousSessions.length),
               itemBuilder: (context, index) {
-                final session = previousSessions[
-                    min(displayedSessionsCount, previousSessions.length) -
-                        1 -
-                        index];
+                final sortedSessions = List.from(previousSessions)
+                  ..sort((a, b) => b.creationTime.compareTo(a.creationTime));
+
+                final session = sortedSessions[index];
                 final date = DateFormat('dd.MM.yyyy')
                     .format(session.creationTime.toLocal());
                 final time =
@@ -100,37 +108,37 @@ class HomeScreen extends ConsumerWidget {
   }
 
   Icon getIconBasedOnRating(int rating) {
-  switch (rating) {
-    case 0:
-      return const Icon(
-        Icons.sentiment_neutral,
-        color: Colors.grey,
-      );
-    case 1:
-      return const Icon(
-        Icons.sentiment_dissatisfied,
-        color: Colors.redAccent,
-      );
-    case 2:
-      return const Icon(
-        Icons.sentiment_neutral,
-        color: Colors.amber,
-      );
-    case 3:
-      return const Icon(
-        Icons.sentiment_satisfied,
-        color: Colors.lightGreen,
-      );
-    case 4:
-      return const Icon(
-        Icons.sentiment_very_satisfied,
-        color: Colors.green,
-      );
-    default:
-      return const Icon(
-        Icons.sentiment_neutral,
-        color: Colors.grey,
-      );
+    switch (rating - 1) {
+      case 0:
+        return const Icon(
+          Icons.sentiment_very_dissatisfied,
+          color: Colors.redAccent,
+        );
+      case 1:
+        return const Icon(
+          Icons.sentiment_dissatisfied,
+          color: Colors.redAccent,
+        );
+      case 2:
+        return const Icon(
+          Icons.sentiment_neutral,
+          color: Colors.amber,
+        );
+      case 3:
+        return const Icon(
+          Icons.sentiment_satisfied,
+          color: Colors.lightGreen,
+        );
+      case 4:
+        return const Icon(
+          Icons.sentiment_very_satisfied,
+          color: Colors.green,
+        );
+      default:
+        return const Icon(
+          Icons.sentiment_neutral,
+          color: Colors.grey,
+        );
+    }
   }
-}
 }

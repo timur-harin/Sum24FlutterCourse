@@ -28,74 +28,126 @@ class PreferencesScreen extends ConsumerWidget {
               'Total Duration: ${ref.read(phasesProvider.notifier).getTotalDuration() ~/ 60} minutes ${ref.read(phasesProvider.notifier).getTotalDuration() % 60} seconds',
               style: const TextStyle(color: Colors.black),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: phases.length,
-              itemBuilder: (context, index) {
-                final phase = phases[index];
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: phase.minutesController,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        decoration: InputDecoration(
-                          labelText:
-                              '${phase.type[0].toUpperCase()}${phase.type.substring(1)} Phase ${index + 1} Duration (minutes)',
-                          labelStyle: TextStyle(
-                              color: phase.type == 'hot'
-                                  ? Colors.red
-                                  : Colors.cyan),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: phases.length,
+                itemBuilder: (context, index) {
+                  final phase = phases[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: TextField(
+                              controller: phase.minutesController,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration: InputDecoration(
+                                labelText:
+                                    '${phase.type[0].toUpperCase()}${phase.type.substring(1)} Phase ${index + 1} Minutes',
+                                labelStyle: TextStyle(
+                                    color: phase.type == 'hot'
+                                        ? Colors.red
+                                        : Colors.cyan),
+                              ),
+                              style: TextStyle(
+                                  color: phase.type == 'hot'
+                                      ? Colors.red
+                                      : Colors.cyan),
+                              onChanged: (value) {
+                                ref
+                                    .read(phasesProvider.notifier)
+                                    .updatePhaseDurationMinutes(index, value);
+                              },
+                            ),
+                          ),
                         ),
-                        style: TextStyle(
-                            color:
-                                phase.type == 'hot' ? Colors.red : Colors.cyan),
-                        onChanged: (value) {
-                          ref
-                              .read(phasesProvider.notifier)
-                              .updatePhaseDurationMinutes(index, value);
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: TextField(
-                        controller: phase.secondsController,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        decoration: InputDecoration(
-                          labelText:
-                              '${phase.type[0].toUpperCase()}${phase.type.substring(1)} Phase ${index + 1} Duration (seconds)',
-                          labelStyle: TextStyle(
-                              color: phase.type == 'hot'
-                                  ? Colors.red
-                                  : Colors.cyan),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: TextField(
+                              controller: phase.secondsController,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration: InputDecoration(
+                                labelText:
+                                    '${phase.type[0].toUpperCase()}${phase.type.substring(1)} Phase ${index + 1} Seconds',
+                                labelStyle: TextStyle(
+                                    color: phase.type == 'hot'
+                                        ? Colors.red
+                                        : Colors.cyan),
+                              ),
+                              style: TextStyle(
+                                  color: phase.type == 'hot'
+                                      ? Colors.red
+                                      : Colors.cyan),
+                              onChanged: (value) {
+                                ref
+                                    .read(phasesProvider.notifier)
+                                    .updatePhaseDurationSeconds(index, value);
+                              },
+                            ),
+                          ),
                         ),
-                        style: TextStyle(
-                            color:
-                                phase.type == 'hot' ? Colors.red : Colors.cyan),
-                        onChanged: (value) {
-                          ref
-                              .read(phasesProvider.notifier)
-                              .updatePhaseDurationSeconds(index, value);
-                        },
-                      ),
+                      ],
                     ),
-                  ],
-                );
-              },
+                  );
+                },
+              ),
             ),
-            const SizedBox(height: 16),
-            GradientButton(
-              buttonText: 'Add Phase',
-              onPressed: () {
-                ref.read(phasesProvider.notifier).addPhase();
-              },
+            Visibility(
+              visible: phases.length >= 9,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Container(
+                  height: 2.0,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                        Colors.transparent,
+                        Colors.cyan,
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GradientButton(
+                  onPressed: () {
+                    ref.read(phasesProvider.notifier).addPhase();
+                  },
+                  icon: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                ),
+                GradientButton(
+                  onPressed: () {
+                    ref.read(phasesProvider.notifier).removeLastPhase();
+                  },
+                  icon: const Icon(
+                    Icons.remove,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             GradientButton(

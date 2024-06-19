@@ -46,7 +46,9 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
       vsync: this,
     )..repeat(reverse: true);
 
-    _duration = Duration(minutes: widget.hotPhaseDurations[_hotPhaseIndex] ~/ 60, seconds: widget.hotPhaseDurations[_hotPhaseIndex] % 60);
+    _duration = Duration(
+        minutes: widget.hotPhaseDurations[_hotPhaseIndex] ~/ 60,
+        seconds: widget.hotPhaseDurations[_hotPhaseIndex] % 60);
     startTimer();
   }
 
@@ -61,22 +63,24 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
                 timer.cancel();
               });
               _duration = Duration(
-                minutes: widget.coldPhaseDurations[_coldPhaseIndex++] ~/ 60,
-                seconds: widget.coldPhaseDurations[_coldPhaseIndex++] % 60,
+                minutes: widget.coldPhaseDurations[_coldPhaseIndex] ~/ 60,
+                seconds: widget.coldPhaseDurations[_coldPhaseIndex] % 60,
               );
+              _coldPhaseIndex++;
               startTimer();
             } else {
               _isFinished = true;
             }
           } else {
             _coldPhasesCompleted++;
-            if (_hotPhaseIndex < widget.hotPhaseDurations.length) {
+            if (_hotPhaseIndex + 1 < widget.hotPhaseDurations.length) {
               setState(() {
                 timer.cancel();
               });
+              _hotPhaseIndex++;
               _duration = Duration(
-                minutes: widget.hotPhaseDurations[_hotPhaseIndex++] ~/ 60,
-                seconds: widget.hotPhaseDurations[_hotPhaseIndex++] % 60,
+                minutes: widget.hotPhaseDurations[_hotPhaseIndex] ~/ 60,
+                seconds: widget.hotPhaseDurations[_hotPhaseIndex] % 60,
               );
               startTimer();
             } else {
@@ -116,8 +120,36 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Visibility(
+                visible: _isFinished,
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 130, 214, 135),
+                    borderRadius: BorderRadius.circular(10.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: const Column(
+                    children: <Widget>[
+                      Text('Session is completed!',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                          )),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
               Container(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(32.0),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10.0),
@@ -133,21 +165,22 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
                 child: Column(
                   children: <Widget>[
                     Text(
-                      'Hot Phases Completed: $_hotPhasesCompleted',
+                      'Hot Phases Completed: $_hotPhasesCompleted out of ${widget.hotPhaseDurations.length}',
                       style: const TextStyle(
                         color: Colors.red,
                         fontSize: 20,
                       ),
                     ),
                     Text(
-                      'Cold Phases Completed: $_coldPhasesCompleted',
+                      'Cold Phases Completed: $_coldPhasesCompleted out of ${widget.coldPhaseDurations.length}',
                       style: const TextStyle(
                         color: Colors.cyan,
                         fontSize: 20,
                       ),
                     ),
+                    const SizedBox(height: 20),
                     Container(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(32.0),
                       decoration: BoxDecoration(
                         color: _isHotPhase ? Colors.red[400] : Colors.cyan[400],
                         borderRadius: BorderRadius.circular(10.0),
@@ -184,22 +217,25 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  GradientButton(
-                    buttonText: _isPaused ? 'Continue' : 'Pause',
-                    onPressed: () {
-                      if (_isPaused) {
-                        if (!_isFinished) {
-                          _controller.repeat();
-                          startTimer();
+                  Visibility(
+                    visible: !_isFinished,
+                    child: GradientButton(
+                      buttonText: _isPaused ? 'Continue' : 'Pause',
+                      onPressed: () {
+                        if (_isPaused) {
+                          if (!_isFinished) {
+                            _controller.repeat();
+                            startTimer();
+                          }
+                        } else {
+                          _controller.stop();
+                          _timer.cancel();
                         }
-                      } else {
-                        _controller.stop();
-                        _timer.cancel();
-                      }
-                      setState(() {
-                        _isPaused = !_isPaused;
-                      });
-                    },
+                        setState(() {
+                          _isPaused = !_isPaused;
+                        });
+                      },
+                    ),
                   ),
                   const SizedBox(width: 10),
                   GradientButton(

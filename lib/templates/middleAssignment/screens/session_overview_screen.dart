@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../small_widgets/gradient_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../notifiers/session_notifier.dart';
-import '../notifiers/phases_notifier.dart';
 
 class SessionOverviewScreen extends ConsumerWidget {
   final int totalDuration;
@@ -31,7 +30,7 @@ class SessionOverviewScreen extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                'Total Duration: ${ref.read(phasesProvider.notifier).getTotalDuration() ~/ 60} minutes ${ref.read(phasesProvider.notifier).getTotalDuration() % 60} seconds',
+                'Total Duration: ${totalDuration ~/ 60} minutes ${totalDuration % 60} seconds',
                 style: const TextStyle(
                   fontSize: 24,
                   color: Colors.blue,

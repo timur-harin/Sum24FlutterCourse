@@ -65,7 +65,7 @@ class PostSessionScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Hot Phases Completed: $hotPhasesCompleted',
+                      'Hot Phases Completed: $hotPhasesCompleted out of ${ref.read(sessionsProvider.notifier).getCurrentSession().hotPhaseDurations.length}',
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.red, // Change this to match your theme
@@ -73,7 +73,7 @@ class PostSessionScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Cold Phases Completed: $coldPhasesCompleted',
+                      'Cold Phases Completed: $coldPhasesCompleted out of ${ref.read(sessionsProvider.notifier).getCurrentSession().coldPhaseDurations.length}',
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.cyan, // Change this to match your theme

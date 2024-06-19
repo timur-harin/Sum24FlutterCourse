@@ -34,6 +34,13 @@ class PhasesNotifier extends StateNotifier<List<Phase>> {
     ];
   }
 
+  void removeLastPhase() {
+    if (state.length > 2) {
+      state.removeLast();
+      state = [...state];
+    }
+  }
+
   void updatePhaseDurationMinutes(int index, String value) {
     state[index].minutes = value.isNotEmpty ? int.parse(value) : 0;
     state = [...state];

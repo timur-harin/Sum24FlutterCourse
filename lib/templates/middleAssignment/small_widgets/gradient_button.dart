@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class GradientButton extends StatelessWidget {
-  final String buttonText;
+  final String? buttonText;
   final VoidCallback onPressed;
+  final Icon? icon;
 
   const GradientButton({super.key, 
-    required this.buttonText,
+    this.buttonText,
     required this.onPressed,
+    this.icon,
   });
 
   @override
@@ -29,9 +31,13 @@ class GradientButton extends StatelessWidget {
             shadowColor: Colors.transparent,
           ),
           onPressed: onPressed,
-          child: Text(buttonText),
+          child: chooseWidget(),
         ),
       ),
     );
+  }
+
+  StatelessWidget? chooseWidget() {
+    return icon != null ? icon! : buttonText != null ? Text(buttonText!) : null;
   }
 }
