@@ -1,11 +1,4 @@
-// Use these dependencies for your classes
-import 'dart:convert';
-// import 'package:education/livecoding/json/freezed/serialization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
@@ -207,11 +200,63 @@ class CommentsPage extends ConsumerWidget {
 }
 
 class UserPage extends ConsumerWidget {
+  final usersProvider = StateProvider<List<User>?>((ref) => null);
+
   UserPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text("Task 3: Freezed users 🥶"),
+        ),
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                FilledButton(
+                    onPressed: () async {
+                      final users = await fetchUsers();
+                      ref.read(usersProvider.notifier).state = users;
+                    },
+                    child: const Text("Fetch users")),
+                buildContent(context, ref),
+              ],
+            ),
+          ),
+        ));
+  }
+
+  Widget buildContent(BuildContext context, WidgetRef ref) {
+    final users = ref.watch(usersProvider);
+
+    if (users == null) {
+      return const Text("No users fetched, yet");
+    }
+
+    return Column(children: [
+      for (var user in users)
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          child: Card(
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text("id: ${user.id}"),
+                  Text("name: ${user.name}"),
+                  Text("username: ${user.username}"),
+                  Text("email: ${user.email}"),
+                  Text("address: ${user.address.toString()}"),
+                  Text("phone: ${user.phone}"),
+                  Text("website: ${user.website}"),
+                  Text("company: ${user.company.toString()}"),
+                ],
+              ),
+            ),
+          ),
+        )
+    ]);
   }
 }
