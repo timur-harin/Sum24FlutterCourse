@@ -1,18 +1,47 @@
-// Use these dependencies for your classes
-import 'dart:convert';
-import 'package:http/http.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
+void configureApp() {
+  setUrlStrategy(PathUrlStrategy());
+}
 
-void main() {}
+void main() {
+  configureApp();
+  runApp(const MyApp());
+}
 
-// TODO add needed classes for Flutter APP
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-// TODO add generated route flutter app with undifined page with cat status code using api
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      routes: {
+        '/' : (context) => const Center(
+          child: Center(
+            child: Text("Put cat number in the address"),
+          ),
+        ),
+      },
+      onGenerateRoute: (argument) {
+        return MaterialPageRoute(
+            builder: (context) => CatPage(catNumber: argument.name?? "/404"));
+      },
+    );
+  }
+}
 
-// TODO add putting argument in route navigation as parameter for generated page
+class CatPage extends StatelessWidget {
+  const CatPage({super.key, required this.catNumber});
+  final String catNumber;
 
-// TODO use api with cat status codes
-// https://http.cat/[status_code]
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Image.network('https://http.cat/$catNumber'),
+      ),
+    );
+  }
+}
 
