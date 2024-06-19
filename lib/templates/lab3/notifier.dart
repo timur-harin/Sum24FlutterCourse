@@ -6,7 +6,7 @@ final localStorageServiceProvider = Provider<LocalStorageService>((ref) {
 });
 
 final waterIntakeProvider =
-StateNotifierProvider<WaterIntakeNotifier, double>((ref) {
+    StateNotifierProvider<WaterIntakeNotifier, double>((ref) {
   final localStorageService = ref.watch(localStorageServiceProvider);
   return WaterIntakeNotifier(localStorageService);
 });
@@ -37,6 +37,5 @@ class WaterIntakeNotifier extends StateNotifier<double> {
   }
 
   void _showDoneMessage() {
-
   }
 }

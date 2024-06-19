@@ -8,49 +8,21 @@ class HydrationScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final waterIntake = ref.watch(waterIntakeProvider);
-
+    // TODO - Add ref.watch and use provider to get the water intake
+    // final waterIntake =
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('WaterBalance'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () {
-              ref.read(waterIntakeProvider.notifier).reset();
-            },
-          ),
-        ],
-      ),
+      // TODO add AppBar with Icon to reset the water intake as actions parameter of AppBar
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'Water Intake: ${waterIntake.toStringAsFixed(2)} L',
-              style: const TextStyle(fontSize: 24),
-            ),
-            const SizedBox(height: 10),
-            HydrationWidget(waterIntakeLevel: waterIntake),
+            // TODO - Add text to display the water intake
+            // TODO add HydrationWidget to display the water intake and put waterIntake into it
+            // Add more UI components if necessary
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          if (waterIntake < 2.0) {
-            ref.read(waterIntakeProvider.notifier).increment(0.25);
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("You are done for today"),
-                duration: Duration(seconds: 2),
-              ),
-            );
-          }
-        },
-        tooltip: 'Add Water',
-        child: const Icon(Icons.add),
-      ),
+      // TODO - Add floating action button to increment the water intake using ref.read(waterIntakeProvider.notifier).increment(x)
     );
   }
 }
