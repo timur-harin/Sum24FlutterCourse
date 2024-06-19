@@ -40,8 +40,8 @@ class HomePage extends StatelessWidget {
                       builder: (BuildContext context) {
                         return Container(
                           height: DeviceScreenSize.screenHeightInPercentage(
-                                  context) *
-                              2,
+                                  context) /
+                              0.7,
                           width:
                               DeviceScreenSize.screenWidthInPercentage(context),
                           child: Column(
@@ -196,7 +196,7 @@ class _MySliderState extends State<MySlider> {
           Text(
             isTime
                 ? "${secondsToMinutesSeconds(_currentValue.round())} m"
-                : _currentValue.toString(),
+                : _currentValue.round().toString(),
             textAlign: TextAlign.center,
           )
         ],
