@@ -8,9 +8,10 @@ import 'dart:async';
 import 'package:education/templates/middleAssignment/HomeScreen/DataSaver.dart' as data_saver;
 import 'package:education/templates/middleAssignment/HomeScreen/Statistic.dart' as stat;
 
+
 class HomePage extends StatefulWidget {
   @override
-  _HomePageState homePageState() => _HomePageState();
+  _HomePageState createState() => _HomePageState();
 
   @override
   _TimersState timersState() => _TimersState();
