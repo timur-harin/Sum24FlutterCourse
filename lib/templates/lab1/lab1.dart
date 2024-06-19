@@ -21,10 +21,7 @@ class LAb1HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: const Icon(Icons.stars),
         title: const Text('Lab 1'),
-        backgroundColor: Colors.teal,
-        elevation: 4,
       ),
       body: myWidget(),
     );
