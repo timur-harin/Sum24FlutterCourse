@@ -1,16 +1,18 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'timer_page.dart';
 import 'home_page.dart';
 import 'package:flutter/material.dart';
-import 'local_storage.dart';
+import 'notifier.dart';
 
-class ResultsPage extends StatelessWidget {
+class ResultsPage extends ConsumerWidget {
   final TimerPageState timerPageState;
   int secondsLeft;
-  ResultsPage({required this.timerPageState, required this.secondsLeft});
+  WidgetRef? ref;
+  ResultsPage({required this.timerPageState, required this.secondsLeft, this.ref});
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container ( 
     decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -42,11 +44,11 @@ class ResultsPage extends StatelessWidget {
             Text('Maximum Temperature: ${timerPageState.preferencesState.maxTemp}',
              style: const TextStyle(fontSize: 15),),
             const SizedBox(height: 20),
+            
             ElevatedButton(
-              onPressed: () {
-                final localStorageService = LocalStorageService();
-                localStorageService.saveShowerSession('${(secondsLeft ~/ 60)}:${secondsLeft % 60}',
-                '${timerPageState.preferencesState.minTemp}', '${timerPageState.preferencesState.maxTemp}');
+              onPressed: () async {
+                print("{secondsLeft: $secondsLeft, minTemp: ${timerPageState.preferencesState.minTemp}, maxTemp: ${timerPageState.preferencesState.maxTemp} }");
+                ref.read(sessionProvider.notifier).saving(secondsLeft, timerPageState.preferencesState.minTemp, timerPageState.preferencesState.maxTemp);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ContrastShowerScreenHome()),

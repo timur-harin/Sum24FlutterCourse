@@ -3,6 +3,7 @@ import 'package:education/templates/middleAssignment/results_page.dart';
 import 'package:flutter/material.dart';
 import 'preferences_page.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'notifier.dart';
 
 class TimerPage extends StatefulWidget {
   final PreferencesState preferencesState;
@@ -49,6 +50,7 @@ class TimerPageState extends State<TimerPage> {
     _isPaused = true;
     _isRunning = false;
     setState(() => _timer?.cancel());
+    
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context)

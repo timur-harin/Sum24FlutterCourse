@@ -1,28 +1,28 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'local_storage.dart';
+import 'package:riverpod/riverpod.dart';
+import 'storage.dart';
 
-final localStorageServiceProvider = Provider<LocalStorageService>((ref) {
-  return LocalStorageService();
+final localStorageProvider = Provider<LocalStorage>((ref) {
+  return LocalStorage();
 });
 
-final showerSessionProvider =
-    StateNotifierProvider<ShowerSessionNotifier, List<String>>((ref) {
-  final localStorageService = ref.watch(localStorageServiceProvider);
-  return ShowerSessionNotifier(localStorageService);
+final sessionProvider = StateNotifierProvider<SessionNotifier, List<String>>((ref) {
+  final localStorageService = ref.watch(localStorageProvider);
+  return SessionNotifier(localStorageService);
 });
 
-class ShowerSessionNotifier extends StateNotifier<List<String>> {
-  final LocalStorageService _localStorageService;
-
-  ShowerSessionNotifier(this._localStorageService) : super(['Unknown', 'Unknown', 'Unknown']) {
-    _ShowerSession();
+class SessionNotifier extends StateNotifier<List<String>> {
+  final LocalStorage localStorage;
+  SessionNotifier(this.localStorage) : super(['1', '1', '1']) {
+    loadSession();
   }
 
-  void _ShowerSession() async {
-    state = await _localStorageService.getShowerSession();
+  void loadSession() async {
+    state = await localStorage.getSession();
+    print(state);
   }
 
-  void reset(String duration, String minTemp, String maxTemp) async {
-    await _localStorageService.saveShowerSession(duration, minTemp, maxTemp);
+  void saving(int duration, int minTemp, int maxTemp) async {
+    await localStorage.saveSession(duration, minTemp, maxTemp);
+    loadSession();
   }
 }

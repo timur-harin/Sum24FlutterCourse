@@ -1,9 +1,10 @@
+import 'dart:convert';
+import 'package:education/templates/middleAssignment/provider.dart';
 import 'package:flutter/material.dart';
 import 'preferences_page.dart';
-import 'notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'local_storage.dart';
-import 'provider.dart';
+import 'riverpod.dart';
+import 'notifier.dart';
 
 void main() {
   runApp(ProviderScope(child: MiddleAssigmentApp()));
@@ -15,6 +16,7 @@ class MiddleAssigmentApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Middle Assigment - contrast shower',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -25,10 +27,9 @@ class MiddleAssigmentApp extends StatelessWidget {
 }
 
 class ContrastShowerScreenHome extends ConsumerWidget {
-  final LocalStorageService localStorageService = LocalStorageService();
-  final ProviderSession provider = ProviderSession();
-
   ContrastShowerScreenHome({super.key});
+  // final LocalStorage localStorage = LocalStorage();
+  // final ProviderSession providerSession = ProviderSession();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -56,9 +57,9 @@ class ContrastShowerScreenHome extends ConsumerWidget {
             const Text('Welcome to Contrast Shower Helper', style: TextStyle(fontSize: 30),),
             const Text('Previous shower session:', style: TextStyle(fontSize: 30),),
             const SizedBox(height: 15),
-            Text("Time in shower: ${ref.watch(showerSessionProvider).elementAt(0)}"),
-            Text("Minimal temperature: ${ref.watch(showerSessionProvider).elementAt(1)}"),
-            Text("Maximal temperature: ${ref.watch(showerSessionProvider).elementAt(2)}"),
+            Text("Time in shower: ${ref.watch(sessionProvider)} seconds"),
+            Text("Minimal temperature: ${ref.watch(riverpod).minTemp.toString()}"),
+            Text("Maximal temperature: ${ref.watch(riverpod).maxTemp.toString()}"),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -75,4 +76,32 @@ class ContrastShowerScreenHome extends ConsumerWidget {
     ),
     );
   }
+}
+
+class SessionInformarion {
+  final int duration;
+  final int minTemp;
+  final int maxTemp;
+
+  SessionInformarion({required this.duration, required this.minTemp, required this.maxTemp});
+
+  Map<String, dynamic> toStart() {
+    return {
+      'duration': duration,
+      'minTemp': minTemp,
+      'maxTemp': maxTemp,
+    };
+  }
+
+  factory SessionInformarion.fromStart(Map<String, dynamic> json) {
+    return SessionInformarion(
+      duration: json['duration'],
+      minTemp: json['minTemp'],
+      maxTemp: json['maxTemp'],
+    );
+  }
+
+  String toJson() => json.encode(toStart());
+
+  factory SessionInformarion.fromJson(String source) => SessionInformarion.fromStart(json.decode(source));
 }
