@@ -1,8 +1,9 @@
+
+import 'package:education/livecoding/networking/providers/provider.dart';
+import 'package:education/livecoding/networking/ui/pages/finish_page.dart';
+import 'package:education/livecoding/networking/ui/pages/main_page.dart';
+import 'package:education/livecoding/networking/ui/pages/workout_page.dart';
 import 'package:flutter/material.dart';
-import 'package:networking/providers/provider.dart';
-import 'package:networking/ui/pages/finish_page.dart';
-import 'package:networking/ui/pages/main_page.dart';
-import 'package:networking/ui/pages/workout_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -24,9 +25,9 @@ class ExampleApp extends StatelessWidget {
       title: 'Workout App',
       initialRoute: '/',
       routes: {
-        '/': (context) => MainPage(),
-        '/workout': (context) => WorkoutPage(),
-        '/finish': (context) => FinishPage(),
+        '/': (context) => const MainPage(),
+        '/workout': (context) => const WorkoutPage(),
+        '/finish': (context) => const FinishPage(),
       },
     );
   }
