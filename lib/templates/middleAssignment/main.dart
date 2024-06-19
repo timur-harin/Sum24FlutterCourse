@@ -11,6 +11,10 @@ class MiddleAssigmentApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Middle Assigment',
+      initialRoute: '', 
+      routes: {
+        '/': (context) => const HomePage(),
+      },
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
