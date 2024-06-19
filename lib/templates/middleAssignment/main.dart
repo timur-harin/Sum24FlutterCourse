@@ -28,7 +28,8 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class CustomEvent {
+class CustomEvent extends Event {
+  @override
   final DateTime date;
   final bool isColdEvent;
   Color color;
@@ -39,7 +40,7 @@ class CustomEvent {
     required this.isColdEvent,
     this.duration = const Duration(seconds: 0),
     this.color = const Color.fromARGB(115, 244, 54, 54),
-  }) {
+  }) : super(date: date) {
     if (isColdEvent) {
       color = Colors.blue;
     }
@@ -66,18 +67,33 @@ class CustomEvent {
 class _HomePageState extends State<HomePage> {
   final DateTime _currentDate = DateTime.now();
 
-   List<CustomEvent> contrastShowerDays = [
+  List<CustomEvent> contrastShowerDays = [
+    CustomEvent(date: DateTime(2024, 6, 5), isColdEvent: true)
+        .updateDuration(230)
+        .updateColor(),
+    CustomEvent(date: DateTime(2024, 6, 8), isColdEvent: false)
+        .updateDuration(100)
+        .updateDuration(300)
+        .updateColor(),
+    CustomEvent(date: DateTime(2023, 6, 18), isColdEvent: true).updateColor(),
+  ];
+
+  EventList<CustomEvent> events = EventList<CustomEvent>(events: {
+    DateTime(2024, 6, 5): [
       CustomEvent(date: DateTime(2024, 6, 5), isColdEvent: true)
           .updateDuration(230)
-          .updateColor(),
+          .updateColor()
+    ],
+    DateTime(2024, 6, 8): [
       CustomEvent(date: DateTime(2024, 6, 8), isColdEvent: false)
           .updateDuration(100)
           .updateDuration(300)
-          .updateColor(),
-      CustomEvent(date: DateTime(2023, 6, 18), isColdEvent: true).updateColor(),
-    ];
-
-
+          .updateColor()
+    ],
+    DateTime(2023, 6, 18): [
+      CustomEvent(date: DateTime(2023, 6, 18), isColdEvent: true).updateColor()
+    ],
+  });
 
   //   EventList customEventsList(List<CustomEvent> contrastShowerDays)
 
@@ -87,7 +103,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         backgroundColor: Colors.lightGreen[50],
         appBar: AppBar(
@@ -122,8 +137,8 @@ class _HomePageState extends State<HomePage> {
                   const TextStyle(color: Colors.black, fontSize: 20.0),
               weekdayTextStyle:
                   const TextStyle(color: Colors.black, fontSize: 15.0),
-              //markedDatesMap: customEvents(contrastShowerDays),
-              ),
+              markedDatesMap: events,
+            ),
           ),
         ));
   }

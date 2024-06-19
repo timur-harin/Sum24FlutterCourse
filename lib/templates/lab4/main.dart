@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/http.dart' as http;
+import 'package:http/http.dart' as http;
 import 'package:flutter/provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -63,20 +63,18 @@ class MyHomePage extends StatelessWidget {
                     builder: (BuildContext context) {
                       return Scaffold(
                           body: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('$result'),
-                              ElevatedButton(
-                                onPressed:(){
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text('close'),
-                              )
-                            ],
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('$result'),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('close'),
                           )
-                      );
-                    }
-                );
+                        ],
+                      ));
+                    });
               },
               child: Text('HTTP Task'),
             ),
@@ -90,20 +88,18 @@ class MyHomePage extends StatelessWidget {
                     builder: (BuildContext context) {
                       return Scaffold(
                           body: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('$result'),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text('Close'),
-                              )
-                            ],
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('$result'),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('Close'),
                           )
-                      );
-                    }
-                );
+                        ],
+                      ));
+                    });
               },
               child: Text('Dio Task'),
             ),
