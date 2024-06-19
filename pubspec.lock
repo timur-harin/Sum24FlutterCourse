@@ -182,7 +182,11 @@ packages:
 =======
 >>>>>>> eef26d5 (mid assigment commit 1)
 =======
+<<<<<<< HEAD
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
   fake_async:
     dependency: transitive
     description:
@@ -267,7 +271,11 @@ packages:
 =======
 >>>>>>> eef26d5 (mid assigment commit 1)
 =======
+<<<<<<< HEAD
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
   frontend_server_client:
     dependency: transitive
     description:
@@ -304,7 +312,11 @@ packages:
     version: "1.2.1"
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
   hive:
     dependency: "direct main"
     description:
@@ -338,9 +350,14 @@ packages:
     source: hosted
     version: "0.13.6"
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> eef26d5 (mid assigment commit 1)
 =======
+=======
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
   http_multi_server:
     dependency: transitive
     description:
@@ -361,7 +378,11 @@ packages:
 <<<<<<< HEAD
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
   intl:
     dependency: "direct main"
     description:
@@ -371,9 +392,14 @@ packages:
     source: hosted
     version: "0.19.0"
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> eef26d5 (mid assigment commit 1)
 =======
+=======
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
   io:
     dependency: transitive
     description:
@@ -399,7 +425,11 @@ packages:
 >>>>>>> eef26d5 (mid assigment commit 1)
 =======
     dependency: transitive
+<<<<<<< HEAD
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
     description:
       name: json_annotation
       sha256: "1ce844379ca14835a50d2f019a3099f419082cfdd231cd86a142af94dd5c6bb1"
@@ -419,7 +449,11 @@ packages:
 =======
 >>>>>>> eef26d5 (mid assigment commit 1)
 =======
+<<<<<<< HEAD
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
   leak_tracker:
     dependency: transitive
     description:
@@ -505,7 +539,11 @@ packages:
 =======
 >>>>>>> eef26d5 (mid assigment commit 1)
 =======
+<<<<<<< HEAD
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
   package_config:
     dependency: transitive
     description:
@@ -607,7 +645,11 @@ packages:
 =======
 >>>>>>> eef26d5 (mid assigment commit 1)
 =======
+<<<<<<< HEAD
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
   pub_semver:
     dependency: transitive
     description:
@@ -628,7 +670,11 @@ packages:
 <<<<<<< HEAD
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
   rive:
     dependency: "direct main"
     description:
@@ -646,9 +692,14 @@ packages:
     source: hosted
     version: "0.4.9"
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> eef26d5 (mid assigment commit 1)
 =======
+=======
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
   riverpod:
     dependency: "direct main"
     description:
@@ -733,7 +784,11 @@ packages:
 =======
 >>>>>>> eef26d5 (mid assigment commit 1)
 =======
+<<<<<<< HEAD
 >>>>>>> eef26d5 (mid assigment commit 1)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
     version: "2.0.0"
   sky_engine:
     dependency: transitive

@@ -32,7 +32,11 @@ class MyHomePage extends ConsumerWidget {
 class MyHomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+<<<<<<< HEAD
 >>>>>>> 260b2ab (lab 4)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
     return Scaffold(
       appBar: AppBar(
         title: Text('Flutter Tasks'),
@@ -50,7 +54,11 @@ class MyHomePage extends ConsumerWidget {
                 String result = await fetchData();
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> 260b2ab (lab 4)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
                 String result = await fetchData();
                 showDialog(
                   context: context,
@@ -59,9 +67,14 @@ class MyHomePage extends ConsumerWidget {
                   ),
                 );
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 260b2ab (lab 4)
 =======
+=======
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
 >>>>>>> 260b2ab (lab 4)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
                 print(result);
               },
               child: Text('Async/Await Task'),
@@ -74,7 +87,11 @@ class MyHomePage extends ConsumerWidget {
 <<<<<<< HEAD
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> 260b2ab (lab 4)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
                 ref.read(counterProvider.notifier).state++;
                 int result = ref.watch(counterProvider);
                 showDialog(
@@ -84,9 +101,14 @@ class MyHomePage extends ConsumerWidget {
                   ),
                 );
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 260b2ab (lab 4)
 =======
+=======
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
 >>>>>>> 260b2ab (lab 4)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
               },
               child: Text('Provider Task'),
             ),
@@ -99,7 +121,11 @@ class MyHomePage extends ConsumerWidget {
                 // Increment the counter
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> 260b2ab (lab 4)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
                 ref.read(riverpodCounterProvider.notifier).increment();
                 int result = ref.watch(riverpodCounterProvider);
                 showDialog(
@@ -109,9 +135,14 @@ class MyHomePage extends ConsumerWidget {
                   ),
                 );
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 260b2ab (lab 4)
 =======
+=======
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
 >>>>>>> 260b2ab (lab 4)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
               },
               child: Text('Riverpod Task'),
             ),
@@ -123,7 +154,11 @@ class MyHomePage extends ConsumerWidget {
                 // Exercise 4 - Make an HTTP request using the HTTP package
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> 260b2ab (lab 4)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
                 String result = await fetchHttpData();
                 showDialog(
                   context: context,
@@ -133,9 +168,14 @@ class MyHomePage extends ConsumerWidget {
                 );
                 print(result);
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 260b2ab (lab 4)
 =======
+=======
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
 >>>>>>> 260b2ab (lab 4)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
               },
               child: Text('HTTP Task'),
             ),
@@ -147,7 +187,11 @@ class MyHomePage extends ConsumerWidget {
                 // Exercise 5 - Make an HTTP request using Dio and show it in App Screen
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> 260b2ab (lab 4)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
                 String result = await fetchDioData();
                 showDialog(
                   context: context,
@@ -156,9 +200,14 @@ class MyHomePage extends ConsumerWidget {
                   ),
                 );
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 260b2ab (lab 4)
 =======
+=======
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
 >>>>>>> 260b2ab (lab 4)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
               },
               child: Text('Dio Task'),
             ),
@@ -178,7 +227,11 @@ Future<String> fetchData() async {
   return 'data';
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> 260b2ab (lab 4)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
   final response =
       await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
   if (response.statusCode == 200) {
@@ -207,9 +260,14 @@ Future<String> fetchDioData() async {
     throw Exception('Failed to load data');
   }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 260b2ab (lab 4)
 =======
+=======
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
 >>>>>>> 260b2ab (lab 4)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
 }
 
 final counterProvider = StateProvider<int>((ref) => 0);
@@ -222,7 +280,11 @@ final counterProvider = StateProvider<int>((ref) => 0);
 // TODO create class for state notifier
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> 260b2ab (lab 4)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
 final riverpodCounterProvider =
     StateNotifierProvider<RiverpodCounter, int>((ref) => RiverpodCounter());
 
@@ -234,6 +296,11 @@ class RiverpodCounter extends StateNotifier<int> {
   }
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 260b2ab (lab 4)
 =======
+=======
+>>>>>>> eef5ad984679b9491f298faa7bfefabee652cb0b
 >>>>>>> 260b2ab (lab 4)
+=======
+>>>>>>> aabd8851028621513bb95f4be40a2ad17353f3ff
