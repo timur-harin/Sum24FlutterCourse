@@ -1,7 +1,11 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 // TODO add comment.g.dart as part
 
+part 'comment.g.dart';
+
+@JsonSerializable()
 class Comment {
   // TODO task 2 to make this class for url http://jsonplaceholder.typicode.com/comments
   int postId;
@@ -18,15 +22,7 @@ class Comment {
     required this.body
   });
 
-  factory Comment.fromJson(Map<String, dynamic> json) {
-    return Comment(
-        postId: json['postId'],
-        id: json['id'],
-        name: json['name'],
-        email: json['email'],
-        body: json['body'],
-    );
-  }
+  factory Comment.fromJson(Map<String, dynamic> json) => _$CommentFromJson(json);
 
   // Do not forget to run 'dart run build_runner build' to generate comment.g.dart
 }
