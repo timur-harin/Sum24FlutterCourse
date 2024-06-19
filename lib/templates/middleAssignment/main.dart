@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget {
                                     DeviceScreenSize.screenHeightInPercentage(
                                             context) *
                                         1.8 *
-                                        0.02,
+                                        0.015,
                               ),
                               const Text(
                                 'Session Settings',
@@ -63,7 +63,7 @@ class HomePage extends StatelessWidget {
                                     DeviceScreenSize.screenHeightInPercentage(
                                             context) *
                                         1.8 *
-                                        0.02,
+                                        0.015,
                               ),
                               const Divider(
                                 height: 0,
@@ -75,7 +75,7 @@ class HomePage extends StatelessWidget {
                                     DeviceScreenSize.screenHeightInPercentage(
                                             context) *
                                         1.8 *
-                                        0.02,
+                                        0.015,
                               ),
                               const Text(
                                 'Hot shower phase',
@@ -175,7 +175,7 @@ class _MySliderState extends State<MySlider> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 55,
+      height: 50,
       width: DeviceScreenSize.screenWidthInPercentage(context) / 1.2,
       child: Row(
         mainAxisSize: MainAxisSize.max,
