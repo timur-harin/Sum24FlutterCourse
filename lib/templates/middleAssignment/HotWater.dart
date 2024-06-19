@@ -46,44 +46,36 @@ class _HotWaterState extends ConsumerState<HotWater> with TickerProviderStateMix
 
     controller.reverse(
       from: controller.value == 0 ? 1.0 : controller.value
-      );
+    );
 
     void change() {
     if (countText == '00 : 00 : 00') {
       if (isHot) {
-        setState(() {
-          controller.duration = ref.read(riverpodColdTimer);
-        });
-        //controller.duration = ref.read(riverpodColdTimer);
+        controller = AnimationController(
+          vsync: this, 
+          duration: ref.read(riverpodColdTimer),
+        );
+        controller.reverse(from: controller.value == 0 ? 1.0 : controller.value);
         isHot = false;
       } else {
-        setState(() {
-          controller.duration = ref.read(riverpodHotTimer);
-        });
-        //controller.duration = ref.read(riverpodHotTimer);
+        controller = AnimationController(
+          vsync: this, 
+          duration: ref.read(riverpodHotTimer),
+        );
+        controller.reverse(from: controller.value == 0 ? 1.0 : controller.value);
         isHot = true;
       }
-      controller.reverse(
-      from: controller.value == 0 ? 1.0 : controller.value
-      );
       //Navigator.push(context, MaterialPageRoute(builder: (context) => ColdWater(overallTime: overallTime + ref.read(riverpodHotTimer).inSeconds, repetitions: repetitions)));
     }
   }
 
     controller.addListener(() {
-      //change();
+      change();
       if (controller.isAnimating) {
         setState(() {
           progress = controller.value;
         });
       } else {
-        if (isHot) {
-          controller.duration = ref.read(riverpodColdTimer);
-          isHot = false;
-        } else {
-          controller.duration = ref.read(riverpodHotTimer);
-          isHot = true;
-        }
         setState(() {
           progress = 1.0;
         });
@@ -100,7 +92,7 @@ class _HotWaterState extends ConsumerState<HotWater> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff5fbff),
+      backgroundColor: isHot ? Color.fromARGB(255, 246, 46, 46) : Color.fromARGB(255, 33, 153, 232),
       body: Column(
         children: [
           Expanded(
@@ -112,9 +104,7 @@ class _HotWaterState extends ConsumerState<HotWater> with TickerProviderStateMix
                     width: 400,
                     height: 400,
                     child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                         countText == '00 : 00 : 00' ? Colors.green : Colors.red,
-                      ),
+                      backgroundColor: Colors.white,
                       value: progress,
                       strokeWidth: 6,
                     ),

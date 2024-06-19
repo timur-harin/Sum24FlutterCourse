@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart' hide Provider;
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:http/http.dart';
-import 'package:provider/provider.dart' hide ChangeNotifierProvider;
+//import 'package:provider/provider.dart' hide ChangeNotifierProvider;
 
 
 void main() {

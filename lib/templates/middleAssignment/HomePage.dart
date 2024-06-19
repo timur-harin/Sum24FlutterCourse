@@ -42,13 +42,31 @@ class _BottomSheetState extends State<BottomSheet> {
   static const prevSession2 = 'prevSession2';
   static const prevSession3 = 'prevSession3';
 
-  Future<String> getSession() async {
-    return await _getSession();
+  Future<String> getSession1() async {
+    return await _getSession1();
   }
 
-  Future<String> _getSession() async {
+  Future<String> _getSession1() async {
     var prefs = await SharedPreferences.getInstance();
     return prefs.getString(prevSession1) ?? 'No previous sessions';
+  }
+
+  Future<String> getSession2() async {
+    return await _getSession2();
+  }
+
+  Future<String> _getSession2() async {
+    var prefs = await SharedPreferences.getInstance();
+    return prefs.getString(prevSession2) ?? '';
+  }
+
+  Future<String> getSession3() async {
+    return await _getSession3();
+  }
+
+  Future<String> _getSession3() async {
+    var prefs = await SharedPreferences.getInstance();
+    return prefs.getString(prevSession3) ?? '';
   }
   
     @override
@@ -67,12 +85,30 @@ class _BottomSheetState extends State<BottomSheet> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       FutureBuilder<String>(
-                        future: getSession(),
+                        future: getSession1(),
                         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
                             return CircularProgressIndicator();
-                          } else if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            return Text('Result: ${snapshot.data}');
+                          }
+                        },
+                      ),
+                      FutureBuilder<String>(
+                        future: getSession2(),
+                        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else {
+                            return Text('Result: ${snapshot.data}');
+                          }
+                        },
+                      ),
+                      FutureBuilder<String>(
+                        future: getSession3(),
+                        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return CircularProgressIndicator();
                           } else {
                             return Text('Result: ${snapshot.data}');
                           }
