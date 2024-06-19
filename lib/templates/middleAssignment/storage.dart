@@ -12,7 +12,11 @@ class LocalStorage {
     numberOfContrastShowers++;
     await prefs.setString(numberOfContrastShowers.toString(), jsonString);
     await prefs.setInt(numberOfShowersKey, numberOfContrastShowers);
-    print("Added a shower with ID $numberOfContrastShowers\nCurrent amount of showers is: ${prefs.getInt('numberOfShowers')}");
+  }
+
+  Future<void> deleteAllData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
   }
 
   // Future<ShowerCycle?>getShower(int key) async {
@@ -28,24 +32,25 @@ class LocalStorage {
   //   return null;
   // }
   //
-  // Future<void> deleteShower(int key) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   if (key > numberOfContrastShowers) {
-  //     return;
-  //   }
-  //   await prefs.remove(key.toString());
-  //
-  //   for (int i = key + 1; i < numberOfContrastShowers; i++) {
-  //     String? jsonString = prefs.getString(i.toString());
-  //     if (jsonString != null) {
-  //       await prefs.setString((i - 1).toString(), jsonString);
-  //       await prefs.remove(i.toString());
-  //     }
-  //   }
-  //
-  //   numberOfContrastShowers--;
-  //   await prefs.setInt('numberOfShower', numberOfContrastShowers);
-  // }
+  Future<void> deleteShower(int key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int numberOfContrastShowers = prefs.getInt(numberOfShowersKey) ?? 0;
+    if (key > numberOfContrastShowers) {
+      return;
+    }
+    await prefs.remove(key.toString());
+
+    for (int i = key + 1; i < numberOfContrastShowers; i++) {
+      String? jsonString = prefs.getString(i.toString());
+      if (jsonString != null) {
+        await prefs.setString((i - 1).toString(), jsonString);
+        await prefs.remove(i.toString());
+      }
+    }
+
+    numberOfContrastShowers--;
+    await prefs.setInt('numberOfShower', numberOfContrastShowers);
+  }
 
   Future<void> loadNumberOfShowers() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -61,7 +66,6 @@ class LocalStorage {
       if (jsonString != null) {
         Map<String, dynamic> jsonMap = jsonDecode(jsonString);
         showers.add(ShowerCycle.fromJson(jsonMap));
-        print("Added shower $i\n$jsonMap");
       }
     }
     return showers;

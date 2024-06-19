@@ -21,27 +21,23 @@ class _HomeState extends State<Home>{
   @override
   void initState() {
     super.initState();
-    // _loadNumberOfShowers();
     _loadShowerHistory();
   }
 
   @override void didChangeDependencies() {
     super.didChangeDependencies();
-    // _loadNumberOfShowers();
     _loadShowerHistory();
   }
 
-  // void _loadNumberOfShowers() async {
-  //   await localStorage.loadNumberOfShowers();
-  //   setState(() {
-  //     numberOfShowers = localStorage.numberOfContrastShowers;
-  //   });
-  // }
   void _loadShowerHistory() async {
     List<ShowerCycle> history = await localStorage.getAllShowers();
     setState(() {
       showerHistory = history;
     });
+  }
+
+  void _onShowerDeleted() {
+    _loadShowerHistory();
   }
 
   @override
@@ -56,6 +52,17 @@ class _HomeState extends State<Home>{
         ),
         backgroundColor: Colors.blue,
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () async {
+                await localStorage.deleteAllData();
+                _loadShowerHistory();
+              },
+              icon: const Icon (
+                Icons.delete_forever
+              )
+          )
+        ],
       ),
       body: Center(
         child: Column(
@@ -67,7 +74,14 @@ class _HomeState extends State<Home>{
               ),
             ),
             Expanded(
-              child: ShowerHistory(showerCycles: showerHistory),
+              child: Semantics(
+                label: "Shower history",
+                child: ShowerHistory(
+                showerHistory: showerHistory,
+                localStorage: localStorage,
+                onDelete: _onShowerDeleted,
+              ),
+              ),
             )
           ],
         ),
