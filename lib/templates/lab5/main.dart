@@ -1,11 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'comment.dart';
 import 'post.dart';
 import 'user.dart';
 
+void configureApp() {
+  setUrlStrategy(PathUrlStrategy());
+}
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  configureApp();
   runApp(MyApp());
 }
+
+final Map<String, String> routes = {
+  '/': '/one',
+  '/second': '/second',
+  '/third': '/third',
+  '/generated': '/generated',
+};
 
 class MyApp extends StatelessWidget {
   @override
@@ -16,16 +30,32 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       onGenerateRoute: (settings) {
-        if (settings.name == '/generated') {
+        if (routes.containsKey(settings.name)) {
+          return MaterialPageRoute(
+            builder: (context) => HomePage(),
+          );
+        } else if (settings.name == '/generated') {
           final int statusCode = settings.arguments as int;
           return MaterialPageRoute(
             builder: (context) => GeneratedPage(statusCode: statusCode),
           );
         } else {
+          final name = settings.name ?? '';
+          if (name.contains('/generated')) {
+            return MaterialPageRoute(
+              builder: (context) =>
+                  GeneratedPage(statusCode: int.parse(name.split('/').last)),
+            );
+          }
           return MaterialPageRoute(
             builder: (context) => UndefinedRoutePage(settings.name),
           );
         }
+      },
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (context) => UndefinedRoutePage(settings.name),
+        );
       },
       home: HomePage(),
     );
@@ -161,7 +191,12 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 final statusCode = int.tryParse(_controller.text);
                 if (statusCode != null) {
-                  Navigator.of(context).pushNamed('/generated', arguments: statusCode);
+                  // go to MaterialpageRoute
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              GeneratedPage(statusCode: statusCode)));
                 } else {
                   showDialog(
                     context: context,
@@ -197,7 +232,9 @@ class GeneratedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('Generated Page'),
+      ),
       body: Center(
         child: Image.network('https://http.cat/$statusCode'),
       ),
