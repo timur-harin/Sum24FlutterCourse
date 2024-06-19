@@ -1,4 +1,4 @@
-import 'package:education/templates/middleAssignment/ShowerStoryList.dart';
+import 'package:education/templates/TryToAlive/ShowerStoryList.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {

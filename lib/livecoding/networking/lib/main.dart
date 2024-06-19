@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:networking/providers/provider.dart';
-import 'package:networking/ui/pages/finish_page.dart';
-import 'package:networking/ui/pages/main_page.dart';
-import 'package:networking/ui/pages/workout_page.dart';
+import 'providers/provider.dart';
+import 'pages/finish_page.dart';
+import 'pages/main_page.dart';
+import 'pages/workout_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -21,7 +21,7 @@ class ExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Workout App',
+      title: 'Contrast Shower',
       initialRoute: '/',
       routes: {
         '/': (context) => MainPage(),

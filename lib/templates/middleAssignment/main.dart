@@ -1,25 +1,35 @@
-import 'package:education/templates/middleAssignment/homePage.dart';
+import 'package:education/templates/middleAssignment/pages/session_page.dart';
 import 'package:flutter/material.dart';
+import 'providers/provider.dart';
+import 'pages/finish_page.dart';
+import 'pages/main_page.dart';
+import 'pages/session_page.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MiddleAssigmentApp());
-
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => SessionProvider())],
+      child: const ExampleApp(),
+    ),
+  );
 }
 
-class MiddleAssigmentApp extends StatelessWidget {
-  const MiddleAssigmentApp({super.key});
+class ExampleApp extends StatelessWidget {
+  const ExampleApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Middle Assigment',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-      ),
-      // TODO - complete assignment
-      home: const HomePage(),
-
+      debugShowCheckedModeBanner: false,
+      title: 'Contrast Shower',
+      initialRoute: '/',
+      routes: {
+        '/': (context) => MainPage(),
+        '/session': (context) => SessionPage(),
+        '/finish': (context) => FinishPage(),
+      },
     );
   }
-  
+
 }
