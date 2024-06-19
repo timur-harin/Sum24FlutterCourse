@@ -1,18 +1,69 @@
-// Use these dependencies for your classes
-import 'dart:convert';
-import 'package:http/http.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/material.dart';
 
+import 'CatPage.dart';
+import 'CommentPage.dart';
+import 'PostPage.dart';
+import 'UserPage.dart';
 
-void main() {}
+void main() {
+  runApp(MyApp());
+}
 
-// TODO add needed classes for Flutter APP
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Lab 4',
+      home: MyHomePage(),
+      routes: {
+        '/comments': (context) => CommentPage(),
+        '/posts': (context) => PostPage(),
+        '/users': (context) => UserPage(),
+        '/cats': (context) => CatPage(statusCode: 200),
+      },
+    );
+  }
+}
 
-// TODO add generated route flutter app with undifined page with cat status code using api
-
-// TODO add putting argument in route navigation as parameter for generated page
-
-// TODO use api with cat status codes
-// https://http.cat/[status_code]
-
+class MyHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Lab 4'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              child: Text('Comments'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/comments');
+              },
+            ),
+            ElevatedButton(
+              child: Text('Posts'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/posts');
+              },
+            ),
+            ElevatedButton(
+              child: Text('Users'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/users');
+              },
+            ),
+             ElevatedButton(
+              child: Text('Cats'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/cats');
+              },
+            ),
+            
+          ],
+        ),
+      ),
+    );
+  }
+}

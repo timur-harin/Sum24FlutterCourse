@@ -1,16 +1,31 @@
-// TODO add dependencies
-// TODO add comment.g.dart as part
+import 'package:http/http.dart' as http; // Importing the http package
+import 'dart:convert'; // Importing dart:convert for jsonDecode
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'comment.g.dart';
+
+@JsonSerializable()
 class Comment {
-  // TODO task 2 to make this class for url http://jsonplaceholder.typicode.com/comments
+  int id;
+  String name;
+  String email;
+  String body;
 
-  factory Comment.fromJson(Map<String, dynamic> json) {}
+  Comment({required this.id, required this.name, required this.email, required this.body});
 
-  // Do not forget to run 'dart run build_runner build' to generate comment.g.dart
+  factory Comment.fromJson(Map<String, dynamic> json) =>
+      _$CommentFromJson(json);
 }
 
 Future<List<Comment>> fetchComments() async {
-  // TODO task 2.2 to make this function for url http://jsonplaceholder.typicode.com/comments
-  // // Using fabric from class
-  return [];
+  final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/comments'));
+
+  if (response.statusCode == 200) {
+    List<dynamic> jsonResponse = jsonDecode(response.body);
+    List<Comment> comments = jsonResponse.map((json) => Comment.fromJson(json)).toList();
+    return comments;
+  } else {
+    throw Exception('Failed to load comments');
+  }
 }
