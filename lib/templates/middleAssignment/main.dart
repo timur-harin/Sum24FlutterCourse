@@ -54,7 +54,7 @@ class ActiveSessionScreen extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<ActiveSessionScreen> with SingleTickerProviderStateMixin {
-  late Timer? _timer;
+  Timer? _timer;
   late int _secondsRemaining;
   bool _isTimerRunning = true;
   late AnimationController _controller;
@@ -64,7 +64,7 @@ class _MyHomePageState extends State<ActiveSessionScreen> with SingleTickerProvi
   @override
   void initState() {
     super.initState();
-    _secondsRemaining = widget.time;
+    _secondsRemaining = widget.time ~/ 5;
     startTimer();
    
     _controller = AnimationController(
@@ -91,10 +91,14 @@ class _MyHomePageState extends State<ActiveSessionScreen> with SingleTickerProvi
       setState(() {
         if (_secondsRemaining > 0) {
           _secondsRemaining--;
-          // if (_secondsRemaining == 1) {
-          //   AudioPlayer = AudioCache
+          if (_secondsRemaining == 0 && currentInterval < 4) {
+            // AudioPlayer = AudioCache
+            _secondsRemaining = widget.time ~/ 5;
+          } else if (_secondsRemaining == 0 && currentInterval == 4) {
+            endSession();
+          }
         } else {
-          timer.cancel();
+          _timer?.cancel();
         }
       });
     });
@@ -103,18 +107,29 @@ class _MyHomePageState extends State<ActiveSessionScreen> with SingleTickerProvi
   @override
   void dispose() {
     _controller.dispose();
-    _timer?.cancel(); // Отменяем таймер при удалении виджета
+    _timer?.cancel();
     super.dispose();
   }
 
   void stopTimer() {
-    _timer?.cancel();
+    if (_isTimerRunning) {
+      setState(() {
+        _timer?.cancel();
+        _controller.stop();
+      });
+    } else {
+      startTimer();
+      _controller.forward();
+    }
   }
 
   void endSession() {
     _timer?.cancel();
-    FinalScreen();
-  }
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => FinalScreen(time: (_secondsRemaining~/5)*currentInterval+_secondsRemaining, tempIntervals: widget.temperatureIntervals)),
+  );
+  } 
 
   @override
   Widget build(BuildContext context) {
@@ -168,12 +183,22 @@ class _MyHomePageState extends State<ActiveSessionScreen> with SingleTickerProvi
               children: [
                 SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: stopTimer,
+                  onPressed: () {
+                    stopTimer();
+                    _isTimerRunning = !_isTimerRunning;
+                  },
                   child: Text(_isTimerRunning ? 'Pause' : 'Continue'),
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: endSession,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FinalScreen(time: (_secondsRemaining~/5)*currentInterval+_secondsRemaining, tempIntervals: widget.temperatureIntervals),
+                      )
+                    );
+                  },
                   child: Text('End session'),
                 ),
               ]
@@ -381,6 +406,18 @@ class _MyHomePageState1 extends State<SettingsScreen> {
                 },
                 child: Text('Start'),
               ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ActiveSessionScreen(time: 50, temperatureIntervals: [10, 10, 10, 10, 10]),
+                    )
+                  );
+                },
+                child: Text('Default'),
+              )
             ],
           ),
         ),
@@ -390,6 +427,10 @@ class _MyHomePageState1 extends State<SettingsScreen> {
 }
 
 class FinalScreen  extends StatefulWidget {
+  late int time;
+  late List<double> tempIntervals;
+
+  FinalScreen({required this.time, required this.tempIntervals});
   @override
   _FinalScreen createState() => _FinalScreen();
 }
