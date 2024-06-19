@@ -10,4 +10,4 @@
 
 - generated route flutter app with undifined page with cat status code using api
 
--  put argument in route navigation
+- put argument in route navigation
