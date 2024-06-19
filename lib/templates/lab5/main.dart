@@ -80,7 +80,7 @@ class MainScreen extends StatelessWidget {
                   showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                            title: Text("Task 1"),
+                            title: Text("Posts"),
                             content: Text(f),
                             actions: [
                               TextButton(
@@ -91,7 +91,7 @@ class MainScreen extends StatelessWidget {
                             ],
                           ));
                 },
-                child: const Text("Task 1")),
+                child: const Text("Posts")),
             ElevatedButton(
                 onPressed: () async {
                   final comments = await fetchComments();
@@ -108,7 +108,7 @@ class MainScreen extends StatelessWidget {
                   showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                            title: Text("Task 2"),
+                            title: Text("Comments"),
                             content: Text(f),
                             actions: [
                               TextButton(
@@ -119,7 +119,7 @@ class MainScreen extends StatelessWidget {
                             ],
                           ));
                 },
-                child: const Text("Task 3")),
+                child: const Text("Comments")),
             ElevatedButton(
                 onPressed: () async {
                   final users = await fetchUsers();
@@ -136,7 +136,7 @@ class MainScreen extends StatelessWidget {
                   showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                            title: Text("Task 3"),
+                            title: Text("Users"),
                             content: Text(f),
                             actions: [
                               TextButton(
@@ -147,7 +147,7 @@ class MainScreen extends StatelessWidget {
                             ],
                           ));
                 },
-                child: const Text("Task 3")),
+                child: const Text("Users")),
                 Container(
                   child: TextField(
                     decoration: InputDecoration(
@@ -162,7 +162,7 @@ class MainScreen extends StatelessWidget {
                     print(textController.text);
                     Navigator.of(context).pushNamed('/generated/${textController.text}', arguments: textController.text);
                   },
-                  child: const Text("Открыть котов"),
+                  child: const Text("Open cats"),
                 ),
           ],
         ),
