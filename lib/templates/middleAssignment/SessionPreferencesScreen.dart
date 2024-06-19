@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:education/templates/middleAssignment/SessionScreen.dart';
+import 'SessionScreen.dart';
 
 class SessionPreferencesScreen extends StatefulWidget {
+  const SessionPreferencesScreen({super.key});
+
   @override
   _SessionPreferencesScreenState createState() => _SessionPreferencesScreenState();
 }
@@ -12,7 +14,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
   final _hotWaterDurationController = TextEditingController();
   final _coldWaterDurationController = TextEditingController();
   bool startWithHotWater = true;
-  
+
   @override
   void dispose() {
     _sessionDurationController.dispose();
@@ -25,7 +27,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Session Preferences'),
+        title: const Text('Session Preferences'),
       ),
       body: Form(
         key: _formKey,
@@ -35,7 +37,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
             children: <Widget>[
               TextFormField(
                 controller: _sessionDurationController,
-                decoration: InputDecoration(labelText: 'Session Duration (seconds)'),
+                decoration: const InputDecoration(labelText: 'Session Duration (seconds)'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -46,7 +48,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
               ),
               TextFormField(
                 controller: _hotWaterDurationController,
-                decoration: InputDecoration(labelText: 'Hot Water Duration (seconds)'),
+                decoration: const InputDecoration(labelText: 'Hot Water Duration (seconds)'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -57,7 +59,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
               ),
               TextFormField(
                 controller: _coldWaterDurationController,
-                decoration: InputDecoration(labelText: 'Cold Water Duration (seconds)'),
+                decoration: const InputDecoration(labelText: 'Cold Water Duration (seconds)'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -66,6 +68,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                   return null;
                 },
               ),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -75,16 +78,26 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                     int hotWaterDuration = int.parse(_hotWaterDurationController.text);
                     int coldWaterDuration = int.parse(_coldWaterDurationController.text);
 
+                    UserPreferences preferences = UserPreferences(
+                      sessionDuration: sessionDuration,
+                      hotWaterDuration: hotWaterDuration,
+                      coldWaterDuration: coldWaterDuration,
+                      startWithHotWater: startWithHotWater,
+                    );
+
                     // Navigate to the session screen
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SessionScreen(sessionDuration: sessionDuration, hotWaterDuration: hotWaterDuration, coldWaterDuration: coldWaterDuration, startWithHotWater: startWithHotWater)),
+                      MaterialPageRoute(builder: (context) => SessionScreen(preferences: preferences)),
                     );
                   }
                 },
-                child: Text('Start with Hot Water'),
+                child: const Text(
+                  'Start with Hot Water',
+                  style: TextStyle(color: Colors.amber),
+                ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -94,14 +107,24 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                     int hotWaterDuration = int.parse(_hotWaterDurationController.text);
                     int coldWaterDuration = int.parse(_coldWaterDurationController.text);
 
+                    UserPreferences preferences = UserPreferences(
+                      sessionDuration: sessionDuration,
+                      hotWaterDuration: hotWaterDuration,
+                      coldWaterDuration: coldWaterDuration,
+                      startWithHotWater: startWithHotWater,
+                    );
+
                     // Navigate to the session screen
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SessionScreen(sessionDuration: sessionDuration, hotWaterDuration: hotWaterDuration, coldWaterDuration: coldWaterDuration, startWithHotWater: startWithHotWater)),
+                      MaterialPageRoute(builder: (context) => SessionScreen(preferences: preferences)),
                     );
                   }
                 },
-                child: Text('Start with cold Water'),
+                child: const Text(
+                  'Start with Cold Water',
+                  style: TextStyle(color: Colors.amber),
+                ),
               ),
             ],
           ),
