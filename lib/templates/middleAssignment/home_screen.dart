@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'session_preferences_screen.dart';
 import 'session_details_screen.dart';
-import 'theme.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_coloured_buttons/gradient_coloured_buttons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:provider/provider.dart';
 import 'main.dart';
 import 'app_bar.dart';
 
@@ -36,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Home'),
+      appBar: const CustomAppBar(title: 'Home'),
       body: FutureBuilder(
         future: _previousSessions,
         builder: (context, AsyncSnapshot<List<ShowerSession>> snapshot) {

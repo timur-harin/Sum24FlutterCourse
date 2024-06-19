@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
-import 'package:provider/provider.dart' as provider;
-import 'theme.dart';
 import 'app_bar.dart';
 
 class SessionDetailsScreen extends StatelessWidget {

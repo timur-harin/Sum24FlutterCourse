@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'main.dart';
 
 class SharedPreferencesService {
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<void> saveShowerSession(String key, ShowerSession session) async {
     final prefs = await _prefs;

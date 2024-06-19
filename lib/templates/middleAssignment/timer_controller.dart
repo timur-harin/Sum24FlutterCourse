@@ -7,8 +7,8 @@ enum TimerState { paused, running }
 class TimerController extends ChangeNotifier {
   Timer? _timer;
   int _remainingTime;
-  String _currentPhase;
-  List<TemperaturePhase> _phases;
+  final String _currentPhase;
+  final List<TemperaturePhase> _phases;
   int _currentPhaseIndex;
   late TimerState _state = TimerState.running;
   ValueNotifier<String> currentPhaseNotifier = ValueNotifier<String>('Hot');

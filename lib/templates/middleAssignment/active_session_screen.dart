@@ -27,7 +27,6 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
   late TimerController _overallTimerController;
   late ValueNotifier<Color> _progressBarColor;
   late ValueNotifier<String> _currentPhaseNotifier;
-  late Color _backgroundColor;
 
   double _opacity = 1.0;
 
@@ -47,11 +46,6 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
             : _phaseTimerController.currentPhase == 'Cold'
                 ? Colors.blue
                 : Colors.green);
-    _backgroundColor = _phaseTimerController.currentPhase == 'Hot'
-        ? Colors.red.shade200
-        : _phaseTimerController.currentPhase == 'Cold'
-            ? Colors.blue.shade200
-            : Colors.green.shade200;
     _phaseTimerController.addListener(() {
       if (_currentPhaseNotifier.value == 'Hot') {
         _progressBarColor.value = Colors.red.shade200;
@@ -61,13 +55,9 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
         _progressBarColor.value = Colors.green.shade200;
       }
       if (_phaseTimerController.remainingTime <= 2) {
-        setState(() {
-          _backgroundColor = Colors.white;
-        });
+        setState(() {});
       } else {
-        setState(() {
-          _backgroundColor = _progressBarColor.value;
-        });
+        setState(() {});
       }
     });
     Timer.periodic(const Duration(milliseconds: 500), (timer) {
@@ -81,7 +71,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = provider.Provider.of<ThemeProvider>(context);
+    provider.Provider.of<ThemeProvider>(context);
     return ValueListenableBuilder<String>(
       valueListenable: _currentPhaseNotifier,
       builder: (context, currentPhase, child) {

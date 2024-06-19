@@ -1,12 +1,8 @@
 import 'package:education/templates/middleAssignment/shared_preferences_service.dart';
-
 import 'star_rating.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_coloured_buttons/gradient_coloured_buttons.dart';
-
 import 'main.dart';
-import 'package:provider/provider.dart' as provider;
-import 'theme.dart';
 import 'app_bar.dart';
 
 class SessionSummaryScreen extends StatefulWidget {
@@ -22,7 +18,6 @@ class SessionSummaryScreen extends StatefulWidget {
   @override
   _SessionSummaryScreenState createState() => _SessionSummaryScreenState();
 
-  get _timeSpent => timeSpent;
 }
 
 class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
