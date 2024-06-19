@@ -39,17 +39,11 @@ class ShowerSession {
   Duration time;
   Thermostat thermostat;
   int cycles;
-  bool isRunning;
 
-  ShowerSession(this.time,
-      {required this.cycles,
-      required this.isRunning,
-      required this.thermostat});
+  ShowerSession(this.time, {required this.cycles, required this.thermostat});
   ShowerSession.from(ShowerSession another)
       : this(another.time,
-            cycles: another.cycles,
-            isRunning: another.isRunning,
-            thermostat: another.thermostat);
+            cycles: another.cycles, thermostat: another.thermostat);
 
   Map toDbItem() {
     return {
@@ -82,12 +76,12 @@ class ShowerSessionManager extends Notifier<ShowerSession> {
       _timer.cancel();
     });
     return ShowerSession(ShowerSession.hotCycle,
-        cycles: 0, isRunning: false, thermostat: Thermostat.hot);
+        cycles: 0, thermostat: Thermostat.hot);
   }
 
-  void runTimer() {
+  bool runTimer() {
     if (_timer.isActive) {
-      return;
+      return false;
     }
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(oneSec, (timer) {
@@ -102,27 +96,32 @@ class ShowerSessionManager extends Notifier<ShowerSession> {
         state = ShowerSession.from(state)..time -= oneSec;
       }
     });
-    state = (ShowerSession.from(state)..isRunning = true);
+    return true;
   }
 
-  void stopTimer() {
+  bool stopTimer() {
     if (!_timer.isActive) {
-      return;
+      return false;
     }
     _timer.cancel();
-    state = (ShowerSession.from(state)..isRunning = false);
+    return true;
   }
 
-  void resetSession() {
+  bool resetSession() {
     state = build();
+    return true;
   }
 
-  void saveSession({BuildContext? context}) async {
-    final savedState = state;
-    resetSession();
-    if (savedState.cycles <= 0) {
-      return;
+  Future<bool> saveSession({BuildContext? context}) async {
+    if (state.cycles <= 0) {
+      if (context != null) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Complete at least one session to save it')));
+      }
+      return false;
     }
+    final savedState = ShowerSession.from(state);
+    resetSession();
     final box = await ref.watch(historyBoxProvider.future);
     box.add(savedState.toDbItem());
     if (context != null) {
@@ -130,6 +129,6 @@ class ShowerSessionManager extends Notifier<ShowerSession> {
         content: Text('Session saved!'),
       ));
     }
-    // TODO
+    return true;
   }
 }

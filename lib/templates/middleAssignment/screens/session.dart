@@ -2,19 +2,27 @@ import 'package:education/templates/middleAssignment/data/session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ShowerSessionScreen extends ConsumerWidget {
+class ShowerSessionScreen extends ConsumerStatefulWidget {
   const ShowerSessionScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ShowerSessionScreenState();
+}
+
+class _ShowerSessionScreenState extends ConsumerState<ShowerSessionScreen> {
+  bool _startedSession = false;
+  bool _runningSession = false;
+
+  @override
+  Widget build(BuildContext context) {
     String twoDigit(int n) => n.toString().padLeft(2, '0');
     final ShowerSession sessionState = ref.watch(ShowerSessionManager.provider);
-    const double iconSize = 52.0;
     // TODO: gradient backgrounds
     return Center(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         children: [
+          const Spacer(flex: 5),
           Text(
             switch (sessionState.thermostat) {
               Thermostat.cold => "Cold Water",
@@ -23,6 +31,7 @@ class ShowerSessionScreen extends ConsumerWidget {
             style: const TextStyle(
                 fontSize: 64.0, fontWeight: FontWeight.w700, height: 1.1),
           ),
+          const Spacer(flex: 1),
           Text(
             "${twoDigit(sessionState.time.inMinutes)}:${twoDigit(sessionState.time.inSeconds.remainder(60))}",
             style: const TextStyle(
@@ -32,55 +41,90 @@ class ShowerSessionScreen extends ConsumerWidget {
             "It's your ${sessionState.cycles} cycle. Keep it up!",
             style: const TextStyle(fontSize: 24.0),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              IconButton(
-                iconSize: iconSize,
-                icon: const Icon(Icons.stop),
-                onPressed: () {
-                  ref
-                      .read(ShowerSessionManager.provider.notifier)
-                      .resetSession();
-                },
-              ),
-              sessionState.isRunning
-                  ? IconButton(
-                      iconSize: iconSize,
-                      icon: const Icon(Icons.pause),
-                      onPressed: () {
-                        ref
-                            .read(ShowerSessionManager.provider.notifier)
-                            .stopTimer();
-                      },
-                    )
-                  : IconButton(
-                      iconSize: iconSize,
-                      icon: const Icon(Icons.play_arrow),
-                      onPressed: () {
-                        ref
-                            .read(ShowerSessionManager.provider.notifier)
-                            .runTimer();
-                      },
-                    ),
-              Visibility(
-                  visible: sessionState.cycles > 0,
-                  maintainSize: true,
-                  maintainState: true,
-                  maintainAnimation: true,
-                  child: IconButton(
-                    iconSize: iconSize,
-                    icon: const Icon(Icons.save),
-                    onPressed: () {
-                      ref
-                          .read(ShowerSessionManager.provider.notifier)
-                          .saveSession(context: context);
-                    },
-                  )),
-            ],
-          ),
+          const Spacer(flex: 2),
+          sessionButtons(context),
+          const Spacer(flex: 5),
         ],
       ),
     );
+  }
+
+  Widget sessionButtons(BuildContext context) {
+    const double iconSize = 52.0;
+    if (_startedSession) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IconButton(
+            iconSize: iconSize,
+            icon: const Icon(Icons.stop),
+            onPressed: () {
+              if (ref
+                  .read(ShowerSessionManager.provider.notifier)
+                  .resetSession()) {
+                setState(() {
+                  _startedSession = false;
+                  _runningSession = false;
+                });
+              }
+            },
+          ),
+          _runningSession
+              ? IconButton(
+                  iconSize: iconSize,
+                  icon: const Icon(Icons.pause),
+                  onPressed: () {
+                    if (ref
+                        .read(ShowerSessionManager.provider.notifier)
+                        .stopTimer()) {
+                      setState(() {
+                        _runningSession = false;
+                      });
+                    }
+                  },
+                )
+              : IconButton(
+                  iconSize: iconSize,
+                  icon: const Icon(Icons.play_arrow),
+                  onPressed: () {
+                    if (ref
+                        .read(ShowerSessionManager.provider.notifier)
+                        .runTimer()) {
+                      setState(() {
+                        _runningSession = true;
+                      });
+                    }
+                  },
+                ),
+          IconButton(
+            iconSize: iconSize,
+            icon: const Icon(Icons.save),
+            onPressed: () async {
+              if (await ref
+                  .read(ShowerSessionManager.provider.notifier)
+                  .saveSession(context: context)) {
+                setState(() {
+                  _startedSession = false;
+                  _runningSession = false;
+                });
+              }
+            },
+          ),
+        ],
+      );
+    } else {
+      return TextButton(
+        child: const Text('Start new session',
+            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600)),
+        onPressed: () {
+          if (ref.read(ShowerSessionManager.provider.notifier).runTimer()) {
+            setState(() {
+              _startedSession = true;
+              _runningSession = true;
+            });
+          }
+        },
+      );
+    }
   }
 }

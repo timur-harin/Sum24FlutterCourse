@@ -37,7 +37,7 @@ class SessionHistoryScreen extends ConsumerWidget {
         data: (box) => box.values.isNotEmpty
             ? ValueListenableBuilder(
                 valueListenable: box.listenable(),
-                builder: (context, box, widget) => ListView.builder(
+                builder: (context, box, widget) => ListView.separated(
                       itemCount: box.values.length,
                       itemBuilder: (context, index) {
                         final item = HistoryItem.fromBox(box.getAt(index)!);
@@ -52,6 +52,8 @@ class SessionHistoryScreen extends ConsumerWidget {
                           ),
                         );
                       },
+                      separatorBuilder: (context, index) => const
+                      Divider(indent: 64.0, endIndent: 16.0,),
                     ))
             : const Center(
                 child: Text('There\'s nothing yet'),

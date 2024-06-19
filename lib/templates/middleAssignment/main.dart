@@ -1,6 +1,7 @@
 import 'package:education/templates/middleAssignment/screens/history.dart';
 import 'package:education/templates/middleAssignment/screens/session.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -34,7 +35,11 @@ class _MiddleAssignmentAppState extends State<MiddleAssigmentApp> {
         primarySwatch: primary,
       ),
       // TODO - complete assignment
-      home: Scaffold(
+      home: Scaffold(appBar: AppBar(leading: IconButton(icon: const
+      Icon(Icons.meeting_room), onPressed: () {
+        Hive.close();
+        SystemNavigator.pop();
+      })),
         body: _screens[_index],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _index,
