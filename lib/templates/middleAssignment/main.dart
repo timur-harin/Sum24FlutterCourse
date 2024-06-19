@@ -1,21 +1,45 @@
 import 'package:flutter/material.dart';
+import 'session_screen.dart';
+import 'home_screen.dart';
+import 'theme.dart';
 
 void main() {
-  runApp(const MiddleAssigmentApp());
+  runApp(const MiddleAssignmentApp());
 }
 
-class MiddleAssigmentApp extends StatelessWidget {
-  const MiddleAssigmentApp({super.key});
+class MiddleAssignmentApp extends StatelessWidget {
+  const MiddleAssignmentApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Middle Assigment',
+      title: 'Contrast Shower Companion',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: AppColors.primary,
+          secondary: AppColors.accent,
+          background: AppColors.background,
+        ),
+        scaffoldBackgroundColor: AppColors.background,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
+        textTheme: TextTheme(
+          headlineLarge: TextStyle(
+            color: AppColors.primary,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
-      // TODO - complete assignment
-      home: null,
+      home: HomeScreen(),
     );
   }
 }
