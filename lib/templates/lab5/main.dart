@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'cat_status_code.dart';
-import 'status_page.dart';
-import 'package:http/http.dart' as http;
-import 'fetch_cat_status.dart';
+import 'user.dart';
+import 'comment.dart';
+import 'post.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,16 +11,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Cat Status Codes',
+      title: 'Fetch Data Example',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       onGenerateRoute: (settings) {
         if (settings.name == '/status') {
-          final args = settings.arguments as CatStatusCode;
+          final args = settings.arguments as List<dynamic>;
           return MaterialPageRoute(
             builder: (context) {
-              return StatusPage(catStatusCode: args);
+              return StatusPage(data: args);
             },
           );
         }
@@ -41,66 +39,83 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cat Status Codes'),
+        title: Text('Fetch Data Example'),
       ),
-      body: FutureBuilder<List<CatStatusCode>>(
-        future: fetchCatStatusCodes(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            final statuses = snapshot.data!;
-            return ListView.builder(
-              itemCount: statuses.length,
-              itemBuilder: (context, index) {
-                final status = statuses[index];
-                return ListTile(
-                  title: Text('Status Code: ${status.statusCode}'),
-                  subtitle: Text(status.message),
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/status',
-                      arguments: status,
-                    );
-                  },
-                );
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Spacer(),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  final users = await fetchUsers();
+                  Navigator.pushNamed(context, '/status', arguments: users);
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Failed to fetch users: $e')),
+                  );
+                }
               },
-            );
-          } else {
-            return Center(child: Text('No data available'));
-          }
-        },
+              child: Text('Fetch Users'),
+            ),
+            Spacer(),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  final comments = await fetchComments();
+                  String msg = '';
+                  for (Comment comment in comments) {
+                    msg += 'postId: ${comment.postId}\nid: ${comment.id}\nname: ${comment.name}\nemail: ${comment.email}\nbody: ${comment.body}\n\n';
+                  }
+                  Navigator.pushNamed(context, '/status', arguments: [msg]);
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Failed to fetch comments: $e')),
+                  );
+                }
+              },
+              child: Text('Fetch Comments'),
+            ),
+            Spacer(),
+            ElevatedButton(
+              onPressed: () async {
+                final posts = await fetchPosts();
+                String msg = '';
+                for (Post post in posts) {
+                  msg += 'title: ${post.title}\nbody: ${post.body}\n';
+                }
+                Navigator.pushNamed(context, '/status', arguments: [msg]);
+              },
+              child: Text('Fetch Posts'),
+            ),
+            Spacer(),
+          ],
+        ),
       ),
     );
   }
 }
 
 class StatusPage extends StatelessWidget {
-  final CatStatusCode catStatusCode;
+  final List<dynamic> data;
 
-  StatusPage({required this.catStatusCode});
+  StatusPage({required this.data});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Status Code: ${catStatusCode.statusCode}'),
+        title: Text('Data Details'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Status Code: ${catStatusCode.statusCode}',
-              style: TextStyle(fontSize: 24),
-            ),
-            SizedBox(height: 16),
-            Image.network('https://http.cat/${catStatusCode.statusCode}'),
-          ],
-        ),
+      body: ListView.builder(
+        itemCount: data.length,
+        itemBuilder: (context, index) {
+          final item = data[index];
+          return ListTile(
+            title: Text(item.toString()), // Customize this to display relevant data
+          );
+        },
       ),
     );
   }
@@ -119,6 +134,3 @@ class UndefinedPage extends StatelessWidget {
     );
   }
 }
-
-
-

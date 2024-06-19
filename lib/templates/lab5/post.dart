@@ -1,11 +1,10 @@
-
-
-import 'dart:ffi';
+// import 'dart:ffi'; 
 import 'package:dio/dio.dart';
+import 'dart:convert';
 
 class Post {
-  Int userId;
-  Int id;
+  int userId;
+  int id;
   String title;
   String body;
 
@@ -13,8 +12,8 @@ class Post {
   // Using fabric from class
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-      json['userId'] as Int,
-      json['id'] as Int,
+      json['userId'] as int,
+      json['id'] as int,
       json['title'] as String,
       json['body'] as String,
     );
