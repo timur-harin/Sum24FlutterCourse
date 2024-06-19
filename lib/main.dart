@@ -1,3 +1,4 @@
+import 'package:education/livecoding/navigation/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -12,9 +13,9 @@ void main() {
   runApp(MyApplication());
 }
 
-// TODO add needed classes for Flutter APP
+// // TODO add needed classes for Flutter APP
 
-// TODO add generated route flutter app with undifined page with cat status code using api
+// TODO add generated route flutter app with undefined page with cat status code using api
 
 // TODO add putting argument in route navigation as parameter for generated page
 
@@ -39,6 +40,46 @@ class MyApplication extends StatelessWidget {
         "/user": (context) => ProviderScope(child: UserPage()),
       },
       initialRoute: "/home",
+      onGenerateRoute: (settings) {
+        if (routes.containsKey(settings.name) ||
+            settings.name == '/arguments-example') {
+          return MaterialPageRoute(
+              builder: (context) => GeneratedPage(title: settings.name!));
+        }
+
+        // Get status code from the route
+        var name = settings.name ?? "";
+        name = name.substring(1); // Remove the forward slash character
+        final code = int.tryParse(name);
+
+        if (code != null) {
+          return MaterialPageRoute(
+              builder: (context) => CatStatusPage(code: code));
+        }
+      },
+    );
+  }
+}
+
+class CatStatusPage extends ConsumerWidget {
+  int code;
+
+  CatStatusPage({super.key, this.code = 200});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    code = int.parse(ModalRoute.of(context)?.settings.arguments.toString() ??
+        code.toString());
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Cats as status codes"),
+      ),
+      body: Center(
+        child: Image(
+          image: NetworkImage("https://http.cat/$code"),
+        ),
+      ),
     );
   }
 }
@@ -71,6 +112,12 @@ class HomePage extends ConsumerWidget {
                 onPressed: () => Navigator.of(context).pushNamed("/user"),
                 child: const Text("User"),
               ),
+              spacer,
+              FilledButton(
+                onPressed: () => Navigator.of(context)
+                    .pushNamed("/arguments-example", arguments: 200),
+                child: const Text("Get a 301 cat 😺"),
+              ),
             ],
           ),
         ));
@@ -86,7 +133,7 @@ class PostsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Task 1: Simple factory"),
+          title: const Text("Task 1: Simple factory"),
         ),
         body: SingleChildScrollView(
           child: Center(
