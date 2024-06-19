@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           }
           final name = settings.name ?? '';
           print(name);
-          if (name.contains('/generated')) {
+          if (name.contains('generated')) {
             print(true);
             return MaterialPageRoute(
                 builder: (context) => GeneratedPage(title: name));
