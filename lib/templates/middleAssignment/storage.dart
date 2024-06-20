@@ -12,6 +12,6 @@ class LocalStorage {
 
   Future <List<String>> getSession() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getStringList(key) ?? ['', ''];
+    return prefs.getStringList(key) ?? ['0', '0'];
   }
 }

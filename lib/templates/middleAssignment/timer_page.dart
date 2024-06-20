@@ -3,22 +3,23 @@ import 'package:education/templates/middleAssignment/results_page.dart';
 import 'package:flutter/material.dart';
 import 'preferences_page.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'notifier.dart';
 
 class TimerPage extends StatefulWidget {
   final PreferencesState preferencesState;
   const TimerPage({Key? key, required this.preferencesState}) : super(key: key);
   @override
-  TimerPageState createState() => TimerPageState(preferencesState: PreferencesState(preferencesState.duration, preferencesState.switches));
+  TimerPageState createState() => TimerPageState(preferencesState: PreferencesState(preferencesState.duration, preferencesState.switches, preferencesState.waterType));
 }
 
 class TimerPageState extends State<TimerPage> {
-  Color? _backgroundColor;
+  late Color _backgroundColor = (preferencesState.waterType == WaterType.hot) ? const Color.fromARGB(213, 255, 82, 82):const Color.fromARGB(209, 68, 137, 255);
   final PreferencesState preferencesState;
   late int _minutes;
   late int _seconds;
   late int _secondsCopy;
   late int _minutesCopy;
+  late int secondsToNotify = 0;
+  int actualSwitch = 0;
   int secondsLeft = 0;
   bool _isRunning = false;
   bool _isPaused = true;
@@ -32,10 +33,7 @@ class TimerPageState extends State<TimerPage> {
     _seconds = 0;
     _secondsCopy = _seconds;
     _minutesCopy = _minutes;
-  }
-
-  //Color _backgroundColor = (preferencesState.waterType != "Hot") ? const Color.fromARGB(209, 68, 137, 255) : const Color.fromARGB(213, 255, 82, 82);
-  
+  }  
 
   void _pauseTimer() {
     _isPaused = true;
@@ -56,12 +54,9 @@ class TimerPageState extends State<TimerPage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context)
-       => ResultsPage(timerPageState:
-        TimerPageState(preferencesState:
-         PreferencesState(preferencesState.duration,
-          preferencesState.switches)), secondsLeft: secondsLeft),
-      ),
-    );
+       => ResultsPage(timerPageState: TimerPageState(preferencesState:
+         PreferencesState(preferencesState.duration, preferencesState.switches, preferencesState.waterType)), secondsLeft: secondsLeft, actualSwitch: actualSwitch)),
+      );
   }
 
   void playSound() async {
@@ -87,29 +82,33 @@ class TimerPageState extends State<TimerPage> {
     _isHide = true;
     Timer.periodic(const Duration(seconds: 1), (timer)  {
       if (!_isPaused) {
-      if (secondsLeft == (_minutes * 60) ~/ preferencesState.switches) {
-          switchColor();
-          playSound();
-        }
-        if (_secondsCopy == 0 && _minutesCopy != 0) {
-          setState(() {
-            _minutesCopy--;
-            _secondsCopy = 59;
+        if (_minutesCopy == 0 && _secondsCopy == 0) {
+            _toResultScreen();
+        } else if (_secondsCopy == 0 && _minutesCopy != 0) {
             setState(() {
-              secondsLeft++;
+              _minutesCopy--;
+              _secondsCopy = 59;
+              secondsToNotify++;
+              setState(() {
+                secondsLeft++;
+              });
             });
-          });
-        } else if (_minutesCopy == 0 && _secondsCopy == 0) {
-          _toResultScreen();
-        } else if (_secondsCopy > 0) {
-          setState(() {
-            secondsLeft++;
-            _secondsCopy--;
-          });
+          } else if ((_minutes * 60) ~/ (preferencesState.switches + 1) == secondsToNotify) {
+            setState(() {
+              secondsToNotify = 0;
+              actualSwitch++;
+            }); 
+            switchColor();
+            playSound();
+          } else if (_secondsCopy > 0) {
+            setState(() {
+              secondsToNotify++;
+              secondsLeft++;
+              _secondsCopy--;
+            });
         } 
       }
     });
-
   }
 
   @override

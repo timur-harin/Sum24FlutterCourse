@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'package:education/templates/middleAssignment/provider.dart';
 import 'package:flutter/material.dart';
 import 'preferences_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'riverpod.dart';
 import 'notifier.dart';
 
 void main() {
@@ -57,7 +55,7 @@ class ContrastShowerScreenHome extends ConsumerWidget {
             const Text('Welcome to Contrast Shower Helper', style: TextStyle(fontSize: 30),),
             const Text('Previous shower session:', style: TextStyle(fontSize: 30),),
             const SizedBox(height: 15),
-            Text("Time in shower: ${ref.watch(sessionProvider).elementAt(0)} seconds"),
+            Text("Time in shower: ${int.parse(ref.watch(sessionProvider).elementAt(0)) ~/ 60} minutes and ${int.parse(ref.watch(sessionProvider).elementAt(0)) % 60} seconds"),
             Text("Number of switches: ${ref.watch(sessionProvider).elementAt(1)}"),
             const SizedBox(height: 20),
             ElevatedButton(

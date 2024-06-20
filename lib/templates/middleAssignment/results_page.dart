@@ -6,9 +6,11 @@ import 'notifier.dart';
 
 class ResultsPage extends ConsumerWidget {
   final TimerPageState timerPageState;
-  int secondsLeft;
+  final int secondsLeft;
+  final int actualSwitch;
+
   WidgetRef? ref;
-  ResultsPage({required this.timerPageState, required this.secondsLeft, this.ref});
+  ResultsPage({required this.timerPageState, required this.secondsLeft, required this.actualSwitch ,this.ref});
 
 
   @override
@@ -38,10 +40,11 @@ class ResultsPage extends ConsumerWidget {
             Text('You were in the shower for: ${secondsLeft ~/ 60} minutes and ${secondsLeft % 60} seconds',
              style: const TextStyle(fontSize: 15),),
             const SizedBox(height: 20),
-            Text('Each process took: ${secondsLeft ~/ timerPageState.preferencesState.switches} seconds'),            
+            Text('You switched $actualSwitch time(-s)'),    
+            const SizedBox(height: 20),    
             ElevatedButton(
               onPressed: () async {
-                ref.read(sessionProvider.notifier).saving(secondsLeft, timerPageState.preferencesState.switches);
+                ref.read(sessionProvider.notifier).saving(secondsLeft, actualSwitch);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ContrastShowerScreenHome()),

@@ -12,13 +12,12 @@ final sessionProvider = StateNotifierProvider<SessionNotifier, List<String>>((re
 
 class SessionNotifier extends StateNotifier<List<String>> {
   final LocalStorage localStorage;
-  SessionNotifier(this.localStorage) : super(['', '']) {
+  SessionNotifier(this.localStorage) : super(['0', '0']) {
     loadSession();
   }
 
   void loadSession() async {
     state = await localStorage.getSession();
-    print(state);
   }
 
   void saving(int duration, int switches) async {

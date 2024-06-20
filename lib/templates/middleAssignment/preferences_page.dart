@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'timer_page.dart';
 
+enum WaterType { hot, cold }
+
 class Preferences extends StatefulWidget {
   @override
-  PreferencesState createState() => PreferencesState(10, 5);
+  PreferencesState createState() => PreferencesState(10, 5, WaterType.hot);
 }
 
 class PreferencesState extends State<Preferences> {
 
-  PreferencesState(this.duration, this.switches, {this.waterType = "Hot"});
+  PreferencesState(this.duration, this.switches, this.waterType);
 
   int duration;
   int switches;
-  String waterType;
+  late String? waterTypeString = waterType == WaterType.hot ? 'Hot' : 'Cold';
+  WaterType waterType = WaterType.hot;
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +47,11 @@ class PreferencesState extends State<Preferences> {
             leading: const Icon(Icons.timer),
           ),
           ListTile(
-            title: Text('Number of cycles: $switches'),
+            title: Text('Number of switches: $switches'),
             leading: const Icon(Icons.rotate_left),
           ),
           ListTile(
-            title: Text('Start with: $waterType water'), 
+            title: Text('Start with: $waterTypeString water'), 
             leading: const Icon(Icons.thermostat), 
           ),
           const Text('Settings:  ', style: TextStyle(fontSize: 20)),
@@ -90,7 +93,8 @@ class PreferencesState extends State<Preferences> {
             ElevatedButton(
               onPressed: () => {
                  setState(() {
-                   waterType = "Hot";
+                   waterType = WaterType.hot;
+                   waterTypeString = 'Hot';
                  }),
               },
               child: const Text('Hot'),
@@ -98,7 +102,8 @@ class PreferencesState extends State<Preferences> {
             ElevatedButton(
               onPressed: () => {
                 setState(() {
-                   waterType = "Cold";
+                   waterType = WaterType.cold;
+                   waterTypeString = "Cold";
                  }),
               },
               child: const Text('Cold'),
@@ -109,7 +114,7 @@ class PreferencesState extends State<Preferences> {
             onPressed: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => TimerPage(preferencesState: PreferencesState(duration, switches, waterType: waterType))),
+                  MaterialPageRoute(builder: (context) => TimerPage(preferencesState: PreferencesState(duration, switches, waterType))),
               );
             },
             child: const Text('Start'),
