@@ -1,21 +1,30 @@
+// Aleksandr Isupov (c) – All rights reserved
+
+import 'package:education/templates/middleAssignment/start_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MiddleAssigmentApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MiddleAssigmentApp extends StatelessWidget {
-  const MiddleAssigmentApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Middle Assigment',
+      debugShowCheckedModeBanner: false,
+      title: 'Contrast Shower Companion',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // TODO - complete assignment
-      home: null,
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.blue,
+        ),
+        body: const StartMenu(),
+      ),
     );
   }
 }
