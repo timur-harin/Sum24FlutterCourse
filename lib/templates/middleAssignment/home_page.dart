@@ -1,33 +1,11 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'preferences_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'notifier.dart';
 
-void main() {
-  runApp(ProviderScope(child: MiddleAssigmentApp()));
-}
-
-class MiddleAssigmentApp extends StatelessWidget {
-  const MiddleAssigmentApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Middle Assigment - contrast shower',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ContrastShowerScreenHome(),
-    );
-  }
-}
 
 class ContrastShowerScreenHome extends ConsumerWidget {
   ContrastShowerScreenHome({super.key});
-  // final LocalStorage localStorage = LocalStorage();
-  // final ProviderSession providerSession = ProviderSession();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -57,6 +35,7 @@ class ContrastShowerScreenHome extends ConsumerWidget {
             const SizedBox(height: 15),
             Text("Time in shower: ${int.parse(ref.watch(sessionProvider).elementAt(0)) ~/ 60} minutes and ${int.parse(ref.watch(sessionProvider).elementAt(0)) % 60} seconds"),
             Text("Number of switches: ${ref.watch(sessionProvider).elementAt(1)}"),
+            Text("You started with ${ref.watch(sessionProvider).elementAt(2)}"),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {

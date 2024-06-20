@@ -3,11 +3,13 @@ import 'timer_page.dart';
 import 'home_page.dart';
 import 'package:flutter/material.dart';
 import 'notifier.dart';
+import 'preferences_page.dart';
 
 class ResultsPage extends ConsumerWidget {
   final TimerPageState timerPageState;
   final int secondsLeft;
   final int actualSwitch;
+  late final String startWater = (timerPageState.preferencesState.waterType == WaterType.hot) ? 'Hot water' : 'Cold water';
 
   WidgetRef? ref;
   ResultsPage({required this.timerPageState, required this.secondsLeft, required this.actualSwitch ,this.ref});
@@ -44,7 +46,7 @@ class ResultsPage extends ConsumerWidget {
             const SizedBox(height: 20),    
             ElevatedButton(
               onPressed: () async {
-                ref.read(sessionProvider.notifier).saving(secondsLeft, actualSwitch);
+                ref.read(sessionProvider.notifier).saving(secondsLeft, actualSwitch, startWater);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ContrastShowerScreenHome()),
