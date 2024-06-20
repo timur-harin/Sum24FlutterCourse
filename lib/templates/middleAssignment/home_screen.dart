@@ -25,12 +25,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<List<ShowerSession>> _getPreviousSessions() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> sessionStrings = prefs.getStringList('sessions') ?? [];
-    return sessionStrings.map((sessionString) {
-      return ShowerSession.fromMap(jsonDecode(sessionString));
-    }).toList();
-  }
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  List<String> sessionStrings = prefs.getStringList('sessions') ?? [];
+  List<ShowerSession> allSessions = sessionStrings.map((sessionString) {
+    return ShowerSession.fromMap(jsonDecode(sessionString));
+  }).toList();
+  int start = allSessions.length > 5 ? allSessions.length - 5 : 0;
+  return allSessions.sublist(start, allSessions.length).reversed.toList();
+}
 
   @override
   Widget build(BuildContext context) {
