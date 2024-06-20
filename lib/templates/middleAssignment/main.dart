@@ -1,21 +1,37 @@
+import 'package:education/templates/middleAssignment/screens/main_screen.dart';
+import 'package:education/templates/middleAssignment/screens/preferences_screen.dart';
+import 'package:education/templates/middleAssignment/screens/session_screen.dart';
+import 'package:education/templates/middleAssignment/screens/summary_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'screens/session_overwiew_screen.dart';
+
 
 void main() {
-  runApp(const MiddleAssigmentApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
-class MiddleAssigmentApp extends StatelessWidget {
-  const MiddleAssigmentApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Middle Assigment',
+      title: 'Contrast Shower Companion',
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      // TODO - complete assignment
-      home: null,
+      routes: {
+        '/': (context) => const MainScreen(),
+        '/overview': (context) => const SessionOverwiewScreen(),
+        '/preferences': (context) => PreferencesScreen(),
+        '/session': (context) => SessionScreen(),
+        '/summary': (context) =>  const SummaryScreen(),
+      },
     );
   }
 }
