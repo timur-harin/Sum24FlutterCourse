@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'session_screen.dart';
+import 'summary_screen.dart';
 import 'shower_session.dart';
+import 'session_history_provider.dart';
 import 'theme.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -28,7 +30,9 @@ class HomeScreen extends ConsumerWidget {
             ),
             SizedBox(height: 20),
             Expanded(
-              child: ListView.builder(
+              child: sessionHistory.isEmpty
+                  ? Center(child: Text('No sessions yet.'))
+                  : ListView.builder(
                 itemCount: sessionHistory.length,
                 itemBuilder: (context, index) {
                   final session = sessionHistory[index];
@@ -38,8 +42,26 @@ class HomeScreen extends ConsumerWidget {
                   return Card(
                     color: cardColor,
                     child: ListTile(
-                      title: Text('${session.date.day} ${_monthName(session.date.month)} ${session.date.year}'),
-                      subtitle: Text('Total Duration: ${session.totalDuration} seconds'),
+                      title: Text(
+                          '${session.date.day} ${_monthName(session.date.month)} ${session.date.year}'),
+                      subtitle: Text(
+                          'Total Duration: ${session.totalDuration} minutes'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SummaryScreen(
+                              date: session.date,
+                              totalMinutes: session.totalDuration,
+                              hotDuration: session.hotDuration,
+                              coldDuration: session.coldDuration,
+                              hotTemperature: session.hotTemperature,
+                              coldTemperature: session.coldTemperature,
+                              cycles: session.cycles.length,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   );
                 },
@@ -64,8 +86,18 @@ class HomeScreen extends ConsumerWidget {
 
   String _monthName(int month) {
     const monthNames = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
     ];
     return monthNames[month - 1];
   }

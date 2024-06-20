@@ -1,11 +1,31 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color primary = Color(0xFF6200EE);
-  static const Color accent = Color(0xFF03DAC6);
-  static const Color background = Color(0xFFF6F6F6);
-  static const Color cardBackground = Color(0xFFFFFFFF);
-  static const Color cardAlternative = Color(0xFFE0E0E0);
-  static const Color hot = Colors.red;
-  static const Color cold = Colors.blue;
+  static const primary = Color(0xFF6200EE);
+  static const accent = Color(0xFF03DAC5);
+  static const background = Color(0xFF121212);
+  static const cardBackground = Color(0xFF1E1E1E);
+  static const cardAlternative = Color(0xFF2C2C2C);
+  static const hot = Color(0xFFFF7043);
+  static const cold = Color(0xFF42A5F5);
 }
+
+final ThemeData appTheme = ThemeData(
+  brightness: Brightness.dark,
+  primaryColor: AppColors.primary,
+  colorScheme: ColorScheme.dark(
+    primary: AppColors.primary,
+    secondary: AppColors.accent,
+    background: AppColors.background,
+  ),
+  cardColor: AppColors.cardBackground,
+  textTheme: TextTheme(
+    headlineLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+    bodyLarge: TextStyle(fontSize: 18, color: Colors.white),
+    bodyMedium: TextStyle(fontSize: 16, color: Colors.white70),
+  ),
+  buttonTheme: ButtonThemeData(
+    buttonColor: AppColors.accent,
+    textTheme: ButtonTextTheme.primary,
+  ),
+);

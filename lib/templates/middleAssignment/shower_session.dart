@@ -1,33 +1,26 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 class ShowerSession {
   final DateTime date;
-  final int hotDuration;
-  final int coldDuration;
-  final int totalDuration;
+  final int totalDuration; // в минутах
+  final int hotDuration; // в секундах
+  final int coldDuration; // в секундах
+  final int hotTemperature; // температура горячей воды
+  final int coldTemperature; // температура холодной воды
+  final List<ShowerCycle> cycles;
 
   ShowerSession({
     required this.date,
+    required this.totalDuration,
     required this.hotDuration,
     required this.coldDuration,
-    required this.totalDuration,
+    required this.hotTemperature,
+    required this.coldTemperature,
+    required this.cycles,
   });
 }
 
-class SessionHistoryNotifier extends StateNotifier<List<ShowerSession>> {
-  SessionHistoryNotifier() : super([]);
+class ShowerCycle {
+  final int hotDuration;
+  final int coldDuration;
 
-  void addSession(ShowerSession session) {
-    state = [...state, session];
-  }
+  ShowerCycle({required this.hotDuration, required this.coldDuration});
 }
-
-final sessionHistoryProvider = StateNotifierProvider<SessionHistoryNotifier, List<ShowerSession>>((ref) {
-  return SessionHistoryNotifier();
-});
-
-final addSessionProvider = Provider((ref) {
-  return (ShowerSession session) {
-    ref.read(sessionHistoryProvider.notifier).addSession(session);
-  };
-});
