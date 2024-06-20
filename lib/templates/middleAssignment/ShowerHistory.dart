@@ -19,8 +19,8 @@ class ShowerHistory extends StatefulWidget {
 class _ShowerHistoryState extends State<ShowerHistory> {
 
   Future<void> _deleteShowerCycle(int index) async {
-
-    await widget.localStorage.deleteShower(index);
+    print("Now trying to delete shower with index ${index + 1}");
+    await widget.localStorage.deleteShower(index + 1);
     setState(() {
       widget.showerHistory.removeAt(index);
     });
@@ -31,6 +31,20 @@ class _ShowerHistoryState extends State<ShowerHistory> {
   Widget build(BuildContext context) {
     final showerHistory = widget.showerHistory;
     print(showerHistory);
+    if (showerHistory.isEmpty) {
+      return const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Nothing to show here...",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 30
+            ),)
+          ],
+        ),
+      );
+    }
     return ListView.builder(
       itemCount: showerHistory.length,
       itemBuilder: (context, index) {

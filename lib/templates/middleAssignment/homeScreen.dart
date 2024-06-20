@@ -67,21 +67,12 @@ class _HomeState extends State<Home>{
       body: Center(
         child: Column(
           children: [
-            const Text(
-              "History",
-              style: TextStyle(
-                color: Colors.black
-              ),
-            ),
             Expanded(
-              child: Semantics(
-                label: "Shower history",
                 child: ShowerHistory(
-                showerHistory: showerHistory,
-                localStorage: localStorage,
-                onDelete: _onShowerDeleted,
-              ),
-              ),
+                  showerHistory: showerHistory,
+                  localStorage: localStorage,
+                  onDelete: _onShowerDeleted,
+                )
             )
           ],
         ),
