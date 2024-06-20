@@ -94,8 +94,6 @@ class ShowerSession extends ConsumerWidget {
     ref.read(isTimerRunningProvider.notifier).state = false;
   }
 
-
-
   /// Displays the session statistics in an alert dialog.
   ///
   /// @param context The build context.
@@ -141,8 +139,12 @@ class ShowerSession extends ConsumerWidget {
         Text(
             'Session Duration: ${formatTime(_sessionDuration! - ref.watch(timerProvider))} seconds'),
         Text('Completed Phases: $_completedPhases'),
-        const SizedBox(height: 5,),
-        StarRatingWidget(ref: ref,),
+        const SizedBox(
+          height: 5,
+        ),
+        StarRatingWidget(
+          ref: ref,
+        ),
       ],
     );
   }
@@ -167,7 +169,14 @@ class ShowerSession extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (!_isStarted) {
-      _phaseTimer = ref.watch(coldPhaseTimerProvider) * 60 * 1000;
+      switch (ref.read(backgroundColorProvider)) {
+        case (Colors.blue):
+          _phaseTimer = ref.watch(coldPhaseTimerProvider) * 60 * 1000;
+          break;
+        case (Colors.orange):
+          _phaseTimer = ref.watch(hotPhaseTimerProvider) * 60 * 1000;
+          break;
+      }
     }
     return Scaffold(
       body: AnimatedContainer(
@@ -203,7 +212,9 @@ class ShowerSession extends ConsumerWidget {
                     color: ref.watch(backgroundColorProvider),
                   ),
                   child: Text(formatTimeWithMilliseconds(_phaseTimer))),
-              const SizedBox(height: 5,),
+              const SizedBox(
+                height: 5,
+              ),
               Templates.buildButton(
                   context: context,
                   ref: ref,
@@ -212,7 +223,8 @@ class ShowerSession extends ConsumerWidget {
                   },
                   width: 200,
                   height: 70,
-                  text: Text(ref.watch(isTimerRunningProvider) ? 'Pause' : 'Start',
+                  text: Text(
+                      ref.watch(isTimerRunningProvider) ? 'Pause' : 'Start',
                       style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 28.0,

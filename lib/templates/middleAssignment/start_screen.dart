@@ -212,16 +212,19 @@ class StartMenu extends ConsumerWidget {
   /// @param ref The widget reference.
   /// @return The total duration of the session.
   double _calculateTotalDuration(WidgetRef ref) {
-    if (ref.watch(backgroundColorProvider) == Colors.blue) {
-      return ref.read(coldPhaseTimerProvider.notifier).state *
-              (ref.read(numberOfPhasesProvider.notifier).state / 2).ceil() +
-          ref.read(hotPhaseTimerProvider.notifier).state *
-              (ref.read(numberOfPhasesProvider.notifier).state / 2).floor();
-    } else {
-      return ref.read(coldPhaseTimerProvider.notifier).state *
-              (ref.read(numberOfPhasesProvider.notifier).state / 2).floor() +
-          ref.read(hotPhaseTimerProvider.notifier).state *
-              (ref.read(numberOfPhasesProvider.notifier).state / 2).ceil();
+    switch (ref.watch(backgroundColorProvider)) {
+      case (Colors.blue):
+        return ref.read(coldPhaseTimerProvider.notifier).state *
+            (ref.read(numberOfPhasesProvider.notifier).state / 2).ceil() +
+            ref.read(hotPhaseTimerProvider.notifier).state *
+                (ref.read(numberOfPhasesProvider.notifier).state / 2).floor();
+      case (Colors.orange):
+        return ref.read(coldPhaseTimerProvider.notifier).state *
+            (ref.read(numberOfPhasesProvider.notifier).state / 2).floor() +
+            ref.read(hotPhaseTimerProvider.notifier).state *
+                (ref.read(numberOfPhasesProvider.notifier).state / 2).ceil();
+      default:
+        return 0;
     }
   }
 
