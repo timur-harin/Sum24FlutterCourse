@@ -32,3 +32,18 @@ class ShowerSessionsNotifier with ChangeNotifier {
    return _localStorageService.getSession(id: id);
   }
 }
+
+bool _isHotDisabled = false;
+final startPhaseProvider = StateProvider<bool>((ref) {
+  return _isHotDisabled;
+});
+
+DateTime _timePickerTime = DateTime(0);
+final timePickerTimeProvider = StateProvider<DateTime>((ref) {
+  return _timePickerTime;
+});
+
+final _textInputController = TextEditingController();
+final textInputControllerProvider = StateProvider<TextEditingController>((ref) {
+  return _textInputController;
+});

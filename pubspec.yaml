@@ -7,6 +7,7 @@ environment:
   sdk: '>=3.4.1 <4.0.0'
 
 dependencies:
+  customizable_datetime_picker: ^0.0.3
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.5.1

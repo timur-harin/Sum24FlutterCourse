@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:education/templates/middleAssignment/notifiers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,15 +30,19 @@ class MainScreen extends ConsumerWidget {
         // ),
 
         child: const Center(
-            child: ShowerSessionList()
+            child: ShowerSessionListWidget()
         )
       ),
       floatingActionButton: FloatingActionButton.extended(
-        label: const Text("Start new session"),
+        label: const Text(
+            "Start new session"
+        ),
         icon: const Icon(Icons.add),
         onPressed: () => {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const MainScreen())
+          showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (context) {return const SessionSettingsWidget();}
           )
 
           // ref
@@ -57,7 +60,68 @@ class NewSessionSettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Scaffold(
+
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Session settings")
+      ),
+
+      floatingActionButton: FloatingActionButton.extended(
+        label: const Text("Start session"),
+        onPressed: () {},
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
+      body: const Center(
+        child: Column(
+          children: <Widget>[
+            Text(
+              "Start phase",
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(height: 10),
+            StartPhaseChoiceWidget(),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Phase duration",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(height: 10),
+                    PhaseDurationWidget(),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Phases amount",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    SizedBox(height: 10),
+                    PhasesAmountWidget(),
+
+
+                  ],
+                )
+
+              ],
+            ),
+
+
+
+
+            
+
+          ],
+        ),
+      ),
 
     );
   }
