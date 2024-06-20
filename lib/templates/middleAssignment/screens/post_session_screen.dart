@@ -7,19 +7,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../notifiers/session_notifier.dart';
 
 class PostSessionScreen extends ConsumerWidget {
-  final int totalDuration;
-  final int hotPhasesCompleted;
-  final int coldPhasesCompleted;
-
-  const PostSessionScreen({
-    super.key,
-    required this.totalDuration,
-    required this.hotPhasesCompleted,
-    required this.coldPhasesCompleted,
-  });
+  late int totalDuration;
+  late int hotPhasesCompleted;
+  late int coldPhasesCompleted;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
+    totalDuration = arguments['totalDuration'];
+    hotPhasesCompleted = arguments['hotPhasesCompleted'];
+    coldPhasesCompleted = arguments['coldPhasesCompleted'];
+
     ref.read(sessionsProvider.notifier).updateDuration(totalDuration);
     return Scaffold(
       appBar: const GradientAppBar(
@@ -52,7 +50,7 @@ class PostSessionScreen extends ConsumerWidget {
                       'Congratulations on completing your session!',
                       style: TextStyle(
                         fontSize: 20,
-                        color: Colors.blue, // Change this to match your theme
+                        color: Colors.blue,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -60,7 +58,7 @@ class PostSessionScreen extends ConsumerWidget {
                       'Total Duration: ${totalDuration ~/ 60} minutes ${totalDuration % 60} seconds',
                       style: const TextStyle(
                         fontSize: 18,
-                        color: Colors.blue, // Change this to match your theme
+                        color: Colors.blue,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -68,7 +66,7 @@ class PostSessionScreen extends ConsumerWidget {
                       'Hot Phases Completed: $hotPhasesCompleted out of ${ref.read(sessionsProvider.notifier).getCurrentSession().hotPhaseDurations.length}',
                       style: const TextStyle(
                         fontSize: 16,
-                        color: Colors.red, // Change this to match your theme
+                        color: Colors.red,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -76,7 +74,7 @@ class PostSessionScreen extends ConsumerWidget {
                       'Cold Phases Completed: $coldPhasesCompleted out of ${ref.read(sessionsProvider.notifier).getCurrentSession().coldPhaseDurations.length}',
                       style: const TextStyle(
                         fontSize: 16,
-                        color: Colors.cyan, // Change this to match your theme
+                        color: Colors.cyan,
                       ),
                     ),
                   ],
@@ -155,11 +153,9 @@ class PostSessionScreen extends ConsumerWidget {
               GradientButton(
                 buttonText: 'Back to Home',
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const HomeScreen(),
-                    ),
-                  );
+                  ref.read(sessionsProvider.notifier).updateHotPhasesCompleted(hotPhasesCompleted);
+                  ref.read(sessionsProvider.notifier).updateColdPhasesCompleted(coldPhasesCompleted);
+                  Navigator.pushReplacementNamed(context, '/');
                 },
               ),
             ],

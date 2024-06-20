@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final phasesProvider = StateNotifierProvider<PhasesNotifier, List<Phase>>(
+final phasesProvider = StateNotifierProvider<PhasesNotifier, List<TemperaturePhase>>(
     (ref) => PhasesNotifier());
 
-class PhasesNotifier extends StateNotifier<List<Phase>> {
+class PhasesNotifier extends StateNotifier<List<TemperaturePhase>> {
   PhasesNotifier() : super(_initialPhases());
 
-  static List<Phase> _initialPhases() => [
-        Phase(
+  static List<TemperaturePhase> _initialPhases() => [
+        TemperaturePhase(
             type: 'hot',
             minutes: 0,
             seconds: 0,
             minutesController: TextEditingController(),
             secondsController: TextEditingController()),
-        Phase(
+        TemperaturePhase(
             type: 'cold',
             minutes: 0,
             seconds: 0,
@@ -25,7 +25,7 @@ class PhasesNotifier extends StateNotifier<List<Phase>> {
   void addPhase() {
     state = [
       ...state,
-      Phase(
+      TemperaturePhase(
           type: state.last.type == 'hot' ? 'cold' : 'hot',
           minutes: 0,
           seconds: 0,
@@ -65,16 +65,25 @@ class PhasesNotifier extends StateNotifier<List<Phase>> {
   }
 }
 
-class Phase {
+class TemperaturePhase with TemperaturePhaseLog {
   final String type;
   int minutes;
   int seconds;
   final TextEditingController minutesController;
   final TextEditingController secondsController;
-  Phase(
+  TemperaturePhase(
       {required this.type,
       required this.minutes,
       required this.seconds,
       required this.minutesController,
-      required this.secondsController});
+      required this.secondsController}) {
+        logTemperaturePhase(this);
+      }
 }
+
+mixin TemperaturePhaseLog {
+  void logTemperaturePhase(TemperaturePhase phase) {
+    print('Phase with type ${phase.type} is created at ${DateTime.now()}');
+  }
+}
+

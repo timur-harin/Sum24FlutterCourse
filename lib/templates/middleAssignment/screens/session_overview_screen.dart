@@ -1,3 +1,4 @@
+import '../notifiers/phases_notifier.dart';
 import 'active_session_screen.dart';
 import '../small_widgets/gradient_appbar.dart';
 import 'package:flutter/material.dart';
@@ -6,19 +7,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../notifiers/session_notifier.dart';
 
 class SessionOverviewScreen extends ConsumerWidget {
-  final int totalDuration;
-  final List<int> hotPhaseDurations;
-  final List<int> coldPhaseDurations;
-
-  const SessionOverviewScreen({
-    super.key,
-    required this.totalDuration,
-    required this.hotPhaseDurations,
-    required this.coldPhaseDurations,
-  });
+  late int totalDuration;
+  late List<int> hotPhaseDurations;
+  late List<int> coldPhaseDurations;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
+    final totalDuration = arguments['totalDuration'];
+    final hotPhaseDurations = arguments['hotPhaseDurations'];
+    final coldPhaseDurations = arguments['coldPhaseDurations'];
+
     return Scaffold(
       appBar: const GradientAppBar(
         title: 'Session Overview',
@@ -62,14 +61,22 @@ class SessionOverviewScreen extends ConsumerWidget {
                         coldPhaseDurations,
                       );
 
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => ActiveSessionScreen(
-                          totalDuration: totalDuration,
-                          hotPhaseDurations: hotPhaseDurations,
-                          coldPhaseDurations: coldPhaseDurations),
-                    ),
+                  ref.read(phasesProvider.notifier).reset();
+
+                  Navigator.of(context).pushReplacementNamed(
+                    '/activeSession',
+                    arguments: {
+                      'totalDuration': totalDuration,
+                      'hotPhaseDurations': hotPhaseDurations,
+                      'coldPhaseDurations': coldPhaseDurations,
+                    },
                   );
+                },
+              ),
+              GradientButton(
+                buttonText: 'Back to Preferences',
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/preferences');
                 },
               ),
             ],

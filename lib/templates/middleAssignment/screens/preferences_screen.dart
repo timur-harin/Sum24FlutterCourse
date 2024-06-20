@@ -2,7 +2,6 @@ import 'package:flutter/services.dart';
 
 import '../small_widgets/gradient_appbar.dart';
 
-import '../screens/session_overview_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../notifiers/phases_notifier.dart';
@@ -15,6 +14,11 @@ class PreferencesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final phases = ref.watch(phasesProvider);
 
+    UserPreferences userPreferences = UserPreferences(
+      ref: ref,
+      phaseProvider: phasesProvider,
+    );
+
     return Scaffold(
       appBar: const GradientAppBar(
         title: 'Contrast Shower Companion',
@@ -25,7 +29,7 @@ class PreferencesScreen extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Total Duration: ${ref.read(phasesProvider.notifier).getTotalDuration() ~/ 60} minutes ${ref.read(phasesProvider.notifier).getTotalDuration() % 60} seconds',
+              'Total Duration: ${userPreferences.getTotalDuration() ~/ 60} minutes ${userPreferences.getTotalDuration() % 60} seconds',
               style: const TextStyle(color: Colors.black),
             ),
             Expanded(
@@ -62,9 +66,8 @@ class PreferencesScreen extends ConsumerWidget {
                                       ? Colors.red
                                       : Colors.cyan),
                               onChanged: (value) {
-                                ref
-                                    .read(phasesProvider.notifier)
-                                    .updatePhaseDurationMinutes(index, value);
+                                userPreferences.updatePhaseDurationMinutes(
+                                    index, value);
                               },
                             ),
                           ),
@@ -92,9 +95,8 @@ class PreferencesScreen extends ConsumerWidget {
                                       ? Colors.red
                                       : Colors.cyan),
                               onChanged: (value) {
-                                ref
-                                    .read(phasesProvider.notifier)
-                                    .updatePhaseDurationSeconds(index, value);
+                                userPreferences.updatePhaseDurationSeconds(
+                                    index, value);
                               },
                             ),
                           ),
@@ -131,7 +133,7 @@ class PreferencesScreen extends ConsumerWidget {
               children: [
                 GradientButton(
                   onPressed: () {
-                    ref.read(phasesProvider.notifier).addPhase();
+                    userPreferences.addPhase();
                   },
                   icon: const Icon(
                     Icons.add,
@@ -140,7 +142,7 @@ class PreferencesScreen extends ConsumerWidget {
                 ),
                 GradientButton(
                   onPressed: () {
-                    ref.read(phasesProvider.notifier).removeLastPhase();
+                    userPreferences.removeLastPhase();
                   },
                   icon: const Icon(
                     Icons.remove,
@@ -153,7 +155,7 @@ class PreferencesScreen extends ConsumerWidget {
             GradientButton(
               buttonText: 'Start Session',
               onPressed: () {
-                List<Phase> phases = ref.read(phasesProvider);
+                List<TemperaturePhase> phases = ref.read(phasesProvider);
 
                 if (phases
                     .any((phase) => phase.minutes == 0 && phase.seconds == 0)) {
@@ -176,23 +178,75 @@ class PreferencesScreen extends ConsumerWidget {
                     .map((phase) => phase.minutes * 60 + phase.seconds)
                     .toList();
 
-                int totalDuration =
-                    ref.read(phasesProvider.notifier).getTotalDuration();
-                ref.read(phasesProvider.notifier).reset();
+                int totalDuration = userPreferences.getTotalDuration();
 
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => SessionOverviewScreen(
-                        totalDuration: totalDuration,
-                        hotPhaseDurations: hotPhaseDurations,
-                        coldPhaseDurations: coldPhaseDurations),
-                  ),
+                Navigator.pushReplacementNamed(
+                  context,
+                  '/sessionOverview',
+                  arguments: {
+                    'totalDuration': totalDuration,
+                    'hotPhaseDurations': hotPhaseDurations,
+                    'coldPhaseDurations': coldPhaseDurations,
+                  },
                 );
+              },
+            ),
+            GradientButton(
+              buttonText: 'Back to Home',
+              onPressed: () {
+                userPreferences.reset();
+                Navigator.pushReplacementNamed(context, '/');
               },
             ),
           ],
         ),
       ),
     );
+  }
+}
+
+abstract class UserPreferencesBase {
+  void updatePhaseDurationMinutes(int index, String value);
+  void updatePhaseDurationSeconds(int index, String value);
+  int getTotalDuration();
+  void reset();
+  void addPhase();
+  void removeLastPhase();
+}
+
+class UserPreferences extends UserPreferencesBase {
+  final WidgetRef ref;
+  final StateNotifierProvider phaseProvider;
+
+  UserPreferences({required this.ref, required this.phaseProvider});
+
+  @override
+  void reset() {
+    ref.read(phasesProvider.notifier).reset();
+  }
+
+  @override
+  void updatePhaseDurationMinutes(int index, String value) {
+    ref.read(phasesProvider.notifier).updatePhaseDurationMinutes(index, value);
+  }
+
+  @override
+  void updatePhaseDurationSeconds(int index, String value) {
+    ref.read(phasesProvider.notifier).updatePhaseDurationSeconds(index, value);
+  }
+
+  @override
+  void addPhase() {
+    ref.read(phasesProvider.notifier).addPhase();
+  }
+
+  @override
+  int getTotalDuration() {
+    return ref.read(phasesProvider.notifier).getTotalDuration();
+  }
+
+  @override
+  void removeLastPhase() {
+    ref.read(phasesProvider.notifier).removeLastPhase();
   }
 }

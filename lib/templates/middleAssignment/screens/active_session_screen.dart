@@ -1,20 +1,39 @@
 import 'dart:async';
-import 'package:education/templates/middleAssignment/screens/post_session_screen.dart';
 import 'package:education/templates/middleAssignment/small_widgets/gradient_button.dart';
 import 'package:flutter/material.dart';
 import '../small_widgets/gradient_appbar.dart';
+
+class HomeActiveSessionScreen extends StatelessWidget {
+  const HomeActiveSessionScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
+
+    // Now you can use these arguments
+    final totalDuration = arguments['totalDuration'];
+    final hotPhaseDurations = arguments['hotPhaseDurations'];
+    final coldPhaseDurations = arguments['coldPhaseDurations'];
+    return Scaffold(
+      body: ActiveSessionScreen(
+        totalDuration: totalDuration,
+        hotPhaseDurations: hotPhaseDurations,
+        coldPhaseDurations: coldPhaseDurations,
+      ),
+    );
+  }
+}
 
 class ActiveSessionScreen extends StatefulWidget {
   final int totalDuration;
   final List<int> hotPhaseDurations;
   final List<int> coldPhaseDurations;
 
-  const ActiveSessionScreen({
-    super.key,
-    required this.totalDuration,
-    required this.hotPhaseDurations,
-    required this.coldPhaseDurations,
-  });
+  ActiveSessionScreen(
+      {super.key,
+      required this.totalDuration,
+      required this.hotPhaseDurations,
+      required this.coldPhaseDurations});
 
   @override
   _ActiveSessionScreenState createState() => _ActiveSessionScreenState();
@@ -243,14 +262,14 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
                     onPressed: () {
                       _controller.stop();
                       _timer.cancel();
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => PostSessionScreen(
-                            totalDuration: _timeSpent,
-                            hotPhasesCompleted: _hotPhasesCompleted,
-                            coldPhasesCompleted: _coldPhasesCompleted,
-                          ),
-                        ),
+
+                      Navigator.of(context).pushReplacementNamed(
+                        '/postSession',
+                        arguments: {
+                          'totalDuration': _timeSpent,
+                          'hotPhasesCompleted': _hotPhasesCompleted,
+                          'coldPhasesCompleted': _coldPhasesCompleted,
+                        },
                       );
                     },
                   )

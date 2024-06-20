@@ -6,15 +6,15 @@ final sessionStorageServiceProvider = Provider<SessionStorageService>((ref) {
 });
 
 final sessionsProvider =
-    StateNotifierProvider<SessionNotifier, List<Session>>((ref) {
+    StateNotifierProvider<SessionNotifier, List<ShowerSession>>((ref) {
   final sessionStorageService = ref.watch(sessionStorageServiceProvider);
   return SessionNotifier(sessionStorageService);
 });
 
-class SessionNotifier extends StateNotifier<List<Session>> {
+class SessionNotifier extends StateNotifier<List<ShowerSession>> {
   final SessionStorageService _sessionStorageService;
 
-  SessionNotifier(this._sessionStorageService) : super(<Session>[]) {
+  SessionNotifier(this._sessionStorageService) : super(<ShowerSession>[]) {
     _loadSessions();
   }
 
@@ -24,7 +24,7 @@ class SessionNotifier extends StateNotifier<List<Session>> {
 
   void startSession(int totalDuration, List<int> hotPhaseDurations,
       List<int> coldPhaseDurations) async {
-    Session session = Session(
+    ShowerSession session = ShowerSession(
       totalDuration: totalDuration,
       hotPhaseDurations: hotPhaseDurations,
       coldPhaseDurations: coldPhaseDurations,
@@ -46,5 +46,17 @@ class SessionNotifier extends StateNotifier<List<Session>> {
     state = state;
   }
 
-  Session getCurrentSession() => state.last;
+  void updateHotPhasesCompleted(int hotPhasesCompleted) async {
+    getCurrentSession().hotPhasesCompleted = hotPhasesCompleted;
+    await _sessionStorageService.saveSessions(state);
+    state = state;
+  }
+
+  void updateColdPhasesCompleted(int coldPhasesCompleted) async {
+    getCurrentSession().coldPhasesCompleted = coldPhasesCompleted;
+    await _sessionStorageService.saveSessions(state);
+    state = state;
+  }
+
+  ShowerSession getCurrentSession() => state.last;
 }
