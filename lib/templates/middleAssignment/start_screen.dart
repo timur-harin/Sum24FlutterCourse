@@ -1,4 +1,3 @@
-
 import 'package:education/templates/middleAssignment/riverpod_history.dart';
 import 'package:education/templates/middleAssignment/widgets_templates.dart';
 import 'package:flutter/material.dart';
@@ -213,10 +212,17 @@ class StartMenu extends ConsumerWidget {
   /// @param ref The widget reference.
   /// @return The total duration of the session.
   double _calculateTotalDuration(WidgetRef ref) {
-    return ref.read(coldPhaseTimerProvider.notifier).state *
-            (ref.read(numberOfPhasesProvider.notifier).state / 2).ceil() +
-        ref.read(hotPhaseTimerProvider.notifier).state *
-            (ref.read(numberOfPhasesProvider.notifier).state / 2).floor();
+    if (ref.watch(backgroundColorProvider) == Colors.blue) {
+      return ref.read(coldPhaseTimerProvider.notifier).state *
+              (ref.read(numberOfPhasesProvider.notifier).state / 2).ceil() +
+          ref.read(hotPhaseTimerProvider.notifier).state *
+              (ref.read(numberOfPhasesProvider.notifier).state / 2).floor();
+    } else {
+      return ref.read(coldPhaseTimerProvider.notifier).state *
+              (ref.read(numberOfPhasesProvider.notifier).state / 2).floor() +
+          ref.read(hotPhaseTimerProvider.notifier).state *
+              (ref.read(numberOfPhasesProvider.notifier).state / 2).ceil();
+    }
   }
 
   /// Formats the history data for display in the UI.
