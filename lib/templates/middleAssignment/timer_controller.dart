@@ -27,6 +27,16 @@ class TimerController extends ChangeNotifier {
 
   TimerState get state => _state;
 
+  get nextPhase => _currentPhaseIndex < _phases.length - 1
+      ? _phases[_currentPhaseIndex + 1].temperature
+      : 'End';
+
+  get nextPhaseDuration => _currentPhaseIndex < _phases.length - 1
+      ? _phases[_currentPhaseIndex + 1].duration
+      : '';
+
+  get currentPhaseDuration => _phases[_currentPhaseIndex].duration;
+
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _remainingTime--;

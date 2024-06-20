@@ -108,43 +108,93 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: widget.session.temperaturePhases.length,
-                      itemBuilder: (context, index) {
-                        return Text(
-                            'Phase: ${widget.session.temperaturePhases[index].temperature}, Duration: ${widget.session.temperaturePhases[index].duration} seconds');
-                      },
-                    ),
                     ValueListenableBuilder<Color>(
                       valueListenable: _progressBarColor,
                       builder: (context, color, child) {
                         if (currentPhase != 'End') {
                           return Column(
                             children: [
-                              AnimatedBuilder(
-                                animation: _overallTimerController,
-                                builder: (context, child) {
-                                  Duration remaining = Duration(
-                                      seconds: _overallTimerController
-                                          .remainingTime);
-                                  String minutes = remaining.inMinutes
-                                      .remainder(60)
-                                      .toString()
-                                      .padLeft(2, '0');
-                                  String seconds = remaining.inSeconds
-                                      .remainder(60)
-                                      .toString()
-                                      .padLeft(2, '0');
-                                  return Text(
-                                    'Total time left: $minutes:$seconds',
-                                    style: const TextStyle(
-                                      fontSize: 30.0,
-                                      color: Colors.black,
-                                    ),
-                                  );
-                                },
+                              Text(
+                                'Current phase: $currentPhase, ${_phaseTimerController.currentPhaseDuration} seconds',
+                                style: TextStyle(
+                                  color: currentPhase == 'Hot'
+                                      ? Colors.red
+                                      : currentPhase == 'Cold'
+                                          ? Colors.blue
+                                          : Colors.green,
+                                  fontSize: 24,
+                                ),
                               ),
+                              Text(
+                                _phaseTimerController.nextPhase != 'End'
+                                    ? 'Next phase: ${_phaseTimerController.nextPhase}, ${_phaseTimerController.nextPhaseDuration} seconds'
+                                    : '',
+                                style: TextStyle(
+                                  color: currentPhase == 'Hot'
+                                      ? Colors.red
+                                      : currentPhase == 'Cold'
+                                          ? Colors.blue
+                                          : Colors.green,
+                                  fontSize: 24,
+                                ),
+                              ),
+                              if (_phaseTimerController.nextPhase != 'End')
+                                AnimatedBuilder(
+                                  animation: _overallTimerController,
+                                  builder: (context, child) {
+                                    Duration remaining = Duration(
+                                        seconds: _overallTimerController
+                                            .remainingTime);
+                                    String minutes = remaining.inMinutes
+                                        .remainder(60)
+                                        .toString()
+                                        .padLeft(2, '0');
+                                    String seconds = remaining.inSeconds
+                                        .remainder(60)
+                                        .toString()
+                                        .padLeft(2, '0');
+                                    return AnimatedOpacity(
+                                      opacity: _opacity,
+                                      duration:
+                                          const Duration(milliseconds: 500),
+                                      child: NeonText(
+                                        text:
+                                            'Overall time left: $minutes:$seconds',
+                                        spreadColor: currentPhase == 'Hot'
+                                            ? Colors.red
+                                            : currentPhase == 'Cold'
+                                                ? Colors.blue
+                                                : Colors.green,
+                                        blurRadius: 16,
+                                        textSize: 38,
+                                        textColor:
+                                            Theme.of(context).brightness ==
+                                                    Brightness.dark
+                                                ? Colors.white
+                                                : Colors.black,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              if (_phaseTimerController.nextPhase == 'End')
+                                AnimatedOpacity(
+                                  opacity: _opacity,
+                                  duration: const Duration(milliseconds: 500),
+                                  child: NeonText(
+                                    text: 'Last phase',
+                                    spreadColor: currentPhase == 'Hot'
+                                        ? Colors.red
+                                        : currentPhase == 'Cold'
+                                            ? Colors.blue
+                                            : Colors.green,
+                                    blurRadius: 16,
+                                    textSize: 38,
+                                    textColor: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                ),
                               AnimatedBuilder(
                                 animation: _phaseTimerController,
                                 builder: (context, child) {
@@ -189,10 +239,11 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
                                           ? Icons.play_arrow
                                           : Icons.pause,
                                       size: 48.0,
-                                      color: _phaseTimerController.state ==
-                                              TimerState.paused
-                                          ? Colors.green
-                                          : Colors.grey,
+                                      color: currentPhase == 'Hot'
+                                          ? Colors.red
+                                          : currentPhase == 'Cold'
+                                              ? Colors.blue
+                                              : Colors.green,
                                     ),
                                     onPressed: () {
                                       if (_phaseTimerController.state ==
@@ -221,7 +272,7 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
                                             SessionSummaryScreen(
                                           session: widget.session,
                                           timeSpent:
-                                              timeSpent, // Pass the timeSpent here
+                                              timeSpent,
                                         ),
                                       ),
                                     );
@@ -232,7 +283,15 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
                                               Colors.green,
                                               Colors.green.shade300
                                             ]
-                                          : [Colors.red, Colors.red.shade300]),
+                                          : currentPhase == 'Hot'
+                                              ? [
+                                                  Colors.red,
+                                                  Colors.red.shade300
+                                                ]
+                                              : [
+                                                  Colors.blue,
+                                                  Colors.blue.shade300
+                                                ]),
                             ],
                           );
                         } else {
@@ -256,6 +315,8 @@ class _ActiveSessionScreenState extends State<ActiveSessionScreen>
                                     ),
                                   );
                                 },
+                                width: 200,
+                                height: 100,
                                 gradientColors: [
                                   Colors.green,
                                   Colors.green.shade300

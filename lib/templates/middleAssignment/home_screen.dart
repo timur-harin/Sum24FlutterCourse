@@ -16,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late Future<List<ShowerSession>> _previousSessions;
+  bool _showAllSessions = false;
 
   @override
   void initState() {
@@ -33,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<ShowerSession> displayedSessions = [];
     return Scaffold(
       appBar: const CustomAppBar(title: 'Home'),
       body: FutureBuilder(
@@ -43,45 +45,94 @@ class _HomeScreenState extends State<HomeScreen> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    title: Text(snapshot.data![index].name),
-                    subtitle: Text(
-                        'Duration: ${snapshot.data![index].overallDuration} seconds'),
-                    // Display overallDuration here
-                    trailing: Text('Rating: ${snapshot.data![index].rating}'),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SessionDetailsScreen(
-                            session: snapshot.data![index],
+            var sessions = snapshot.data!;
+            displayedSessions = _showAllSessions
+                ? sessions.reversed.toList()
+                : sessions.reversed.take(5).toList();
+            return Column(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GradientButton(
+                      onPressed: () async {
+                        await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const SessionPreferencesScreen()));
+                        setState(() {
+                          _previousSessions = _getPreviousSessions();
+                        });
+                      },
+                      width: 400,
+                      height: 100,
+                      text: 'Start New Session',
+                      textStyle:
+                          const TextStyle(fontSize: 20, color: Colors.white),
+                      gradientColors:
+                          Theme.of(context).brightness == Brightness.dark
+                              ? [Colors.green, Colors.green.shade800]
+                              : [Colors.green, Colors.green.shade300],
+                    ),
+                    const Padding(padding: EdgeInsets.all(2.0)),
+                    GradientButton(
+                      onPressed: () {
+                        setState(() {
+                          _showAllSessions = !_showAllSessions;
+                        });
+                      },
+                      text: _showAllSessions
+                          ? 'Hide sessions'
+                          : 'Show all sessions',
+                      gradientColors:
+                          Theme.of(context).brightness == Brightness.dark
+                              ? [Colors.grey, Colors.grey.shade800]
+                              : [Colors.grey, Colors.grey.shade500],
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: displayedSessions.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: ListTile(
+                          title: Text(displayedSessions[index].name),
+                          subtitle: Text(
+                              'Duration: ${displayedSessions[index].overallDuration} seconds'),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: List.generate(
+                                  displayedSessions[index].rating as int,
+                                  (index) => const Icon(Icons.star,
+                                      color: Colors.yellow),
+                                ) +
+                                List.generate(
+                                  5 - displayedSessions[index].rating as int,
+                                  (index) => Icon(Icons.star,
+                                      color: Colors.grey.shade300),
+                                ),
                           ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SessionDetailsScreen(
+                                  session: displayedSessions[index],
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       );
                     },
                   ),
-                );
-              },
+                ),
+              ],
             );
           }
         },
-      ),
-      floatingActionButton: GradientButton(
-        onPressed: () async {
-          await Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const SessionPreferencesScreen()));
-          setState(() {
-            _previousSessions = _getPreviousSessions();
-          });
-        },
-        text: 'Start New Session',
-        gradientColors: [Colors.green, Colors.green.shade300],
       ),
     );
   }

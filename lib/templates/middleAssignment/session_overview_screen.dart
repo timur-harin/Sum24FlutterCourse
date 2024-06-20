@@ -24,8 +24,20 @@ class SessionOverviewScreen extends StatelessWidget {
               shrinkWrap: true,
               itemCount: session.temperaturePhases.length,
               itemBuilder: (context, index) {
-                return Text(
-                    'Phase: ${session.temperaturePhases[index].temperature}, Duration: ${session.temperaturePhases[index].duration} seconds');
+                return Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: ListTile(
+                    leading: Icon(Icons.timer,
+                        color: session.temperaturePhases[index].temperature ==
+                                'Hot'
+                            ? Colors.red
+                            : Colors.blue),
+                    title: Text(
+                        '${session.temperaturePhases[index].temperature} phase'),
+                    subtitle: Text(
+                        'Duration: ${session.temperaturePhases[index].duration} seconds'),
+                  ),
+                );
               },
             ),
             GradientButton(

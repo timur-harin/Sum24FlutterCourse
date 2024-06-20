@@ -20,7 +20,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Session Preferences'),
+      appBar: const CustomAppBar(title: 'Session Configuration'),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -104,8 +104,24 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
             GradientButton(
               text: 'Next',
               onPressed: () {
-                if (phaseDurations.every((phase) => phase.duration > 0) &&
-                    name.isNotEmpty) {
+                if (!(phaseDurations.every((phase) => phase.duration > 0))) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text(
+                            'Please enter a duration for each phase (number, greater than 0)')),
+                  );
+                } else if (name.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Please enter a name for the session')),
+                  );
+                } else if (phaseDurations.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text(
+                            'Please add at least one phase (number, greater than 0)')),
+                  );
+                } else {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -120,12 +136,6 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                         ),
                       ),
                     ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text(
-                            'Please enter valid durations for all fields')),
                   );
                 }
               },

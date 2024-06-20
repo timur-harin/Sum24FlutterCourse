@@ -50,7 +50,7 @@ class _SessionSummaryScreenState extends State<SessionSummaryScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                const Text('Rate this session: '),
+                const Text('Rate your experience: '),
                 StarRating(
                   rating: rating,
                   onRatingChanged: (newRating) =>
