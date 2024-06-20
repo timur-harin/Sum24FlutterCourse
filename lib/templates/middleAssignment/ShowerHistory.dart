@@ -27,6 +27,7 @@ class _ShowerHistoryState extends State<ShowerHistory> {
     widget.onDelete();
   }
 
+
   @override
   Widget build(BuildContext context) {
     final showerHistory = widget.showerHistory;
@@ -40,7 +41,14 @@ class _ShowerHistoryState extends State<ShowerHistory> {
             style: TextStyle(
               color: Colors.black,
               fontSize: 30
-            ),)
+            ),),
+            Text(
+              "Try creating new shower",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 15
+              ),
+            )
           ],
         ),
       );
