@@ -40,14 +40,26 @@ class _ActiveSessionScreenState extends ConsumerState<ActiveSessionScreen>
       setState(() {
         if (_currentDuration > 0) {
           _currentDuration--;
-          _totalDuration++;
-          if (_currentDuration == 0) {
-            _isHotPhase = !_isHotPhase;
-            _currentDuration = _isHotPhase ? widget.hotDuration : widget.coldDuration;
-          }
+        } else {
+          _isHotPhase = !_isHotPhase;
+          _animationController.forward(from: 0.0);
+          _currentDuration = _isHotPhase ? widget.hotDuration : widget.coldDuration;
         }
+        _totalDuration++;
       });
     });
+  }
+
+  void _endSession() {
+    _timer.cancel();
+    final newSession = ShowerSession(
+      date: DateTime.now(),
+      hotDuration: widget.hotDuration,
+      coldDuration: widget.coldDuration,
+      totalDuration: _totalDuration,
+    );
+    ref.read(addSessionProvider)(newSession);
+    Navigator.pop(context);
   }
 
   @override
@@ -59,37 +71,87 @@ class _ActiveSessionScreenState extends ConsumerState<ActiveSessionScreen>
 
   @override
   Widget build(BuildContext context) {
-    Color waterColor = _isHotPhase ? AppColors.hot : AppColors.cold;
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text('Active Session', style: Theme.of(context).textTheme.headlineLarge)),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
-      body: AnimatedContainer(
-        duration: Duration(milliseconds: 500),
-        color: waterColor,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              _isHotPhase ? 'Hot Phase' : 'Cold Phase',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            Text(
-              '$_currentDuration seconds',
-              style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('End Session'),
-            ),
-          ],
+        backgroundColor: AppColors.primary,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: _endSession,
         ),
       ),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                return CustomPaint(
+                  painter: WaterPainter(
+                    isHotPhase: _isHotPhase,
+                    animationValue: _animationController.value,
+                  ),
+                );
+              },
+            ),
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  _isHotPhase ? 'Hot Phase' : 'Cold Phase',
+                  style: TextStyle(fontSize: 24, color: Colors.white),
+                ),
+                Text(
+                  'Time Remaining: $_currentDuration seconds',
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+                ElevatedButton(
+                  onPressed: _endSession,
+                  child: Text('End Session'),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
+  }
+}
+
+class WaterPainter extends CustomPainter {
+  final bool isHotPhase;
+  final double animationValue;
+
+  WaterPainter({required this.isHotPhase, required this.animationValue});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = isHotPhase ? AppColors.hot : AppColors.cold
+      ..style = PaintingStyle.fill;
+
+    final path = Path()
+      ..moveTo(0, size.height * (0.5 - 0.5 * animationValue))
+      ..lineTo(size.width, size.height * (0.5 - 0.5 * animationValue))
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..close();
+
+    final path2 = Path()
+      ..moveTo(0, size.height * (0.5 + 0.5 * animationValue))
+      ..lineTo(size.width, size.height * (0.5 + 0.5 * animationValue))
+      ..lineTo(size.width, 0)
+      ..lineTo(0, 0)
+      ..close();
+
+    canvas.drawPath(path, paint);
+    canvas.drawPath(path2, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }

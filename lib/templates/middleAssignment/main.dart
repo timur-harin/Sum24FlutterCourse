@@ -1,41 +1,33 @@
 import 'package:flutter/material.dart';
-import 'session_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'home_screen.dart';
 import 'theme.dart';
 
 void main() {
-  runApp(const MiddleAssignmentApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
-class MiddleAssignmentApp extends StatelessWidget {
-  const MiddleAssignmentApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Contrast Shower Companion',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: AppColors.primary,
-          secondary: AppColors.accent,
-          background: AppColors.background,
-        ),
+        primaryColor: AppColors.primary,
         scaffoldBackgroundColor: AppColors.background,
+        colorScheme: ColorScheme.light(
+          primary: AppColors.primary,
+          onPrimary: Colors.white,
+          secondary: AppColors.accent,
+        ),
+        textTheme: TextTheme(
+          headlineLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
+          bodyLarge: TextStyle(fontSize: 18, color: Colors.white),
+        ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ),
-        textTheme: TextTheme(
-          headlineLarge: TextStyle(
-            color: AppColors.primary,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
           ),
         ),
       ),

@@ -61,7 +61,7 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text('Set Your Session Preferences', style: Theme.of(context).textTheme.headlineLarge)),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: AppColors.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -69,18 +69,22 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
           children: [
             ListTile(
               title: Text('Hot Duration: $hotDuration seconds'),
-              trailing: Icon(Icons.edit),
-              onTap: () => _selectDuration(context, true),
+              trailing: ElevatedButton(
+                onPressed: () => _selectDuration(context, true),
+                child: Text('Set'),
+              ),
             ),
             ListTile(
               title: Text('Cold Duration: $coldDuration seconds'),
-              trailing: Icon(Icons.edit),
-              onTap: () => _selectDuration(context, false),
+              trailing: ElevatedButton(
+                onPressed: () => _selectDuration(context, false),
+                child: Text('Set'),
+              ),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ActiveSessionScreen(
@@ -90,7 +94,7 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
                   ),
                 );
               },
-              child: Text('Begin Session'),
+              child: Text('Start Session'),
             ),
           ],
         ),
