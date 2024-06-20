@@ -21,9 +21,10 @@ class ColdPhase implements Phase {
 
 mixin PhaseManagement on StatefulWidget {
   late Phase currentPhase;
-  bool isHotPhase = true;
+  late bool isHotPhase;
 
   void updatePhase(ShowerSession session) {
+    isHotPhase = session.isHotPhase;
     currentPhase = isHotPhase 
         ? HotPhase(session.preferences.hotWaterDuration)
         : ColdPhase(session.preferences.coldWaterDuration);
@@ -56,13 +57,8 @@ class ShowerSession {
   bool _hotPhase;
 
   ShowerSession(this.preferences)
-      : _hotPhase = preferences.startWithHotWater {
-    _updatePhase();
-  }
+      : _hotPhase = preferences.startWithHotWater ? true : false;
 
-  void _updatePhase() {
-    // Implementation for internal phase update
-  }
 
   int get phaseDuration => _hotPhase 
       ? preferences.hotWaterDuration 
@@ -89,7 +85,6 @@ class _SessionScreenState extends State<SessionScreen> {
   late ShowerSession _session;
   SessionHistory historyScreen = SessionHistory();
   int _phaseTimer = 0;
-
   @override
   void initState() {
     super.initState();
@@ -172,10 +167,9 @@ class _SessionScreenState extends State<SessionScreen> {
     int seconds = _elapsedTime % 60;
     int phaseTimerMinutes = _phaseTimer ~/ 60;
     int phaseTimerSeconds = _phaseTimer % 60;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Session Screen'),
+        title: const Text('Session Screen'),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -220,7 +214,7 @@ class _SessionScreenState extends State<SessionScreen> {
                   color: Colors.black,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(
                 '${phaseTimerMinutes}m ${phaseTimerSeconds}s',
                 style: TextStyle(
@@ -230,27 +224,24 @@ class _SessionScreenState extends State<SessionScreen> {
               ),
               Text(
                 'Time passed: ${minutes}m ${seconds}s',
-                style: TextStyle(fontSize: 24),
+                style: const TextStyle(fontSize: 24),
               ),
               ElevatedButton(
                 onPressed: _sessionStarted ? null : _startSession,
-                child: const Text(
-                  'Start Session',
-                  style: TextStyle(color: Colors.amber),
-                ),
+                child: const Text('Start Session', 
+                style: TextStyle(color: Colors.amber),),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _sessionStarted ? _pauseOrResumeTimer : null,
-                child: Text(
-                  _isPaused ? 'Resume Timer' : 'Pause Timer',
-                  style: const TextStyle(color: Colors.amber),
-                ),
+                child: Text(_isPaused ? 'Resume Timer' : 'Pause Timer', 
+                style: const TextStyle(color: Colors.amber),),
               ),
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _sessionStarted ? _stopSession : null,
-                child: const Text('End Session', style: TextStyle(color: Colors.amber),),
+                child: const Text('End Session', 
+                style: TextStyle(color: Colors.amber),),
               ),
             ],
           ),

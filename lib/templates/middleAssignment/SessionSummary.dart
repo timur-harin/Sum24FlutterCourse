@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'SessionScreen.dart'; // Assuming SessionScreen.dart contains the new class definitions
+import 'SessionScreen.dart'; 
+import 'main.dart';
 
 class SessionSummary extends StatelessWidget {
   final ShowerSession session;
@@ -8,6 +9,7 @@ class SessionSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Session Summary'),
@@ -84,7 +86,13 @@ class SessionSummary extends StatelessWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomeScreen(),
+                      ),
+                      (Route<dynamic> route) => false, 
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.teal,
@@ -92,8 +100,8 @@ class SessionSummary extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  child: const Text('Back', style: TextStyle(color: Colors.amber),),
-                ),
+                  child: const Text('Back', style: TextStyle(color: Colors.amber)),
+                )
               ],
             ),
           ),

@@ -73,7 +73,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     startWithHotWater = true;
-                    // Convert the durations to integers
+
                     int sessionDuration = int.parse(_sessionDurationController.text);
                     int hotWaterDuration = int.parse(_hotWaterDurationController.text);
                     int coldWaterDuration = int.parse(_coldWaterDurationController.text);
@@ -85,7 +85,6 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                       startWithHotWater: startWithHotWater,
                     );
 
-                    // Navigate to the session screen
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => SessionScreen(preferences: preferences)),
@@ -102,7 +101,7 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     startWithHotWater = false;
-                    // Convert the durations to integers
+
                     int sessionDuration = int.parse(_sessionDurationController.text);
                     int hotWaterDuration = int.parse(_hotWaterDurationController.text);
                     int coldWaterDuration = int.parse(_coldWaterDurationController.text);
@@ -114,7 +113,6 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
                       startWithHotWater: startWithHotWater,
                     );
 
-                    // Navigate to the session screen
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => SessionScreen(preferences: preferences)),
