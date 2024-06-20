@@ -4,6 +4,7 @@ import 'PickerValues.dart';
 import 'homeScreen.dart';
 import 'ShowerCycle.dart';
 import 'storage.dart';
+import 'ShowerProcessScreen.dart';
 
 class CycleSettingsScreen extends StatefulWidget{
   const CycleSettingsScreen({super.key});
@@ -202,7 +203,19 @@ class _CycleSettingsScreen extends State<CycleSettingsScreen> {
           ),
 
           ElevatedButton(
-              onPressed: _saveShowerCycle,
+              onPressed: () async {
+                final result = await Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ShowerProcessScreen(
+                        showerCycle: ShowerCycle(
+                            hotWaterMinutes: _hotCycleLength,
+                            coldWaterMinutes: _coldCycleLength,
+                            numberOfCycles: _numberOfCycles,
+                            startingPhase: _beginningPhase,
+                            includeAdditionalTemperatureChange: _extraShowerPhase))));
+                if (result) {
+                  Navigator.pop(context, true);
+                }
+              },
               child: const Icon(
                 Icons.play_arrow,
                 color: Colors.blue,
