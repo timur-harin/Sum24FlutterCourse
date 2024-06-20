@@ -1,6 +1,8 @@
 import 'dart:async';
-import 'dart:math';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -8,44 +10,93 @@ void main() {
   ));
 }
 
-class MiddleAssigmentApp extends StatelessWidget {
-  const MiddleAssigmentApp({Key? key}) : super(key: key);
+class MiddleAssigmentApp extends StatefulWidget {
+  @override
+  _HistoryScreen createState() => _HistoryScreen();
+}
+
+class _HistoryScreen extends State<MiddleAssigmentApp> {
+  List<Session> sessions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSessions();
+  }
+
+  _loadSessions() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      sessions = (json.decode(prefs.getString('sessions') ?? '[]') as List)
+          .map((sessionJson) => Session.fromJson(sessionJson))
+          .toList();
+    });
+  }
+
+  _saveSessions() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('sessions', json.encode(sessions));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return  MaterialApp(
       title: 'Middle Assigment',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Previous sessions: '),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SettingsScreen()
-                    )
-                  );
-                },
-                child: const Text('Start new session'),
+        backgroundColor: Color.fromARGB(255, 209, 180, 255),
+        appBar: AppBar(
+          title: Text('Sessions history'),
+        ),
+        body: ListView.builder(
+          itemCount: sessions.length,
+          itemBuilder: (context, index) {
+            final session = sessions[index];
+            return ListTile(
+              title: Text('Сессия ${index + 1}'),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Длительность: ${session.time}'),
+                  Text('Температуры: ${session.temperatureIntervals}'),
+                  Text('Оценка: ${session.rate}'),
+                ],
               ),
-            ],
+            );
+          },
+        ),
+        floatingActionButton: Center(
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SettingsScreen())
+              ).then((result) {
+                if (result != null && result is Session) {
+                  setState(() {
+                    sessions.insert(0, result);
+                    if (sessions.length > 5) {
+                      sessions.removeLast();
+                    }
+                    _saveSessions();
+                  });
+                }
+              });
+            },
+            child: Text("Start", style: TextStyle(fontSize: 20)),
           ),
         ),
-      ),
+      )
     );
   }
 }
 
 class ActiveSessionScreen extends StatefulWidget {
-  final int time;
-  final List<double> temperatureIntervals;
+  final Duration time;
+  final List<int> temperatureIntervals;
 
   ActiveSessionScreen({required this.time, required this.temperatureIntervals});
   
@@ -54,21 +105,41 @@ class ActiveSessionScreen extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<ActiveSessionScreen> with SingleTickerProviderStateMixin {
-  Timer? _timer;
-  late int _secondsRemaining;
+  late Timer _timer;
+  late Duration _secondsRemaining;
+  int currentInterval = 0;
   bool _isTimerRunning = true;
   late AnimationController _controller;
   late Animation<double> _animation;
-  int currentInterval = 0;
 
   @override
   void initState() {
     super.initState();
-    _secondsRemaining = widget.time ~/ 5;
-    startTimer();
+    _secondsRemaining = widget.time;
+
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_secondsRemaining.inSeconds > 0) {
+          // if (_secondsRemaining.inSeconds == 1) {
+          //   soundPlay();
+          // }
+          _secondsRemaining = _secondsRemaining - Duration(seconds: 1);
+        } else {
+          timer.cancel();
+          if (currentInterval < 4) {
+            currentInterval++;
+            _secondsRemaining =
+                Duration(seconds: widget.time.inSeconds ~/ 5);
+            startTimer();
+          } else {
+            _showRatingDialog();
+          }
+        }
+      });
+    });
    
     _controller = AnimationController(
-      duration: Duration(seconds: widget.time ~/ 5),
+      duration: Duration(seconds: widget.time.inSeconds ~/ 5),
       vsync: this,
     );
 
@@ -86,35 +157,78 @@ class _MyHomePageState extends State<ActiveSessionScreen> with SingleTickerProvi
     _controller.forward();
   }
 
+  soundPlay() {
+    AudioCache.instance = AudioCache(prefix: '');
+    final player = AudioPlayer();
+    player.play(AssetSource('lib/templates/middleAssignment/assets/signal.mp3'));
+  }
+
   void startTimer() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-        if (_secondsRemaining > 0) {
-          _secondsRemaining--;
-          if (_secondsRemaining == 0 && currentInterval < 4) {
-            // AudioPlayer = AudioCache
-            _secondsRemaining = widget.time ~/ 5;
-          } else if (_secondsRemaining == 0 && currentInterval == 4) {
-            endSession();
+        if (_secondsRemaining.inSeconds > 0) {
+          // print(_secondsRemaining.inSeconds);
+          if (_secondsRemaining.inSeconds == widget.time.inSeconds - (widget.time.inSeconds ~/ 5 * 5 - 1) ||
+          _secondsRemaining.inSeconds == widget.time.inSeconds - (widget.time.inSeconds ~/ 5 - 1) ||
+          _secondsRemaining.inSeconds == widget.time.inSeconds - (widget.time.inSeconds ~/ 5 * 2 - 1) ||
+          _secondsRemaining.inSeconds == widget.time.inSeconds - (widget.time.inSeconds ~/ 5 * 3 - 1) ||
+          _secondsRemaining.inSeconds == widget.time.inSeconds - (widget.time.inSeconds ~/ 5 * 4 - 1)) {
+            print("OOOOOOOOOOOOOOOOOOO");
+            soundPlay();
           }
+          _secondsRemaining = _secondsRemaining - Duration(seconds: 1);
+          // if (_secondsRemaining.inSeconds == 0 && currentInterval < 4) {
+          //   _secondsRemaining = widget.time.inSeconds ~/ 5;
+          // } else if (_secondsRemaining == 0 && currentInterval == 4) {
+          //   endSession();
+          // }
         } else {
-          _timer?.cancel();
+          _timer.cancel();
+          if (currentInterval < 4) {
+            currentInterval++;
+            _secondsRemaining =
+                Duration(seconds: widget.time.inSeconds ~/ 5);
+            startTimer();
+          } else {
+            _showRatingDialog();
+          }
         }
       });
+    });
+  }
+
+  void _showRatingDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => RatingDialog(
+        totalTime: widget.time - _secondsRemaining,
+        temperatureIntervals: widget.temperatureIntervals,
+      ),
+    ).then((result) {
+      if (result != null && result is Session) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FinalScreen(session: result),
+          ),
+        ).then((_) {
+          Navigator.pop(context, result);
+        });
+      }
     });
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    _timer?.cancel();
+    _timer.cancel();
     super.dispose();
   }
 
   void stopTimer() {
     if (_isTimerRunning) {
       setState(() {
-        _timer?.cancel();
+        _timer.cancel();
         _controller.stop();
       });
     } else {
@@ -123,13 +237,13 @@ class _MyHomePageState extends State<ActiveSessionScreen> with SingleTickerProvi
     }
   }
 
-  void endSession() {
-    _timer?.cancel();
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => FinalScreen(time: (_secondsRemaining~/5)*currentInterval+_secondsRemaining, tempIntervals: widget.temperatureIntervals)),
-  );
-  } 
+  // void endSession() {
+  //   _timer.cancel();
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => FinalScreen(time: (widget.time~/5)*currentInterval+((widget.time ~/ 5) -_secondsRemaining), phases: currentInterval)),
+  //   );
+  // } 
 
   @override
   Widget build(BuildContext context) {
@@ -142,8 +256,8 @@ class _MyHomePageState extends State<ActiveSessionScreen> with SingleTickerProvi
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 600, // Increase the width value
-              height: 600, // Increase the height value
+              width: 300, // Increase the width value
+              height: 300, // Increase the height value
               child: AnimatedBuilder(
                 animation: _animation,
                 builder: (BuildContext context, Widget? child) {
@@ -152,7 +266,7 @@ class _MyHomePageState extends State<ActiveSessionScreen> with SingleTickerProvi
                       CustomPaint(
                         painter: CircleTimerPainter(
                           animation: _animation,
-                          temperature: widget.temperatureIntervals[currentInterval],
+                          temperature: widget.temperatureIntervals[currentInterval].toDouble(),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -168,8 +282,8 @@ class _MyHomePageState extends State<ActiveSessionScreen> with SingleTickerProvi
                             ),
                             SizedBox(height: 10),
                             Text(
-                              '$_secondsRemaining',
-                              style: TextStyle(fontSize: 32),
+                              '${_secondsRemaining.inMinutes}:${_secondsRemaining.inSeconds.remainder(60).toString().padLeft(2, '0')}',
+                              style: TextStyle(fontSize: 48.0),
                             ),
                           ],
                         ),
@@ -189,15 +303,10 @@ class _MyHomePageState extends State<ActiveSessionScreen> with SingleTickerProvi
                   },
                   child: Text(_isTimerRunning ? 'Pause' : 'Continue'),
                 ),
-                SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FinalScreen(time: (_secondsRemaining~/5)*currentInterval+_secondsRemaining, tempIntervals: widget.temperatureIntervals),
-                      )
-                    );
+                    _timer.cancel();
+                    _showRatingDialog();
                   },
                   child: Text('End session'),
                 ),
@@ -206,6 +315,62 @@ class _MyHomePageState extends State<ActiveSessionScreen> with SingleTickerProvi
           ],
         ),
       ),
+    );
+  }
+}
+
+class RatingDialog extends StatefulWidget {
+  final Duration totalTime;
+  final List<int> temperatureIntervals;
+
+  RatingDialog({
+    required this.totalTime,
+    required this.temperatureIntervals,
+  });
+
+  @override
+  _RatingDialogState createState() => _RatingDialogState();
+}
+
+class _RatingDialogState extends State<RatingDialog> {
+  int rating = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Rate the session'),
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          for (int i = 1; i <= 5; i++)
+            IconButton(
+              icon: Icon(
+                i <= rating ? Icons.star : Icons.star_border,
+                color: Color.fromARGB(255, 255, 0, 0),
+              ),
+              onPressed: () {
+                setState(() {
+                  rating = i;
+                });
+              },
+            ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(
+              context,
+              Session(
+                time: widget.totalTime,
+                temperatureIntervals: widget.temperatureIntervals,
+                rate: rating,
+              ),
+            );
+          },
+          child: Text('Save session'),
+        ),
+      ],
     );
   }
 }
@@ -253,68 +418,29 @@ class CircleTimerPainter extends CustomPainter {
 }
 }
 
-// class CircleTimerPainter {
-//   AnimationController animationController = AnimationController(
-//     duration: Duration(seconds: 10),
-//     vsync: this,
-//   );
-
-// Animation<double> animation = Tween<double>(begin: 0, end: 1).animate(animationController);
-
-// animationController.forward();
-
-// ...
-
-// @override
-// Widget build(BuildContext context) {
-//   return AnimatedBuilder(
-//     animation: animation,
-//     builder: (BuildContext context, Widget child) {
-//       return Text('${(animation.value * 10).floor()}');
-//     },
-//   );
-// }
-
-// }
-
-// class TextInputField extends StatefulWidget {
-//   @override
-//   _TextInputFieldState createState() => _TextInputFieldState();
-// }
-
-// class _TextInputFieldState extends State<TextInputField> {
-//   TextEditingController _controller = TextEditingController();
-
-//   @override
-//   void dispose() {
-//     _controller.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return TextField(
-//       controller: _controller,
-//       decoration: InputDecoration(
-//         labelText: 'Duration (in seconds):',
-//         hintText: 'Duration (in seconds):',
-//       ),
-//     );
-//   }
-// }
-
 class SettingsScreen extends StatefulWidget {
   @override
   _MyHomePageState1 createState() => _MyHomePageState1();
 }
 
 class _MyHomePageState1 extends State<SettingsScreen> {
-  TextEditingController _controller = TextEditingController();
-  TextEditingController _controller1 = TextEditingController();
-  TextEditingController _controller2 = TextEditingController();
-  TextEditingController _controller3 = TextEditingController();
-  TextEditingController _controller4 = TextEditingController();
-  TextEditingController _controller5 = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  late Duration totalTime;
+  final List<int> temperatureIntervals = List.filled(5, 0);
+  bool flag = false;
+
+  void change() {
+    setState(() {
+      flag = !flag;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    totalTime = Duration(minutes: 30);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -323,101 +449,124 @@ class _MyHomePageState1 extends State<SettingsScreen> {
           centerTitle: true,
           title: Text('SETTINGS'),
         ),
+        body: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Enter the duration (in minutes)',
+                  ),
+                  initialValue: (totalTime.inMinutes).toString(),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    try {
+                      totalTime = Duration(minutes: int.parse(value));
+                    } on FormatException catch (e) {
+                    }
+                  },
+                ),
+                SizedBox(height: 16.0),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Enter the temperature for phase №: ${index + 1}',
+                        ),
+                        initialValue: temperatureIntervals[index].toString(),
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          try {
+                            temperatureIntervals[index] = int.parse(value);
+                          } on FormatException catch (e) {
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        change();
+                      },
+                      child: Text(flag ? 'The session will last ${totalTime.inSeconds} seconds, and each phase will last ${totalTime.inSeconds ~/ 5} seconds.\nThe temperature for each phase: 1) ${temperatureIntervals[0]}℃, 2) ${temperatureIntervals[1]}℃, 3) ${temperatureIntervals[2]}℃, 4) ${temperatureIntervals[3]}℃, 5) ${temperatureIntervals[4]}℃' : 'Overview'),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ActiveSessionScreen(
+                            time: totalTime,
+                            temperatureIntervals: temperatureIntervals,
+                          ),
+                        ),
+                      ).then((result) {
+                        if (result != null && result is Session) {
+                          Navigator.pop(context, result);
+                        }
+                      });
+                    }
+                  },
+                  child: Text('Begin session'),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class FinalScreen extends StatelessWidget {
+  final Session session;
+  FinalScreen({required this.session});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Center(child: Text('SUMMARY')),
+        ),
         body: Center(
           child: Column(
-            children: [ 
-              Text('Duration', style: TextStyle(fontSize: 24),),
-              SizedBox(height: 16),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32), 
-                child: TextField(
-                  controller: _controller,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Enter the duration (in seconds):',
-                  )
-                ),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'You have successfully completed the session.',
+                style: TextStyle(fontSize: 24),
+                // textAlign: TextAlign.center
               ),
               SizedBox(height: 16),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
-                child: TextField(
-                  controller: _controller1,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Enter the temperature for 1st phase:',
-                  )
-                ),
+              Text(
+                'You spent ${session.time} seconds.',
+                style: TextStyle(fontSize: 24),
               ),
-              SizedBox(height: 16),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
-                child: TextField(
-                  controller: _controller2,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Enter the temperature for 2nd phase:',
-                  )
-                ),
-              ),
-              SizedBox(height: 16),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
-                child: TextField(
-                  controller: _controller3,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Enter the temperature for 3rd phase:',
-                  )
-                ),
-              ),
-              SizedBox(height: 16),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
-                child: TextField(
-                  controller: _controller4,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Enter the temperature for 4th phase:',
-                  )
-                ),
-              ),
-              SizedBox(height: 16),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32),
-                child: TextField(
-                  controller: _controller5,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: 'Enter the temperature for 5th phase:',
-                  )
-                ),
-              ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
+              Text('Temperature intervals: ${session.temperatureIntervals}'),
+              const SizedBox(height: 16),
+              Text('Session rate: ${session.rate}'),
+              const SizedBox(height: 32.0),
               ElevatedButton(
                 onPressed: () {
-                  int time = int.tryParse(_controller.text) ?? 0;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ActiveSessionScreen(time: time, temperatureIntervals: [double.parse(_controller1.text), double.parse(_controller2.text), double.parse(_controller3.text), double.parse(_controller4.text), double.parse(_controller5.text)]),
-                    )
-                  );
+                  Navigator.pop(context);
                 },
-                child: Text('Start'),
+                child: Text('Go back to the session history'),
               ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ActiveSessionScreen(time: 50, temperatureIntervals: [10, 10, 10, 10, 10]),
-                    )
-                  );
-                },
-                child: Text('Default'),
-              )
             ],
           ),
         ),
@@ -426,52 +575,26 @@ class _MyHomePageState1 extends State<SettingsScreen> {
   }
 }
 
-class FinalScreen  extends StatefulWidget {
-  late int time;
-  late List<double> tempIntervals;
+class Session {
+  final Duration time;
+  final List<int> temperatureIntervals;
+  final int rate;
 
-  FinalScreen({required this.time, required this.tempIntervals});
-  @override
-  _FinalScreen createState() => _FinalScreen();
+  Session({
+    required this.time,
+    required this.temperatureIntervals,
+    required this.rate,
+  });
+
+  Map<String, dynamic> toJson() => {
+    'time': time.inSeconds,
+    'temperatureIntervals': temperatureIntervals,
+    'rate': rate,
+  };
+
+  factory Session.fromJson(Map<String, dynamic> json) => Session(
+    time: Duration(seconds: json['time']),
+    temperatureIntervals: List<int>.from(json['temperatureIntervals']),
+    rate: json['rate'],
+  );
 }
-
-class _FinalScreen extends State<FinalScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Final screen'),
-        ),
-        body: Center(
-          child: Text('Final screen'),
-        ),
-      ),
-    );
-  }
-}
-
-class StarButton extends StatefulWidget {
-  @override
-  _StarButtonState createState() => _StarButtonState();
-}
-
-class _StarButtonState extends State<StarButton> {
-  bool _isStarred = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(
-        _isStarred ? Icons.star : Icons.star_border,
-        color: _isStarred ? Colors.yellow : Colors.grey,
-      ),
-      onPressed: () {
-        setState(() {
-          _isStarred = !_isStarred;
-        });
-      },
-    );
-  }
-}
-
