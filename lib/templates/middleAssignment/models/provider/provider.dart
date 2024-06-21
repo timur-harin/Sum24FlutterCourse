@@ -48,17 +48,17 @@ session.rate = rate;
   void change() {
     if (isHot) {
       isHot = false;
-      color = Colors.blue;
+      color = Color.fromARGB(255, 118, 172, 197);
     } else {
       isHot = true;
-      color = Colors.red;
+      color = Color.fromARGB(255, 238, 124, 146);
     }
     notifyListeners();
   }
 
   void start() {
     isHot = true;
-    color = Colors.red;
+    color = const Color.fromARGB(255, 238, 124, 146);
     notifyListeners();
   }
 

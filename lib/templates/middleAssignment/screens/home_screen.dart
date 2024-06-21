@@ -12,75 +12,98 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  // late Future<List<ShowerSession>> _showerSessionsFuture;
+  late Future<List<ShowerSession>> _showerSessionsFuture;
+  bool _showLastFiveSessions = false;
 
   List<ShowerSession> sessions = [];
 
-@override 
-  void initState() { 
-    super.initState(); 
-    _loadSessionsData(); 
-  } 
- 
-  Future<void> _loadSessionsData() async { 
-    SharedPreferences prefs = await SharedPreferences.getInstance(); 
-    List<String>? sessionsJson = prefs.getStringList('sessions'); 
-    if (sessionsJson != null) { 
-      setState(() { 
-        sessions = sessionsJson 
-            .map((session) => ShowerSession.fromJson(session)) 
-            .toList(); 
-      }); 
-    } 
+  @override
+  void initState() {
+    super.initState();
+    _showerSessionsFuture = _loadSessionsData();
   }
+
+  Future<List<ShowerSession>> _loadSessionsData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? sessionsJson = prefs.getStringList('sessions');
+    if (sessionsJson != null) {
+      return sessionsJson
+          .map((session) => ShowerSession.fromJson(session))
+          .toList();
+    }
+    return [];
+  }
+
   @override
   Widget build(BuildContext context) {
     final sessions = ref.watch(valueProvider);
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Text('Home Screen', style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 36, 84, 35)),),
-          Icon(Icons.bathtub, size: 80, color: Color.fromARGB(255, 90, 163, 88)),
-          Expanded(
-            child: Center(
-              child: Text('Let\'s start your new shower session!', style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 36, 84, 35)),),
+      body: Column(children: <Widget>[
+        Text(
+          'Home Screen',
+          style: TextStyle(
+              fontSize: 48,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 36, 84, 35)),
+        ),
+        Icon(Icons.bathtub, size: 80, color: Color.fromARGB(255, 90, 163, 88)),
+        Expanded(
+          child: Center(
+            child: Text(
+              'Let\'s start your new shower session!',
+              style: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 36, 84, 35)),
             ),
           ),
-
-          Expanded(
-            child: 
-            
-            // FutureBuilder<List<ShowerSession>>(
-            //   future: _showerSessionsFuture,
-            //   builder: (context, snapshot) {
-            //     if (snapshot.connectionState == ConnectionState.waiting) {
-            //       return CircularProgressIndicator(); 
-            //     } else if (snapshot.hasError) {
-            //       return Text('Error: ${snapshot.error}');
-            //     } else if (snapshot.hasData || true) {
-                   ListView.builder(
-                    itemCount: sessions.sessions.length,
-                    itemBuilder: (context, index) {
-                      final session = sessions.sessions[index];
-                      return Row(children: [
-                        Text('${session.totalDuration} min'),
-                        Text('Rate: ${session.rate}'),
-                        Text('Cycles: ${session.numbOfCycles}'),
-                    ],);
-                      
-                    },
-                  ),),]),
-      //           } else {
-      //             return Text('No sessions found.');
-      //           }
-      //         },
-      //       ),
-      //     ),
-      //   ],
-      // ),
+        ),
+        Expanded(
+          child: FutureBuilder<List<ShowerSession>>(
+            future: _showerSessionsFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                List<ShowerSession> dataToShow = snapshot.data!;
+                if (_showLastFiveSessions && dataToShow.length > 5) {
+                  dataToShow = dataToShow.sublist(dataToShow.length - 5);
+                }
+                return ListView.builder(
+                  itemCount: dataToShow.length,
+                  itemBuilder: (context, index) {
+                    final session = dataToShow[index];
+                    return Card(
+                      child: ListTile(
+                        leading: Icon(Icons.bathtub),
+                        title: Text('Session ${index + 1}'),
+                        subtitle:
+                            Text('Duration: ${session.totalDuration} min\n'
+                                'Rate: ${session.rate}\n'
+                                'Cycles: ${session.numbOfCycles}'),
+                      ),
+                    );
+                  },
+                );
+              }
+            },
+          ),
+        ),
+        TextButton(
+        onPressed: () {
+          setState(() {
+            _showLastFiveSessions = !_showLastFiveSessions;
+          });
+        },
+        child: Text('Toggle Session Visibility'),
+      ),
+      ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed('/shower')  ;    },
+          Navigator.of(context).pushNamed('/shower');
+        },
         child: Icon(Icons.add),
         tooltip: 'Start New Session',
       ),

@@ -6,10 +6,10 @@ import 'screens/session_screen.dart';
 import 'services/storage_manager.dart';
 import 'models/shower_session.dart';
 
-
 void main() {
-  runApp(ProviderScope( 
-      child: MiddleAssigmentApp(), 
+  WidgetsFlutterBinding.ensureInitialized(); 
+  runApp(ProviderScope(
+      child: MiddleAssigmentApp(),
     ),);
 }
 
@@ -28,7 +28,7 @@ class MiddleAssigmentApp extends StatelessWidget {
         '/': (context) => HomeScreen(),
         '/shower': (context) => SessionScreen(),
         '/finish_session': (context) => const FinishSession(),
-      }, 
+      },
     );
   }
  }
