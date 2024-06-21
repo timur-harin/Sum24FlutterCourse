@@ -4,7 +4,7 @@ class ShowerSessionForHistory {
   final int coldWaterDuration;
   final bool startWithHotWater;
   final int phasesCompleted;
-  double rating; // New property for rating
+  double rating; 
 
   ShowerSessionForHistory({
     required this.sessionDuration,
@@ -12,10 +12,9 @@ class ShowerSessionForHistory {
     required this.coldWaterDuration,
     required this.startWithHotWater,
     required this.phasesCompleted,
-    this.rating = 5.0, // Default rating
+    this.rating = 5.0, 
   });
 
-  // Method for serializing object to JSON
   Map<String, dynamic> toJson() {
     return {
       'sessionDuration': sessionDuration,
@@ -23,11 +22,10 @@ class ShowerSessionForHistory {
       'coldWaterDuration': coldWaterDuration,
       'startWithHotWater': startWithHotWater,
       'phasesCompleted': phasesCompleted,
-      'rating': rating, // Include rating in JSON
+      'rating': rating, 
     };
   }
 
-  // Factory method for creating object from JSON
   factory ShowerSessionForHistory.fromJson(Map<String, dynamic> json) {
     return ShowerSessionForHistory(
       sessionDuration: json['sessionDuration'],
@@ -35,7 +33,7 @@ class ShowerSessionForHistory {
       coldWaterDuration: json['coldWaterDuration'],
       startWithHotWater: json['startWithHotWater'],
       phasesCompleted: json['phasesCompleted'],
-      rating: json['rating'] ?? 5.0, // Default to 5.0 if rating is not present
+      rating: json['rating'] ?? 5.0, 
     );
   }
 }

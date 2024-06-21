@@ -164,7 +164,6 @@ class _SessionScreenState extends State<SessionScreen> {
   void _stopSession() async {
   _timer?.cancel();
 
-  // Создаем новую сессию для сохранения
   ShowerSessionForHistory newSession = ShowerSessionForHistory(
     sessionDuration: _elapsedTime,
     hotWaterDuration: widget.preferences.hotWaterDuration,
@@ -174,29 +173,22 @@ class _SessionScreenState extends State<SessionScreen> {
   );
   newSession.rating = 5.0;
   try {
-    // Получаем SharedPreferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // Загружаем текущий список сессий
     List<String>? sessionsJson = prefs.getStringList('sessions') ?? [];
 
-    // Преобразуем объект newSession в JSON строку
     String newSessionJson = jsonEncode(newSession.toJson());
 
-    // Добавляем новую сессию в список
     sessionsJson.add(newSessionJson);
 
-    // Сохраняем обновленный список сессий в SharedPreferences
     await prefs.setStringList('sessions', sessionsJson);
 
-    // Обновляем список sessions в родительском виджете
     widget.sessions.clear();
     widget.sessions.addAll(sessionsJson.map((jsonString) => ShowerSessionForHistory.fromJson(jsonDecode(jsonString))));
   } catch (e) {
     print('Error saving session: $e');
   }
 
-  // Переходим на SessionSummary с обновленным списком sessions
   Navigator.pushReplacement(
     context,
     MaterialPageRoute(

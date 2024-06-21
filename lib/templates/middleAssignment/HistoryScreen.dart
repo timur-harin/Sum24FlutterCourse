@@ -60,7 +60,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     Text('Cold Water Duration: ${session.coldWaterDuration} seconds'),
                     Text(session.startWithHotWater ? 'Started with Hot Water' : 'Started with Cold Water'),
                     Text('Phases Completed: ${session.phasesCompleted}'),
-                    Text('Rating: ${session.rating.toStringAsFixed(1)}'), // Display rating
+                    Text('Rating: ${session.rating.toStringAsFixed(1)}'), 
                   ],
                 ),
               ),
