@@ -3,10 +3,12 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,12 +16,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: JsonPlaceholderDemo(),
+      home: const JsonPlaceholderDemo(),
     );
   }
 }
 
 class JsonPlaceholderDemo extends StatefulWidget {
+  const JsonPlaceholderDemo({super.key});
+
   @override
   _JsonPlaceholderDemoState createState() => _JsonPlaceholderDemoState();
 }
@@ -70,11 +74,11 @@ class _JsonPlaceholderDemoState extends State<JsonPlaceholderDemo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('JSON Placeholder API Demo'),
+        title: const Text('JSON Placeholder API Demo'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Text(_responseBody),
         ),
       ),
@@ -84,13 +88,13 @@ class _JsonPlaceholderDemoState extends State<JsonPlaceholderDemo> {
           FloatingActionButton(
             onPressed: _fetchData,
             tooltip: 'Fetch Data',
-            child: Icon(Icons.download),
+            child: const Icon(Icons.download),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           FloatingActionButton(
             onPressed: _sendData,
             tooltip: 'Send Data',
-            child: Icon(Icons.upload),
+            child: const Icon(Icons.upload),
           ),
         ],
       ),

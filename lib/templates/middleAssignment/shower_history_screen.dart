@@ -1,59 +1,24 @@
+// active_shower_screen.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'providers.dart'; // Assuming the providers are defined in this file
-import 'models.dart';
+import 'shower_history_repository.dart'; // Import the ShowerHistorySession
+class ActiveShowerScreen extends StatelessWidget {
+  final ShowerHistorySession session;
 
-class ShowerHistoryScreen extends ConsumerWidget {
-  const ShowerHistoryScreen({super.key});
+  ActiveShowerScreen({Key? key, required this.session}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final showerHistory = ref.watch(showerHistoryProvider);
-
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Shower History'),
+        title: const Text('Shower Session Details'),
       ),
-      body: ListView.builder(
-        itemCount: showerHistory.length,
-        itemBuilder: (context, index) {
-          final session = showerHistory[index];
-          return ListTile(
-            title: Text('Session on ${session.date}'),
-            subtitle: Text('Duration: ${session.duration.inMinutes} minutes'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ActiveShowerScreen(session: session),
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-}
-
-class ActiveShowerScreen extends ConsumerWidget {
-  @override
-  final ShowerSession session;
-  const ActiveShowerScreen({super.key, required this.session});
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final showerSession = ref.watch(showerSessionProvider);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Active Shower Session'),
-      ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text('Current Temperature Phase: ${showerSession.phases.last.temperature}'),
-            Text('Remaining Time: ${showerSession.phases.last.duration.inSeconds} seconds'),
+            Text('Date: ${session.date}'),
+            Text('Duration: ${session.duration.inMinutes} minutes'),
           ],
         ),
       ),

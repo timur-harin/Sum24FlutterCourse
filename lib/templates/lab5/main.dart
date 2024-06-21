@@ -4,10 +4,12 @@ import 'package:education/templates/lab5/post.dart';
 import 'package:education/templates/lab5/comment.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,17 +19,19 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => HomePage(),
+        '/': (context) => const HomePage(),
         '/cat': (context) => CatStatusCodePage(statusCode: ModalRoute.of(context)!.settings.arguments as String),
-        '/users': (context) => UsersPage(),
-        '/posts': (context) => PostsPage(),
-        '/comments': (context) => CommentsPage(),
+        '/users': (context) => const UsersPage(),
+        '/posts': (context) => const PostsPage(),
+        '/comments': (context) => const CommentsPage(),
       },
     );
   }
 }
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -39,7 +43,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Page'),
+        title: const Text('Home Page'),
       ),
       body: Center(
         child: Column(
@@ -47,32 +51,32 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             TextField(
               controller: _controller,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Enter status code',
               ),
               keyboardType: TextInputType.number,
             ),
             ElevatedButton(
-              child: Text('Go to Cat Page'),
+              child: const Text('Go to Cat Page'),
               onPressed: () {
                 String statusCode = _controller.text.isEmpty ? '404' : _controller.text;
                 Navigator.pushNamed(context, '/cat', arguments: statusCode);
               },
             ),
             ElevatedButton(
-              child: Text('Go to Users Page'),
+              child: const Text('Go to Users Page'),
               onPressed: () {
                 Navigator.pushNamed(context, '/users');
               },
             ),
             ElevatedButton(
-              child: Text('Go to Comments Page'),
+              child: const Text('Go to Comments Page'),
               onPressed: () {
                 Navigator.pushNamed(context, '/comments');
               },
             ),
             ElevatedButton(
-              child: Text('Go to Posts Page'),
+              child: const Text('Go to Posts Page'),
               onPressed: () {
                 Navigator.pushNamed(context, '/posts');
               },
@@ -87,8 +91,7 @@ class _HomePageState extends State<HomePage> {
 class CatStatusCodePage extends StatelessWidget {
   final String statusCode;
 
-  const CatStatusCodePage({Key? key, required this.statusCode})
-      : super(key: key);
+  const CatStatusCodePage({super.key, required this.statusCode});
 
   @override
   Widget build(BuildContext context) {
@@ -105,17 +108,19 @@ class CatStatusCodePage extends StatelessWidget {
 }
 
 class UsersPage extends StatelessWidget {
+  const UsersPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Users'),
+        title: const Text('Users'),
       ),
       body: FutureBuilder(
         future: fetchUsers(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -135,17 +140,19 @@ class UsersPage extends StatelessWidget {
   }
 }
 class CommentsPage extends StatelessWidget {
+  const CommentsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Comments'),
+        title: const Text('Comments'),
       ),
       body: FutureBuilder(
         future: fetchComments(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -166,17 +173,19 @@ class CommentsPage extends StatelessWidget {
 }
 
 class PostsPage extends StatelessWidget {
+  const PostsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Posts'),
+        title: const Text('Posts'),
       ),
       body: FutureBuilder(
         future: fetchPosts(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
-import 'package:dio/dio.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return ProviderScope(
+    return const ProviderScope(
       child: MaterialApp(
         home: MyHomePage(),
       ),
@@ -19,11 +19,13 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter Tasks'),
+        title: const Text('Flutter Tasks'),
       ),
       body: Center(
         child: Column(
@@ -36,14 +38,14 @@ class MyHomePage extends StatelessWidget {
                 String result = await fetchData();
                 print(result);
               },
-              child: Text('Async/Await Task'),
+              child: const Text('Async/Await Task'),
             ),
             ElevatedButton(
               onPressed: () {
                 // Exercise 2 - Use Provider for state management
                 // Increment the counter
               },
-              child: Text('Provider Task'),
+              child: const Text('Provider Task'),
             ),
             ElevatedButton(
               onPressed: () {
@@ -51,21 +53,21 @@ class MyHomePage extends StatelessWidget {
                 // Exercise 3 - Use Riverpod for state management
                 // Increment the counter
               },
-              child: Text('Riverpod Task'),
+              child: const Text('Riverpod Task'),
             ),
             ElevatedButton(
               onPressed: () async {
                 // TODO 
                 // Exercise 4 - Make an HTTP request using the HTTP package
               },
-              child: Text('HTTP Task'),
+              child: const Text('HTTP Task'),
             ),
             ElevatedButton(
               onPressed: () async {
                 // TODO
                 // Exercise 5 - Make an HTTP request using Dio and show it in App Screen
               },
-              child: Text('Dio Task'),
+              child: const Text('Dio Task'),
             ),
           ],
         ),

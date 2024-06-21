@@ -8,7 +8,7 @@ void configureApp() {
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   configureApp();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 final Map<String, String> routes = {
@@ -19,15 +19,17 @@ final Map<String, String> routes = {
 };
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Navigation Example',
         // initialRoute: '/one',
         routes: {
-          '/one': (context) => HomeScreen(),
-          '/second': (context) => SecondScreen(),
-          '/third': (context) => ThirdScreen(),
+          '/one': (context) => const HomeScreen(),
+          '/second': (context) => const SecondScreen(),
+          '/third': (context) => const ThirdScreen(),
         },
         // onGenerateInitialRoutes: (
         onGenerateRoute: (settings) {
@@ -42,19 +44,22 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(
                 builder: (context) => GeneratedPage(title: name));
           }
+          return null;
         },
         onUnknownRoute: (settings) {
-          return MaterialPageRoute(builder: (context) => UndefindPage());
+          return MaterialPageRoute(builder: (context) => const UndefindPage());
         });
   }
 }
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Screen'),
+        title: const Text('Home Screen'),
       ),
       body: Center(
         child: Column(
@@ -66,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                   arguments: 'Hello from Home Screen!',
                 );
               },
-              child: Text('Go to Second Screen'),
+              child: const Text('Go to Second Screen'),
             ),
             ElevatedButton(
               onPressed: () {
@@ -75,7 +80,7 @@ class HomeScreen extends StatelessWidget {
                   arguments: 'Hello from Home Screen one more!',
                 );
               },
-              child: Text('Go to Third Screen'),
+              child: const Text('Go to Third Screen'),
             )
           ],
         ),
@@ -85,13 +90,15 @@ class HomeScreen extends StatelessWidget {
 }
 
 class SecondScreen extends StatelessWidget {
+  const SecondScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final message = ModalRoute.of(context)?.settings.arguments as String?;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Second Screen'),
+        title: const Text('Second Screen'),
       ),
       body: Center(
         child: Column(
@@ -103,7 +110,7 @@ class SecondScreen extends StatelessWidget {
                 // Go back to the previous screen.
                 Navigator.of(context).pop();
               },
-              child: Text('Go Back'),
+              child: const Text('Go Back'),
             ),
           ],
         ),
@@ -121,7 +128,7 @@ class ThirdScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Third Screen'),
+        title: const Text('Third Screen'),
       ),
       body: Center(
         child: Column(
@@ -133,7 +140,7 @@ class ThirdScreen extends StatelessWidget {
                 // Go back to the previous screen.
                 Navigator.of(context).pop();
               },
-              child: Text('Go Back'),
+              child: const Text('Go Back'),
             ),
           ],
         ),
@@ -149,9 +156,9 @@ class UndefindPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Undefind Page'),
+        title: const Text('Undefind Page'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Undefind Page'),
       ),
     );
