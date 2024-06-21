@@ -20,6 +20,8 @@ dependencies:
   riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
   shared_preferences: ^2.2.3
+  animated_background: ^2.0.0
+  flutter_sound: ^9.6.0
 
 dev_dependencies:
   flutter_test:
