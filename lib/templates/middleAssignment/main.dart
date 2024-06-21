@@ -5,9 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
-    const ProviderScope(
-      child: MiddleAssigmentApp()
-      ),
+    const ProviderScope(child: MiddleAssigmentApp()),
   );
 }
 
@@ -17,10 +15,6 @@ class MiddleAssigmentApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Middle Assigment',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: HomePage(),
     );
   }

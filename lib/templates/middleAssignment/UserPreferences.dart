@@ -1,6 +1,4 @@
 import 'dart:ffi';
-
-import 'package:education/templates/middleAssignment/HotWater.dart';
 import 'package:education/templates/middleAssignment/SessionOverview.dart';
 import 'package:education/templates/middleAssignment/riverpod.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,24 +13,28 @@ class UserPreferences extends ConsumerStatefulWidget {
   _UserPreferencesState createState() => _UserPreferencesState();
 }
 
-class _UserPreferencesState extends ConsumerState<UserPreferences> with TickerProviderStateMixin {
+class _UserPreferencesState extends ConsumerState<UserPreferences>
+    with TickerProviderStateMixin {
   late AnimationController controller;
   late AnimationController controller2;
 
   String get countText {
     Duration count = controller.duration! * controller.value;
-    return controller.isDismissed ? '${(controller.duration!.inHours % 60).toString().padLeft(2, '0')} : ${(controller.duration!.inMinutes % 60).toString().padLeft(2, '0')} : ${(controller.duration!.inSeconds % 60).toString().padLeft(2, '0')}' : '${(count.inHours % 60).toString().padLeft(2, '0')} : ${(count.inMinutes % 60).toString().padLeft(2, '0')} : ${(count.inSeconds % 60).toString().padLeft(2, '0')}';
+    return controller.isDismissed
+        ? '${(controller.duration!.inHours % 60).toString().padLeft(2, '0')} : ${(controller.duration!.inMinutes % 60).toString().padLeft(2, '0')} : ${(controller.duration!.inSeconds % 60).toString().padLeft(2, '0')}'
+        : '${(count.inHours % 60).toString().padLeft(2, '0')} : ${(count.inMinutes % 60).toString().padLeft(2, '0')} : ${(count.inSeconds % 60).toString().padLeft(2, '0')}';
   }
 
   String get countText2 {
     Duration count = controller2.duration! * controller2.value;
-    return controller2.isDismissed ? '${(controller2.duration!.inHours % 60).toString().padLeft(2, '0')} : ${(controller2.duration!.inMinutes % 60).toString().padLeft(2, '0')} : ${(controller2.duration!.inSeconds % 60).toString().padLeft(2, '0')}' : '${(count.inHours % 60).toString().padLeft(2, '0')} : ${(count.inMinutes % 60).toString().padLeft(2, '0')} : ${(count.inSeconds % 60).toString().padLeft(2, '0')}';
+    return controller2.isDismissed
+        ? '${(controller2.duration!.inHours % 60).toString().padLeft(2, '0')} : ${(controller2.duration!.inMinutes % 60).toString().padLeft(2, '0')} : ${(controller2.duration!.inSeconds % 60).toString().padLeft(2, '0')}'
+        : '${(count.inHours % 60).toString().padLeft(2, '0')} : ${(count.inMinutes % 60).toString().padLeft(2, '0')} : ${(count.inSeconds % 60).toString().padLeft(2, '0')}';
   }
 
   double progress = 1.0;
 
   final numOfRepetitions = TextEditingController();
-
 
   Duration time1 = Duration(hours: 0, minutes: 0, seconds: 0);
   Duration time2 = Duration(hours: 0, minutes: 0, seconds: 0);
@@ -44,7 +46,7 @@ class _UserPreferencesState extends ConsumerState<UserPreferences> with TickerPr
   void initState() {
     super.initState();
     controller = AnimationController(
-      vsync: this, 
+      vsync: this,
       duration: Duration(seconds: 0),
     );
 
@@ -52,8 +54,6 @@ class _UserPreferencesState extends ConsumerState<UserPreferences> with TickerPr
       vsync: this,
       duration: Duration(seconds: 0),
     );
-
-
 
     controller.addListener(() {
       if (controller.isAnimating) {
@@ -87,23 +87,40 @@ class _UserPreferencesState extends ConsumerState<UserPreferences> with TickerPr
     super.dispose();
   }
 
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Contrast Shower: User Preferences'),
-      ),
-      body: Container(  
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromRGBO(248, 56, 2, 1),
+              Color.fromRGBO(255, 255, 255, 1)
+            ],
+          ),
+        ),
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(horizontal: 200),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector (
-                  onTap: () {
-                    if (controller.isDismissed) {
-                      showModalBottomSheet(
-                      context: context, 
+        padding: EdgeInsets.symmetric(horizontal: 40),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Choose time for hot shower:',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  if (controller.isDismissed) {
+                    showModalBottomSheet(
+                      context: context,
                       builder: (context) => Container(
                         height: 300,
                         child: CupertinoTimerPicker(
@@ -125,18 +142,26 @@ class _UserPreferencesState extends ConsumerState<UserPreferences> with TickerPr
                   builder: (context, child) => Text(
                     countText,
                     style: TextStyle(
-                      fontSize: 60,
+                      fontSize: 50,
                       fontWeight: FontWeight.normal,
+                      color: Color.fromARGB(255, 255, 255, 255),
                     ),
                   ),
                 ),
               ),
-              Text('Hot shower time: ${(time1.inHours % 60).toString().padLeft(2, '0')} : ${(time1.inMinutes % 60).toString().padLeft(2, '0')} : ${(time1.inSeconds % 60).toString().padLeft(2, '0')}'),
-              GestureDetector (
-                  onTap: () {
-                    if (controller.isDismissed) {
-                      showModalBottomSheet(
-                      context: context, 
+              Text(
+                'Choose time for cold shower:',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromRGBO(255, 255, 255, 1),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  if (controller.isDismissed) {
+                    showModalBottomSheet(
+                      context: context,
                       builder: (context) => Container(
                         height: 300,
                         child: CupertinoTimerPicker(
@@ -157,29 +182,75 @@ class _UserPreferencesState extends ConsumerState<UserPreferences> with TickerPr
                   builder: (context, child) => Text(
                     countText2,
                     style: TextStyle(
-                      fontSize: 60,
+                      fontSize: 50,
                       fontWeight: FontWeight.normal,
+                      color: Color.fromARGB(255, 255, 255, 255),
                     ),
                   ),
                 ),
               ),
-              Text('Cold shower time: ${(time2.inHours % 60).toString().padLeft(2, '0')} : ${(time2.inMinutes % 60).toString().padLeft(2, '0')} : ${(time2.inSeconds % 60).toString().padLeft(2, '0')}'),
-              TextField(
-                decoration: InputDecoration(hintText: 'Enter number of repetitions'), 
-                controller: numOfRepetitions,),
-                SizedBox(height: 100,),
-                ElevatedButton(
-                  onPressed: () {
-                    for (var i = 0; i < int.parse(numOfRepetitions.text); i++) {
-                      fullTime += (time1 + time2);
-                    }
-                    ref.read(riverpodFullTimer.notifier).state = fullTime;
-                    ref.read(riverpodHotTimer.notifier).state = time1;
-                    ref.read(riverpodColdTimer.notifier).state = time2;
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SessionOverview(overallTime: overallTime, repetitions: int.parse(numOfRepetitions.text))));
-                }, child: Text('Apply'),
-                ),
-          ],
+              Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter number of cycles';
+                          }
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Enter number of cycles',
+                          hintStyle: TextStyle(
+                              color: Color.fromARGB(255, 141, 120, 109),
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal),
+                          errorBorder: InputBorder.none,
+                          border: OutlineInputBorder(),
+                        ),
+                        controller: numOfRepetitions,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter
+                              .digitsOnly, // Allow only digits
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      SizedBox(height: 50, width: 120, child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            for (var i = 0;
+                                i < int.parse(numOfRepetitions.text);
+                                i++) {
+                              fullTime += (time1 + time2);
+                            }
+                            ref.read(riverpodFullTimer.notifier).state =
+                                fullTime;
+                            ref.read(riverpodHotTimer.notifier).state = time1;
+                            ref.read(riverpodColdTimer.notifier).state = time2;
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SessionOverview(
+                                        overallTime: overallTime,
+                                        repetitions:
+                                            int.parse(numOfRepetitions.text))));
+                          }
+                        },
+                        child: Text('Apply'),
+                        style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Color.fromRGBO(236, 90, 50, 1), // Foreground color (text color)
+                      textStyle: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold), // Text style
+                      elevation: 5, // Elevation
+                    ),
+                      )),
+                    ],
+                  )),
+            ],
+          ),
         ),
       ),
     );

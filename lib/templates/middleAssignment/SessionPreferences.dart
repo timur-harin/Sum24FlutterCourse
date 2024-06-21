@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../widgets/round-button.dart';
+
 class SessionPreferences extends StatefulWidget {
   const SessionPreferences({super.key});
 
@@ -8,14 +9,17 @@ class SessionPreferences extends StatefulWidget {
   _SessionPreferencesState createState() => _SessionPreferencesState();
 }
 
-class _SessionPreferencesState extends State<SessionPreferences> with TickerProviderStateMixin {
+class _SessionPreferencesState extends State<SessionPreferences>
+    with TickerProviderStateMixin {
   late AnimationController controller;
 
   bool isPlaying = false;
 
   String get countText {
     Duration count = controller.duration! * controller.value;
-    return controller.isDismissed ? '${(controller.duration!.inHours % 60).toString().padLeft(2, '0')} : ${(controller.duration!.inMinutes % 60).toString().padLeft(2, '0')} : ${(controller.duration!.inSeconds % 60).toString().padLeft(2, '0')}' : '${(count.inHours % 60).toString().padLeft(2, '0')} : ${(count.inMinutes % 60).toString().padLeft(2, '0')} : ${(count.inSeconds % 60).toString().padLeft(2, '0')}';
+    return controller.isDismissed
+        ? '${(controller.duration!.inHours % 60).toString().padLeft(2, '0')} : ${(controller.duration!.inMinutes % 60).toString().padLeft(2, '0')} : ${(controller.duration!.inSeconds % 60).toString().padLeft(2, '0')}'
+        : '${(count.inHours % 60).toString().padLeft(2, '0')} : ${(count.inMinutes % 60).toString().padLeft(2, '0')} : ${(count.inSeconds % 60).toString().padLeft(2, '0')}';
   }
 
   double progress = 1.0;
@@ -24,7 +28,7 @@ class _SessionPreferencesState extends State<SessionPreferences> with TickerProv
   void initState() {
     super.initState();
     controller = AnimationController(
-      vsync: this, 
+      vsync: this,
       duration: Duration(seconds: 60),
     );
 
@@ -67,40 +71,38 @@ class _SessionPreferencesState extends State<SessionPreferences> with TickerProv
                       strokeWidth: 6,
                     ),
                   ),
-                  GestureDetector (
-                  onTap: () {
-                    if (controller.isDismissed) {
-                      showModalBottomSheet(
-                      context: context, 
-                      builder: (context) => Container(
-                        height: 300,
-                        child: CupertinoTimerPicker(
-                          initialTimerDuration: controller.duration!,
-                          onTimerDurationChanged: (time) {
-                            setState(() {
-                              controller.duration = time;
-                            });
-                          },
+                  GestureDetector(
+                    onTap: () {
+                      if (controller.isDismissed) {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) => Container(
+                            height: 300,
+                            child: CupertinoTimerPicker(
+                              initialTimerDuration: controller.duration!,
+                              onTimerDurationChanged: (time) {
+                                setState(() {
+                                  controller.duration = time;
+                                });
+                              },
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                    child: AnimatedBuilder(
+                      animation: controller,
+                      builder: (context, child) => Text(
+                        countText,
+                        style: TextStyle(
+                          fontSize: 60,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    );
-                  }
-                },
-                child: AnimatedBuilder(
-                  animation: controller,
-                  builder: (context, child) => Text(
-                    countText,
-                    style: TextStyle(
-                      fontSize: 60,
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
-              ),
                 ],
               ),
-              
-              
             ),
           ),
           Padding(
@@ -108,7 +110,7 @@ class _SessionPreferencesState extends State<SessionPreferences> with TickerProv
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                GestureDetector (
+                GestureDetector(
                   onTap: () {
                     if (controller.isAnimating) {
                       controller.stop();
@@ -116,9 +118,8 @@ class _SessionPreferencesState extends State<SessionPreferences> with TickerProv
                         isPlaying = false;
                       });
                     } else {
-                     controller.reverse(
-                      from: controller.value == 0 ? 1.0 : 
-                      controller.value); 
+                      controller.reverse(
+                          from: controller.value == 0 ? 1.0 : controller.value);
                       setState(() {
                         isPlaying = true;
                       });
@@ -139,7 +140,6 @@ class _SessionPreferencesState extends State<SessionPreferences> with TickerProv
                     icon: Icons.stop,
                   ),
                 ),
-                
               ],
             ),
           ),

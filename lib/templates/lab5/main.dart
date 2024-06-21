@@ -13,15 +13,14 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 void configureApp() {
   setUrlStrategy(PathUrlStrategy());
 }
+
 TextEditingController textController = TextEditingController();
 
-
 void main() {
-    WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   configureApp();
   runApp(MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   final Map<String, String> routes = {
@@ -31,7 +30,6 @@ class MyApp extends StatelessWidget {
         '/generated//generated/${textController.text}',
   };
   @override
-  
   Widget build(BuildContext context) {
     return MaterialApp(
         routes: {
@@ -55,9 +53,10 @@ class MyApp extends StatelessWidget {
         });
   }
 }
+
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
-@override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -75,7 +74,7 @@ class MainScreen extends StatelessWidget {
                         post.id.toString() +
                         "\n";
                   }
-      
+
                   showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
@@ -103,7 +102,7 @@ class MainScreen extends StatelessWidget {
                         comment.email +
                         "\n";
                   }
-      
+
                   showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
@@ -131,7 +130,7 @@ class MainScreen extends StatelessWidget {
                         user.email! +
                         "\n";
                   }
-      
+
                   showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
@@ -147,22 +146,24 @@ class MainScreen extends StatelessWidget {
                           ));
                 },
                 child: const Text("Task 3")),
-                Container(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Enter text',
-                    ), 
-                    controller: textController,
-                  ),
+            Container(
+              child: TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Enter text',
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    print(textController.text);
-                    Navigator.of(context).pushNamed('/generated/${textController.text}', arguments: textController.text);
-                  },
-                  child: const Text("Открыть котов"),
-                  ),
+                controller: textController,
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                print(textController.text);
+                Navigator.of(context).pushNamed(
+                    '/generated/${textController.text}',
+                    arguments: textController.text);
+              },
+              child: const Text("Открыть котов"),
+            ),
           ],
         ),
       ),

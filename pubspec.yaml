@@ -10,6 +10,7 @@ dependencies:
   dio: ^5.4.3+1
   flutter:
     sdk: flutter
+  flutter_ringtone_player: ^4.0.0+3
   flutter_riverpod: ^2.5.1
   freezed: ^2.5.2
   freezed_annotation: ^2.4.1
