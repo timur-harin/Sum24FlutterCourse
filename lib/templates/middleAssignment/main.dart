@@ -340,7 +340,9 @@ class _WorkoutPageState extends State<WorkoutPage> {
     number_cycles = workoutProvider.cycles;
 
     return Scaffold(
-      body: Center(
+      body: Container(
+        color: currentState == 'hot' ? Colors.red : Colors.lightBlue,
+        child: Center(
         child:Column(children: [
           SizedBox(height: 250),
           ElevatedButton(
@@ -382,6 +384,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
       ]
       ),
     
+      )
+      
       )
       
     );
