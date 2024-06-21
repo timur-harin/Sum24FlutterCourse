@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
-
 void main() {
   runApp(
     MultiProvider(
@@ -52,13 +51,14 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                Text("History:", style: TextStyle(fontSize: 24)),
             Container(
                 width: 600,
                 height: 400,
                 child: ListView.builder(
                   itemCount: workoutProvider.workouts.length,
                   itemBuilder: (context, index) {
-                    final workout = workoutProvider.workouts[index];
+                    final workout = workoutProvider.workouts[workoutProvider.workouts.length - 1 - index];
                     return Container(
                       margin: const EdgeInsets.only(bottom: 10),
                       decoration: BoxDecoration(
@@ -410,6 +410,8 @@ class Workout {
 
 enum WorkoutType { WarmUp, CoolDown }
 
+
+// todo: make saving in prefs
 Future<void> saveHistory(String data) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   List<String> history = prefs.getStringList('history') ?? [];
