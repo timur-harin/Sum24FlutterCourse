@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:education/templates/middleAssignment/temperaturePhase.dart';
 
+
 class ShowerSessionWidget extends StatefulWidget{
   const ShowerSessionWidget({super.key});
   
@@ -8,6 +9,7 @@ class ShowerSessionWidget extends StatefulWidget{
   State<ShowerSessionWidget> createState() => ShowerSession();
 }
 class ShowerSession extends State<ShowerSessionWidget>{
+
   static List<Widget> temperatureList = [
     TemperatureWidget(),
     TemperatureWidget(),
@@ -15,7 +17,7 @@ class ShowerSession extends State<ShowerSessionWidget>{
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     return Column(
       children: [
         Text("Set up your session", style: TextStyle(fontSize: 20.0),),
@@ -27,7 +29,10 @@ class ShowerSession extends State<ShowerSessionWidget>{
 
               icon: Icon(Icons.add)),
           IconButton(onPressed: (){setState(() {
-            if(!temperatureList.isEmpty){temperatureList.removeLast();}
+            if(!temperatureList.isEmpty){
+              temperatureList.removeLast();
+              DataHelper.infoList.removeLast();
+            }
 
           });},
 
@@ -41,4 +46,7 @@ class ShowerSession extends State<ShowerSessionWidget>{
     );
   }
   
+}
+class DataHelper{
+  static List<TemperaturePhaseInfo> infoList = [];
 }

@@ -1,38 +1,43 @@
+import 'package:education/templates/middleAssignment/showerSession.dart';
 import 'package:flutter/material.dart';
 
 class TemperatureWidget extends StatefulWidget{
   const TemperatureWidget({super.key});
 
+
   @override
   State<TemperatureWidget> createState() => TemperaturePhase();
+
+
+
 }
 
 class TemperaturePhase extends State<TemperatureWidget>{
-  bool hot = false;
-  String temperature = "cold";
-  int duration = 60;
-  TemperaturePhase({this.hot=false, this.duration=60});
+  TemperaturePhaseInfo info = TemperaturePhaseInfo();
+  TemperaturePhase(){
+    DataHelper.infoList.add(info);
+  }
+
   @override
   Widget build(BuildContext context) {
     Color color_ = Colors.blueAccent;
-    if(hot){color_ = Colors.red;}
+    if(info.hot){color_ = Colors.red;}
     return Container(
         child: Row(
           children: [
-            Text("Duration: ${duration~/60}:${duration%60}", style: const TextStyle(fontSize: 15),),
+            Text("Duration: ${info.duration~/60}:${info.duration%60}", style: const TextStyle(fontSize: 15),),
             IconButton(onPressed: (){setState(() {
-              duration += 30;
+              info.duration += 30;
             });}, icon: Icon(Icons.add)),
             IconButton(onPressed: (){setState(() {
-              duration -= 30;
-              if(duration<30){duration = 30;}
+              info.duration -= 30;
+              if(info.duration<30){info.duration = 30;}
             });}, icon: Icon(Icons.remove)),
-            Text(temperature),
-            Switch(value: hot, onChanged: (value){
+            Text(info.label),
+            Switch(value: info.hot, onChanged: (value){
               setState(() {
-                hot = value;
-                if(hot){temperature = "hot";}
-                else{temperature = "cold";}
+                info.hot = value;
+                info.update();
               });
             }),
 
@@ -40,5 +45,24 @@ class TemperaturePhase extends State<TemperatureWidget>{
         ),
       color: color_,
     );
+  }
+}
+
+class TemperaturePhaseInfo{
+  bool hot = false;
+  int duration = 60;
+  Color color = Colors.blueAccent;
+  String label = "C O L D";
+  String? status;
+
+  update(){
+    if(!hot){
+      color = Colors.blueAccent;
+      label = "C O L D";
+    }
+    else{
+      color = Colors.redAccent;
+      label = "H O T";
+    }
   }
 }
