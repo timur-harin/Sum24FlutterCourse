@@ -38,8 +38,8 @@ class HomeScreen extends StatelessWidget {
               Session? s = box.getAt(index);
               return Card(
                 child: ListTile(
-                  title: Text(s!.getDuration()),
-                  subtitle: Text('${s.cycles} cycles, ${s.rating}/5'),
+                  title: Text('Session with ${s!.cycles} cycles, ${s.rating}/5'),
+                  subtitle: Text(s.getDuration()),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: () {

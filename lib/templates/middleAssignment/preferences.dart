@@ -50,10 +50,17 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
             ),
             const SizedBox(height: 40),
             Text(
-              'Cycle Duration',
+              'Interval Duration',
               style: TextStyle(
                 fontSize: 25,
                 color: Colors.blueGrey[800],
+              ),
+            ),
+            Text(
+              'Consider, that each cycle consists of two intervals',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.blueGrey[400],
               ),
             ),
             const SizedBox(height: 10),

@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 
 part 'data.g.dart';
 
@@ -21,7 +22,7 @@ class Session {
   );
 
   String getDuration() {
-    return '${startTime.day}.${startTime.month}.${startTime.year} ${startTime.hour}:${startTime.minute}:${startTime.second} - ${endTime.hour}:${endTime.minute}:${endTime.second}';
+    return '${DateFormat.MMMd().format(startTime)}  ${DateFormat('hh:mm:ss').format(startTime)} - ${DateFormat(' hh:mm:ss').format(endTime)}';
   }
 
   void setRating(int value) {
