@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'data.dart';
 import 'session.dart';
+import 'providers.dart';
 
-class PreferencesScreen extends ConsumerWidget {
+class PreferencesScreen extends ConsumerStatefulWidget {
   const PreferencesScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PreferencesScreen> createState() => _PreferencesScreenState();
+}
+
+class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -18,8 +23,55 @@ class PreferencesScreen extends ConsumerWidget {
         leading: const BackButton(color: Colors.white),
         backgroundColor: Colors.cyan[400],
       ),
-      body: const Center(
-        child: Text('Settings'),
+      body: Center(
+        child: Column(
+          children: [
+            const SizedBox(height: 40),
+            Text(
+              'Number of Cycles',
+              style: TextStyle(
+                fontSize: 25, 
+                color: Colors.blueGrey[800],
+              ),
+            ),
+            const SizedBox(height: 10),
+            Slider(
+              value: ref.watch(cyclesProvider),
+              max: 10,
+              min: 1,
+              divisions: 9,
+              label: ref.watch(cyclesProvider).round().toString(),
+              activeColor: Colors.cyan[300],
+              onChanged: (double value) {
+                setState(() {
+                  ref.read(cyclesProvider.notifier).state = value;
+                });
+              },
+            ),
+            const SizedBox(height: 40),
+            Text(
+              'Cycle Duration',
+              style: TextStyle(
+                fontSize: 25,
+                color: Colors.blueGrey[800],
+              ),
+            ),
+            const SizedBox(height: 10),
+            Slider(
+              value: ref.watch(intervalProvider),
+              max: 60,
+              min: 5,
+              divisions: 11,
+              label: ref.watch(intervalProvider).round().toString(),
+              activeColor: Colors.cyan[300],
+              onChanged: (double value) {
+                setState(() {
+                  ref.read(intervalProvider.notifier).state = value;
+                });
+              },
+            ),
+          ],
+        )
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

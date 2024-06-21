@@ -1,17 +1,15 @@
+import 'package:education/templates/middleAssignment/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'data.dart';
-import 'providers.dart';
 import 'preferences.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final sessions = ref.watch(sessionListProvider);
-
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -20,30 +18,46 @@ class HomeScreen extends ConsumerWidget {
         ),
         backgroundColor: Colors.cyan[400],
       ),
-      body: sessions.isEmpty 
-        ? const Center(
-            child: Text(
-              'No sessions',
-              style: TextStyle(fontSize: 24, color: Colors.blueGrey),
-            ),
-          )
-        : ListView(
-          children: [
-            if (sessions.isNotEmpty) const Divider(height: 0),
-            for (var i = 0; i < sessions.length; i++) ...[
-              if (i > 0) const Divider(height: 0),
-              SessionItem(session: sessions[i]),
-            ],
-          ],
-        ),
+      body: ValueListenableBuilder(
+        valueListenable: Hive.box<Session>(sessionBoxName).listenable(),
+        builder: (context, Box<Session> box, _) {
+          if (box.values.isEmpty) {
+            return const Center(
+              child: Text(
+                'No sessions',
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.blueGrey,
+                ),
+              ),
+            );
+          }
+          return ListView.builder(
+            itemCount: box.length,
+            itemBuilder: (context, index) {
+              Session? s = box.getAt(index);
+              return Card(
+                child: ListTile(
+                  title: Text(s!.getDuration()),
+                  subtitle: Text('${s.cycles} cycles, ${s.rating}/5'),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () {
+                      box.deleteAt(index);
+                    },
+                  ),
+                ),
+              );
+            },
+          );
+        }
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context, 
             MaterialPageRoute(builder: (context) => const PreferencesScreen()),
           );
-          //add(ref); another way to add
-          //ref.read(sessionListProvider.notifier).add();
         },
         tooltip: 'Start New Session',
         shape: const CircleBorder(),
@@ -51,22 +65,6 @@ class HomeScreen extends ConsumerWidget {
         child: const Icon(Icons.add, color: Colors.white),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
-  }
-}
-
-class SessionItem extends StatelessWidget {
-  final Session session;
-
-  const SessionItem({super.key, required this.session});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white,
-      child: ListTile(
-        title: Text('Session ${session.id}'),
-      ),
     );
   }
 }

@@ -17,10 +17,10 @@ class SessionAdapter extends TypeAdapter<Session> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Session(
-      startTime: fields[0] as DateTime,
-      endTime: fields[1] as DateTime,
-      cycles: fields[2] as int,
-      rating: fields[3] as int,
+      fields[0] as DateTime,
+      fields[1] as DateTime,
+      fields[2] as int,
+      rating: fields[3] as int?,
     );
   }
 

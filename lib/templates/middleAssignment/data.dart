@@ -1,17 +1,30 @@
+import 'package:hive_flutter/hive_flutter.dart';
 
+part 'data.g.dart';
 
+@HiveType(typeId: 0)
 class Session {
-  final String id;
-  final DateTime startTime;
-  final DateTime endTime;
-  final int cycles;
-  final int rating;
+  @HiveField(0)
+  DateTime startTime;
+  @HiveField(1)
+  DateTime endTime;
+  @HiveField(2)
+  int cycles;
+  @HiveField(3)
+  int? rating;
 
-  const Session({
-    required this.id,
-    required this.startTime,
-    required this.endTime,
-    required this.cycles,
-    required this.rating,
-  });
+  Session(
+    this.startTime,
+    this.endTime,
+    this.cycles,
+    {this.rating}
+  );
+
+  String getDuration() {
+    return '${startTime.day}.${startTime.month}.${startTime.year} ${startTime.hour}:${startTime.minute}:${startTime.second} - ${endTime.hour}:${endTime.minute}:${endTime.second}';
+  }
+
+  void setRating(int value) {
+    rating = value;
+  }
 }
