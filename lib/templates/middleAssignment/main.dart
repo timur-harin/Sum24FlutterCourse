@@ -1,12 +1,26 @@
+import 'package:hive/hive.dart';
+import 'hive_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:device_screen_size/device_screen_size.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart';
 import 'session.dart';
 import 'providers.dart';
+import 'data.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+String secondsToMinutesSeconds(int totalSeconds) {
+  int minutes = (totalSeconds / 60).floor();
+  int remainingSeconds = totalSeconds % 60;
+
+  return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+}
+
+var dataBox;
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(DataAdapter());
+  dataBox = await Hive.openBox<Data>('data');
   runApp(const ProviderScope(child: MiddleAssigmentApp()));
 }
 
@@ -30,17 +44,151 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    List<Data> data = HiveService.getAll();
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            SizedBox(
+              height: 300,
+              child: SingleChildScrollView(
+                child: Table(
+                  border:
+                      TableBorder.all(color: Color.fromARGB(255, 28, 130, 213)),
+                  columnWidths: const <int, TableColumnWidth>{
+                    0: FlexColumnWidth(),
+                    1: FixedColumnWidth(100),
+                  },
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  children: [
+                    TableRow(
+                      decoration: BoxDecoration(
+                        color: Colors.blue.withOpacity(0.7),
+                      ),
+                      children: [
+                        TableCell(
+                          child: Container(
+                            child: Text(
+                              'Hot Shower Time',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        TableCell(
+                          child: Container(
+                            child: Text(
+                              'Cold Shower Time',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        TableCell(
+                          child: Container(
+                            child: Text(
+                              'Total Time',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        TableCell(
+                          child: Container(
+                            child: Text(
+                              'Total Phases',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        TableCell(
+                          child: Container(
+                            child: Text(
+                              'Rating',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    ...data.asMap().entries.map((entry) {
+                      final int index = entry.key;
+                      final Data item = entry.value;
+                      return TableRow(
+                        decoration: BoxDecoration(
+                          color: Colors.blue.withOpacity(0.4),
+                        ),
+                        children: [
+                          TableCell(
+                            child: Container(
+                              child: Text(
+                                  secondsToMinutesSeconds(item.hotShowerTime),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 12, 76, 128))),
+                            ),
+                          ),
+                          TableCell(
+                            child: Container(
+                              child: Text(
+                                  secondsToMinutesSeconds(item.coldShowerTime),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 12, 76, 128))),
+                            ),
+                          ),
+                          TableCell(
+                            child: Container(
+                              child: Text(
+                                  secondsToMinutesSeconds(item.totalTime),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 12, 76, 128))),
+                            ),
+                          ),
+                          TableCell(
+                            child: Container(
+                              child: Text(item.totalPhases.toString(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 12, 76, 128))),
+                            ),
+                          ),
+                          TableCell(
+                            child: Container(
+                              child: Text(item.rating.toString(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 12, 76, 128))),
+                            ),
+                          ),
+                        ],
+                      );
+                    }),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 150,
+            ),
             OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 25, horizontal: 50),
+                foregroundColor: Colors.blue.withOpacity(0.8),
+                textStyle:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                side: BorderSide(color: Colors.blue.withOpacity(0.8)),
+              ),
               onPressed: () {
+                ref.read(hotShowerPhaseProvider.notifier).state = 30;
+                ref.read(coldShowerPhaseProvider.notifier).state = 30;
+                ref.read(phasesAmountProvider.notifier).state = 2;
+                ref.read(startHotShowerProvider.notifier).state = true;
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
                     return Container(
+                      padding: EdgeInsets.all(16.0),
                       height:
                           DeviceScreenSize.screenHeightInPercentage(context) /
                               0.7,
@@ -130,18 +278,61 @@ class HomePage extends ConsumerWidget {
                                 width: 150,
                                 height: 50,
                                 child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 30),
+                                    foregroundColor:
+                                        Colors.blue.withOpacity(0.8),
+                                    textStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                    side: BorderSide(
+                                        color: Colors.blue.withOpacity(0.8)),
+                                  ),
                                   onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const Session(),
-                                      ),
-                                    );
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title:
+                                                const Text('Session Settings'),
+                                            content: Text(
+                                              'Hot shower time: ${secondsToMinutesSeconds(ref.read(hotShowerPhaseProvider).toInt())} minutes\n'
+                                              'Cold shower time: ${secondsToMinutesSeconds(ref.read(coldShowerPhaseProvider).toInt())} minutes\n'
+                                              'Phases amount: ${ref.read(phasesAmountProvider)}\n'
+                                              'Start with ${ref.read(startHotShowerProvider) ? 'hot' : 'cold'} shower\n'
+                                              'Total time: ${secondsToMinutesSeconds(((ref.read(phasesAmountProvider) / 2).ceil() * (ref.read(startHotShowerProvider) ? ref.read(hotShowerPhaseProvider) : ref.read(coldShowerPhaseProvider)) + (ref.read(phasesAmountProvider) / 2).floor() * (ref.read(startHotShowerProvider) ? ref.read(coldShowerPhaseProvider) : ref.read(hotShowerPhaseProvider))).round())}',
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () => {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const Session(),
+                                                    ),
+                                                  )
+                                                },
+                                                child: Text(
+                                                  'Begin Session',
+                                                  style: TextStyle(
+                                                      color: Colors.blue
+                                                          .withOpacity(0.8)),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        });
                                   },
-                                  child: const Text('Begin'),
+                                  child: Text(
+                                    'Next',
+                                    style: TextStyle(
+                                        color: Colors.blue.withOpacity(0.8)),
+                                  ),
                                 ),
                               ),
-                              const SizedBox(width: 20),
+                              const SizedBox(width: 60),
                               const MySwitch()
                             ],
                           ),
@@ -151,8 +342,72 @@ class HomePage extends ConsumerWidget {
                   },
                 );
               },
-              child: const Text('New Session'),
+              child: const Text('Start New Session'),
             ),
+            OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.grey,
+                  side: const BorderSide(color: Colors.transparent),
+                ),
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Container(
+                          padding: EdgeInsets.all(16.0),
+                          height: DeviceScreenSize.screenHeightInPercentage(
+                                  context) /
+                              0.7,
+                          width:
+                              DeviceScreenSize.screenWidthInPercentage(context),
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(
+                                height:
+                                    DeviceScreenSize.screenHeightInPercentage(
+                                            context) *
+                                        1.8 *
+                                        0.015,
+                              ),
+                              const Text('How to use this app?',
+                                  style: TextStyle(
+                                      fontSize: 23,
+                                      fontWeight: FontWeight.bold)),
+                              SizedBox(
+                                height:
+                                    DeviceScreenSize.screenHeightInPercentage(
+                                            context) *
+                                        1.8 *
+                                        0.015,
+                              ),
+                              const Divider(
+                                height: 0,
+                                color: Colors.grey,
+                                thickness: 1,
+                              ),
+                              SizedBox(
+                                height:
+                                    DeviceScreenSize.screenHeightInPercentage(
+                                            context) *
+                                        1.8 *
+                                        0.02,
+                              ),
+                              const Text(
+                                'The main page contains the history of the sessions held. '
+                                'In order to start the next one, just click on "Start New Session", select the time for each phase, as well '
+                                'as the number of phases and the first phase (by swiping on the switch), and click on "Next". '
+                                'During a session, you can end it early by clicking on "Finish" or pause it by clicking on "Pause". '
+                                'After the end of the session you will be provided with statistics and the opportunity to evaluate it',
+                                style: TextStyle(fontSize: 15),
+                              )
+                            ],
+                          ),
+                        );
+                      });
+                },
+                child: const Text(
+                  'Hint',
+                ))
           ],
         ),
       ),
@@ -189,13 +444,6 @@ class _MySliderState extends ConsumerState<MySlider> {
     _currentValue = widget.min;
   }
 
-  String secondsToMinutesSeconds(int totalSeconds) {
-    int minutes = (totalSeconds / 60).floor();
-    int remainingSeconds = totalSeconds % 60;
-
-    return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
-  }
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -205,6 +453,11 @@ class _MySliderState extends ConsumerState<MySlider> {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Expanded(
+              child: SliderTheme(
+            data: SliderTheme.of(context).copyWith(
+                activeTrackColor: Colors.blue,
+                thumbColor: Colors.blue,
+                valueIndicatorColor: Colors.blue),
             child: Slider(
               min: widget.min,
               label: _currentValue.round().toString(),
@@ -218,7 +471,7 @@ class _MySliderState extends ConsumerState<MySlider> {
                 });
               },
             ),
-          ),
+          )),
           Text(
             widget.isTime
                 ? "${secondsToMinutesSeconds(_currentValue.round())} m"
@@ -245,14 +498,16 @@ class _MySwitchState extends ConsumerState<MySwitch> {
   Widget build(BuildContext context) {
     return Switch(
       value: light,
-      activeColor: Colors.red,
-      activeTrackColor: Colors.redAccent,
-      inactiveThumbColor: Colors.blue,
-      inactiveTrackColor: Colors.blueAccent,
+      activeColor: Colors.orange,
+      activeTrackColor: const Color.fromARGB(255, 255, 202, 123),
+      inactiveThumbColor: Color(0xFF2196F3),
+      inactiveTrackColor: const Color.fromARGB(255, 135, 189, 234),
       onChanged: (bool value) {
         setState(() {
           light = value;
           ref.read(startHotShowerProvider.notifier).state = value;
+          ref.read(backgroundColorProvider.notifier).state =
+              !value ? Colors.lightBlue : Colors.orange;
         });
       },
     );
