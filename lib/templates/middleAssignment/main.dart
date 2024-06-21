@@ -284,7 +284,7 @@ class WorkoutPage extends StatefulWidget {
 }
 
 class _WorkoutPageState extends State<WorkoutPage> {
-  String currentState = 'hot';
+  String currentState = '';
 
   int number_cycles = 0;
   int current = 0;
@@ -295,6 +295,9 @@ class _WorkoutPageState extends State<WorkoutPage> {
   late Timer _timer;
 
   void startTimer(int numberCycles, int hot, int cold) {
+    if (currentState == '') {
+      currentState = 'hot';
+    }
     time_left = (currentState == 'hot' ? hot : cold);
     final cycles = numberCycles;
     const oneSec = const Duration(seconds: 1);
@@ -323,9 +326,12 @@ class _WorkoutPageState extends State<WorkoutPage> {
             }
           }
         } else {
-          timer.cancel();
+          setState(() {
+            timer.cancel();
+          });
           time_left = 0;
           is_end = true;
+          currentState = '';
         }
       },
     );
@@ -341,7 +347,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
     return Scaffold(
       body: Container(
-        color: currentState == 'hot' ? Colors.red : Colors.lightBlue,
+        color: currentState == 'hot' ? Colors.red : currentState == 'cold' ? Colors.lightBlue : Colors.white,
         child: Center(
         child:Column(children: [
           SizedBox(height: 250),
@@ -361,7 +367,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
           SizedBox(height: 20),
           Text('Cycles: $current / $number_cycles', style: TextStyle(fontSize: 24)),
           SizedBox(height: 20),
-          Text('Current state: ${currentState == 'hot' ? "Hot water" : "Cold water"}', style: TextStyle(fontSize: 24)),
+          Text('Current state: ${currentState == 'hot' ? "Hot water" : currentState == 'cold' ? "Cold water" : "No water"}', style: TextStyle(fontSize: 24)),
           SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
