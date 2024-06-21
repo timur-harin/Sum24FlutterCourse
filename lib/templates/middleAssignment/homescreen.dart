@@ -33,7 +33,7 @@ class HomeScreen extends ConsumerWidget{
           ),
           Padding(
 
-            
+
             padding: const EdgeInsets.all(16.0),
             child: Container(
               width: double.infinity,
@@ -61,7 +61,7 @@ class HomeScreen extends ConsumerWidget{
                   );
                 },
                 child: const Text(
-                  'Start New Session',
+                  'Start new session',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
