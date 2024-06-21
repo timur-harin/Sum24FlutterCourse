@@ -130,9 +130,6 @@ class _MainPageState extends State<MainPage> {
                               Expanded(flex: 2, child: Align(
                                 alignment: Alignment.center,
                                 child: Text("№ of cycles: " + session.numOfCycles.toString()))),
-                              // Padding(padding: EdgeInsets.only(left: 10)),
-                              // Expanded(flex: 2, child: Text("Rate")),
-                              //Text('Session: start – ' + session.color + ', time – ' + session.duration.toString() + ', cycles – ' + session.numOfCycles.toString(), style: const TextStyle(fontSize: 20)),
                             ],
                           ),
                         )
