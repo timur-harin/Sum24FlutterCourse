@@ -3,6 +3,7 @@ import 'home_page.dart';
 import 'start_session_page.dart';
 import 'timer_page.dart';
 import 'provider.dart';
+import 'session_info.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -29,6 +30,7 @@ class MiddleAssigmentApp extends StatelessWidget {
           '/': (context) => const HomePage(),
           '/startSessionPage': (context) => const StartSessionPage(),
           '/timerPage': (context) => const TimerPage(),
+          '/sessionInfoPage': (context) => const SessionInfoPage(events: []),
         },
       ),
     );

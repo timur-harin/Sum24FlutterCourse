@@ -56,8 +56,8 @@ class DataProvider extends ChangeNotifier {
       final eventsJson = contrastShowerDays
           .map((event) => {
                 'date': event.date.millisecondsSinceEpoch,
-                'phase': event.phase.toString(),
-                'duration': event.duration.inSeconds,
+                'phase': event.phase,
+                'duration': event.duration,
               })
           .toList();
       _prefs!.setString('contrastShowerDays', jsonEncode(eventsJson));
@@ -79,6 +79,7 @@ class DataProvider extends ChangeNotifier {
 
   void addCustomEvent(CustomEvent newEvent) {
     contrastShowerDays.add(newEvent);
+    saveToPrefs(); 
     notifyListeners();
   }
 

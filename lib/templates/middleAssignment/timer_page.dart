@@ -81,7 +81,6 @@ class _TimerPage extends State<TimerPage> {
                     .updateColor();
 
                 dataProvider.addCustomEvent(newEvent);
-
                 Navigator.of(context).pop();
                 Navigator.of(context).pushNamed('/');
               },

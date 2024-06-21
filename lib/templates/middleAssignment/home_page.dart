@@ -4,6 +4,7 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'provider.dart';
 import 'start_session_page.dart';
 import 'package:provider/provider.dart';
+import 'session_info.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -88,28 +89,112 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Padding(
-                padding: EdgeInsets.only(top: 50.0, bottom: 0),
-                child: Text('Contrast Shower Companion',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
+              Padding(
+                padding: const EdgeInsets.only(top: 50.0, bottom: 0),
+                child: Column(children: [
+                  const Text('Contrast Shower Companion',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
                         fontSize: 24,
                         shadows: <Shadow>[
                           Shadow(
                             offset: Offset(2.0, 2.0),
                             blurRadius: 2.0,
-                            color: Colors.grey,
+                            color: Color.fromARGB(255, 163, 151, 151),
                           ),
                         ],
-                        fontFamily: 'Roboto')),
+                      )),
+                  const SizedBox(width: 8),
+                  const Text('Click on any day and see your activity!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                      )),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          width: 25.0,
+                          height: 25.0,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color.fromARGB(118, 199, 38, 38),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      const Text('Hot Day',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                          )),
+                      const SizedBox(width: 8),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          width: 25.0,
+                          height: 25.0,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color.fromARGB(194, 38, 105, 199),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      const Text('Cold Day',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                          )),
+                    ],
+                  )
+                ]),
+
                 //progress bar next
               ),
               Expanded(
                 child: Center(
                   child: CalendarCarousel<Event>(
                       onDayPressed: (date, list) {
-                        //navigate to screen with session
-                        print(date);
+                        List<CustomEvent> eventsOnSelectedDay = dataProvider
+                            .contrastShowerDays
+                            .where((event) =>
+                                event.date.year == date.year &&
+                                event.date.month == date.month &&
+                                event.date.day == date.day)
+                            .toList();
+
+                        if (eventsOnSelectedDay.isNotEmpty) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SessionInfoPage(events: eventsOnSelectedDay),
+                            ),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Attention!'),
+                                content: const Text(
+                                    'There are no sessions on this day.'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
                       },
                       height: 550,
                       width: 450,
