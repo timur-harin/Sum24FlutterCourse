@@ -1,21 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:education/templates/middleAssignment/pages/settings.dart';
+import 'package:education/templates/middleAssignment/pages/homescreen.dart';
+import 'package:education/templates/middleAssignment/pages/timer.dart';
+import 'package:education/templates/middleAssignment/pages/end.dart';
 
 void main() {
-  runApp(const MiddleAssigmentApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    )
+  );
 }
 
-class MiddleAssigmentApp extends StatelessWidget {
-  const MiddleAssigmentApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Middle Assigment',
+      title: '',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
-      // TODO - complete assignment
-      home: null,
+      initialRoute: '/',
+      routes: {
+        '/': (context) =>  MainScreen(),
+        '/settings': (context) => const SettingsScreen(),
+        '/timer': (context) => TimerScreen(),
+        '/end': (context) => EndScreen(),
+      },
     );
   }
 }
