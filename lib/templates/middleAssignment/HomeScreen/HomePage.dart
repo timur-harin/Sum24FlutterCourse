@@ -27,14 +27,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Color(0xFFFFFDD0),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment. spaceEvenly,
-          children: [
-            statistics(),
-            // buttons(),
-
-          ],
-        ),
+        child: statistics()
+      ),
+      
+      bottomNavigationBar: BottomAppBar(
+        child: buttons(),
       ),
     );
   }

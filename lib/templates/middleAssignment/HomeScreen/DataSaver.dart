@@ -1,8 +1,9 @@
+import 'package:education/templates/middleAssignment/HomeScreen/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:education/templates/middleAssignment/Storage/ShowerHistory.dart';
-import 'package:education/templates/middleAssignment/Storage/SharedPreferenciesServise.dart';
+import 'package:education/templates/middleAssignment/Storage/SharedPreferencesService.dart';
 import 'package:education/templates/middleAssignment/Shower/SessionInfo.dart';
 
 class DataSaver extends StatefulWidget {
@@ -110,6 +111,7 @@ class _DataSaverState extends State<DataSaver> {
                 final temperature = double.tryParse(_temperatureController.text) ?? 0.0;
                 final notes = _notesController.text;
                 final newSession = ShowerHistory(
+                  name: widget.name,
                   date: DateTime.now(),
                   duration: widget.time.inSeconds,
                   sessions: widget.sessions,
@@ -118,9 +120,15 @@ class _DataSaverState extends State<DataSaver> {
                 );
 
                 final SharedPreferencesService service = SharedPreferencesService();
-                await service.saveShowerSession(newSession);
 
-                Navigator.of(context).pop();
+                Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomePage(),
+                ),
+                (Route<dynamic> route) => false,
+              );
+              await service.saveShowerSession(newSession);
               },
               child: Text(
                 "Save",
