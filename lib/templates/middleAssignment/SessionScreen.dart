@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'HistoryScreen.dart';
 import 'SessionSummary.dart';
+import 'ShowerSessionForHistory.dart';
 
 abstract class Phase {
   int get duration;
@@ -69,8 +69,9 @@ class ShowerSession {
 
 class SessionScreen extends StatefulWidget with PhaseManagement {
   final UserPreferences preferences;
+  final List<ShowerSessionForHistory> sessions;
 
-  SessionScreen({required this.preferences});
+  SessionScreen({required this.preferences, required this.sessions});
 
   @override
   _SessionScreenState createState() => _SessionScreenState();
@@ -83,8 +84,8 @@ class _SessionScreenState extends State<SessionScreen> {
   bool _sessionStarted = false;
   bool _isPaused = false;
   late ShowerSession _session;
-  SessionHistory historyScreen = SessionHistory();
   int _phaseTimer = 0;
+
   @override
   void initState() {
     super.initState();
@@ -142,10 +143,16 @@ class _SessionScreenState extends State<SessionScreen> {
 
   void _stopSession() {
     _timer?.cancel();
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => SessionSummary(session: _session),
+        builder: (context) => SessionSummary(session: ShowerSessionForHistory(
+          sessionDuration: _elapsedTime,
+          hotWaterDuration: widget.preferences.hotWaterDuration,
+          coldWaterDuration: widget.preferences.coldWaterDuration,
+          startWithHotWater: widget.preferences.startWithHotWater,
+          phasesCompleted: _session.phasesCompleted,
+        ), sessions: widget.sessions),
       ),
     );
   }

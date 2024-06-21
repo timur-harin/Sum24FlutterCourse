@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'HistoryScreen.dart';
 import 'SessionPreferencesScreen.dart';
+import 'ShowerSessionForHistory.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  final List<ShowerSessionForHistory> sessions = [];
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,13 +38,18 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomeScreen(),
+      home: HomeScreen(sessions: sessions),
+      routes: {
+        '/history': (context) => HistoryScreen(sessions: sessions),
+      },
     );
   }
 }
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final List<ShowerSessionForHistory> sessions;
+
+  HomeScreen({required this.sessions});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -71,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const SessionPreferencesScreen(),
+                      builder: (context) => SessionPreferencesScreen(sessions: widget.sessions),
                     ),
                   );
                 },
@@ -83,12 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HistoryScreen(),
-                    ),
-                  );
+                  Navigator.pushNamed(context, '/history');
                 },
                 child: const Text(
                   'View Previous Sessions',

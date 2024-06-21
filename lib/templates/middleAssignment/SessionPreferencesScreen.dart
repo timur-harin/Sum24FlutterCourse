@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'SessionScreen.dart';
+import 'ShowerSessionForHistory.dart';
 
 class SessionPreferencesScreen extends StatefulWidget {
-  const SessionPreferencesScreen({super.key});
+  final List<ShowerSessionForHistory> sessions;
+
+  const SessionPreferencesScreen({required this.sessions});
 
   @override
   _SessionPreferencesScreenState createState() => _SessionPreferencesScreenState();
@@ -87,7 +90,12 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
 
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SessionScreen(preferences: preferences)),
+                      MaterialPageRoute(
+                        builder: (context) => SessionScreen(
+                          preferences: preferences,
+                          sessions: widget.sessions,
+                        ),
+                      ),
                     );
                   }
                 },
@@ -115,7 +123,12 @@ class _SessionPreferencesScreenState extends State<SessionPreferencesScreen> {
 
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SessionScreen(preferences: preferences)),
+                      MaterialPageRoute(
+                        builder: (context) => SessionScreen(
+                          preferences: preferences,
+                          sessions: widget.sessions,
+                        ),
+                      ),
                     );
                   }
                 },
