@@ -1,7 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
 part 'session_model.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 1)
 class Session extends HiveObject {
 
   @HiveField(0)
@@ -12,6 +12,12 @@ class Session extends HiveObject {
   final String _duration;
   get duration => _duration;
 
-  Session(this._date, this._duration);
+  @HiveField(2)
+  final int _phases;
+  get phases => _phases;
+
+
+
+  Session(this._date, this._duration, this._phases);
 }
 

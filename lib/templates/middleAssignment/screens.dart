@@ -1,4 +1,3 @@
-import 'package:education/templates/middleAssignment/notifiers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'widgets.dart';
@@ -9,8 +8,6 @@ class MainScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final size = ref.watch(showerSessionsProvider).sessions;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Contrast Shower"),
@@ -133,6 +130,21 @@ class ShowerSessionScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return const Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: CountdownWidget()
+          ),
+          SizedBox(height: 20),
+          Center(
+            child: CountdownControlsWidget(),
+          )
+        ],
+
+
+      ),
+
 
     );
   }

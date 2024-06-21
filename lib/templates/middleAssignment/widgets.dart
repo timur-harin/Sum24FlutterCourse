@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:education/templates/middleAssignment/models/session_model.dart';
 import 'package:education/templates/middleAssignment/screens.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +25,10 @@ class ShowerSessionWidget extends ConsumerWidget {
       width: appSize.width - padding.left - padding.right - 20,
       height: 70,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          showDialog(context: context, builder: (context) => PastSessionSummaryWidget(id: _id));
+
+        },
         style: ButtonStyle(
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
@@ -47,8 +52,18 @@ class ShowerSessionWidget extends ConsumerWidget {
               width: 48,
             ),
             Expanded(
-                child: Text(session.duration)
-            )
+                child: Text("Duration: ${session.duration}", textAlign: TextAlign.center)
+            ),
+            const VerticalDivider(
+              color: Colors.grey,
+              indent: 10,
+              endIndent: 10,
+              thickness: 1.5,
+              width: 48,
+            ),
+            Expanded(
+                child: Text("Phases: ${session.phases}", textAlign: TextAlign.center,)
+            ),
           ],
         ),
       ),
@@ -57,12 +72,15 @@ class ShowerSessionWidget extends ConsumerWidget {
 }
 
 
+
+
 class ShowerSessionListWidget extends ConsumerWidget {
   const ShowerSessionListWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
+      // child: Text("asd"),
       child: Wrap(
         direction: Axis.vertical,
         spacing: 10,
@@ -85,9 +103,9 @@ class StartPhaseChoiceWidget extends ConsumerWidget {
             width: 80,
             height: 40,
             child: ElevatedButton(
-                onPressed: ref.watch(startPhaseProvider) ? null : () {
-                  ref.read(startPhaseProvider.notifier).state = true;
-                  // showCustomTimePicker(context: context);
+
+                onPressed: ref.watch(startPhaseProvider).isHotDisabled ? null : () {
+                  ref.watch(startPhaseProvider).switchPhase();
                 },
 
                 style: ButtonStyle(
@@ -107,8 +125,8 @@ class StartPhaseChoiceWidget extends ConsumerWidget {
             width: 80,
             height: 40,
             child: ElevatedButton(
-                onPressed: !ref.watch(startPhaseProvider) ? null : () {
-                  ref.read(startPhaseProvider.notifier).state = false;
+                onPressed: !ref.watch(startPhaseProvider).isHotDisabled ? null : () {
+                  ref.watch(startPhaseProvider).switchPhase();
                 },
                 style: ButtonStyle(
                   shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -311,6 +329,17 @@ class SessionSettingsWidget extends ConsumerWidget {
             Center(
               child: ElevatedButton(
                   onPressed: () {
+                    if (ref.watch(textInputControllerProvider).text == "") {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          content: Text("Input phases amount"),
+                        )
+                      );
+                      return;
+                    }
+
+
                     Navigator.of(context).pop();
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -318,13 +347,239 @@ class SessionSettingsWidget extends ConsumerWidget {
                       )
                     );
                   },
-                  child: const Text("Start sesstion")
+                  child: const Text("Start session")
               ),
             )
           ],
         ),
     );
+  }
+}
 
+class CountdownWidget extends ConsumerWidget {
+  const CountdownWidget({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final int secondsLeft = ref.watch(timerProvider).timerValue;
+    final currentPhase = ref.watch(currentPhaseProvider);
+
+    if (secondsLeft == 0) {
+      currentPhase.switchPhase();
+    }
+
+    return SizedBox(
+      width: 200,
+      height: 200,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          SizedBox(
+            width: 250,
+            height: 250,
+            child: CircularProgressIndicator(
+              color: currentPhase.isHotDisabled ? Colors.blueAccent : Colors.redAccent,
+              value: 0.6,
+              backgroundColor: Colors.grey,
+            ),
+          ),
+
+          Text(
+            DateFormat("mm:ss").format(DateTime(0, 0, 0, 0, secondsLeft ~/ 60, secondsLeft % 60)),
+            // "${(secondsLeft ~/ 60)}:${secondsLeft % 60}",
+            style: const TextStyle(
+              fontSize: 55,
+              fontWeight: FontWeight.bold,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class CountdownControlsWidget extends ConsumerWidget {
+  const CountdownControlsWidget({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final timerNotifierProvider = timerProvider;
+    final DateTime phaseDuration = ref.watch(timePickerTimeProvider);
+    ref.read(timerNotifierProvider).initializeTimer(
+      phaseTime: phaseDuration.second + phaseDuration.minute * 60,
+      phasesNum: int.parse(ref.watch(textInputControllerProvider).value.text),
+    );
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+            onPressed: () {
+                ref.read(timerNotifierProvider).startTimer();
+            },
+            child: const Text("Start")
+        ),
+        const SizedBox(width: 15),
+        ElevatedButton(
+            onPressed: () {
+              ref.read(timerNotifierProvider).pauseTimer();
+            },
+            child: const Text("Pause")
+        ),
+        const SizedBox(width: 15),
+        ElevatedButton(
+            onPressed: () {
+              ref.read(timerNotifierProvider).stopTimer();
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return SessionSummaryWidget();
+                  }
+              );
+
+            },
+            child: const Text("Finish")
+        ),
+
+      ],
+    );
+  }
+}
+
+class SessionSummaryWidget extends ConsumerWidget {
+  const SessionSummaryWidget({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Dialog(
+      child: Container(
+        height: 170,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: Text(
+                "Session summary",
+                style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text("Phases: ${ref.watch(textInputControllerProvider).value.text}"),
+                Text("Total time: ${
+                    DateFormat("mm:ss").format(DateTime(0, 0, 0, 0, ref.watch(timerProvider).totalTime ~/ 60, ref.watch(timerProvider).totalTime % 60))
+                }")
+
+
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        ref.read(showerSessionsProvider).addSession(
+                          duration: DateFormat("mm:ss").format(DateTime(
+                              0, 0, 0, 0,
+                              ref.watch(timerProvider).totalTime ~/ 60, ref.watch(timerProvider).totalTime % 60
+                          )),
+                          phasesNum: int.parse(ref.watch(textInputControllerProvider).value.text)
+                        );
+                        ref.read(timerProvider).totalTime = 0;
+                        Navigator.popUntil(context, ModalRoute.withName('/'));
+                      },
+                      child: const Text("Confirm")
+                  )
+                ],
+              ),
+            ),
+
+
+          ],
+        ),
+
+
+      ),
+
+
+    );
+  }
+}
+
+class PastSessionSummaryWidget extends ConsumerWidget {
+  final String id;
+
+  const PastSessionSummaryWidget({super.key, required this.id});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sessionsProvider = ref.read(localStorageServiceProvider);
+
+    return Dialog(
+      child: Container(
+        height: 170,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: Text(
+                "Session summary",
+                style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1.5),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text("Phases: ${sessionsProvider.getSession(id: id).phases}"),
+                Text("Total time: ${sessionsProvider.getSession(id: id).duration}")
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text("Confirm")
+                  )
+                ],
+              ),
+            ),
+
+
+          ],
+        ),
+
+
+      ),
+
+
+    );
   }
 
 }
+
