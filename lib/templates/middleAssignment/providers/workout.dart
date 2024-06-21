@@ -3,8 +3,8 @@ class Workout {
   final WorkoutType type;
   final DateTime startTime;
   final DateTime? endTime;
-  final int actualTime; // New field for actual time withstood
-  final int actualCycles; // New field for actual cycles completed
+  final int actualTime;
+  final int actualCycles;
   final int hotCycles;
   final int coldCycles;
   final DateTime date;

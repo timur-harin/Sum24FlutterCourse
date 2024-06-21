@@ -13,7 +13,7 @@ class GreetingPage extends StatelessWidget {
             Navigator.of(context).pushReplacementNamed('/main');
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.pink, // Background color
+            backgroundColor: Colors.pink,
           ),
           child: const Text('Enter', style: TextStyle(fontSize: 24)),
         ),

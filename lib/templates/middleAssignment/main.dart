@@ -32,8 +32,7 @@ class ExampleApp extends StatelessWidget {
         '/main': (context) => const MainPage(),
         '/workout': (context) => const WorkoutPage(),
         '/finish': (context) => const FinishPage(),
-        '/session_history': (context) =>
-            const SessionHistoryPage(), // Ensure this path is correct
+        '/session_history': (context) => const SessionHistoryPage(),
       },
     );
   }

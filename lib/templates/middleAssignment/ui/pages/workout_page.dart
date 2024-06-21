@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:education/templates/middleAssignment/providers/provider.dart';
 import 'package:education/templates/middleAssignment/providers/workout.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,6 @@ class _WorkoutPageState extends ConsumerState<WorkoutPage> {
   @override
   void initState() {
     super.initState();
-    // Initialize remaining cycles here if necessary
   }
 
   void startTimer() {
@@ -60,7 +60,6 @@ class _WorkoutPageState extends ConsumerState<WorkoutPage> {
               }
             }
 
-            // Ensure cycles don't go below 0
             if (remainingHotCycles < 0) remainingHotCycles = 0;
             if (remainingColdCycles < 0) remainingColdCycles = 0;
 
