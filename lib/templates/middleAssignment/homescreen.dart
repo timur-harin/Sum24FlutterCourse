@@ -10,6 +10,8 @@ class HomeScreen extends ConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref){
     final showerSessions = ref.watch(showerSessionProvider);
 
+
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
