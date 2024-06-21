@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:education/templates/middleAssignment/ScreenLike.dart';
 import 'package:flutter/material.dart';
  
-int ColdCount=0;
+int ColdCount=1;
 int HotCount=0;
 int time2=0;
 int time3=0;
@@ -54,15 +54,15 @@ class _TimerScreen2State extends State<TimerScreen2> {
           if (_remainTime <= 0) {
             _timer?.cancel();
             _isRunning = false;
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenLike()));
-          } else if ( _backgroundColor==Colors.blue && _remainTime % widget.coldPeriod == 0) { 
-            ColdCount+=1;
-            _changeBackgroundColor(); 
-            _showMessage(); 
-          } else if(_backgroundColor==Colors.red && _remainTime % widget.hotPeriod == 0) { 
-            _changeBackgroundColor(); 
-            _showMessage(); 
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenLike(time2: time2, time3: time3, ColdCount: ColdCount, HotCount: HotCount)));
+          } else if ( _backgroundColor==Colors.blue && _remainTime % widget.coldPeriod == 0 && _remainTime>0) { 
             HotCount+=1;
+            _changeBackgroundColor(); 
+            _showMessage(); 
+          } else if(_backgroundColor==Colors.red && _remainTime % widget.hotPeriod == 0 && _remainTime>0 ) { 
+            _changeBackgroundColor(); 
+            _showMessage(); 
+            ColdCount+=1;
         }});
       });
       setState(() {
@@ -72,7 +72,7 @@ class _TimerScreen2State extends State<TimerScreen2> {
       _timer?.cancel();
       setState(() {
         _isRunning = false;
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenLike()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenLike(time2: time2, time3: time3, ColdCount: ColdCount, HotCount: HotCount)));
 
       });
     }
@@ -87,23 +87,20 @@ class _TimerScreen2State extends State<TimerScreen2> {
   }
 
   void _showMessage() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Text('Поменяйте температуру воды'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Text('Поменяйте температуру воды'),
+      );
+    },
+  );
+
+  // Automatically dismiss the dialog after 2 seconds
+  Future.delayed(const Duration(seconds: 2), () {
+    Navigator.of(context).pop();
+  });
+}
 
   @override
   Widget build(BuildContext context) {

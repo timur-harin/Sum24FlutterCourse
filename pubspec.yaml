@@ -7,14 +7,17 @@ environment:
   sdk: '>=3.4.1 <4.0.0'
 
 dependencies:
+  audioplayers: ^6.0.0
   dio: ^5.4.3+1
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.5.1
+  fluttertoast: ^8.2.6
   http: ^1.2.1
   riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
   shared_preferences: ^2.2.3
+  vibration: ^1.9.0
 
 dev_dependencies:
   flutter_test:
