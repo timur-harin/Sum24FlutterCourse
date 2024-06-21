@@ -1,21 +1,25 @@
+import 'package:education/templates/middleAssignment/home_page_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'home_page_widget.dart'; // Replace with the correct path
 
 void main() {
-  runApp(const MiddleAssigmentApp());
+  runApp(
+    ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
-class MiddleAssigmentApp extends StatelessWidget {
-  const MiddleAssigmentApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Middle Assigment',
+      title: 'Flutter MIDDLE Assignment',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // TODO - complete assignment
-      home: null,
+      home: const HomePageWidget(),
     );
   }
 }
