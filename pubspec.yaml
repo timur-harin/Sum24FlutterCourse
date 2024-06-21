@@ -17,6 +17,7 @@ dependencies:
   riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
   shared_preferences: ^2.2.3
+  url_strategy: ^0.2.0
 
 dev_dependencies:
   flutter_test:
@@ -25,3 +26,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+  - family:  CustomIcons
+    fonts:
+      - asset: lib/templates/middleAssignment/ui/theme/assets/CustomIcons.ttf

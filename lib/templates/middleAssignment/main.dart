@@ -4,8 +4,10 @@ import 'package:education/templates/middleAssignment/ui/pages/home_screen.dart';
 import 'package:education/templates/middleAssignment/ui/pages/shower_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 void main() {
+    setPathUrlStrategy();
   runApp(ProviderScope(child: const MiddleAssigmentApp()));
 }
 
