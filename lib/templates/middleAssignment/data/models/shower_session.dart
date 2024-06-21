@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
 class ShowerSession {
   final String level;
   final String totalTime;
   final int numbOfCycles;
-  String? rate;
+  String rate;
   final String startTime;
 
   ShowerSession({
@@ -12,15 +12,25 @@ class ShowerSession {
     required this.totalTime,
     required this.numbOfCycles,
     required this.startTime,
-    this.rate,
+    required this.rate,
   });
-  factory ShowerSession.fromJson(Map<String, dynamic> json) {
+
+  factory ShowerSession.fromJson(String jsonString) {
+    Map<String, dynamic> jsonMap = json.decode(jsonString);
     return ShowerSession(
-      level: json['level'] as String,
-      totalTime: json['totalTime'] as String,
-      numbOfCycles: json['numbOfCycles'] as int,
-      startTime: json['startTime'] as String,
-      rate: json['rate'] as String?, 
+      level: jsonMap['level'] as String,
+      totalTime: jsonMap['totalTime'] as String,
+      numbOfCycles: jsonMap['numbOfCycles'] as int,
+      startTime: jsonMap['startTime'] as String,
+      rate: jsonMap['rate'] as String,
     );
   }
+
+  String toJson() => json.encode({
+        'startTime': startTime,
+        'level': level,
+        'totalTime': totalTime,
+        'numbOfCycles': numbOfCycles,
+        'rate': rate,
+      });
 }

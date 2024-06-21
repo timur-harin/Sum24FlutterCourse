@@ -1,15 +1,12 @@
 import 'dart:async';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:education/templates/middleAssignment/data/functions.dart';
-import 'package:education/templates/middleAssignment/data/models/shared_preferences.dart';
 import 'package:education/templates/middleAssignment/data/provider/providers.dart';
 import 'package:education/templates/middleAssignment/data/models/shower_session.dart';
 import 'package:education/templates/middleAssignment/ui/theme/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class ShowerPage extends ConsumerStatefulWidget {
   const ShowerPage({super.key});
@@ -285,8 +282,7 @@ class _ShowerPageState extends ConsumerState<ShowerPage> {
                 height: 40,
                 child: ElevatedButton(
                     style: state.style.copyWith(
-                      backgroundColor:
-                          MaterialStateProperty.resolveWith<Color?>(
+                      backgroundColor: WidgetStateProperty.resolveWith<Color?>(
                         (Set<WidgetState> states) {
                           return const Color(0xFF2196F3);
                         },
@@ -296,7 +292,7 @@ class _ShowerPageState extends ConsumerState<ShowerPage> {
                       session.addSession(ShowerSession(
                           level: valueScreen.level,
                           startTime:
-                              DateFormat("dd.mm.yyyy hh:mm:ss").format(start),
+                              DateFormat("dd-MM-yyyy HH:mm:ss").format(start),
                           totalTime: formatSeconds(actualNumber),
                           numbOfCycles:
                               valueScreen.cycles - valueScreen.cycles_left,

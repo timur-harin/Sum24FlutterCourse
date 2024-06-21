@@ -3,6 +3,7 @@ import 'package:education/templates/middleAssignment/data/provider/providers.dar
 import 'package:education/templates/middleAssignment/ui/theme/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FinishPage extends ConsumerStatefulWidget {
   const FinishPage({super.key});
@@ -12,6 +13,8 @@ class FinishPage extends ConsumerStatefulWidget {
 }
 
 class _FinishPageState extends ConsumerState<FinishPage> {
+  get currentSession => ref.read(sessionProvider).sessions.last;
+
   @override
   void initState() {
     super.initState();
@@ -21,6 +24,7 @@ class _FinishPageState extends ConsumerState<FinishPage> {
   final List<String> rateList = ["1", "2", "3", "4", "5"];
 
   String selected = "1";
+
   @override
   Widget build(BuildContext context) {
     final sessions = ref.watch(sessionProvider);
@@ -159,8 +163,15 @@ class _FinishPageState extends ConsumerState<FinishPage> {
                     backgroundColor:
                         WidgetStateProperty.all(Color(Colors.lightGreen.value)),
                   ),
-                  onPressed: () {
-                    sessions.editSessionRate(sessions.sessions.last, selected);
+                  onPressed: () async {
+                    currentSession.rate = selected;
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    String sessionJson = currentSession.toJson();
+                    List<String> sessions =
+                        prefs.getStringList('sessions') ?? [];
+                    sessions.add(sessionJson);
+                    await prefs.setStringList('sessions', sessions);
                     Navigator.of(context).pushNamed("/");
                   },
                   child: const Text(
