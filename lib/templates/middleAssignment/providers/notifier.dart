@@ -38,3 +38,20 @@ class ShowerSessionsNotifier extends StateNotifier<List<ShowerSession>> {
     await _localStorageService.saveShowerSessions(state);
   }
 }
+
+final idProvider = StateNotifierProvider<idCounterNotifier, int>((ref) {
+  final localStorageService = ref.watch(localStorageServiceProvider);
+  return idCounterNotifier(localStorageService);
+});
+
+class idCounterNotifier extends StateNotifier<int> {
+  final ShowerSessionStorage _localStorageService;
+
+  idCounterNotifier(this._localStorageService) : super(0) {
+    getId();
+  }
+
+  void getId() async {
+    state = await _localStorageService.getIdCounter();
+  }
+}

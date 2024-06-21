@@ -11,8 +11,7 @@ abstract class ShowerSessionsLocalDataSource {
 
 class ShowerSessionStorage implements ShowerSessionsLocalDataSource {
   static const String _sessionsKey = 'shower_sessions';
-
-
+  static const String _id_counter = 'id_counter';
 
   @override
   Future<List<ShowerSession>> getShowerSessions() async {
@@ -41,5 +40,12 @@ class ShowerSessionStorage implements ShowerSessionsLocalDataSource {
         .toList();
 
     await sharedPreferences.setStringList(_sessionsKey, sessionsJson);
+  }
+
+  Future<int> getIdCounter() async {
+    final prefs = await SharedPreferences.getInstance();
+    final int idCounter = prefs.getInt(_id_counter) ?? 0; //  Read 0
+    await prefs.setInt(_id_counter, idCounter + 1); // Write 1
+    return idCounter; // Return 0
   }
 }

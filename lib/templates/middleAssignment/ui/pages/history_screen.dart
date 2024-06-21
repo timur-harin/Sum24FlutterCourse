@@ -1,4 +1,5 @@
 import 'package:education/templates/middleAssignment/data/models/shower_history.dart';
+import 'package:education/templates/middleAssignment/ui/pages/while_session.dart';
 import 'package:flutter/material.dart';
 import 'package:education/templates/middleAssignment/providers/notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,12 +10,13 @@ class ShowerHistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Align(
-      alignment: Alignment.center,
-      child: Column(
-        children: [ShowerHistoryWidget()],
-      ),
-    );
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text("Shower History"),
+          centerTitle: true,
+          backgroundColor: Colors.lightBlueAccent,
+        ),
+        body: const SingleChildScrollView(child: ShowerHistoryWidget()));
   }
 }
 
@@ -26,14 +28,8 @@ class ShowerHistoryWidget extends ConsumerStatefulWidget {
 }
 
 class _ShowerSessionWidgetState extends ConsumerState<ShowerHistoryWidget> {
-  ShowerSession? session;
-
   @override
   void initState() {
-    session = ShowerSession(id: 5, date: "2024-01-01 12:00", temperaturePhases: [
-      TemperaturePhase(id: 1, temperature: "hot", duration: 30),
-      TemperaturePhase(id: 2, temperature: "cold", duration: 30),
-    ]);
     super.initState();
   }
 
@@ -41,29 +37,9 @@ class _ShowerSessionWidgetState extends ConsumerState<ShowerHistoryWidget> {
   Widget build(BuildContext context) {
     final sessions = ref.watch(showerSessionsProvider);
 
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.center,
-          child: SingleChildScrollView(
-            child: Column(
-                children: sessions.map((session) => ShowerWidget(session: session)).toList()),
-          ),
-        ),
-        Positioned(
-          bottom: 10,
-          right: 10,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const NewShowerSessionWidget()));
-              setState(() {
-                ref.read(showerSessionsProvider.notifier).addSession(session!);
-              });
-            },
-            child: const Text("Add Session"),
-          ),
-        ),
-      ],
+    return Align(
+      alignment: Alignment.center,
+      child: Column(children: sessions.map((session) => ShowerWidget(session: session)).toList()),
     );
   }
 }
@@ -116,13 +92,24 @@ class ShowerDetailsScreen extends ConsumerWidget {
             Text('Date: ${session.date}', style: const TextStyle(fontSize: 18)),
             const Text('Temperature Phases:', style: TextStyle(fontSize: 16)),
             ...session.temperaturePhases
-                .map((phase) => Text('${phase.temperature}°C for ${phase.duration} minutes')),
+                .map((phase) => Text('${phase.temperature} water for ${phase.duration} seconds',
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ))),
             IconButton(
               icon: const Icon(Icons.delete),
               onPressed: () {
                 ref.read(showerSessionsProvider.notifier).removeSession(session.id);
                 Navigator.pop(context);
               },
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => WhileSessionWidget(session: session)));
+              },
+              child: const Text('Start Session',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
             )
           ],
         ),
@@ -130,5 +117,3 @@ class ShowerDetailsScreen extends ConsumerWidget {
     );
   }
 }
-
-

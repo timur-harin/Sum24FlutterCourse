@@ -1,3 +1,5 @@
+import "package:education/templates/middleAssignment/providers/notifier.dart";
+
 class ShowerSession {
   final int _id;
   final String _date;
@@ -9,8 +11,7 @@ class ShowerSession {
 
   List<TemperaturePhase> get temperaturePhases => _temperaturePhases;
 
-  ShowerSession(
-      {required int id, required String date, required List<TemperaturePhase> temperaturePhases})
+  ShowerSession({required int id, required String date, required List<TemperaturePhase> temperaturePhases})
       : _temperaturePhases = temperaturePhases,
         _date = date,
         _id = id;
@@ -33,7 +34,6 @@ class ShowerSession {
     );
   }
 }
-
 
 class TemperaturePhase {
   final int _id;
