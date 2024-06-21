@@ -15,7 +15,9 @@ class MiddleAssigmentApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => DataProvider(),
+      create: (context) => DataProvider()
+        ..initPrefs()
+        ..loadFromPrefs(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Middle Assigment',

@@ -14,11 +14,11 @@ class TimerPage extends StatefulWidget {
 class _TimerPage extends State<TimerPage> {
   double _progress = 0;
   bool _isPaused = false;
+  // ignore: prefer_typing_uninitialized_variables
   var _seconds;
   Timer? _timer;
   double _progressCircle = 0;
 
-  @override
   void startTime(int secondsValue) {
     _seconds = secondsValue;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -52,7 +52,7 @@ class _TimerPage extends State<TimerPage> {
           title: const Text('Confirmation'),
           content: const SingleChildScrollView(
             child: ListBody(
-              children: const <Widget>[
+              children: <Widget>[
                 Text('Do you want to save this session?'),
               ],
             ),
@@ -108,9 +108,9 @@ class _TimerPage extends State<TimerPage> {
       Color backgroundColor = Colors.lightGreen[50]!;
       if (selectedTemperaturePhase != null) {
         if (selectedTemperaturePhase.description == 'Cold temperature') {
-          backgroundColor = const Color.fromARGB(255, 136, 217, 255)!;
+          backgroundColor = const Color.fromARGB(255, 136, 217, 255);
         } else if (selectedTemperaturePhase.description == 'Hot temperature') {
-          backgroundColor = Color.fromARGB(255, 238, 174, 181)!;
+          backgroundColor = const Color.fromARGB(255, 238, 174, 181);
         }
       }
       return Scaffold(
