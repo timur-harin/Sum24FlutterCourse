@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:education/templates/middleAssignment/data/boxes.dart';
+import 'package:education/templates/middleAssignment/data/session_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
@@ -34,9 +35,6 @@ enum Thermostat {
 }
 
 class ShowerSession {
-  static const Duration hotCycle = Duration(seconds: 3);
-  static const Duration coldCycle = Duration(minutes: 1);
-
   Duration time;
   Thermostat thermostat;
   int cycles;
@@ -61,25 +59,37 @@ class ShowerSession {
   }
 }
 
-class ShowerSessionManager extends Notifier<ShowerSession> {
-  static final provider = NotifierProvider<ShowerSessionManager, ShowerSession>(
+class ShowerSessionManager extends AutoDisposeNotifier<ShowerSession> {
+  static final provider =
+      AutoDisposeNotifierProvider<ShowerSessionManager, ShowerSession>(
     () => ShowerSessionManager(),
   );
 
+  late final Box _sessionSettingsBox;
+  late final Box<Map> _historyBox;
+  late SessionSettings _sessionSettings;
   late Timer _timer = Timer(Duration.zero, () {});
+
+  ShowerSessionManager() {
+    _sessionSettingsBox = Hive.box(Boxes.sessionSettings);
+    _historyBox = Hive.box(Boxes.history);
+  }
 
   @override
   ShowerSession build() {
     _timer.cancel();
-    ref.onDispose(
+    ref.onCancel(
       () {
         _timer.cancel();
       },
     );
+    _sessionSettings = SessionSettings.fromJson(_sessionSettingsBox.toMap());
     return ShowerSession(
-      ShowerSession.hotCycle,
-      thermostat: Thermostat.hot,
-    );
+        Duration(
+          seconds: _sessionSettings
+              .cycleLength[_sessionSettings.initialTemperature]!,
+        ),
+        thermostat: _sessionSettings.initialTemperature);
   }
 
   bool runTimer() {
@@ -91,10 +101,9 @@ class ShowerSessionManager extends Notifier<ShowerSession> {
       if (state.time == Duration.zero) {
         state = ShowerSession.from(state)
           ..incrementCycle()
-          ..time = switch (state.thermostat.getNext()) {
-            Thermostat.cold => ShowerSession.coldCycle,
-            Thermostat.hot => ShowerSession.hotCycle,
-          };
+          ..time = Duration(
+              seconds:
+                  _sessionSettings.cycleLength[state.thermostat.getNext()]!);
       } else {
         state = ShowerSession.from(state)..time -= oneSec;
       }
@@ -128,8 +137,7 @@ class ShowerSessionManager extends Notifier<ShowerSession> {
     }
     final savedState = ShowerSession.from(state);
     resetSession();
-    final historyBox = Hive.box(Boxes.history);
-    historyBox.add(savedState.toDbItem());
+    _historyBox.add(savedState.toDbItem());
     if (context != null) {
       ScaffoldMessenger.of(context)
         ..removeCurrentSnackBar()

@@ -75,14 +75,18 @@ class _SessionSettingsWidgetState extends State<SessionSettingsWidget> {
                 Column(children: [
                   const Text('Length of hot cycle:'),
                   Slider(
-                    value: _sessionSettings.hotCycle.clamp(30, 300).toDouble(),
+                    value: _sessionSettings.cycleLength[Thermostat.hot]!
+                        .clamp(30, 300)
+                        .toDouble(),
                     min: 30,
                     max: 300,
                     divisions: 9,
-                    label: (_sessionSettings.hotCycle / 60).toString(),
+                    label: (_sessionSettings.cycleLength[Thermostat.hot]! / 60)
+                        .toString(),
                     onChanged: (double value) {
                       setState(() {
-                        _sessionSettings.hotCycle = value.toInt();
+                        _sessionSettings.cycleLength[Thermostat.hot] =
+                            value.toInt();
                       });
                     },
                   ),
@@ -90,14 +94,18 @@ class _SessionSettingsWidgetState extends State<SessionSettingsWidget> {
                 Column(children: [
                   const Text('Length of cold cycle:'),
                   Slider(
-                    value: _sessionSettings.coldCycle.clamp(30, 300).toDouble(),
+                    value: _sessionSettings.cycleLength[Thermostat.cold]!
+                        .clamp(30, 300)
+                        .toDouble(),
                     min: 30,
                     max: 300,
                     divisions: 9,
-                    label: (_sessionSettings.coldCycle / 60).toString(),
+                    label: (_sessionSettings.cycleLength[Thermostat.cold]! / 60)
+                        .toString(),
                     onChanged: (double value) {
                       setState(() {
-                        _sessionSettings.coldCycle = value.toInt();
+                        _sessionSettings.cycleLength[Thermostat.cold] =
+                            value.toInt();
                       });
                     },
                   ),
