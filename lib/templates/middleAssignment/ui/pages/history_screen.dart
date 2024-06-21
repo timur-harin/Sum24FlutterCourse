@@ -3,7 +3,6 @@ import 'package:education/templates/middleAssignment/ui/pages/while_session.dart
 import 'package:flutter/material.dart';
 import 'package:education/templates/middleAssignment/providers/notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:education/templates/middleAssignment/ui/pages/new_session_screen.dart';
 
 class ShowerHistoryScreen extends StatelessWidget {
   const ShowerHistoryScreen({super.key});

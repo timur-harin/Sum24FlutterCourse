@@ -1,4 +1,3 @@
-import "package:education/templates/middleAssignment/providers/notifier.dart";
 
 class ShowerSession {
   final int _id;
