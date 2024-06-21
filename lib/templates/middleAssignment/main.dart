@@ -1,21 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'ContrastShowerApp.dart';
 
-void main() {
-  runApp(const MiddleAssigmentApp());
-}
-
-class MiddleAssigmentApp extends StatelessWidget {
-  const MiddleAssigmentApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Middle Assigment',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      // TODO - complete assignment
-      home: null,
-    );
-  }
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferences.getInstance();
+  runApp(ContrastShowerApp());
 }
