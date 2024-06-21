@@ -18,6 +18,42 @@ class _ShowerSessionScreenState extends ConsumerState<ShowerSessionScreen> {
   Widget build(BuildContext context) {
     String twoDigit(int n) => n.toString().padLeft(2, '0');
     final ShowerSession sessionState = ref.watch(ShowerSessionManager.provider);
+    if (sessionState.finished) {
+      setState(() {
+        _runningSession = false;
+        _startedSession = false;
+      });
+      WidgetsBinding.instance.addPostFrameCallback((duration) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Well done!'),
+            content: const Text(
+                'You\'ve successfully completed this contrast shower. Would you like to save it into history?'),
+            actions: [
+              TextButton(
+                child: const Text('No, discard it'),
+                onPressed: () {
+                  ref
+                      .read(ShowerSessionManager.provider.notifier)
+                      .resetSession();
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('Yes, save please!'),
+                onPressed: () {
+                  ref
+                      .read(ShowerSessionManager.provider.notifier)
+                      .saveSession();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      });
+    }
     // TODO: gradient backgrounds
     return Scaffold(
       appBar: AppBar(

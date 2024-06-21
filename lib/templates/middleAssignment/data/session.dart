@@ -38,13 +38,20 @@ class ShowerSession {
   Duration time;
   Thermostat thermostat;
   int cycles;
+  bool finished;
 
-  ShowerSession(this.time, {this.cycles = 0, required this.thermostat});
+  ShowerSession(
+    this.time, {
+    required this.thermostat,
+    this.cycles = 0,
+    this.finished = false,
+  });
   ShowerSession.from(ShowerSession another)
       : this(
           another.time,
           cycles: another.cycles,
           thermostat: another.thermostat,
+          finished: another.finished,
         );
 
   Map toDbItem() => {
@@ -52,11 +59,6 @@ class ShowerSession {
         'cycles': cycles,
         'last_temp': thermostat.toString(),
       };
-
-  void incrementCycle() {
-    ++cycles;
-    thermostat = thermostat.getNext();
-  }
 }
 
 class ShowerSessionManager extends AutoDisposeNotifier<ShowerSession> {
@@ -98,15 +100,21 @@ class ShowerSessionManager extends AutoDisposeNotifier<ShowerSession> {
     }
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(oneSec, (timer) {
-      if (state.time == Duration.zero) {
-        state = ShowerSession.from(state)
-          ..incrementCycle()
-          ..time = Duration(
-              seconds:
-                  _sessionSettings.cycleLength[state.thermostat.getNext()]!);
-      } else {
+      if (state.time != Duration.zero) {
         state = ShowerSession.from(state)..time -= oneSec;
+        return;
       }
+      var newCycle = ShowerSession.from(state)..cycles += 1;
+      if (_sessionSettings.maxCycles != 0 &&
+          newCycle.cycles == _sessionSettings.maxCycles) {
+        state = newCycle..finished = true;
+        timer.cancel();
+        return;
+      }
+      state = newCycle
+        ..thermostat = newCycle.thermostat.getNext()
+        ..time = Duration(
+            seconds: _sessionSettings.cycleLength[newCycle.thermostat]!);
     });
     return true;
   }

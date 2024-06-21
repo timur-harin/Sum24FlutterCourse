@@ -5,32 +5,47 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
 
-class HistoryItem {
+class HistoryItemBuilder {
+  final Box historyBox;
+  final int index;
   final DateTime timestamp;
   final int cycles;
   final Thermostat lastTemp;
 
-  HistoryItem({
+  HistoryItemBuilder._({
     required this.timestamp,
     required this.cycles,
     required this.lastTemp,
+    required this.historyBox,
+    required this.index,
   });
-  HistoryItem.fromBox(Map item)
-      : this(
-          timestamp: item['timestamp'],
-          cycles: item['cycles'],
-          lastTemp: Thermostat.parse(item['last_temp'])!,
-        );
-
-  Widget buildTitle(BuildContext context) {
-    return Text('$cycles cycles, ended in ${lastTemp.name} water');
-  }
-
-  Widget buildSubtitle(BuildContext context) {
-    return Text(
-      '${DateFormat.yMMMd().format(timestamp)} at ${DateFormat.Hms().format(timestamp)}',
+  factory HistoryItemBuilder.fromBox(Box historyBox, int index) {
+    final item = historyBox.getAt(index);
+    return HistoryItemBuilder._(
+      timestamp: item['timestamp'],
+      cycles: item['cycles'],
+      lastTemp: Thermostat.parse(item['last_temp'])!,
+      historyBox: historyBox,
+      index: index,
     );
   }
+
+  Widget build(BuildContext context) => ListTile(
+        leading: Text(
+          '$cycles',
+          style: const TextStyle(fontSize: 32.0, fontWeight: FontWeight.w900),
+        ),
+        title: Text('cycles, ended in ${lastTemp.name} water'),
+        subtitle: Text(
+          '${DateFormat.yMMMd().format(timestamp)} at ${DateFormat.Hms().format(timestamp)}',
+        ),
+        trailing: IconButton(
+          icon: const Icon(Icons.delete),
+          onPressed: () {
+            historyBox.deleteAt(index);
+          },
+        ),
+      );
 }
 
 class SessionHistoryList extends ConsumerWidget {
@@ -47,17 +62,8 @@ class SessionHistoryList extends ConsumerWidget {
               padding: const EdgeInsets.only(bottom: 75.0),
               itemCount: box.values.length,
               itemBuilder: (context, index) {
-                final item = HistoryItem.fromBox(box.getAt(index)!);
-                return ListTile(
-                  title: item.buildTitle(context),
-                  subtitle: item.buildSubtitle(context),
-                  leading: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () {
-                      box.deleteAt(index);
-                    },
-                  ),
-                );
+                return HistoryItemBuilder.fromBox(historyBox, index)
+                    .build(context);
               },
               separatorBuilder: (context, index) => const Divider(
                 indent: 64.0,

@@ -19,7 +19,7 @@ class SessionSettings {
     Map<Thermostat, int> cycleLength = {};
     for (Thermostat thermostat in Thermostat.values) {
       cycleLength[thermostat] =
-          (json['cycle_length'] ?? {})[thermostat.name] ?? 0;
+          (json['cycle_length'] ?? {})[thermostat.name] ?? 10;
     }
     return SessionSettings(
       initialTemperature:
