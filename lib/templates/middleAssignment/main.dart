@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'ui/pages/finish_page.dart';
 import 'ui/pages/main_page.dart';
+import 'ui/pages/setup_page.dart';
 import 'ui/pages/take_shower_page.dart';
 
 void main() {
@@ -23,6 +24,7 @@ class MiddleAssigmentApp extends StatelessWidget {
           "/": (context) =>  MainPage(),
           "/takeShower" : (context) => TakeShowerPage(),
           "/finish" : (context) => FinishShowerPage(),
+          "/setupShower": (context) => SetupPage(),
         },
       ),
     );
