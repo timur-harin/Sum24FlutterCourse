@@ -1,12 +1,15 @@
-import 'package:education/templates/middleAssignment/ui/history.dart';
+import 'package:education/templates/middleAssignment/data/boxes.dart';
+import 'package:education/templates/middleAssignment/screens/home.dart';
 import 'package:education/templates/middleAssignment/screens/session.dart';
+import 'package:education/templates/middleAssignment/screens/settings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 
-void main() {
-  Hive.initFlutter();
+void main() async {
+  // TODO is it effective to await for boxes before running the app?
+  await Hive.initFlutter();
+  await Boxes.openBoxes();
   runApp(const ProviderScope(child: MiddleAssigmentApp()));
 }
 
@@ -21,40 +24,21 @@ class MiddleAssigmentApp extends StatefulWidget {
 }
 
 class _MiddleAssignmentAppState extends State<MiddleAssigmentApp> {
-  int _index = 0;
-  static const List<Widget> _screens = [
-    ShowerSessionScreen(),
-    SessionHistory(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    // TODO - complete assignment
     return MaterialApp(
       title: 'Middle Assigment',
       theme: ThemeData(
         primarySwatch: primary,
       ),
-      // TODO - complete assignment
-      home: Scaffold(appBar: AppBar(leading: IconButton(icon: const
-      Icon(Icons.meeting_room), onPressed: () {
-        Hive.close();
-        SystemNavigator.pop();
-      })),
-        body: _screens[_index],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _index,
-          onTap: (index) {
-            setState(() {
-              _index = index;
-            });
-          },
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.shower), label: 'Session'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_month), label: 'History'),
-          ],
-        ),
-      ),
+      routes: <String, WidgetBuilder>{
+        '/': (context) => const HomeScreen(),
+        '/settings': (context) => const SessionSettingsScreen(),
+        '/session': (context) => const ShowerSessionScreen(),
+      },
+      initialRoute: '/',
+      debugShowCheckedModeBanner: false,
     );
   }
 }

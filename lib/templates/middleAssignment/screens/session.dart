@@ -19,9 +19,17 @@ class _ShowerSessionScreenState extends ConsumerState<ShowerSessionScreen> {
     String twoDigit(int n) => n.toString().padLeft(2, '0');
     final ShowerSession sessionState = ref.watch(ShowerSessionManager.provider);
     // TODO: gradient backgrounds
-    return Center(
-      child: Column(
-        children: [
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: Center(
+        child: Column(children: [
           const Spacer(flex: 5),
           Text(
             switch (sessionState.thermostat) {
@@ -44,7 +52,7 @@ class _ShowerSessionScreenState extends ConsumerState<ShowerSessionScreen> {
           const Spacer(flex: 2),
           sessionButtons(context),
           const Spacer(flex: 5),
-        ],
+        ]),
       ),
     );
   }
@@ -62,10 +70,12 @@ class _ShowerSessionScreenState extends ConsumerState<ShowerSessionScreen> {
               if (ref
                   .read(ShowerSessionManager.provider.notifier)
                   .resetSession()) {
-                setState(() {
-                  _startedSession = false;
-                  _runningSession = false;
-                });
+                setState(
+                  () {
+                    _startedSession = false;
+                    _runningSession = false;
+                  },
+                );
               }
             },
           ),
@@ -77,9 +87,11 @@ class _ShowerSessionScreenState extends ConsumerState<ShowerSessionScreen> {
                     if (ref
                         .read(ShowerSessionManager.provider.notifier)
                         .stopTimer()) {
-                      setState(() {
-                        _runningSession = false;
-                      });
+                      setState(
+                        () {
+                          _runningSession = false;
+                        },
+                      );
                     }
                   },
                 )
@@ -90,9 +102,11 @@ class _ShowerSessionScreenState extends ConsumerState<ShowerSessionScreen> {
                     if (ref
                         .read(ShowerSessionManager.provider.notifier)
                         .runTimer()) {
-                      setState(() {
-                        _runningSession = true;
-                      });
+                      setState(
+                        () {
+                          _runningSession = true;
+                        },
+                      );
                     }
                   },
                 ),
@@ -103,10 +117,12 @@ class _ShowerSessionScreenState extends ConsumerState<ShowerSessionScreen> {
               if (await ref
                   .read(ShowerSessionManager.provider.notifier)
                   .saveSession(context: context)) {
-                setState(() {
-                  _startedSession = false;
-                  _runningSession = false;
-                });
+                setState(
+                  () {
+                    _startedSession = false;
+                    _runningSession = false;
+                  },
+                );
               }
             },
           ),
@@ -118,10 +134,12 @@ class _ShowerSessionScreenState extends ConsumerState<ShowerSessionScreen> {
             style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600)),
         onPressed: () {
           if (ref.read(ShowerSessionManager.provider.notifier).runTimer()) {
-            setState(() {
-              _startedSession = true;
-              _runningSession = true;
-            });
+            setState(
+              () {
+                _startedSession = true;
+                _runningSession = true;
+              },
+            );
           }
         },
       );

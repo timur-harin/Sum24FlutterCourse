@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:education/templates/middleAssignment/data/boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
@@ -40,18 +41,19 @@ class ShowerSession {
   Thermostat thermostat;
   int cycles;
 
-  ShowerSession(this.time, {required this.cycles, required this.thermostat});
+  ShowerSession(this.time, {this.cycles = 0, required this.thermostat});
   ShowerSession.from(ShowerSession another)
-      : this(another.time,
-            cycles: another.cycles, thermostat: another.thermostat);
+      : this(
+          another.time,
+          cycles: another.cycles,
+          thermostat: another.thermostat,
+        );
 
-  Map toDbItem() {
-    return {
-      'timestamp': DateTime.now().toUtc(),
-      'cycles': cycles,
-      'last_temp': thermostat.toString()
-    };
-  }
+  Map toDbItem() => {
+        'timestamp': DateTime.now().toUtc(),
+        'cycles': cycles,
+        'last_temp': thermostat.toString(),
+      };
 
   void incrementCycle() {
     ++cycles;
@@ -60,23 +62,24 @@ class ShowerSession {
 }
 
 class ShowerSessionManager extends Notifier<ShowerSession> {
-  static final provider =
-      NotifierProvider<ShowerSessionManager, ShowerSession>(() {
-    return ShowerSessionManager();
-  });
-  static final historyBoxProvider =
-      FutureProvider<Box<Map>>((ref) => Hive.openBox<Map>('history'));
+  static final provider = NotifierProvider<ShowerSessionManager, ShowerSession>(
+    () => ShowerSessionManager(),
+  );
 
   late Timer _timer = Timer(Duration.zero, () {});
 
   @override
   ShowerSession build() {
     _timer.cancel();
-    ref.onDispose(() {
-      _timer.cancel();
-    });
-    return ShowerSession(ShowerSession.hotCycle,
-        cycles: 0, thermostat: Thermostat.hot);
+    ref.onDispose(
+      () {
+        _timer.cancel();
+      },
+    );
+    return ShowerSession(
+      ShowerSession.hotCycle,
+      thermostat: Thermostat.hot,
+    );
   }
 
   bool runTimer() {
@@ -90,7 +93,7 @@ class ShowerSessionManager extends Notifier<ShowerSession> {
           ..incrementCycle()
           ..time = switch (state.thermostat.getNext()) {
             Thermostat.cold => ShowerSession.coldCycle,
-            Thermostat.hot => ShowerSession.hotCycle
+            Thermostat.hot => ShowerSession.hotCycle,
           };
       } else {
         state = ShowerSession.from(state)..time -= oneSec;
@@ -115,19 +118,24 @@ class ShowerSessionManager extends Notifier<ShowerSession> {
   Future<bool> saveSession({BuildContext? context}) async {
     if (state.cycles <= 0) {
       if (context != null) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Complete at least one session to save it')));
+        ScaffoldMessenger.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(const SnackBar(
+            content: Text('Complete at least one session to save it'),
+          ));
       }
       return false;
     }
     final savedState = ShowerSession.from(state);
     resetSession();
-    final box = await ref.watch(historyBoxProvider.future);
-    box.add(savedState.toDbItem());
+    final historyBox = Hive.box(Boxes.history);
+    historyBox.add(savedState.toDbItem());
     if (context != null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Session saved!'),
-      ));
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(const SnackBar(
+          content: Text('Session saved!'),
+        ));
     }
     return true;
   }
