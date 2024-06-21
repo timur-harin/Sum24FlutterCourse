@@ -19,12 +19,15 @@ class HomeScreen extends StatelessWidget {
           },
         ),
         title: const Text('Contrast Shower Manager'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
       ),
       body: const SessionHistoryList(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.add),
+        icon: const Icon(Icons.add, size: 24.0,),
         label: const Text('Start new session'),
+        extendedTextStyle: Theme.of(context).textTheme.labelLarge,
         onPressed: () {
           showModalBottomSheet(
             isScrollControlled: true,

@@ -19,39 +19,8 @@ class _ShowerSessionScreenState extends ConsumerState<ShowerSessionScreen> {
     String twoDigit(int n) => n.toString().padLeft(2, '0');
     final ShowerSession sessionState = ref.watch(ShowerSessionManager.provider);
     if (sessionState.finished) {
-      setState(() {
-        _runningSession = false;
-        _startedSession = false;
-      });
       WidgetsBinding.instance.addPostFrameCallback((duration) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Well done!'),
-            content: const Text(
-                'You\'ve successfully completed this contrast shower. Would you like to save it into history?'),
-            actions: [
-              TextButton(
-                child: const Text('No, discard it'),
-                onPressed: () {
-                  ref
-                      .read(ShowerSessionManager.provider.notifier)
-                      .resetSession();
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: const Text('Yes, save please!'),
-                onPressed: () {
-                  ref
-                      .read(ShowerSessionManager.provider.notifier)
-                      .saveSession();
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
+        saveAndRate(context, sessionState);
       });
     }
     // TODO: gradient backgrounds
@@ -86,20 +55,24 @@ class _ShowerSessionScreenState extends ConsumerState<ShowerSessionScreen> {
             style: const TextStyle(fontSize: 24.0),
           ),
           const Spacer(flex: 2),
-          sessionButtons(context),
+          sessionButtons(context, sessionState),
           const Spacer(flex: 5),
         ]),
       ),
     );
   }
 
-  Widget sessionButtons(BuildContext context) {
+  Widget sessionButtons(BuildContext context, ShowerSession sessionState) {
     const double iconSize = 52.0;
-    if (_startedSession) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Visibility(
+          visible: _startedSession,
+          maintainSize: true,
+          maintainState: true,
+          maintainAnimation: true,
+          child: IconButton(
             iconSize: iconSize,
             icon: const Icon(Icons.stop),
             onPressed: () {
@@ -115,70 +88,107 @@ class _ShowerSessionScreenState extends ConsumerState<ShowerSessionScreen> {
               }
             },
           ),
-          _runningSession
-              ? IconButton(
-                  iconSize: iconSize,
-                  icon: const Icon(Icons.pause),
-                  onPressed: () {
-                    if (ref
-                        .read(ShowerSessionManager.provider.notifier)
-                        .stopTimer()) {
-                      setState(
-                        () {
-                          _runningSession = false;
-                        },
-                      );
-                    }
-                  },
-                )
-              : IconButton(
-                  iconSize: iconSize,
-                  icon: const Icon(Icons.play_arrow),
-                  onPressed: () {
-                    if (ref
-                        .read(ShowerSessionManager.provider.notifier)
-                        .runTimer()) {
-                      setState(
-                        () {
-                          _runningSession = true;
-                        },
-                      );
-                    }
-                  },
-                ),
-          IconButton(
+        ),
+        _runningSession
+            ? IconButton(
+                iconSize: iconSize,
+                icon: const Icon(Icons.pause),
+                onPressed: () {
+                  if (ref
+                      .read(ShowerSessionManager.provider.notifier)
+                      .stopTimer()) {
+                    setState(
+                      () {
+                        _runningSession = false;
+                      },
+                    );
+                  }
+                },
+              )
+            : IconButton(
+                iconSize: iconSize,
+                icon: const Icon(Icons.play_arrow),
+                onPressed: () {
+                  if (ref
+                      .read(ShowerSessionManager.provider.notifier)
+                      .runTimer()) {
+                    setState(
+                      () {
+                        _startedSession = true;
+                        _runningSession = true;
+                      },
+                    );
+                  }
+                },
+              ),
+        Visibility(
+          visible: _startedSession,
+          maintainSize: true,
+          maintainState: true,
+          maintainAnimation: true,
+          child: IconButton(
             iconSize: iconSize,
             icon: const Icon(Icons.save),
-            onPressed: () async {
-              if (await ref
+            onPressed: () {
+              saveAndRate(context, sessionState);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  void saveAndRate(BuildContext context, ShowerSession sessionState) {
+    if (sessionState.cycles < 1) {
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(const SnackBar(
+          content: Text('Complete at least one session to save it'),
+        ));
+      return;
+    }
+    String twoDigit(int n) => n.toString().padLeft(2, '0');
+    setState(() {
+      _runningSession = false;
+    });
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Well done!'),
+        content: Text(
+            "You've successfully completed this contrast shower.\nYou've been in shower ${twoDigit(sessionState.totalTime.inMinutes)}:${twoDigit(sessionState.totalTime.inSeconds.remainder(60))}.\nWould you like to save it into history?"),
+        actions: [
+          TextButton(
+            child: const Text('No, discard it'),
+            onPressed: () {
+              if (ref
                   .read(ShowerSessionManager.provider.notifier)
-                  .saveSession(context: context)) {
-                setState(
-                  () {
-                    _startedSession = false;
-                    _runningSession = false;
-                  },
-                );
+                  .resetSession()) {
+                Navigator.of(context).popUntil(ModalRoute.withName('/'));
+              } else {
+                Navigator.of(context).pop();
+              }
+            },
+          ),
+          TextButton(
+            child: const Text('Yes, save please!'),
+            onPressed: () {
+              if (ref
+                  .read(ShowerSessionManager.provider.notifier)
+                  .saveSession()) {
+                ScaffoldMessenger.of(context)
+                  ..removeCurrentSnackBar()
+                  ..showSnackBar(const SnackBar(
+                    content: Text('Session saved!'),
+                  ));
+                Navigator.of(context).popUntil(ModalRoute.withName('/'));
+              } else {
+                Navigator.of(context).pop();
               }
             },
           ),
         ],
-      );
-    } else {
-      return TextButton(
-        child: const Text('Start new session',
-            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w600)),
-        onPressed: () {
-          if (ref.read(ShowerSessionManager.provider.notifier).runTimer()) {
-            setState(
-              () {
-                _startedSession = true;
-                _runningSession = true;
-              },
-            );
-          }
-        },
-      );
-    }
+      ),
+    );
   }
 }

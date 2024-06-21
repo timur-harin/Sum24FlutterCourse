@@ -1,4 +1,6 @@
 import 'package:education/templates/middleAssignment/data/boxes.dart';
+import 'package:education/templates/middleAssignment/data/session.dart';
+import 'package:education/templates/middleAssignment/data/session_settings.dart';
 import 'package:education/templates/middleAssignment/screens/home.dart';
 import 'package:education/templates/middleAssignment/screens/session.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,15 @@ void main() async {
 }
 
 class MiddleAssigmentApp extends StatefulWidget {
+  static final blueScheme = ColorScheme.fromSeed(
+    seedColor: Colors.blue,
+    dynamicSchemeVariant: DynamicSchemeVariant.fruitSalad,
+  );
+  static final redScheme = ColorScheme.fromSeed(
+    seedColor: Colors.red,
+    dynamicSchemeVariant: DynamicSchemeVariant.fruitSalad,
+  );
+
   const MiddleAssigmentApp({super.key});
 
   @override
@@ -23,21 +34,28 @@ class _MiddleAssignmentAppState extends State<MiddleAssigmentApp> {
   @override
   Widget build(BuildContext context) {
     // TODO - complete assignment
-    return MaterialApp(
-      title: 'Middle Assigment',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.teal,
-          brightness: Brightness.light,
+    return ValueListenableBuilder(
+      valueListenable: Hive.box(Boxes.sessionSettings).listenable(),
+      builder: (context, box, widget) => MaterialApp(
+        title: 'Middle Assigment',
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: switch (
+              SessionSettings.fromJson(box.toMap()).initialTemperature) {
+            Thermostat.cold => MiddleAssigmentApp.blueScheme,
+            Thermostat.hot => MiddleAssigmentApp.redScheme,
+          },
+          textTheme: const TextTheme(
+            labelLarge: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
+          ),
         ),
+        routes: <String, WidgetBuilder>{
+          '/': (context) => const HomeScreen(),
+          '/session': (context) => const ShowerSessionScreen(),
+        },
+        initialRoute: '/',
+        debugShowCheckedModeBanner: false,
       ),
-      routes: <String, WidgetBuilder>{
-        '/': (context) => const HomeScreen(),
-        '/session': (context) => const ShowerSessionScreen(),
-      },
-      initialRoute: '/',
-      debugShowCheckedModeBanner: false,
     );
   }
 }

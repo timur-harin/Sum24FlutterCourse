@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:education/templates/middleAssignment/data/boxes.dart';
+import 'package:education/templates/middleAssignment/data/history.dart';
 import 'package:education/templates/middleAssignment/data/session_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,15 +37,18 @@ enum Thermostat {
 
 class ShowerSession {
   Duration time;
+  Duration totalTime;
   Thermostat thermostat;
   int cycles;
   bool finished;
+  DateTime? timestamp;
 
   ShowerSession(
     this.time, {
     required this.thermostat,
     this.cycles = 0,
     this.finished = false,
+    this.totalTime = Duration.zero,
   });
   ShowerSession.from(ShowerSession another)
       : this(
@@ -52,13 +56,8 @@ class ShowerSession {
           cycles: another.cycles,
           thermostat: another.thermostat,
           finished: another.finished,
+          totalTime: another.totalTime,
         );
-
-  Map toDbItem() => {
-        'timestamp': DateTime.now().toUtc(),
-        'cycles': cycles,
-        'last_temp': thermostat.toString(),
-      };
 }
 
 class ShowerSessionManager extends AutoDisposeNotifier<ShowerSession> {
@@ -67,15 +66,14 @@ class ShowerSessionManager extends AutoDisposeNotifier<ShowerSession> {
     () => ShowerSessionManager(),
   );
 
-  late final Box _sessionSettingsBox;
-  late final Box<Map> _historyBox;
+  final Box _sessionSettingsBox;
+  final Box<Map> _historyBox;
   late SessionSettings _sessionSettings;
   late Timer _timer = Timer(Duration.zero, () {});
 
-  ShowerSessionManager() {
-    _sessionSettingsBox = Hive.box(Boxes.sessionSettings);
-    _historyBox = Hive.box(Boxes.history);
-  }
+  ShowerSessionManager()
+      : _sessionSettingsBox = Hive.box(Boxes.sessionSettings),
+        _historyBox = Hive.box(Boxes.history);
 
   @override
   ShowerSession build() {
@@ -101,7 +99,9 @@ class ShowerSessionManager extends AutoDisposeNotifier<ShowerSession> {
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(oneSec, (timer) {
       if (state.time != Duration.zero) {
-        state = ShowerSession.from(state)..time -= oneSec;
+        state = ShowerSession.from(state)
+          ..time -= oneSec
+          ..totalTime += oneSec;
         return;
       }
       var newCycle = ShowerSession.from(state)..cycles += 1;
@@ -132,27 +132,13 @@ class ShowerSessionManager extends AutoDisposeNotifier<ShowerSession> {
     return true;
   }
 
-  Future<bool> saveSession({BuildContext? context}) async {
+  bool saveSession() {
     if (state.cycles <= 0) {
-      if (context != null) {
-        ScaffoldMessenger.of(context)
-          ..removeCurrentSnackBar()
-          ..showSnackBar(const SnackBar(
-            content: Text('Complete at least one session to save it'),
-          ));
-      }
       return false;
     }
     final savedState = ShowerSession.from(state);
     resetSession();
-    _historyBox.add(savedState.toDbItem());
-    if (context != null) {
-      ScaffoldMessenger.of(context)
-        ..removeCurrentSnackBar()
-        ..showSnackBar(const SnackBar(
-          content: Text('Session saved!'),
-        ));
-    }
+    _historyBox.add(HistoryItem.toDbItem(savedState));
     return true;
   }
 }

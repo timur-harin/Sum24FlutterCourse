@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:education/templates/middleAssignment/data/boxes.dart';
 import 'package:education/templates/middleAssignment/data/session.dart';
 import 'package:education/templates/middleAssignment/data/session_settings.dart';
+import 'package:education/templates/middleAssignment/main.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -12,38 +15,45 @@ class SessionSettingsWidget extends StatefulWidget {
 }
 
 class _SessionSettingsWidgetState extends State<SessionSettingsWidget> {
-  late final Box _sessionSettingsBox;
+  final Box _sessionSettingsBox;
   late SessionSettings _sessionSettings;
 
-  _SessionSettingsWidgetState() {
-    _sessionSettingsBox = Hive.box(Boxes.sessionSettings);
+  _SessionSettingsWidgetState()
+      : _sessionSettingsBox = Hive.box(Boxes.sessionSettings) {
     _sessionSettings = SessionSettings.fromJson(_sessionSettingsBox.toMap());
     _sessionSettingsBox.putAll(_sessionSettings.toJson());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Flexible(
-            child: SingleChildScrollView(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: SingleChildScrollView(
+            child: DefaultTextStyle.merge(
+              style: Theme.of(context).textTheme.bodyLarge,
               child: Column(children: [
-                Row(children: [
+                Column(children: [
                   const Text('Initial temperature: '),
                   SegmentedButton<Thermostat>(
-                    segments: const [
+                    segments: [
                       ButtonSegment(
                         value: Thermostat.hot,
-                        label: Text('Hot'),
-                        icon: Icon(Icons.whatshot),
+                        label: const Text('Hot'),
+                        icon: Icon(
+                          Icons.whatshot,
+                          color: MiddleAssigmentApp.redScheme.primary,
+                        ),
                       ),
                       ButtonSegment(
                         value: Thermostat.cold,
-                        label: Text('Cold'),
-                        icon: Icon(Icons.ac_unit),
+                        label: const Text('Cold'),
+                        icon: Icon(
+                          Icons.ac_unit,
+                          color: MiddleAssigmentApp.blueScheme.primary,
+                        ),
                       ),
                     ],
                     selected: {_sessionSettings.initialTemperature},
@@ -113,15 +123,22 @@ class _SessionSettingsWidgetState extends State<SessionSettingsWidget> {
               ]),
             ),
           ),
-          ElevatedButton(
+        ),
+        ConstrainedBox(
+          constraints: BoxConstraints.tight(const Size(double.infinity, 100.0)),
+          child: TextButton(
+            style: TextButton.styleFrom(
+                shape: const RoundedRectangleBorder(),
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary),
             child: const Text('Save'),
             onPressed: () {
               _sessionSettingsBox.putAll(_sessionSettings.toJson());
               Navigator.of(context).popAndPushNamed('/session');
             },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
