@@ -185,6 +185,7 @@ class _SessionState extends ConsumerState<SessionScreen> with TickerProviderStat
         },
       );
     } else {
+      if(Started) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -194,22 +195,18 @@ class _SessionState extends ConsumerState<SessionScreen> with TickerProviderStat
               borderRadius: BorderRadius.circular(10),
             ),
             title: Text('Are you sure?'),
-            content: Text("You didn't finish the session. Would you like to continue?"),
+            content: Text("You didn't finish the session. Do you want to go out?"),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  if(Started) {
-                    saveSession();
-                  }else {
-                    changePage(0);
-                  }
                 },
                 child: Text('No'),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
+                  saveSession();
                 },
                 child: Text('Yes'),
               ),
@@ -217,6 +214,9 @@ class _SessionState extends ConsumerState<SessionScreen> with TickerProviderStat
           );
         },
       );
+      } else {
+        changePage(0);
+      }
     }
   }
 
@@ -238,6 +238,7 @@ class _SessionState extends ConsumerState<SessionScreen> with TickerProviderStat
       return '00:00';
     }
   }
+
   void playNotificationSound() async {
     await _notificationPlayer.play(AssetSource('notification.mp3'));
   }
@@ -307,7 +308,7 @@ class _SessionState extends ConsumerState<SessionScreen> with TickerProviderStat
             child: Stack(
               alignment: Alignment.center,
               children: [
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height,
                   child: Stack(
                     alignment: Alignment.bottomCenter,
@@ -337,6 +338,9 @@ class _SessionState extends ConsumerState<SessionScreen> with TickerProviderStat
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    if(!Started)
+                      Text("Turn on the phone sound to hear the notification", style: TextStyle(color: hotThem? const Color.fromARGB(255, 251, 115, 106):const Color.fromARGB(255, 102, 183, 248))),
+                    const SizedBox(height: 30,),
                     ElevatedButton(
                       onPressed: () {
                         switchTimer();

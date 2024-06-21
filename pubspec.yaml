@@ -16,7 +16,6 @@ dependencies:
   intl: ^0.17.0
   flutter_staggered_animations: ^1.0.3
   audioplayers: ^6.0.0
-  path_provider: ^2.0.5
 
 dev_dependencies:
   flutter_test:
