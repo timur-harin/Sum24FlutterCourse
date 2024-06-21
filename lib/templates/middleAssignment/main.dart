@@ -1,9 +1,9 @@
 import 'package:education/templates/middleAssignment/pages/session_page.dart';
+import 'package:education/templates/middleAssignment/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'providers/provider.dart';
 import 'pages/finish_page.dart';
 import 'pages/main_page.dart';
-import 'pages/session_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -26,6 +26,7 @@ class ExampleApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => MainPage(),
+        '/settings': (context) => SettingsPage(),
         '/session': (context) => SessionPage(),
         '/finish': (context) => FinishPage(),
       },

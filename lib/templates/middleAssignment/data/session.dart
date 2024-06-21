@@ -1,13 +1,26 @@
 class Session {
-  final int temperature;
-  final SessionType type;
-  final DateTime startTime;
-  final DateTime? endTime;
+  final String color;
+  final SessionType feedback;
+  final int duration;
+  final int numOfCycles;
 
-  Session(this.temperature, this.type, this.startTime, {this.endTime});
+  Session(
+    this.color,
+    this.feedback,
+    this.duration,
+    this.numOfCycles,
+  );
+
+  Session.fromJson(Map<String, dynamic> json)
+: color = json['color'],
+  feedback = SessionType.values[json['feedback']],
+  duration = json['duration'],
+  numOfCycles = json['numOfCycles'];
 }
 
 enum SessionType {
-  Finished,
-  Stopped
+  Excellent,
+  Good,
+  Neutral,
+  Bad,
 }
