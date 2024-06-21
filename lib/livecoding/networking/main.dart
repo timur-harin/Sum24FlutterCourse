@@ -1,10 +1,10 @@
-
-import 'package:education/livecoding/networking/providers/provider.dart';
-import 'package:education/livecoding/networking/ui/pages/finish_page.dart';
-import 'package:education/livecoding/networking/ui/pages/main_page.dart';
-import 'package:education/livecoding/networking/ui/pages/workout_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'providers/provider.dart';
+import 'ui/pages/finish_page.dart';
+import 'ui/pages/main_page.dart';
+import 'ui/pages/workout_page.dart';
 
 void main() {
   runApp(

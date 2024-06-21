@@ -1,7 +1,8 @@
-import 'package:education/livecoding/networking/data/workout.dart';
-import 'package:education/livecoding/networking/providers/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../data/workout.dart';
+import '../../providers/provider.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
