@@ -61,7 +61,7 @@ class _TimersState extends State<TimerPage> {
         }
       });
     } else {
-      widget.sessions[_sessionIndex].realTime = widget.sessions[_sessionIndex].time * 60;
+      // widget.sessions[_sessionIndex].realTime = widget.sessions[_sessionIndex].time * 60;
       _saveOrCancel();
     }
   }
@@ -102,6 +102,10 @@ class _TimersState extends State<TimerPage> {
       barrierDismissible: true,
       barrierLabel: "Cancel",
       pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+        widget.sessions[_sessionIndex].realTime = (widget.sessions[_sessionIndex].time * 60) - _toNext;       
+        for (int i = _sessionIndex + 1; i < widget.sessions.length; i++) {
+          widget.sessions[i].realTime = 0;
+        } 
         return _saveOrCancel();
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
@@ -169,13 +173,20 @@ class _TimersState extends State<TimerPage> {
                   SizedBox(width: 20.0),
                   ElevatedButton(
                     onPressed: () async {
-                      Navigator.popUntil(context, ModalRoute.withName('/')); // Close the dialog
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => data_saver.DataSaver(name: widget.name, time: Duration(seconds: overallTime), sessions: widget.sessions),
-                        ),
+                      
+                      // await Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => data_saver.DataSaver(name: widget.name, time: Duration(seconds: overallTime), sessions: widget.sessions),
+                      //   ),
+                      // );
+                      await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return data_saver.DataSaver(name: widget.name, time: Duration(seconds: overallTime), sessions: widget.sessions);
+                        }
                       );
+                      Navigator.popUntil(context, ModalRoute.withName('/')); 
                     },
                     child: Text(
                       'SAVE',

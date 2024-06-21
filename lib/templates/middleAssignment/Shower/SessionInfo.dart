@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class SessionInfo {
   late int time; 
   late Color color;
-  late int realTime = -1;
+  late int realTime = 0;
 
   SessionInfo({required this.time, required this.color, required this.realTime});
 
@@ -11,7 +11,7 @@ class SessionInfo {
     return SessionInfo(
       time: 0,
       color: Colors.white,
-      realTime: -1,
+      realTime: 0,
     );
   }
   SessionInfo copyWith({

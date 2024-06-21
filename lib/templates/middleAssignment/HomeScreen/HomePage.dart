@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'dart:async';
 
-// import 'package:education/templates/middleAssignment/HomeScreen/DataSaver.dart';
+
 import 'package:education/templates/middleAssignment/HomeScreen/DataSaver.dart' as data_saver;
 import 'package:education/templates/middleAssignment/HomeScreen/Statistic.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,20 +29,25 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: statistics()
       ),
-      
-      bottomNavigationBar: BottomAppBar(
-        child: buttons(),
+      bottomSheet: BottomAppBar(
+        // child: buttons(),
+        color:  Color(0xFFFFFDD0),
       ),
+      floatingActionButton: SizedBox(
+        height: 50,
+        child: buttons(),
+      ), // Adjust the height as needed
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      
     );
   }
 
   Widget buttons() {
   return Container(
-    width: 250.0,
+    width: 200.0,
     height: 50.0,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20.0),
-       // Rounded border for the container
     ),
     child: ElevatedButton(
       onPressed: () {
@@ -52,7 +57,7 @@ class _HomePageState extends State<HomePage> {
         );
       },
       style: ElevatedButton.styleFrom(
-        // padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(20.0),
         backgroundColor: Colors.blue[700],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0), // Rounded border for the button

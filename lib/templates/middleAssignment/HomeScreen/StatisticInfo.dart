@@ -6,26 +6,28 @@ import 'package:education/templates/middleAssignment/Storage/ShowerHistory.dart'
 import 'package:education/templates/middleAssignment/Storage/SharedPreferencesService.dart';
 import 'package:education/templates/middleAssignment/Shower/SessionInfo.dart';
 
-class DataSaver extends StatefulWidget {
+class Statisticinfo extends StatefulWidget {
   final String name;
   final Duration time;
   final List<SessionInfo> sessions;
+  final String notes;
+  final double temperature;
 
-  DataSaver({required this.name, required this.time, required this.sessions});
+  Statisticinfo({required this.name, required this.time, required this.sessions, required this.notes, required this.temperature});
 
   @override
-  _DataSaverState createState() => _DataSaverState();
+  _Statisticinfo createState() => _Statisticinfo();
 }
 
-class _DataSaverState extends State<DataSaver> {
-  final _temperatureController = TextEditingController();
-  final _notesController = TextEditingController();
-
+class _Statisticinfo extends State<Statisticinfo> {
   @override
   Widget build(BuildContext context) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     final minutes = twoDigits(widget.time.inMinutes.remainder(60));
     final seconds = twoDigits(widget.time.inSeconds.remainder(60));
+    
+    final _temperatureController = TextEditingController(text: widget.temperature.toString());
+    final _notesController = TextEditingController(text: widget.notes);
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -91,9 +93,7 @@ class _DataSaverState extends State<DataSaver> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircleAvatar(
-                        backgroundColor: session.color == Colors.red
-                            ? Colors.red
-                            : Colors.blue,
+                        backgroundColor: session.color,
                         radius: 10,
                       ),
                       SizedBox(width: 10),
@@ -108,31 +108,10 @@ class _DataSaverState extends State<DataSaver> {
             Spacer(),
             ElevatedButton(
               onPressed: () async {
-                final temperature = double.tryParse(_temperatureController.text) ?? 0.0;
-                final notes = _notesController.text;
-                final newSession = ShowerHistory(
-                  name: widget.name,
-                  date: DateTime.now(),
-                  duration: widget.time.inSeconds,
-                  sessions: widget.sessions,
-                  notes: notes,
-                  temperature: temperature,
-                );
-
-              final SharedPreferencesService service = SharedPreferencesService();
-
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomePage()
-                ),
-                (Route<dynamic> route) => false,
-              );
-
-              await service.saveShowerSession(newSession);
+                Navigator.pop(context);
               },
               child: Text(
-                "Save",
+                "Ok",
                 style: TextStyle(color: Colors.white),
               ),
               style: ElevatedButton.styleFrom(
