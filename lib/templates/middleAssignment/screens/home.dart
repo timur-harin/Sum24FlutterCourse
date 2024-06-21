@@ -1,5 +1,5 @@
-import 'package:education/templates/middleAssignment/main.dart';
 import 'package:education/templates/middleAssignment/ui/history.dart';
+import 'package:education/templates/middleAssignment/ui/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -19,8 +19,6 @@ class HomeScreen extends StatelessWidget {
           },
         ),
         title: const Text('Contrast Shower Manager'),
-        foregroundColor: Colors.white,
-        backgroundColor: primary,
       ),
       body: const SessionHistoryList(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -28,7 +26,11 @@ class HomeScreen extends StatelessWidget {
         icon: const Icon(Icons.add),
         label: const Text('Start new session'),
         onPressed: () {
-          Navigator.pushNamed(context, '/settings');
+          showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            builder: (context) => const SessionSettings(),
+          );
         },
       ),
     );
