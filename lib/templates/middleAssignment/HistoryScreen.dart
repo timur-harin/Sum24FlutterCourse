@@ -1,26 +1,36 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'ShowerSessionForHistory.dart';
 
-class ShowerSession {
-  final int sessionDuration;
-  final int hotWaterDuration;
-  final int coldWaterDuration;
-  final bool startWithHotWater;
-  final int phasesCompleted;
-
-  ShowerSession({
-    required this.sessionDuration,
-    required this.hotWaterDuration,
-    required this.coldWaterDuration,
-    required this.startWithHotWater,
-    required this.phasesCompleted,
-  });
+class HistoryScreen extends StatefulWidget {
+  @override
+  _HistoryScreenState createState() => _HistoryScreenState();
 }
 
-class HistoryScreen extends StatelessWidget {
-  final List<ShowerSessionForHistory> sessions;
+class _HistoryScreenState extends State<HistoryScreen> {
+  List<ShowerSessionForHistory> sessions = [];
 
-  HistoryScreen({required this.sessions});
+  @override
+  void initState() {
+    super.initState();
+    _loadSessions();
+  }
+
+  void _loadSessions() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      List<String>? sessionsJson = prefs.getStringList('sessions');
+
+      if (sessionsJson != null) {
+        setState(() {
+          sessions = sessionsJson.map((jsonString) => ShowerSessionForHistory.fromJson(jsonDecode(jsonString))).toList();
+        });
+      }
+    } catch (e) {
+      print('Error loading sessions: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +38,13 @@ class HistoryScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('History of Sessions'),
       ),
-      
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: ListView.builder(
+        child: sessions.isEmpty
+            ? Center(
+          child: Text('No sessions recorded yet.'),
+        )
+            : ListView.builder(
           itemCount: sessions.length,
           itemBuilder: (context, index) {
             final session = sessions[index];
@@ -47,6 +60,7 @@ class HistoryScreen extends StatelessWidget {
                     Text('Cold Water Duration: ${session.coldWaterDuration} seconds'),
                     Text(session.startWithHotWater ? 'Started with Hot Water' : 'Started with Cold Water'),
                     Text('Phases Completed: ${session.phasesCompleted}'),
+                    Text('Rating: ${session.rating.toStringAsFixed(1)}'), // Display rating
                   ],
                 ),
               ),

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'SessionSummary.dart';
 import 'ShowerSessionForHistory.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
 
 abstract class Phase {
   int get duration;
@@ -49,6 +52,24 @@ class UserPreferences {
     required this.coldWaterDuration,
     required this.startWithHotWater,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'sessionDuration': sessionDuration,
+      'hotWaterDuration': hotWaterDuration,
+      'coldWaterDuration': coldWaterDuration,
+      'startWithHotWater': startWithHotWater,
+    };
+  }
+
+  factory UserPreferences.fromJson(Map<String, dynamic> json) {
+    return UserPreferences(
+      sessionDuration: json['sessionDuration'],
+      hotWaterDuration: json['hotWaterDuration'],
+      coldWaterDuration: json['coldWaterDuration'],
+      startWithHotWater: json['startWithHotWater'],
+    );
+  }
 }
 
 class ShowerSession {
@@ -58,7 +79,6 @@ class ShowerSession {
 
   ShowerSession(this.preferences)
       : _hotPhase = preferences.startWithHotWater ? true : false;
-
 
   int get phaseDuration => _hotPhase 
       ? preferences.hotWaterDuration 
@@ -141,21 +161,52 @@ class _SessionScreenState extends State<SessionScreen> {
     });
   }
 
-  void _stopSession() {
-    _timer?.cancel();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SessionSummary(session: ShowerSessionForHistory(
-          sessionDuration: _elapsedTime,
-          hotWaterDuration: widget.preferences.hotWaterDuration,
-          coldWaterDuration: widget.preferences.coldWaterDuration,
-          startWithHotWater: widget.preferences.startWithHotWater,
-          phasesCompleted: _session.phasesCompleted,
-        ), sessions: widget.sessions),
-      ),
-    );
+  void _stopSession() async {
+  _timer?.cancel();
+
+  // Создаем новую сессию для сохранения
+  ShowerSessionForHistory newSession = ShowerSessionForHistory(
+    sessionDuration: _elapsedTime,
+    hotWaterDuration: widget.preferences.hotWaterDuration,
+    coldWaterDuration: widget.preferences.coldWaterDuration,
+    startWithHotWater: widget.preferences.startWithHotWater,
+    phasesCompleted: _session.phasesCompleted,
+  );
+  newSession.rating = 5.0;
+  try {
+    // Получаем SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Загружаем текущий список сессий
+    List<String>? sessionsJson = prefs.getStringList('sessions') ?? [];
+
+    // Преобразуем объект newSession в JSON строку
+    String newSessionJson = jsonEncode(newSession.toJson());
+
+    // Добавляем новую сессию в список
+    sessionsJson.add(newSessionJson);
+
+    // Сохраняем обновленный список сессий в SharedPreferences
+    await prefs.setStringList('sessions', sessionsJson);
+
+    // Обновляем список sessions в родительском виджете
+    widget.sessions.clear();
+    widget.sessions.addAll(sessionsJson.map((jsonString) => ShowerSessionForHistory.fromJson(jsonDecode(jsonString))));
+  } catch (e) {
+    print('Error saving session: $e');
   }
+
+  // Переходим на SessionSummary с обновленным списком sessions
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) => SessionSummary(session: newSession, sessions: widget.sessions),
+    ),
+  );
+}
+
+
+
 
   void _pauseOrResumeTimer() {
     if (_isPaused) {
@@ -235,20 +286,17 @@ class _SessionScreenState extends State<SessionScreen> {
               ),
               ElevatedButton(
                 onPressed: _sessionStarted ? null : _startSession,
-                child: const Text('Start Session', 
-                style: TextStyle(color: Colors.amber),),
+                child: const Text('Start Session', style: TextStyle(color: Colors.amber)),
               ),
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _sessionStarted ? _pauseOrResumeTimer : null,
-                child: Text(_isPaused ? 'Resume Timer' : 'Pause Timer', 
-                style: const TextStyle(color: Colors.amber),),
+                child: Text(_isPaused ? 'Resume Timer' : 'Pause Timer', style: const TextStyle(color: Colors.amber)),
               ),
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _sessionStarted ? _stopSession : null,
-                child: const Text('End Session', 
-                style: TextStyle(color: Colors.amber),),
+                child: const Text('End Session', style: TextStyle(color: Colors.amber)),
               ),
             ],
           ),

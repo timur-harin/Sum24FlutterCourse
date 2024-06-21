@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       ),
       home: HomeScreen(sessions: sessions),
       routes: {
-        '/history': (context) => HistoryScreen(sessions: sessions),
+        '/history': (context) => HistoryScreen(),
       },
     );
   }
