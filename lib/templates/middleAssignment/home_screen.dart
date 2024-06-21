@@ -12,7 +12,16 @@ class HomeScreen extends ConsumerWidget {
     final sessionHistory = ref.watch(sessionHistoryProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Contrast Shower Companion', style: Theme.of(context).textTheme.headlineLarge)),
+        title: Center(
+          child: Text(
+            'Contrast Shower Companion',
+            style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.textDark
+                  : AppColors.textLight,
+            ),
+          ),
+        ),
         backgroundColor: AppColors.primary,
       ),
       body: Padding(
@@ -75,7 +84,7 @@ class HomeScreen extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            '© 2024 Contrast Shower Companion',
+            '© 2024, created by Sergey Aitov',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white),
           ),
@@ -86,18 +95,8 @@ class HomeScreen extends ConsumerWidget {
 
   String _monthName(int month) {
     const monthNames = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
     ];
     return monthNames[month - 1];
   }

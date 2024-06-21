@@ -1,9 +1,12 @@
+import 'dart:async';
+import 'package:education/templates/middleAssignment/home_screen.dart';
+import 'package:education/templates/middleAssignment/shower_session.dart';
+import 'package:education/templates/middleAssignment/summary_screen.dart';
+import 'package:education/templates/middleAssignment/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'shower_session.dart';
-import 'theme.dart';
 
-class ActiveSessionScreen extends ConsumerWidget {
+class ActiveSessionScreen extends ConsumerStatefulWidget {
   final ShowerSession session;
   final int currentCycle;
   final bool isHot;
@@ -15,11 +18,63 @@ class ActiveSessionScreen extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final cycle = session.cycles[currentCycle];
-    final duration = isHot ? cycle.hotDuration : cycle.coldDuration;
-    final temperature = isHot ? session.hotTemperature : session.coldTemperature;
-    final fillColor = isHot ? AppColors.hot : AppColors.cold;
+  _ActiveSessionScreenState createState() => _ActiveSessionScreenState();
+}
+
+class _ActiveSessionScreenState extends ConsumerState<ActiveSessionScreen> {
+  Timer? _timer;
+  int _duration = 0;
+  int _totalDuration = 0;
+  bool _isHot = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        _duration++;
+        _totalDuration++;
+        if (_duration >= widget.session.cycles[widget.currentCycle].hotDuration && _isHot) {
+          _isHot = false;
+          _duration = 0;
+        } else if (_duration >= widget.session.cycles[widget.currentCycle].coldDuration && !_isHot) {
+          _isHot = true;
+          _duration = 0;
+        }
+        if (_totalDuration >= widget.session.totalDuration * 60) {
+          // Total duration reached, navigate to SummaryScreen
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => SummaryScreen(
+              date: widget.session.date,
+              totalMinutes: widget.session.totalDuration,
+              hotDuration: widget.session.hotDuration,
+              coldDuration: widget.session.coldDuration,
+              hotTemperature: widget.session.hotTemperature,
+              coldTemperature: widget.session.coldTemperature,
+              cycles: widget.session.cycles.length,
+            )),
+          );
+        }
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final cycle = widget.session.cycles[widget.currentCycle];
+    final temperature = _isHot ? widget.session.hotTemperature : widget.session.coldTemperature;
+    final fillColor = _isHot ? AppColors.hot : AppColors.cold;
 
     return Scaffold(
       appBar: AppBar(
@@ -30,25 +85,44 @@ class ActiveSessionScreen extends ConsumerWidget {
           ),
         ),
         backgroundColor: AppColors.primary,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.stop),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => SummaryScreen(
+                  date: widget.session.date,
+                  totalMinutes: _totalDuration ~/ 60,
+                  hotDuration: widget.session.hotDuration,
+                  coldDuration: widget.session.coldDuration,
+                  hotTemperature: widget.session.hotTemperature,
+                  coldTemperature: widget.session.coldTemperature,
+                  cycles: widget.currentCycle,
+                )),
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Cycle ${currentCycle + 1}',
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
             SizedBox(height: 20),
             Text(
               'Water Temperature: $temperature°C',
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.textDark
+                    : AppColors.textLight,
+              ),
             ),
             SizedBox(height: 20),
             CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(fillColor),
               strokeWidth: 8,
-              value: duration / (isHot ? session.hotDuration : session.coldDuration),
+              value: _duration / (_isHot ? cycle.hotDuration : cycle.coldDuration),
             ),
           ],
         ),

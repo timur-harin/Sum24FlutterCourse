@@ -1,10 +1,10 @@
 class ShowerSession {
   final DateTime date;
-  final int totalDuration; // в минутах
-  final int hotDuration; // в секундах
-  final int coldDuration; // в секундах
-  final int hotTemperature; // температура горячей воды
-  final int coldTemperature; // температура холодной воды
+  final int totalDuration;
+  final int hotDuration;
+  final int coldDuration;
+  final int hotTemperature;
+  final int coldTemperature;
   final List<ShowerCycle> cycles;
 
   ShowerSession({
@@ -22,5 +22,8 @@ class ShowerCycle {
   final int hotDuration;
   final int coldDuration;
 
-  ShowerCycle({required this.hotDuration, required this.coldDuration});
+  ShowerCycle({
+    required this.hotDuration,
+    required this.coldDuration,
+  });
 }

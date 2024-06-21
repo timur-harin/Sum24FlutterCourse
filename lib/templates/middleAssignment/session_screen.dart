@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'preview_session_dialog.dart';
+import 'active_session_screen.dart';
 import 'shower_session.dart';
 import 'session_history_provider.dart';
 import 'theme.dart';
@@ -11,11 +11,11 @@ class SessionScreen extends ConsumerStatefulWidget {
 }
 
 class _SessionScreenState extends ConsumerState<SessionScreen> {
-  int totalDuration = 5;
-  int hotDuration = 30;
-  int coldDuration = 30;
-  int hotTemperature = 40;
-  int coldTemperature = 15;
+  final _totalDurationController = TextEditingController();
+  final _hotDurationController = TextEditingController();
+  final _coldDurationController = TextEditingController();
+  final _hotTemperatureController = TextEditingController();
+  final _coldTemperatureController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
       appBar: AppBar(
         title: Center(
           child: Text(
-            'Set Your Session Preferences',
+            'New Session',
             style: Theme.of(context).textTheme.headlineLarge,
           ),
         ),
@@ -33,127 +33,59 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text(
-              'Total Duration (minutes)',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            Slider(
-              value: totalDuration.toDouble(),
-              min: 1,
-              max: 30,
-              divisions: 29,
-              label: '$totalDuration minutes',
-              onChanged: (double value) {
-                setState(() {
-                  totalDuration = value.toInt();
-                });
-              },
-            ),
-            Text(
-              'Hot Interval Duration (seconds)',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            Slider(
-              value: hotDuration.toDouble(),
-              min: 10,
-              max: 60,
-              divisions: 50,
-              label: '$hotDuration seconds',
-              onChanged: (double value) {
-                setState(() {
-                  hotDuration = value.toInt();
-                });
-              },
-            ),
-            Text(
-              'Cold Interval Duration (seconds)',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            Slider(
-              value: coldDuration.toDouble(),
-              min: 10,
-              max: 60,
-              divisions: 50,
-              label: '$coldDuration seconds',
-              onChanged: (double value) {
-                setState(() {
-                  coldDuration = value.toInt();
-                });
-              },
-            ),
-            Text(
-              'Hot Water Temperature (°C)',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            Slider(
-              value: hotTemperature.toDouble(),
-              min: 30,
-              max: 50,
-              divisions: 20,
-              label: '$hotTemperature °C',
-              onChanged: (double value) {
-                setState(() {
-                  hotTemperature = value.toInt();
-                });
-              },
-            ),
-            Text(
-              'Cold Water Temperature (°C)',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            Slider(
-              value: coldTemperature.toDouble(),
-              min: 10,
-              max: 20,
-              divisions: 10,
-              label: '$coldTemperature °C',
-              onChanged: (double value) {
-                setState(() {
-                  coldTemperature = value.toInt();
-                });
-              },
-            ),
+            _buildTextField('Total Duration (minutes)', _totalDurationController),
+            _buildTextField('Hot Duration (seconds)', _hotDurationController),
+            _buildTextField('Cold Duration (seconds)', _coldDurationController),
+            _buildTextField('Hot Temperature (°C)', _hotTemperatureController),
+            _buildTextField('Cold Temperature (°C)', _coldTemperatureController),
+            SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => PreviewSessionDialog(
-                    totalDuration: totalDuration,
-                    hotDuration: hotDuration,
-                    coldDuration: coldDuration,
-                    hotTemperature: hotTemperature,
-                    coldTemperature: coldTemperature,
-                  ),
-                );
-              },
-              child: Text('Preview Session'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final newSession = ShowerSession(
-                  date: DateTime.now(),
-                  totalDuration: totalDuration,
-                  hotDuration: hotDuration,
-                  coldDuration: coldDuration,
-                  hotTemperature: hotTemperature,
-                  coldTemperature: coldTemperature,
-                  cycles: List.generate(
-                    totalDuration * 60 ~/ (hotDuration + coldDuration),
-                        (index) => ShowerCycle(
-                      hotDuration: hotDuration,
-                      coldDuration: coldDuration,
-                    ),
-                  ),
-                );
-
-                ref.read(sessionHistoryProvider.notifier).addSession(newSession);
-                Navigator.pop(context);
-              },
+              onPressed: _startSession,
               child: Text('Start Session'),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  TextField _buildTextField(String label, TextEditingController controller) {
+    return TextField(
+      controller: controller,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(labelText: label),
+    );
+  }
+
+  void _startSession() {
+    final totalDuration = int.tryParse(_totalDurationController.text) ?? 0;
+    final hotDuration = int.tryParse(_hotDurationController.text) ?? 0;
+    final coldDuration = int.tryParse(_coldDurationController.text) ?? 0;
+    final hotTemperature = int.tryParse(_hotTemperatureController.text) ?? 0;
+    final coldTemperature = int.tryParse(_coldTemperatureController.text) ?? 0;
+
+    final session = ShowerSession(
+      date: DateTime.now(),
+      totalDuration: totalDuration,
+      hotDuration: hotDuration,
+      coldDuration: coldDuration,
+      hotTemperature: hotTemperature,
+      coldTemperature: coldTemperature,
+      cycles: List.generate(
+        totalDuration * 60 ~/ (hotDuration + coldDuration),
+            (index) => ShowerCycle(hotDuration: hotDuration, coldDuration: coldDuration),
+      ),
+    );
+
+    ref.read(sessionHistoryProvider.notifier).addSession(session);
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => ActiveSessionScreen(
+        session: session,
+        currentCycle: 0,
+        isHot: true,
+      )),
     );
   }
 }
