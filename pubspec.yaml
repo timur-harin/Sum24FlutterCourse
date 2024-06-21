@@ -13,6 +13,10 @@ dependencies:
   riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
   shared_preferences: ^2.2.3
+  intl: ^0.17.0
+  flutter_staggered_animations: ^1.0.3
+  audioplayers: ^6.0.0
+  path_provider: ^2.0.5
 
 dev_dependencies:
   flutter_test:
@@ -21,3 +25,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/
