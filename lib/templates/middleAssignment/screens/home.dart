@@ -1,5 +1,5 @@
 import 'package:education/templates/middleAssignment/ui/history.dart';
-import 'package:education/templates/middleAssignment/ui/settings.dart';
+import 'package:education/templates/middleAssignment/ui/session_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
           showModalBottomSheet(
             isScrollControlled: true,
             context: context,
-            builder: (context) => const SessionSettings(),
+            builder: (context) => const SessionSettingsWidget(),
           );
         },
       ),

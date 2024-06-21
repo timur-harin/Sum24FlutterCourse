@@ -1,24 +1,24 @@
 import 'package:education/templates/middleAssignment/data/session.dart';
 
-class Settings {
+class SessionSettings {
   Thermostat initialTemperature;
   int maxCycles;
   int hotCycle;
   int coldCycle;
 
-  Settings(
+  SessionSettings(
       {required this.initialTemperature,
       required this.maxCycles,
       required this.hotCycle,
       required this.coldCycle});
-  Settings.from(Settings another)
+  SessionSettings.from(SessionSettings another)
       : this(
           initialTemperature: another.initialTemperature,
           maxCycles: another.maxCycles,
           hotCycle: another.hotCycle,
           coldCycle: another.coldCycle,
         );
-  factory Settings.fromJson(Map json) => Settings(
+  factory SessionSettings.fromJson(Map json) => SessionSettings(
         initialTemperature:
             Thermostat.parse(json['initial_temperature'] ?? 'hot') ??
                 Thermostat.hot,
