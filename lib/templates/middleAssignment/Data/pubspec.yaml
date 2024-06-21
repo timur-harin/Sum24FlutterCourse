@@ -1,5 +1,10 @@
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences: ^2.0.9
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_riverpod: ^2.0.0
+  flutter_riverpod: ^1.0.0 # Use the latest version
+

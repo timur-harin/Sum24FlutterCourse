@@ -1,20 +1,18 @@
 import 'package:education/templates/middleAssignment/HomeScreen/DataSaver.dart';
-import 'package:education/templates/middleAssignment/HomeScreen/SessionSettings.dart';
+import 'package:education/templates/middleAssignment/Shower/SessionSettings.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:async';
 
 // import 'package:education/templates/middleAssignment/HomeScreen/DataSaver.dart';
 import 'package:education/templates/middleAssignment/HomeScreen/DataSaver.dart' as data_saver;
-import 'package:education/templates/middleAssignment/HomeScreen/Statistic.dart' as stat;
+import 'package:education/templates/middleAssignment/HomeScreen/Statistic.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
-
-  @override
-  _TimersState timersState() => _TimersState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -33,7 +31,8 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment. spaceEvenly,
           children: [
             statistics(),
-            buttons(),
+            // buttons(),
+
           ],
         ),
       ),
@@ -52,12 +51,12 @@ class _HomePageState extends State<HomePage> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SessionSettings()),
+          MaterialPageRoute(builder: (context) => ProviderScope(child: SessionSettings())),
         );
       },
       style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.all(20.0),
-        backgroundColor: Colors.blue[600],
+        // padding: EdgeInsets.all(20.0),
+        backgroundColor: Colors.blue[700],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0), // Rounded border for the button
         ),
@@ -74,16 +73,7 @@ class _HomePageState extends State<HomePage> {
 }
 
   Widget statistics() {
-    return stat.Statistic();
+    return StatisticPage();
   }
 }
 
-class _TimersState extends State<HomePage> {
-
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
-}
