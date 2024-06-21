@@ -47,8 +47,8 @@ class _TimersState extends State<TimerPage> {
             _toNext--;
             if (_toNext == 0) {
               widget.sessions[_sessionIndex].realTime = widget.sessions[_sessionIndex].time * 60;
-              _sessionIndex++;
-              if (_sessionIndex < widget.sessions.length) {
+              if (_sessionIndex + 1 < widget.sessions.length) {
+                _sessionIndex++;
                 _toNext = widget.sessions[_sessionIndex].time * 60;
               }
             }
@@ -61,7 +61,7 @@ class _TimersState extends State<TimerPage> {
         }
       });
     } else {
-      // widget.sessions[_sessionIndex].realTime = widget.sessions[_sessionIndex].time * 60;
+      widget.sessions[_sessionIndex].realTime = widget.sessions[_sessionIndex].time * 60;
       _saveOrCancel();
     }
   }
@@ -102,12 +102,16 @@ class _TimersState extends State<TimerPage> {
       barrierDismissible: true,
       barrierLabel: "Cancel",
       pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
-        widget.sessions[_sessionIndex].realTime = (widget.sessions[_sessionIndex].time * 60) - _toNext;       
-        for (int i = _sessionIndex + 1; i < widget.sessions.length; i++) {
-          widget.sessions[i].realTime = 0;
-        } 
+        widget.sessions[_sessionIndex].realTime = (widget.sessions[_sessionIndex].time * 60) - _toNext;
+        if (widget.sessions.length > _sessionIndex + 1) {
+          for (int i = _sessionIndex + 1; i < widget.sessions.length; i++) {
+            widget.sessions[i].realTime = 0;
+          } 
+        }
+        
         return _saveOrCancel();
       },
+      
       transitionBuilder: (context, animation, secondaryAnimation, child) {
         return SlideTransition(
           position: Tween<Offset>(
