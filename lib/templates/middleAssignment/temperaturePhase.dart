@@ -25,7 +25,7 @@ class TemperaturePhase extends State<TemperatureWidget>{
     return Container(
         child: Row(
           children: [
-            Text("Duration: ${info.duration~/60}:${info.duration%60}", style: const TextStyle(fontSize: 15),),
+            Text("Duration: ${info.duration~/60}Min. ${info.duration%60} Sec.", style: const TextStyle(fontSize: 15),),
             IconButton(onPressed: (){setState(() {
               info.duration += 30;
             });}, icon: Icon(Icons.add)),

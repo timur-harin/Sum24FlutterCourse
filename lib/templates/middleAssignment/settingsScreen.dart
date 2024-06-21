@@ -6,7 +6,9 @@ import 'package:education/templates/middleAssignment/showerSession.dart';
 
 class SettingsScreen extends ConsumerWidget{
 
-  const SettingsScreen({super.key});
+  SettingsScreen({super.key}){
+    DataHelper.infoList = [];
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

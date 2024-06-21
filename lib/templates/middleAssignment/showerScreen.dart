@@ -38,7 +38,7 @@ class Shower extends State<ShowerScreen>{
   void startCountDown(){
     Timer.periodic(const Duration(seconds: 1), (timer) {
       if(mounted){
-        totalTime++;
+        totalTime+=dcr;
         if (time > 0) {
           setState(() {
             time-=dcr;

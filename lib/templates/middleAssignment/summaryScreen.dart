@@ -1,3 +1,4 @@
+import 'package:education/templates/middleAssignment/mainScreen.dart';
 import 'package:education/templates/middleAssignment/showerSession.dart';
 import 'package:education/templates/middleAssignment/temperaturePhase.dart';
 import 'package:flutter/material.dart';
@@ -5,9 +6,14 @@ import 'package:flutter/material.dart';
 class SummaryScreen extends StatelessWidget{
   int time;
   HistoryBox? box;
+  List<Widget> phaseList = [];
   SummaryScreen({super.key, required this.time}){
     box = HistoryBox(completeTime: time, phases: DataHelper.infoList);
+    for(TemperaturePhaseInfo info in box!.phases){
+      phaseList.add(PhaseReportWidget(localPhase: info));
+    }
   }
+
 
 
 
@@ -21,10 +27,9 @@ class SummaryScreen extends StatelessWidget{
       ),
       body: Column(
           children: [
-            Text("Session total time: "),
-            Text("Session planned time: "),
-            PhaseReportWidget(localPhase: box!.phases[0],),
-            PhaseReportWidget(localPhase: box!.phases[1],)
+            Text("Session total time: ${box!.completeTime~/60} Min. ${box!.completeTime%60} Sec."),
+            Text("Session planned time: ${box!.fullTime~/60} Min. ${box!.fullTime%60} Sec."),
+            Column(children: phaseList,)
 
           ],
         ),
@@ -33,12 +38,18 @@ class SummaryScreen extends StatelessWidget{
         destinations: [
           FloatingActionButton.extended(
             heroTag: "home",
-              onPressed: (){},
+              onPressed: (){
+                DataStorage.data.add(box!);
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
             label: Text("Return to home page"),
           icon: Icon(Icons.home),),
           FloatingActionButton.extended(
             heroTag: "new session",
-            onPressed: (){},
+            onPressed: (){
+              DataStorage.data.add(box!);
+              Navigator.popUntil(context, ModalRoute.withName('/SetUp'));
+            },
             label: Text("Start new session"),
           icon: Icon(Icons.add_box),),
         ],
@@ -51,6 +62,8 @@ class HistoryBox{
   List<TemperaturePhaseInfo> phases;
   late int fullTime;
   int completeTime;
+  String? day;
+  String? dayTime;
   HistoryBox({required this.completeTime, required this.phases}){
     fullTime = 0;
     review();
