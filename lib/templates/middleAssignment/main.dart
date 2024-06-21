@@ -1,16 +1,12 @@
-import 'package:education/templates/middleAssignment/providers/provider.dart';
+
 import 'package:education/templates/middleAssignment/ui/pages/finish_page.dart';
 import 'package:education/templates/middleAssignment/ui/pages/home_screen.dart';
 import 'package:education/templates/middleAssignment/ui/pages/shower_page.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  MultiProvider(
-    providers: [ChangeNotifierProvider(create: (_) => ShowerProvider())],
-    child: MiddleAssigmentApp(),
-  );
-  runApp(const MiddleAssigmentApp());
+  runApp(ProviderScope(child: const MiddleAssigmentApp()));
 }
 
 class MiddleAssigmentApp extends StatelessWidget {
@@ -19,6 +15,8 @@ class MiddleAssigmentApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+            debugShowCheckedModeBanner: false,
+
       title: 'Middle Assigment',
       initialRoute: "/",
       routes: {
@@ -26,11 +24,6 @@ class MiddleAssigmentApp extends StatelessWidget {
         '/shower': (context) => const ShowerPage(),
         '/finish': (context) => const FinishPage(),
       },
-      // theme: ThemeData(
-      //   primarySwatch: Colors.blue,
-      // ),
-      // // TODO - complete assignment
-      // home: null,
     );
   }
 }

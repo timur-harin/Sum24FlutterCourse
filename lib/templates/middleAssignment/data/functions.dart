@@ -11,3 +11,10 @@ void main() {
     print("Строка содержит не только цифры.");
   }
 }
+
+String formatDuration(Duration duration) {
+  String twoDigits(int n) => n.toString().padLeft(2, '0');
+  String twoDigitMinutes = twoDigits(duration.inSeconds.remainder(60));
+  String twoDigitHours = twoDigits(duration.inMinutes);
+  return "$twoDigitHours:$twoDigitMinutes";
+}

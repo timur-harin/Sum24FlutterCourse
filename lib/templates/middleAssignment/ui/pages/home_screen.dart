@@ -1,99 +1,82 @@
 import 'package:education/templates/middleAssignment/data/functions.dart';
+import 'package:education/templates/middleAssignment/data/provider/providers.dart';
+import 'package:education/templates/middleAssignment/data/shower_session.dart';
 import 'package:education/templates/middleAssignment/data/workout.dart';
-import 'package:education/templates/middleAssignment/providers/provider.dart';
+import 'package:education/templates/middleAssignment/ui/theme/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  final List<Workout> workouts = [
-    Workout(
-        name: "Hot",
-        duration: 10,
-        type: WorkoutType.Hot,
-        startTime: DateTime.now()),
-    Workout(
-        name: "Warm",
-        duration: 10,
-        type: WorkoutType.Warm,
-        startTime: DateTime.now()),
-    Workout(
-        name: "Cold",
-        duration: 10,
-        type: WorkoutType.Cold,
-        startTime: DateTime.now()),
-  ];
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+
 
   final TextEditingController _controller = TextEditingController();
 
-
-final showerProvider = Provider.of<ShowerProvider>(
-  context
-);
+// final showerProvider = Provider.of<ShowerProvider>(
+//   context
+// );
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    ref.read(sessionProvider);
+  }
   @override
   Widget build(BuildContext context) {
+      final sessions = ref.watch(sessionProvider);
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: Center(
           child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          const Padding(padding: EdgeInsets.only(top: paddingSize)),
+          Text(
+            "Take a shower with me ;)",
+            style: headingStyle,
+          ),
+          const Padding(padding: EdgeInsets.only(top: paddingSize)),
+          Container(
+            height: 40,
+            width: 250,
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFD9D9D9)),
+                onPressed: () {
+                  Navigator.of(context).pushNamed("/shower");
+                },
+                child: const Text(
+                  "Start new session",
+                  style: buttonTextStyle,
+                )),
+          ),
+          const Padding(padding: EdgeInsets.only(top: 2 * paddingSize)),
           Column(
             children: [
-              for (Workout workout in workouts)
+              if (sessions.sessions!=[])
+              for (ShowerSession session in sessions.sessions)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(workout.name),
-                    Padding(padding: EdgeInsets.only(left: 10)),
-                    getIcon(workout.type),
+                    Text(session.name),
+                    const Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(session.level),
+                    const Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(session.startTime.toString()),
+                    const Padding(padding: EdgeInsets.only(left: 10)),
+                    Text(session.endTime.toString()),
                   ],
-                )
+                ),
+                Container(),
             ],
           ),
-          TextField(
-          onChanged: (value) {
-            showerProvider.
-          },
-            controller: _controller,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: "Duration",
-              hintText: "Enter duration in minutes",
-            ),
-          ),
-          ElevatedButton(
-              onPressed: () {
-
-                if (containsOnlyDigits(_controller.text)) {
-                  Navigator.of(context).pushNamed("/shower");
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text("ОШИБКА"),
-                        content: Text("Введите длительность душа"),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('ОК'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          )
-                        ],
-                      );
-                    },
-                  );
-                }
-              },
-              child: Icon(Icons.add))
+         
         ],
       )),
     );
