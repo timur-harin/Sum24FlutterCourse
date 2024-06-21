@@ -1,0 +1,41 @@
+import 'package:flutter/material.dart';
+import 'selectionScreen.dart';
+import 'sessionData.dart';
+import 'sessionScreen.dart';
+import 'package:provider/provider.dart';
+
+import 'package:flutter/material.dart';
+
+class GreenScreen extends StatefulWidget {
+  final String sessionData;  // Add a parameter to accept the session data
+
+  GreenScreen({this.sessionData = "Default session data"}) : super();
+  @override
+  _GreenScreenState createState() => _GreenScreenState();
+}
+
+class _GreenScreenState extends State<GreenScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color.fromARGB(255, 201, 197, 230),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text('Session Details:', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            SizedBox(height: 20),
+            Text(widget.sessionData, style: TextStyle(fontSize: 18)),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // Go back to previous screen or home
+              },
+              child: Text('Back'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
