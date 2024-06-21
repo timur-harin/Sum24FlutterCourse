@@ -27,4 +27,5 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/
+    - assets/notification.mp3
+    - assets/congratulation.mp3
