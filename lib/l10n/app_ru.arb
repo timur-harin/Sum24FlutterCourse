@@ -1,0 +1,18 @@
+{
+  "title": "Логин",
+  "@title": {
+    "description": "AppBar title"
+  },
+  "username": "Имя пользователя",
+  "@username": {
+    "description": "Username field text"
+  },
+  "password": "Пароль",
+  "@password": {
+    "description": "Password field text"
+  },
+  "login": "Вход",
+  "@login": {
+    "description": "Login button text"
+  }
+}
