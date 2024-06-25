@@ -1,0 +1,8 @@
+{
+    "@@locale": "en",
+    "loginScreenTitle": "Login",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "loginButton": "Enter"
+  }
+  
