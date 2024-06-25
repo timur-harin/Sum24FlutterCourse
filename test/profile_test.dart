@@ -10,6 +10,20 @@ void main() {
     const name = 'John Doe';
     const description = 'Software Developer';
 
+    tester.pumpWidget(
+      MaterialApp(
+        home: ProfileCard(
+          imageUrl: imageUrl,
+          name: name,
+          description: description,
+        ),
+      ),
+    );
+
+    expect(find.text(name),findsOneWidget);
+    expect(find.text(description),findsOneWidget);
+    expect(find.byType(Image),findsOneWidget);
+
     // Act
     // TODO add test using pumpWidget
 

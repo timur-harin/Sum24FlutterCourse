@@ -1,7 +1,8 @@
 {
+    "@@locale": "ru",
     "title": "Логин",
     "username": "Имя пользователя",
     "password": "Пароль",
     "login": "Вход",
-    "settings": "Сменить язык"
+    "settings": "Сменить тему"
 }

@@ -1,0 +1,8 @@
+{
+    "@@locale": "en",
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "login": "Login",
+    "settings": "Change theme"
+}
