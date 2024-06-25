@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'active_session_screen.dart';
+import 'ui/active_session_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -56,9 +56,9 @@ class HomeScreen extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => ActiveSessionScreen(
+          id: 1,
           currentPhase: 'Phase 1',
-          initialRemainingTime1: sessionDuration,
-          initialRemainingTime2: sessionDuration,
+          initialRemainingTime: sessionDuration,
           onSessionEnd: onSessionEnd,
         ),
       ),

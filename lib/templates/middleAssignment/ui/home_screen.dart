@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'session_history.dart';
+import '../storage/session_history.dart';
 
 class MainPage extends StatelessWidget {
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'timer_widget.dart';
-import 'notifier.dart';
+import '../ui/widgets/timer_widget.dart';
+import '../storage/notifier.dart';
 
 class ActiveSessionScreen extends StatelessWidget {
   final int id;
