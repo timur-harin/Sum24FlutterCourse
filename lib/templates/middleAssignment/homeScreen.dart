@@ -24,7 +24,7 @@ class Homescreen extends ConsumerWidget {
                 backgroundColor: const Color.fromRGBO(53, 126, 212, 1),
                 centerTitle: true,
                 title: const Text(
-                  "Showing sessions",
+                  "Shower sessions",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,
