@@ -1,25 +1,25 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:education/livecoding/pixel_perfect/pages/splash_page.dart';
+import 'package:education/templates/lab6/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:education/main.dart';
+import 'package:golden_toolkit/golden_toolkit.dart';
 
 void main() {
-  testWidgets('SplashPage matches golden file', (WidgetTester tester) async {
-    await tester.pumpWidget(const MaterialApp(home: SplashPage()));
+  testGoldens('LoginScreen golden test', (WidgetTester tester) async {
+    final builder = GoldenBuilder.grid(
+      columns: 1,
+      widthToHeightRatio: 0.5,
+    )..addScenario('Login Screen', MaterialApp(home: LoginScreen()));
 
-    await tester.pumpAndSettle();
-
-    await expectLater(
-      find.byType(SplashPage),
-      matchesGoldenFile('assets/tests/Splash.png'),
+    await tester.pumpWidgetBuilder(
+      builder.build(),
+      surfaceSize: Size(1000, 2000), 
     );
+
+    // TODO fix to pass this using 'flutter test'
+
+    await screenMatchesGolden(tester, 'login_screen');
+
+    // Test using flutter test test/golden_test.dart
+
   });
 }
