@@ -1,21 +1,43 @@
 import 'package:education/templates/lab6/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:education/templates/lab6/localization.dart';
 
 class LoginScreen extends StatelessWidget {
+  final Function(Locale) onLocaleChange;
+
+  const LoginScreen({super.key, required this.onLocaleChange});
+
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
-    //  get from localization
-     ""
+          localizations.translate('title'), 
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.brightness_6),
+            icon: const Icon(Icons.brightness_6),
             onPressed: () {
               Provider.of<ThemeNotifier>(context, listen: false).switchTheme();
+            },
+          ),
+          PopupMenuButton<String>(
+            onSelected: (String value) {
+              onLocaleChange(Locale(value));
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem<String>(
+                  value: 'en',
+                  child: Text(localizations.translate('english')),
+                ),
+                PopupMenuItem<String>(
+                  value: 'ru',
+                  child: Text(localizations.translate('russian')),
+                ),
+              ];
             },
           ),
         ],
@@ -27,28 +49,27 @@ class LoginScreen extends StatelessWidget {
           children: [
             TextField(
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                // labelText: get from localization
+                border: const OutlineInputBorder(),
+                labelText: localizations.translate('username'), 
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextField(
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                // labelText: get from localization
+                border: const OutlineInputBorder(),
+                labelText: localizations.translate('password'), 
               ),
               obscureText: true,
             ),
-            SizedBox(height: 20),
-            Container(
+            const SizedBox(height: 20),
+            SizedBox(
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
-                onPressed: () {},
-                child: Text(""),
+                onPressed: () {}, 
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.red,
                 ),
+                child: Text(localizations.translate('login')),
               ),
             ),
           ],
