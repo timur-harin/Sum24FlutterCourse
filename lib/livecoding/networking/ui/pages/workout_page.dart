@@ -25,8 +25,13 @@ class _WorkoutPageState extends State<WorkoutPage> {
   void startTimer(int numberCycles, int numberInCycle) {
     time_left = numberInCycle;
     final cycles = numberCycles;
+<<<<<<< HEAD
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
+=======
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+>>>>>>> main
       oneSec,
       (Timer timer) {
         if (time_left == 0) {

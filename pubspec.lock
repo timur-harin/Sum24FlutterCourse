@@ -145,6 +145,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.18.0"
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> main
   convert:
     dependency: transitive
     description:
@@ -153,6 +158,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
+<<<<<<< HEAD
+=======
+>>>>>>> ff1d0f9238b792cc0bcc0722d2614d00c0e7ff68
+>>>>>>> main
   crypto:
     dependency: transitive
     description:
@@ -161,6 +170,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> main
   dart_style:
     dependency: transitive
     description:
@@ -177,6 +191,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.3+1"
+<<<<<<< HEAD
+=======
+>>>>>>> ff1d0f9238b792cc0bcc0722d2614d00c0e7ff68
+>>>>>>> main
   fake_async:
     dependency: transitive
     description:
@@ -230,6 +248,19 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  flutter_localization:
+    dependency: "direct main"
+    description:
+      name: flutter_localization
+      sha256: faaeb1eba307473032e2c2af737f36ced61fc98735608410d0a6d9c231b50912
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_riverpod:
     dependency: "direct main"
     description:
@@ -256,6 +287,7 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+<<<<<<< HEAD
   freezed:
     dependency: "direct main"
     description:
@@ -296,6 +328,9 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.1"
+=======
+<<<<<<< HEAD
+>>>>>>> main
   hive:
     dependency: "direct main"
     description:
@@ -304,6 +339,58 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.3"
+<<<<<<< HEAD
+=======
+=======
+  freezed:
+    dependency: "direct main"
+    description:
+      name: freezed
+      sha256: a434911f643466d78462625df76fd9eb13e57348ff43fe1f77bbe909522c67a1
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.5.2"
+  freezed_annotation:
+    dependency: "direct main"
+    description:
+      name: freezed_annotation
+      sha256: c3fd9336eb55a38cc1bbd79ab17573113a8deccd0ecbbf926cca3c62803b5c2d
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.1"
+  frontend_server_client:
+    dependency: transitive
+    description:
+      name: frontend_server_client
+      sha256: f64a0333a82f30b0cca061bc3d143813a486dc086b574bfb233b7c1372427694
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
+  glob:
+    dependency: transitive
+    description:
+      name: glob
+      sha256: "0e7014b3b7d4dac1ca4d6114f82bf1782ee86745b9b42a92c9289c23d8a0ab63"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.2"
+  golden_toolkit:
+    dependency: "direct main"
+    description:
+      name: golden_toolkit
+      sha256: "8f74adab33154fe7b731395782797021f97d2edc52f7bfb85ff4f1b5c4a215f0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.15.0"
+  graphs:
+    dependency: transitive
+    description:
+      name: graphs
+      sha256: aedc5a15e78fc65a6e23bcd927f24c64dd995062bcd1ca6eda65a3cff92a4d19
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.1"
+>>>>>>> main
   http:
     dependency: "direct main"
     description:
@@ -328,6 +415,25 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+<<<<<<< HEAD
+=======
+  intl:
+    dependency: "direct main"
+    description:
+      name: intl
+      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.19.0"
+  intl_translation:
+    dependency: "direct main"
+    description:
+      name: intl_translation
+      sha256: b858d88b569f3c529e992ba7186aa495f3e862897df60edb932563c619943610
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.20.0"
+>>>>>>> main
   io:
     dependency: transitive
     description:
@@ -360,6 +466,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.8.0"
+<<<<<<< HEAD
+=======
+>>>>>>> ff1d0f9238b792cc0bcc0722d2614d00c0e7ff68
+>>>>>>> main
   leak_tracker:
     dependency: transitive
     description:
@@ -725,6 +835,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.0"
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> main
   timing:
     dependency: transitive
     description:
@@ -733,6 +848,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+<<<<<<< HEAD
+=======
+>>>>>>> ff1d0f9238b792cc0bcc0722d2614d00c0e7ff68
+>>>>>>> main
   typed_data:
     dependency: transitive
     description:
@@ -805,6 +924,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+<<<<<<< HEAD
   xml:
     dependency: transitive
     description:
@@ -813,6 +933,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.5.0"
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> main
   yaml:
     dependency: transitive
     description:
@@ -821,6 +945,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+<<<<<<< HEAD
+=======
+>>>>>>> ff1d0f9238b792cc0bcc0722d2614d00c0e7ff68
+>>>>>>> main
 sdks:
   dart: ">=3.4.1 <4.0.0"
   flutter: ">=3.22.0"

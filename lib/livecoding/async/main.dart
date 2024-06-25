@@ -8,7 +8,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
   getJson();
+<<<<<<< HEAD
   runApp(const ProviderScope(child: MyApp()));
+=======
+  runApp(ProviderScope(child: MyApp()));
+>>>>>>> main
 }
 
 void getJson() async {
@@ -30,8 +34,11 @@ void getJson() async {
 
 
 class MyApp extends StatelessWidget {
+<<<<<<< HEAD
   const MyApp({super.key});
 
+=======
+>>>>>>> main
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

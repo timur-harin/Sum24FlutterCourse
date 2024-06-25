@@ -73,7 +73,11 @@ class _MainPageState extends State<MainPage> {
                 workoutProvider.number = int.parse(controller.text);
                 Navigator.of(context).pushNamed('/workout');
               },
+<<<<<<< HEAD
               child: const Text('Start Workout'),
+=======
+              child: Text('Start Workout'),
+>>>>>>> main
             )
           ])),
     );

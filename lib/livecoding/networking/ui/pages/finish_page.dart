@@ -16,7 +16,11 @@ class _FinishPageState extends State<FinishPage> {
       onPressed: () {
         Navigator.of(context).pushNamed('/');
       },
+<<<<<<< HEAD
       child: const Text('Start Over'),
+=======
+      child: Text('Start Over'),
+>>>>>>> main
     )));
   }
 }

@@ -9,7 +9,11 @@ class WorkoutProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+<<<<<<< HEAD
   final List<Workout> _workouts = [];
+=======
+  List<Workout> _workouts = [];
+>>>>>>> main
   List<Workout> get workouts => _workouts;
   void addWorkout(Workout workout) {
     _workouts.add(workout);

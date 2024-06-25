@@ -3,12 +3,19 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 void main() {
+<<<<<<< HEAD
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+=======
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+>>>>>>> main
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,14 +23,21 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+<<<<<<< HEAD
       home: const JsonPlaceholderDemo(),
+=======
+      home: JsonPlaceholderDemo(),
+>>>>>>> main
     );
   }
 }
 
 class JsonPlaceholderDemo extends StatefulWidget {
+<<<<<<< HEAD
   const JsonPlaceholderDemo({super.key});
 
+=======
+>>>>>>> main
   @override
   _JsonPlaceholderDemoState createState() => _JsonPlaceholderDemoState();
 }
@@ -74,11 +88,19 @@ class _JsonPlaceholderDemoState extends State<JsonPlaceholderDemo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+<<<<<<< HEAD
         title: const Text('JSON Placeholder API Demo'),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
+=======
+        title: Text('JSON Placeholder API Demo'),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+>>>>>>> main
           child: Text(_responseBody),
         ),
       ),
@@ -88,6 +110,7 @@ class _JsonPlaceholderDemoState extends State<JsonPlaceholderDemo> {
           FloatingActionButton(
             onPressed: _fetchData,
             tooltip: 'Fetch Data',
+<<<<<<< HEAD
             child: const Icon(Icons.download),
           ),
           const SizedBox(height: 8),
@@ -95,6 +118,15 @@ class _JsonPlaceholderDemoState extends State<JsonPlaceholderDemo> {
             onPressed: _sendData,
             tooltip: 'Send Data',
             child: const Icon(Icons.upload),
+=======
+            child: Icon(Icons.download),
+          ),
+          SizedBox(height: 8),
+          FloatingActionButton(
+            onPressed: _sendData,
+            tooltip: 'Send Data',
+            child: Icon(Icons.upload),
+>>>>>>> main
           ),
         ],
       ),
