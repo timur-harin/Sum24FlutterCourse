@@ -1,4 +1,5 @@
-# include: package:analysis_options/analysis_options.yaml
+# include: package:analysis_options/analysis_options.yaml  # Uncomment this line if you want to include default Dart analysis options
+
 include: package:flutter_lints/flutter.yaml
 
 linter:

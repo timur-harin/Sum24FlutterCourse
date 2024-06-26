@@ -18,10 +18,10 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '2.8.1'
+          flutter-version: '2.10.3'  # Ensure compatibility with Dart SDK requirements
           channel: stable
-          architecture: X64
-          cache: false
+          architecture: x64
+          cache: true  # Enable caching for faster builds
           pub-cache-path: default
 
       - name: Install dependencies
@@ -42,10 +42,10 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '2.8.1'
+          flutter-version: '2.10.3'
           channel: stable
-          architecture: X64
-          cache: false
+          architecture: x64
+          cache: true
           pub-cache-path: default
 
       - name: Install dependencies
@@ -65,7 +65,11 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'latest'
+          flutter-version: '2.10.3'
+          channel: stable
+          architecture: x64
+          cache: true
+          pub-cache-path: default
 
       - name: Install dependencies
         run: flutter pub get
