@@ -5,7 +5,7 @@ class ProfileCard extends StatelessWidget {
   final String name;
   final String description;
 
-  ProfileCard({
+  const ProfileCard({super.key, 
     required this.imageUrl,
     required this.name,
     required this.description,
@@ -20,17 +20,18 @@ class ProfileCard extends StatelessWidget {
           children: [
             CircleAvatar(
               backgroundImage: NetworkImage(imageUrl),
-              radius: 30,
+              radius: 100,
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   name,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text(description),
               ],
             ),
