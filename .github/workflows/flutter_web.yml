@@ -35,10 +35,8 @@ jobs:
         run: flutter build web --release --target=lib/templates/lab7/main.dart
 
       - name: Deploy to GitHub Pages
-        uses: bluefireteam/flutter-gh-pages@v7
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          baseHref: /Sum24FlutterCourse/
-          customArgs: --target=lib/templates/lab7/main.dart
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: build/web
 
