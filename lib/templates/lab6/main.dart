@@ -3,6 +3,7 @@ import 'package:education/templates/lab6/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
 void main() {
@@ -20,16 +21,17 @@ class MyApp extends StatelessWidget {
     return Consumer<ThemeNotifier>(
       builder: (context, theme, child) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           theme: theme.currentTheme,
-          localizationsDelegates: [
+          localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
-            // Add your generated delegate here
+            AppLocalizations.delegate,
           ],
-          supportedLocales: [
-            const Locale('en', ''),
-            const Locale('ru', ''),
+          supportedLocales: const [
+            Locale('en', ''),
+            Locale('ru', ''),
           ],
           home: LoginScreen(),
         );
