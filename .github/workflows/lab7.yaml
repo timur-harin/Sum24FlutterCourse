@@ -16,10 +16,10 @@ jobs:
       - name: Set up Dart
         uses: dart-lang/setup-dart@v1
         with:
-          sdk: '3.4.1'
+          sdk: '3.4.3'
 
       - name: Install dependencies
         run: dart pub get
 
       - name: Run tests
-        run: dart test test.dart
+        run: dart test widget_test.dart
