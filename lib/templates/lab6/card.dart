@@ -5,7 +5,7 @@ class ProfileCard extends StatelessWidget {
   final String name;
   final String description;
 
-  ProfileCard({
+  const ProfileCard({super.key,
     required this.imageUrl,
     required this.name,
     required this.description,
@@ -22,15 +22,15 @@ class ProfileCard extends StatelessWidget {
               backgroundImage: NetworkImage(imageUrl),
               radius: 30,
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   name,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text(description),
               ],
             ),
