@@ -35,7 +35,7 @@ jobs:
       if: github.ref == 'refs/heads/lab-7'  
       uses: bluefireteam/actions-gh-pages@v3
       with:
-        customArgs: "lib\templates\lab7\main.dart"
+        customArgs: "lib/templates/lab7/main.dart"
 
   build-windows:
     runs-on: windows-latest
