@@ -37,6 +37,6 @@ jobs:
         with:
           channel: stable
           flutter-version: 3.22.2
-          baseHref: /{Sum24FlutterCourse}
+          baseHref: /Sum24FlutterCourse
       - run: flutter pub get
       - run: flutter build windows --release lib/templates/lab7/main.dart
