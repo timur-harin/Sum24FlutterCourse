@@ -8,6 +8,7 @@ on:
     pull_request:
         branches:
             - main
+            - lab7
 
 jobs:
     test:
@@ -24,5 +25,10 @@ jobs:
 
             - run: flutter test test/test.dart
 
-            - run: flutter build web --release lib/livecoding/cicd/main.dart
+            - run: flutter build web --release lib/templates/lab7/main.dart
+
+            - uses: bluefireteam/flutter-gh-pages@v7
+              with:
+                customArgs: "lib/templates/lab7/main.dart"
+
 
