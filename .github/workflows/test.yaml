@@ -27,9 +27,14 @@ jobs:
 
             - uses: bluefireteam/flutter-gh-pages@v7
               with:
-                customArgs: "lib/livecoding/cicd/main.dart"
-
-
-
-            
-
+                customArgs: "lib/livecoding/cicd/main.dart"            
+    deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
