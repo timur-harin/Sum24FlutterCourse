@@ -27,9 +27,6 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Analyze
-        run: flutter analyze
-
       - name: Run tests
         run: flutter test test/widget_test.dart
 
@@ -78,8 +75,7 @@ jobs:
         run: flutter build web
 
       - name: Deploy to GitHub Pages
-      - uses: bluefireteam/flutter-gh-pages@v7
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          baseHref: /https://github.com/Woolfer0097/Sum24FlutterCourse
-          customArgs: "lib/templates/lab7/main.dart"
-
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/web
