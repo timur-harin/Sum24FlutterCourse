@@ -1,0 +1,23 @@
+name: pupupu
+
+on: 
+    push:
+        branches:
+            - lab7
+    pull_request:
+        branches:
+            - lab7
+
+jobs:
+    test:
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: subosito/flutter-action@v2
+              with:
+                channel: stable
+                flutter-version: 3.22.2
+            - run: flutter pub get
+            - run: flutter test test/widget_test.dart
+            - run: flutter analyze lib/templates/lab7
+            - run: flutter build windows
