@@ -1,12 +1,5 @@
 name: Build Web
 
-linter:
-  rules:
-
-analyzer:
-  exclude:
-    - lib/templates/lab7/main.dart
-
 on: 
   push:
     branches:
