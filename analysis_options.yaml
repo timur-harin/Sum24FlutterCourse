@@ -16,9 +16,6 @@ analyzer:
     unnecessary_new: ignore
     use_super_parameters: ignore
     unnecessary_import: ignore
-    avoid_print: ignore
     unused_import: ignore
-    unused_field: ignore
     unused_local_variable: ignore
-    use_key_in_widget_constructors: ignore
     prefer_const_literals_to_create_immutables: ignore
