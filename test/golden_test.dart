@@ -20,6 +20,7 @@ void main() {
     await screenMatchesGolden(tester, 'login_screen');
 
     // Test using flutter test test/golden_test.dart
+    //flutter test --update-goldens
 
   });
 }
