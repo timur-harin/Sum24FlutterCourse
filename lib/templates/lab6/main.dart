@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   runApp(
@@ -21,15 +22,16 @@ class MyApp extends StatelessWidget {
       builder: (context, theme, child) {
         return MaterialApp(
           theme: theme.currentTheme,
-          localizationsDelegates: [
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
             // Add your generated delegate here
           ],
-          supportedLocales: [
-            const Locale('en', ''),
-            const Locale('ru', ''),
+          supportedLocales: const [
+            Locale('en', ''),
+            Locale('ru', ''),
           ],
           home: LoginScreen(),
         );
