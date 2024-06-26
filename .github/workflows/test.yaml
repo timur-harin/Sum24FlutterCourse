@@ -1,29 +1,34 @@
-name: Flutter Test
+name: Build Web
 
-on:
-  push:
-    branches:
-      - lab7  # Replace with your branch name if different
-  pull_request:
-    branches:
-      - lab7 # Replace with your branch name if different
+on: 
+    push:
+        branches:
+            - lab7
+    pull_request:
+        branches:
+            - lab7
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: subosito/flutter-action@v2
+              with:
+                channel: stable
+                flutter-version: 3.22.2
+            - run: flutter pub get
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+            - run: flutter test test/test.dart
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v4
-        with:
-          flutter-version: '3.22.2' 
-          channel: 'stable'
+            - run: flutter analyze  --no-fatal-warnings --no-fatal-infos lib/livecoding/cicd/ 
 
-      - name: Install dependencies
-        run: flutter pub get
+            - run: flutter build web --release lib/livecoding/cicd/main.dart
 
-      - name: Run tests
-        run: flutter test
+            - uses: bluefireteam/flutter-gh-pages@v7
+              with:
+                customArgs: "lib/livecoding/cicd/main.dart"
+
+
+
+            
