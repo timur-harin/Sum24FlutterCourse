@@ -1,0 +1,7 @@
+{
+  "@@locale": "en",
+  "loginTitle": "Login Screen",
+  "usernameLabel": "Username",
+  "passwordLabel": "Password",
+  "loginButton": "Login"
+}
