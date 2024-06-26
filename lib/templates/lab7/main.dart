@@ -5,8 +5,8 @@ void main() {
   runApp(
     const ProviderScope(
         child: MaterialApp(
-      home: MyHomePage(),
-    )),
+          home: MyHomePage(),
+        )),
   );
 }
 

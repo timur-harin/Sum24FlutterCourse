@@ -1,1 +1,12 @@
-include: package:flutter_lints/flutter.yaml
+include: package:analysis_options/analysis_options.yaml
+analyzer:
+  errors:
+    todo: ignore
+  rules:
+    - avoid_print
+    - prefer_const_declarations
+    - unnecessary_brace_in_string_interps
+    - unnecessary_new
+    - unnecessary_this
+    - unnecessary_string_interpolations
+    - unnecessary_string_escapes
