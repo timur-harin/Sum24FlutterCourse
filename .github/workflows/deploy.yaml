@@ -34,4 +34,4 @@ jobs:
         with:
           baseHref: /lab7/
           customArgs: "lib/templates/lab7/main.dart"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+
