@@ -8,7 +8,7 @@ RUN apt-get clean
 
 # TODO clone original flutter github repo
 
-RUN git clone https://github.com/flutter/flutter.git
+RUN  git clone https://github.com/flutter/flutter.git -b stable /usr/local/flutter
 ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
 
 RUN flutter doctor -v
