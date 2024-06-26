@@ -49,30 +49,74 @@
 #        with:
 #          github_token: ${{ secrets.GITHUB_TOKEN }}
 #          publish_dir: build/web
-name: Flutter CI/CD
+# name: Flutter CI/CD
 
-on:
-  push:
-    branches: 
-      - lab7
-  pull_request:
-    branches: 
-      - lab7
+# on:
+#   push:
+#     branches: 
+#       - lab7
+#   pull_request:
+#     branches: 
+#       - lab7
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v4
+#     - uses: subosito/flutter-action@v2
+#       with:
+#         channel: 'stable'
+#         flutter-version: 3.22.2
+#     - run: flutter pub get
+#     - run: flutter test test/test_for_main.dart
+#     - run: flutter analyze lib/templates/lab7
+#     - run: flutter build web lib/templates/lab7/main.dart
+#     - name: Deploy into gh-pages
+#       uses: bluefireteam/flutter-gh-pages@v7
+#       with:
+#         baseHref: /Dmitrii-Bargan/summer-2024-cmdf/
+#         customArgs: "lib/templates/lab7/main.dart"
+
+name: Build Web
+
+on: 
+    push:
+        branches:
+            - lab7
+    pull_request:
+        branches:
+            - lab7
+
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: subosito/flutter-action@v2
-      with:
-        channel: 'stable'
-        flutter-version: 3.22.2
-    - run: flutter pub get
-    - run: flutter test test/test_for_main.dart
-    - run: flutter analyze lib/templates/lab7
-    - run: flutter build web lib/templates/lab7/main.dart
-    - name: Deploy into gh-pages
-        uses: bluefireteam/flutter-gh-pages@v7
-        with:
-          baseHref: /Dmitrii-Bargan/summer-2024-cmdf/
-          customArgs: "lib/templates/lab7/main.dart"
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: subosito/flutter-action@v2
+              with:
+                channel: stable
+                flutter-version: 3.22.2
+            - run: flutter pub get
+
+            - run: flutter test test/widget_test.dart
+
+            - run: flutter analyze  --no-fatal-warnings --no-fatal-infos lib/templates/lab7/main.dart 
+
+            - run: flutter build web --release lib/templates/lab7/main.dart
+
+            - uses: bluefireteam/flutter-gh-pages@v7
+              with:
+                baseHref: /Sum24FlutterCourse/
+                customArgs: "lib/templates/lab7/main.dart"
+    
+    # не работает – сейчас дебажим задание №4
+    # windows_app:
+    #     build:
+    #         runs-on: windows-latest
+    #         steps:
+    #             - uses: actions/checkout@v4
+    #             - uses: subosito/flutter-action@v2
+    #               with:
+    #                 channel: stable
+    #                 flutter-version: 3.22.2
+    #             - run: flutter build windows
