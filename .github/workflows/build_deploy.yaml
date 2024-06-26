@@ -25,11 +25,10 @@ jobs:
 
             - run: flutter build web --release lib/templates/lab7/main.dart
                 
-            - uses: bluefireteam/flutter-gh-pages@v7
+            - uses: peaceiris/actions-gh-pages@v3
               with:
-                baseHref: /{YOUR_REPO_NAME} #example:  /Sum24FlutterCourse/
-                customArgs: "lib/templates/lab7/main.dart"
-
+                github_token: ${{ secrets.GITHUB_TOKEN }}
+                publish_dir: build/web
     
     build-windows:
         runs-on: windows-latest

@@ -5,10 +5,7 @@ RUN apt-get update
 # https://docs.flutter.dev/get-started/install/linux/desktop?tab=download
 RUN apt-get clean
 
-RUN apt-get install -y git curl unzip xz-utils zip libglu1-mesa
-
-RUN apt-get clean
-
+RUN apt-get install -y git curl unzip
 RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
 
 ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
@@ -25,7 +22,7 @@ COPY . /app/
 WORKDIR /app/
 
 RUN flutter pub get
-RUN flutter build web
+RUN flutter build web --release -t lib/templates/lab7/main.dart
 
 FROM nginx:1.21.1-alpine
 
