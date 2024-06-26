@@ -1,0 +1,29 @@
+name: Windows App Build
+
+on:
+  push:
+    branches:
+      - lab7
+  pull_request:
+    branches:
+      - lab7
+
+jobs:
+  build_windows_app:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+          flutter-version: '3.22.1'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Windows app
+        run: flutter build windows --release lib/templates/lab7/main.dart
