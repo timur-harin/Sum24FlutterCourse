@@ -1,0 +1,26 @@
+name: Build Windows
+
+on:
+  push:
+    branches:
+      - lab7
+  pull_request:
+    branches:
+      - lab7
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '2.10.3' # Use your Flutter version here
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Build Windows
+      run: flutter build windows

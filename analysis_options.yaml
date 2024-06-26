@@ -1,1 +1,19 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    avoid_print: ignore
+    public_member_api_docs: ignore
+    unnecessary_new: ignore
+    avoid_init_to_null: ignore
+
+linter:
+  rules:
+    - avoid_print
+    - public_member_api_docs
+    - unnecessary_new
+    - avoid_init_to_null
+    - prefer_const_constructors
+    - prefer_const_literals_to_create_immutables
+    - prefer_final_fields
+    - use_key_in_widget_constructors
