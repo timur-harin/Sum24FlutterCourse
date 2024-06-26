@@ -34,8 +34,8 @@ jobs:
         steps:
         - uses: actions/checkout@v4
         - uses: subosito/flutter-action@v2
-            with:
-                channel: stable
+          with:
+            channel: stable
         - run: flutter build windows lib/templates/lab7/main.dart
 
 
