@@ -19,3 +19,8 @@ analyzer:
     unused_import: ignore
     unused_local_variable: ignore
     prefer_const_literals_to_create_immutables: ignore
+    sort_child_properties_last: ignore
+    sized_box_for_whitespace: ignore
+    prefer_const_constructors_in_immutables: ignore
+    library_private_types_in_public_api: ignore
+    
