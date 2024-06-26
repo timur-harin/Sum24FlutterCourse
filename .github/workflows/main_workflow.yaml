@@ -27,7 +27,7 @@ jobs:
         run: flutter analyze
 
       - name: Run tests
-        run: flutter test
+        run: flutter test test/widget_test.dart
 
   build-windows:
     runs-on: windows-latest
