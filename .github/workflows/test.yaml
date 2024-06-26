@@ -27,49 +27,19 @@ jobs:
 
             - uses: bluefireteam/flutter-gh-pages@v7
               with:
+                baseHref: /Sum24FlutterCourse/
                 customArgs: "lib/ltemplates/lab7/main.dart"
-
-    name: Build Web
-
-on: 
-    push:
-        branches:
-            - lab7
-    pull_request:
-        branches:
-            - lab7
-
-jobs:
-    test:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-            - uses: subosito/flutter-action@v2
-              with:
-                channel: stable
-                flutter-version: 3.22.2
-            - run: flutter pub get
-
-            - run: flutter test test/widget_test.dart
-
-            - run: flutter analyze  --no-fatal-warnings --no-fatal-infos lib/templates/lab7/main.dart 
-
-            - run: flutter build web --release lib/templates/lab7/main.dart
-
-            - uses: bluefireteam/flutter-gh-pages@v7
-              with:
-                customArgs: "lib/templates/lab7/main.dart"
     
-    windows_app:
-        main:
-            runs-on: windows-latest
-            steps:
-            - uses: actions/checkout@v4
-            - uses: subosito/flutter-action@v2
-            with:
-                channel: stable
-                flutter-version: 3.22.2
-            - run: flutter build windows  
+    # windows_app:
+    #     main:
+    #         runs-on: windows-latest
+    #         steps:
+    #         - uses: actions/checkout@v4
+    #         - uses: subosito/flutter-action@v2
+    #         with:
+    #             channel: stable
+    #             flutter-version: 3.22.2
+    #         - run: flutter build windows  
 
 
 
