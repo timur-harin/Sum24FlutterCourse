@@ -13,9 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: subosito/flutter-action@v2
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: stable
           flutter-version: 3.22.1
@@ -23,20 +25,32 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - run: flutter analyze lib/templates/lab7/main.dart
-      - run: flutter test test/test_main.dart
-      - uses: bluefireteam/flutter-gh-pages@v7
+      - name: Analyze code
+        run: flutter analyze lib/templates/lab7/main.dart
+
+      - name: Run tests
+        run: flutter test test/test_main.dart
+
+      - name: Build web
+        run: flutter build web --release --target=lib/templates/lab7/main.dart
+
+      - name: Deploy to GitHub Pages
+        uses: bluefireteam/flutter-gh-pages@v7
         with:
           baseHref: /Sum24FlutterCourse/
-          customArgs: --target="lib/templates/lab7/main.dart"
+          customArgs: --target=lib/templates/lab7/main.dart
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/web
 
   build_win:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: subosito/flutter-action@v2
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: stable
           flutter-version: 3.22.1
@@ -44,6 +58,11 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - run: flutter analyze lib/templates/lab7/main.dart
-      - run: flutter test test/test_main.dart
-      - run: flutter build windows --release lib/templates/lab7/main.dart
+      - name: Analyze code
+        run: flutter analyze lib/templates/lab7/main.dart
+
+      - name: Run tests
+        run: flutter test test/test_main.dart
+
+      - name: Build Windows
+        run: flutter build windows --release --target=lib/templates/lab7/main.dart
