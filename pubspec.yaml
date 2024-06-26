@@ -43,7 +43,12 @@ flutter:
   assets:
     - assets/
     - assets/fonts/
+<<<<<<< HEAD
     - assets/goldens/
+=======
+
+
+>>>>>>> 8153cba42d2512afba394f7988dc5f86a4fdccfc
   fonts:
     - family: Coves
       fonts:

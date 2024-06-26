@@ -62,21 +62,20 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    return const Text("Hello Flutter!",
+    return const Text(
+      "Hello, Flutter!",
       style: TextStyle(
-        color: Colors.cyan,
-        fontSize: 100,
-        fontWeight: FontWeight.normal
-      ),
-    );
+        fontSize: 30,
+        color: Colors.lightBlue,
+        fontWeight: FontWeight.bold),
+        );
   }
 
   Widget exercise2() {
     return const Icon(
-      Icons.account_box_outlined,
-      size: 50,
-      color: Colors.pink,
-      weight: 1,
+      Icons.favorite,
+      size: 100,
+      color: Colors.red,
     );
   }
 
@@ -88,6 +87,10 @@ class LAb1HomePage extends StatelessWidget {
       height: 925,
       fit: BoxFit.cover,
     );
+  }
+
+  printPressed() {
+    print("Pressed");
   }
 
   Widget exercise4() {
@@ -150,7 +153,10 @@ class LAb1HomePage extends StatelessWidget {
       style: TextStyle(
         fontSize: 30,
         color: Colors.purple
-      ),
+      )
+        Container(color: Colors.blue, padding: const EdgeInsets.all(50), child: const Text("This is home Icon in Container!")),
+        Container(color: Colors.red, margin: const EdgeInsets.all(100), child: const Icon(Icons.home)),
+      ]
     );
   }
 }
