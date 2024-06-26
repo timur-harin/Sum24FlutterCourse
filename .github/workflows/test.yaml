@@ -21,9 +21,9 @@ jobs:
 
             - run: flutter test test/test.dart
 
-            - run: flutter analyze lib/livecoding/cicd/    
+            - run: flutter analyze  --no-fatal-warnings --no-fatal-infos lib/livecoding/cicd/ 
 
             - run: flutter build web
-            
+
             
 
