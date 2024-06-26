@@ -8,7 +8,11 @@ void main() {
     final builder = GoldenBuilder.grid(
       columns: 1,
       widthToHeightRatio: 0.5,
-    )..addScenario('Login Screen', const MaterialApp(home: LoginScreen()));
+    )..addScenario('Login Screen', MaterialApp(home: LoginScreen(
+      changing: (_) {
+        print('Locale changed');
+      },
+    )));
 
     await tester.pumpWidgetBuilder(
       builder.build(),
