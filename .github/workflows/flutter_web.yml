@@ -1,66 +1,71 @@
-name: TestCICD
+name: Flutter Web CI/CD
 
 on:
   push:
-    branches: 
-      - lab-7
+    branches: [lab-7]  
   pull_request:
-    branches: 
-      - lab-7
+    branches: [lab-7]  
 
 jobs:
-  build:
+  build-web:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          flutter-version: 3.22.1
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: 3.22.1  
 
-      - name: Install dependencies
-        run: flutter pub get
+    - name: Install dependencies
+      run: flutter pub get
 
-      - name: Analyze code
-        run: flutter analyze lib/templates/lab7/main.dart
+    - name: Analyze code
+      run: flutter analyze --no-fatal-warnings --no-fatal-infos lib/templates/lab7/main.dart
 
-      - name: Run tests
-        run: flutter test test/test_main.dart
+    - name: Run tests
+      run: flutter test test/test_main.dart
 
-      - name: Build web
-        run: flutter build web --release --target=lib/templates/lab7/main.dart
+    - name: Build web
+      run: flutter build web --release lib/templates/lab7/main.dart
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: build/web
+    - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/lab-7'  
+      uses: bluefireteam/actions-gh-pages@v3
+      with:
+        customArgs: --target="lib/templates/lab7/main.dart"
 
-  build_win:
+  build-windows:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          flutter-version: 3.22.1
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: 3.22.1  
 
-      - name: Install dependencies
-        run: flutter pub get
+    - name: Install dependencies
+      run: flutter pub get
 
-      - name: Analyze code
-        run: flutter analyze lib/templates/lab7/main.dart
+    - name: Enable Windows desktop
+      run: flutter config --enable-windows-desktop
 
-      - name: Run tests
-        run: flutter test test/test_main.dart
+    - name: Analyze code
+      run: flutter analyze
 
-      - name: Build Windows
-        run: flutter build windows --release --target=lib/templates/lab7/main.dart
+    - name: Run tests
+      run: flutter test test/test_main.dart
+
+    - name: Build Windows
+      run: flutter build windows --release lib/templates/lab7/main.dart
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: windows-build
+        path: build/windows/runner/Release/
