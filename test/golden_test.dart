@@ -2,7 +2,6 @@ import 'package:education/templates/lab6/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
-
 void main() {
   testGoldens('LoginScreen golden test', (WidgetTester tester) async {
     final builder = GoldenBuilder.grid(
@@ -12,7 +11,7 @@ void main() {
 
     await tester.pumpWidgetBuilder(
       builder.build(),
-      surfaceSize: Size(1000, 2000), 
+      surfaceSize: Size(1000, 2000),  
     );
 
     // TODO fix to pass this using 'flutter test'
