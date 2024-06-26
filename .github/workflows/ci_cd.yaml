@@ -1,31 +1,66 @@
-name: CI/CD
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: TestCICD
 
 on:
   push:
-    branches:
+    branches: 
       - lab7
   pull_request:
-    branches:
+    branches: 
       - lab7
 
 jobs:
-   build_windows:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Note: This workflow uses the latest stable version of the Dart SDK.
+      # You can specify other versions if desired, see documentation here:
+      # https://github.com/dart-lang/setup-dart/blob/main/README.md
+      # - uses: dart-lang/setup-dart@v1
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.22.2
+
+      - name: Install dependencies
+        run: flutter pub get
+        
+      
+      - run: flutter analyze lib/templates/lab7/main.dart
+      - run: flutter test test/lab7_test.dart
+      - run: flutter build web --release lib/templates/lab7/main.dart
+      - uses: bluefireteam/flutter-gh-pages@v7
+        with:
+          baseHref: /Sum24FlutterCourse/
+          customArgs: "lib/templates/lab7/main.dart"
+
+  build_win:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '2.5.3'
+      # Note: This workflow uses the latest stable version of the Dart SDK.
+      # You can specify other versions if desired, see documentation here:
+      # https://github.com/dart-lang/setup-dart/blob/main/README.md
+      # - uses: dart-lang/setup-dart@v1
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.22.2
 
-    - name: Install dependencies
-      run: flutter pub get
+      - name: Install dependencies
+        run: flutter pub get
 
-    - name: Build Windows
-      run: flutter build windows
-    - uses: bluefireteam/flutter-gh-pages@v7
-      with:
-        baseHref: /Sum24FlutterCourse/
-        customArgs: "lib/templates/lab7/main.dart"
+
+      - run: flutter analyze lib/templates/lab7/main.dart
+      - run: flutter test test/lab7_test.dart
+      - run: flutter build windows --release lib/templates/lab7/main.dart
+          
