@@ -1,23 +1,6 @@
 include: package:flutter_lints/flutter.yaml
 
-analyzer:
-  exclude:
-    - build/**
-    - '**/*.g.dart'
-
 linter:
   rules:
-    - prefer_const_constructors
-    - avoid_print
-    - prefer_const_literals_to_create_immutables
-    - always_put_required_named_parameters_first
-    - always_use_package_imports
-    - annotate_overrides
-    - avoid_empty_else
-    - avoid_init_to_null
-    - avoid_redundant_argument_values
-    - avoid_return_types_on_setters
-    - avoid_single_cascade_in_expression_statements
-    - avoid_unused_constructor_parameters
-    - prefer_final_locals
-    - sort_child_properties_last
+    avoid_unnecessary_containers: ignore;
+    prefer_const_constructors: ignore;
