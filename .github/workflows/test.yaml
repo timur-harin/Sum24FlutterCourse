@@ -27,5 +27,5 @@ jobs:
 
       - uses: bluefireteam/flutter-gh-pages@v7
         with:
-          baseHref: /Sum24FlutterCourse/
+          baseHref: /Lab1/
           customArgs: --target="lib/templates/lab7/main.dart"
