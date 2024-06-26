@@ -45,7 +45,6 @@ flutter:
   assets:
     - assets/
     - assets/fonts/
-    - lib/l10n/
   fonts:
     - family: Coves
       fonts:
