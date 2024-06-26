@@ -29,7 +29,7 @@ jobs:
               with:
                 customArgs: "lib/templates/lab7/main.dart"
 
-            - run: flutter build windows --release lib/templates/lab7/main.dart
+    - run: flutter build windows --release lib/templates/lab7/main.dart
 
 
 
