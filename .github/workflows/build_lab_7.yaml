@@ -1,0 +1,61 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - lab_seven
+
+jobs:
+  build_web:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.22.2
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Run widget test
+        run: flutter test test/test.dart
+
+      - name: Build web app
+        run: flutter build web --web-renderer html lib/templates/lab7/main.dart
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: gh-pages
+          folder: build/web
+
+  build_windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.22.2
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Run widget test
+        run: flutter test test/test.dart
+
+      - name: Build Windows app
+        run: flutter build windows lib/templates/lab7/main.dart
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-app
+          path: build/windows/runner/Release
