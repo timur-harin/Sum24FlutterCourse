@@ -1,1 +1,21 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - lib/templates/lab7/main.dart
+
+linter:
+
+  errors:
+
+    lib/templates/lab7/main.dart: ignore
+
+  rules:
+    - avoid_print
+    - unnecessary_this
+    - public_member_api_docs
+    - avoid_web_libraries_in_flutter
+
+  suppress:
+    info: lib/templates/lab7/main.dart
+    warning: lib/templates/lab7/main.dart
