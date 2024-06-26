@@ -38,6 +38,6 @@ jobs:
           channel: stable
           flutter-version: 3.22.2
           baseHref: /Sum24FlutterCourse/
-          customArgs: "lib/templates/lab7
+          customArgs: "lib/templates/lab7/main.dart
       - run: flutter pub get
       - run: flutter build windows --release lib/templates/lab7/main.dart
