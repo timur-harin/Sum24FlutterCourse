@@ -31,7 +31,7 @@ jobs:
                 customArgs: "lib/templates/lab7/main.dart"
     
     windows_app:
-        main:
+        build:
             runs-on: windows-latest
             steps:
                 - uses: actions/checkout@v4
