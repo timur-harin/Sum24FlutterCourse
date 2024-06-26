@@ -30,10 +30,8 @@ jobs:
           flutter build web --release
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: bluefireteam/flutter-gh-pages@v7
+        uses: bluefireteam/flutter-gh-pages@v7
         with:
           baseHref: /lab7/
           customArgs: "lib/templates/lab7/main.dart"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
