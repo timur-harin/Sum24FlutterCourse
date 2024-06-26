@@ -19,6 +19,8 @@ jobs:
           channel: stable
           flutter-version: 3.22.2
 
+      - run: flutter config --enable-windows-desktop
+
       - run: flutter pub get
 
       - run: flutter build windows
