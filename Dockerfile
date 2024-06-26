@@ -17,6 +17,9 @@ RUN flutter channel stable
 RUN flutter upgrade
 RUN flutter config --enable-web
 
+# Check the Dart SDK version
+RUN dart --version
+
 # Create and set the working directory
 RUN mkdir /app/
 COPY . /app/
