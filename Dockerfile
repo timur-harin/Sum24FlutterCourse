@@ -1,12 +1,7 @@
 FROM debian:latest AS build-env
 
 RUN apt-get update && \
-    apt-get install -y \
-    curl \
-    git \
-    wget \
-    xz-utils \
-    unzip libgconf-2-4 gdb libstdc++6 libglu1-mesa fonts-droid-fallback lib32stdc++6 python3 && \
+    apt-get install -y curl git wget unzip libgconf-2-4 gdb libstdc++6 libglu1-mesa fonts-droid-fallback lib32stdc++6 python3 gnupg && \
     rm -rf /var/lib/apt/lists/*
 
 RUN curl -s https://dl.google.com/linux/linux_signing_key.pub | apt-key add - && \
@@ -14,10 +9,6 @@ RUN curl -s https://dl.google.com/linux/linux_signing_key.pub | apt-key add - &&
     apt-get update && \
     apt-get install -y google-chrome-stable && \
     rm -rf /var/lib/apt/lists/*
-
-RUN apt-get clean
-
-# TODO clone original flutter github repo
 
 RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
 
@@ -29,17 +20,12 @@ RUN flutter channel stable
 RUN flutter upgrade
 RUN flutter config --enable-web
 
-
-RUN mkdir /app/
-COPY . /app/
 WORKDIR /app/
-
-# TODO get dependencies
+COPY pubspec.yaml pubspec.lock /app/
 RUN flutter pub get
+COPY . /app/
 
-# TODO build web from needed file
-RUN flutter build web
+RUN flutter build web --release
 
 FROM nginx:1.21.1-alpine
-
 COPY --from=build-env /app/build/web /usr/share/nginx/html

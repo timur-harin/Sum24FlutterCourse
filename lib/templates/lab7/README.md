@@ -21,5 +21,5 @@ Add new job to build windows application in windows machine using GitHub actions
 
 ## Docker
 
-Add needed lines for exsists Dockerfile as linux container for web app 
+Add needed lines for exsists Dockerfile as linux container for web app -- done
 
