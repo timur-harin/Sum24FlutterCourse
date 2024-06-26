@@ -4,11 +4,11 @@
 
 ### Unit test 
 
-TODOs in test/unit_test.dart to validate email
+TODOs in test/unit_test.dart to validate email - done
 
 ### Widget test
 
-TODOs in test/profile_test.dart to check ProfileCard widget
+TODOs in test/profile_test.dart to check ProfileCard widget - done
 
 ### Golden test
 
@@ -16,10 +16,10 @@ TODOs in test/golden_test.dart to pass pixel_perfect as in lecture
 
 ### Localization
 
-Using json in lib/l10n/ add localization change for login screen
+Using json in lib/l10n/ add localization change for login screen - done
 Use this doc link https://docs.flutter.dev/ui/accessibility-and-internationalization/internationalization
 
 ### Theme change
 
-Add theme switching using theme notifier
+Add theme switching using theme notifier - done
 
