@@ -1,1 +1,15 @@
 include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    - avoid_print
+    - prefer_const_constructors
+    - prefer_const_literals_to_create_immutables
+    - unnecessary_new
+    - annotate_overrides
+    - always_declare_return_types
+    - avoid_returning_null
+    - prefer_final_fields
+    - prefer_single_quotes
+    - unnecessary_this
+    - use_key_in_widget_constructors

@@ -445,6 +445,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  my_app:
+    dependency: "direct main"
+    description:
+      name: my_app
+      sha256: "0e736d837d4e3018955a819f2d032c96c8c0cc5405821edc79b8cd4996184f10"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   nested:
     dependency: transitive
     description:
