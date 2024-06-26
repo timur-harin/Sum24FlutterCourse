@@ -27,8 +27,13 @@ jobs:
 
             - run: flutter build web --release lib/templates/lab7/main.dart
 
-            - uses: bluefireteam/flutter-gh-pages@v7
-              with:
-                customArgs: "lib/templates/lab7/main.dart"
-
-
+    build-windows:
+        runs-on: windows-latest
+        steps:
+            - name: Clone repository
+                uses: actions/checkout@v4
+            - name: Set up Flutter
+                uses: subosito/flutter-action@v2
+                with:
+                channel: stable
+            - run: flutter build windows lib/templates/lab7/main.dart
