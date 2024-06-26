@@ -21,7 +21,7 @@ jobs:
 
             - run: flutter analyze --no-fatal-warnings --no-fatal-infos lib/templates/lab7/ 
 
-            - run: flutter test test/widget_test.dart
+            - run: flutter test test/test_widget.dart
 
             - run: flutter build web --release lib/templates/lab7/main.dart
                 
@@ -40,4 +40,3 @@ jobs:
                 flutter-version: 3.22.2
             - run: flutter pub get
             - run: flutter build windows --release
-            
