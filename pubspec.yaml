@@ -34,7 +34,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  enable-web: true
   assets:
     - assets/
     - assets/fonts/
