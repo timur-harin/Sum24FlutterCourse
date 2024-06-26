@@ -16,6 +16,7 @@ void main() {
     );
 
     // TODO fix to pass this using 'flutter test'
+    
 
     await screenMatchesGolden(tester, 'login_screen');
 
