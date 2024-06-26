@@ -1,4 +1,4 @@
-name: CI/CD
+name: Build Web
 
 on:
   push:
@@ -9,17 +9,6 @@ on:
       - lab7
 
 jobs:
-  analyze:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          flutter-version: '3.22.2'
-      - run: flutter pub get
-      - run: flutter analyze --no-fatal-warnings --no-fatal-infos
-
   test:
     runs-on: ubuntu-latest
     steps:
@@ -27,32 +16,16 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: '3.22.2'
+          flutter-version: 3.22.2
       - run: flutter pub get
-      - run: flutter test
 
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          flutter-version: '3.22.2'
-      - run: flutter pub get
-      - run: flutter build web --release
+      - run: flutter test test/test.dart
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
+      - run: flutter analyze  --no-fatal-warnings --no-fatal-infos lib/livecoding/cicd/
+
+      - run: flutter build web --release lib/templates/lab7/main.dart
+
+      - uses: bluefireteam/flutter-gh-pages@v7
         with:
-          channel: stable
-          flutter-version: '3.22.2'
-      - name: Deploy to GitHub Pages
-        uses: bluefireteam/flutter-gh-pages@v7
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: build/web
+          baseHref: /Sum24FlutterCourse/
+          customArgs: --target="lib/templates/lab7/main.dart"
