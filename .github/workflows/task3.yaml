@@ -14,7 +14,7 @@ jobs:
         steps:
             - uses: actions/checkout@v4
             - uses: subosito/flutter-action@v2
-            with:
+              with:
                 channel: stable
                 flutter-version: 3.22.2
             - run: flutter pub get
@@ -26,5 +26,5 @@ jobs:
             - run: flutter build web --release lib/livecoding/cicd/main.dart
                 
             - uses: bluefireteam/flutter-gh-pages@v7
-            with:
+              with:
                 customArgs: "lib/livecoding/cicd/main.dart"
