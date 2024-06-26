@@ -19,17 +19,10 @@ jobs:
                 flutter-version: 3.22.2
             - run: flutter pub get
 
-            - run: flutter test test/test.dart
+            - run: flutter analyze lib/templates/lab7/main.dart
 
-            - run: flutter analyze  --no-fatal-warnings --no-fatal-infos lib/livecoding/cicd/ 
+            - run: flutter test test/test.dart
 
             - run: flutter build web --release lib/livecoding/cicd/main.dart
 
-            - uses: bluefireteam/flutter-gh-pages@v7
-              with:
-                customArgs: "lib/livecoding/cicd/main.dart"
-
-
-
-            
 
