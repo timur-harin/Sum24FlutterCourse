@@ -22,3 +22,4 @@ Add new job to build windows application in windows machine using GitHub actions
 
 Add needed lines for exsists Dockerfile as linux container for web app 
 
+cd /Users/lana/developer/Sum24FlutterCourse-1/Dockerfile

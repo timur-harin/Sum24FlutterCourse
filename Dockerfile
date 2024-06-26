@@ -5,7 +5,9 @@ FROM debian:latest AS build-env
 RUN apt-get update 
 
 # Install required dependencies for Flutter
-RUN apt-get install -y curl git unzip xz-utils zip libglu1-mesa
+RUN apt-get install -y bash curl file git unzip which xz-utils zip
+
+RUN apt-get clean
 
 # Download the latest stable version of Flutter SDK
 RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
@@ -36,8 +38,14 @@ RUN flutter pub get
 # Build the web application
 RUN flutter build web
 
+RUN adduser nonroot
+
+USER nonroot
+
 # Use the NGINX image to serve the built web application
 FROM nginx:1.21.1-alpine
 
 # Copy the built web application to the NGINX html directory
 COPY --from=build-env /app/build/web /usr/share/nginx/html
+
+HEALTHCHECK --interval=1m --timeout=3s CMD curl --fail http://localhost:80/ || exit 1
