@@ -31,6 +31,7 @@ analyzer:
     prefer_final_fields: ignore
     use_key_in_widget_constructors: ignore
     avoid_unnecessary_containers: ignore
+    unused_local_variable: ignore
 
 linter:
   rules:
