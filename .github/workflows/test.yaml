@@ -29,16 +29,20 @@ jobs:
               with:
                 baseHref: /Sum24FlutterCourse/
                 customArgs: "lib/templates/lab7/main.dart"
-    build_windows:
+    build-windows:
         runs-on: windows-latest
         steps:
-         - uses: actions/checkout@v4
-         - uses: subosito/flutter-action@v2
-            with:
-            channel: stable
-            flutter-version: 3.22.2
-         - run: flutter pub get
-        - run: flutter build windows --release
+            - uses: actions/checkout@v4
+            - uses: subosito/flutter-action@v2
+              with:
+                channel: stable
+                flutter-version: 3.22.2
+            - run: flutter pub get
+
+            - name: Install Visual Studio Build Tools
+              run: choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --includeOptional"
+
+            - run: flutter build windows --release lib/templates/lab7/main.dart
 
 
             
