@@ -10,21 +10,20 @@ dependencies:
   dio: ^5.4.3+1
   flutter:
     sdk: flutter
-  flutter_localizations:  # Исправлено название зависимости
-    sdk: flutter
   flutter_riverpod: ^2.5.1
   freezed: ^2.5.2
   freezed_annotation: ^2.4.1
   golden_toolkit: ^0.15.0
   http: ^1.2.1
   intl: ^0.19.0
-  intl_translation: ^0.20.0
   json_annotation: ^4.9.0
   json_serializable: ^6.8.0
   provider: ^6.1.2
   riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
   shared_preferences: ^2.2.3
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -32,10 +31,11 @@ dev_dependencies:
   flutter_lints: ^4.0.0
   build_runner: ^2.4.11
   network_image_mock: ^2.1.1
-  intl_utils: ^2.0.0  # Добавлено
+  intl_utils: ^2.0.0
 
 flutter:
   uses-material-design: true
+  generate: true
   assets:
     - assets/
     - assets/fonts/
@@ -52,4 +52,6 @@ flutter_intl:
   enabled: true
   arb-dir: lib/l10n
   template-arb-file: intl_en.arb
+  output-dir: lib/generated
   output-localization-file: app_localizations.dart
+  output-class: AppLocalizations
