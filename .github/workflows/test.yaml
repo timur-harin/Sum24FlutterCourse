@@ -3,7 +3,7 @@ name: Build Web
 on: 
     push:
         branches:
-            - main
+            - lab7
     pull_request:
         branches:
             - lab7
