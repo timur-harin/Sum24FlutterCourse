@@ -1,0 +1,35 @@
+name: Build Web
+
+on: 
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: subosito/flutter-action@v2
+              with:
+                channel: stable
+                flutter-version: 3.22.2
+            - run: flutter pub get
+
+            - run: flutter test test/test.dart
+
+            - run: flutter analyze  --no-fatal-warnings --no-fatal-infos lib/livecoding/cicd/ 
+
+            - run: flutter build web --release lib/livecoding/cicd/main.dart
+
+            - uses: bluefireteam/flutter-gh-pages@v7
+              with:
+                customArgs: "lib/livecoding/cicd/main.dart"
+
+
+
+            
+
