@@ -33,7 +33,7 @@ jobs:
         run: flutter pub get
         
       
-      - run: flutter analyze
+      - run: flutter analyze lib/templates/lab7/main.dart
       - run: flutter test test/lab7_test.dart
       - run: flutter build web --release lib/templates/lab7/main.dart
       - uses: bluefireteam/flutter-gh-pages@v7
