@@ -25,11 +25,10 @@ jobs:
 
       - run: flutter analyze lib/templates/lab7/main.dart
       - run: flutter test test/test_main.dart
-      - run: flutter build web --release lib/templates/lab7/main.dart
       - uses: bluefireteam/flutter-gh-pages@v7
         with:
           baseHref: /Sum24FlutterCourse/
-          customArgs: "lib/templates/lab7/main.dart"
+          customArgs: --target="lib/templates/lab7/main.dart"
 
   build_win:
     runs-on: windows-latest
