@@ -2,7 +2,7 @@
 
 ## Develop a Cross-Platform Flutter Healthy App
 
-### Description: 
+### Description:
 This is a team project designed for 3-4 students to collaborate on the development of a mobile application using Flutter. The project aims to provide hands-on experience with various aspects of app development, including asynchronous programming, network handling, testing, continuous integration and deployment (CI/CD), animations, theming, localization, and state management. The application should address a specific problem and demonstrate a range of features through a user-friendly interface.
 
 ### Requirements:
