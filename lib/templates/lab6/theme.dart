@@ -9,5 +9,9 @@ class ThemeNotifier extends ChangeNotifier {
 
   void switchTheme() {
     // TODO add switch theme
+    _currentTheme = _currentTheme == ThemeData.light()
+        ? ThemeData.dark()
+        : ThemeData.light();
+    notifyListeners();
   }
 }

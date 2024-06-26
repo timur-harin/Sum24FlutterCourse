@@ -1,0 +1,9 @@
+{
+    "@locale": "en",
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "login": "Login",
+    "russian": "Russian",
+    "english": "English"
+}

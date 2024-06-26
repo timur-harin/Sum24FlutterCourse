@@ -8,7 +8,9 @@ void main() {
     final builder = GoldenBuilder.grid(
       columns: 1,
       widthToHeightRatio: 0.5,
-    )..addScenario('Login Screen', MaterialApp(home: LoginScreen()));
+    )..addScenario('Login Screen', MaterialApp(home: LoginScreen(
+      changing: (_) {print({"Changed"});},
+    )));
 
     await tester.pumpWidgetBuilder(
       builder.build(),
@@ -16,6 +18,8 @@ void main() {
     );
 
     // TODO fix to pass this using 'flutter test'
+
+    await tester.pumpAndSettle();
 
     await screenMatchesGolden(tester, 'login_screen');
 
