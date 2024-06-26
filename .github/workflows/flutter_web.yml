@@ -56,7 +56,7 @@ jobs:
     - name: Enable Windows desktop
       run: flutter config --enable-windows-desktop
 
-      - name: Analyze code
+    - name: Analyze code
       run: flutter analyze
 
     - name: Run tests
