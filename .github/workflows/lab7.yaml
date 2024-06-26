@@ -22,4 +22,21 @@ jobs:
         run: flutter pub get
 
       - name: Run tests
-        run: flutter test widget_test.dart
+        run: flutter test test/widget_test.dart
+
+  build_windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: '3.4.3'
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Build Windows application
+        run: flutter build windows
