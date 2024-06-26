@@ -35,19 +35,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-<<<<<<< HEAD
-    - assets/svg/
-=======
-    - assets/
-    - assets/fonts/
-
-
-  fonts:
-    - family: Coves
-      fonts:
-        - asset: assets/fonts/bold.otf
-          weight: 700
-        - asset: assets/fonts/light.otf
-          weight: 400
->>>>>>> ff1d0f9238b792cc0bcc0722d2614d00c0e7ff68

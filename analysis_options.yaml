@@ -1,1 +1,16 @@
 include: package:flutter_lints/flutter.yaml
+analyzer:
+  exclude:
+    - path/to/files/**
+  errors:
+    unused_local_variable: ignore
+    unused_element: ignore
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+  linter:
+    rules:
+      - prefer_const_constructors
+      - prefer_const_declarations
+      - avoid_relative_lib_imports
+      - avoid_classes_with_only_static_members

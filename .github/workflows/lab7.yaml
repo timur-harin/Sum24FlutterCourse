@@ -1,0 +1,59 @@
+name: Dart CI/CD
+
+on:
+  push:
+    branches: [ lab7 ]
+  pull_request:
+    branches: [ lab7 ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '2.5.3'
+
+      - run: flutter pub get
+
+      - run: flutter analyze
+
+      - run: flutter test
+
+      - name: Build and Deploy
+        run: |
+          flutter build web
+          cd build/web
+          git init
+          git config user.name "GitHub Actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Deploy to GitHub Pages"
+          git push --force https://${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git master:gh-pages
+
+  build_windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '2.5.3'
+
+      - run: flutter pub get
+
+      - run: flutter build windows
