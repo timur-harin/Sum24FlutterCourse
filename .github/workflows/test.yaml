@@ -3,10 +3,10 @@ name: Build Web
 on:
   push:
     branches:
-      - main
+      - lab7
   pull_request:
     branches:
-      - main
+      - lab7
 
 jobs:
   test:
@@ -28,3 +28,6 @@ jobs:
       - uses: bluefireteam/flutter-gh-pages@v7
         with:
           customArgs: "lib/livecoding/cicd/main.dart"
+
+    - name: Run widget tests
+        run: flutter test test/widget_test.dart
