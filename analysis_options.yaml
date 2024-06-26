@@ -1,1 +1,17 @@
 include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    avoid_print: ignore
+    avoid_unnecessary_containers: ignore
+    prefer_const_constructors: ignore
+
+analyzer:
+  errors:
+    camel_case_types: ignore
+    unused_import: ignore
+    unused_local_variable: ignore
+
+exclude:
+  - 'lib/**/*_test.dart'
+  - 'lib/livecoding/json/freezed/serialization.freezed.dart'
