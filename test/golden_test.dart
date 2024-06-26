@@ -12,14 +12,14 @@ void main() {
 
     await tester.pumpWidgetBuilder(
       builder.build(),
-      surfaceSize: Size(1000, 2000), 
+      surfaceSize: Size(1000, 2000),
     );
-
-    // TODO fix to pass this using 'flutter test'
 
     await screenMatchesGolden(tester, 'login_screen');
 
-    // Test using flutter test test/golden_test.dart
-
+    await screenMatchesGolden(tester, 'login_screen',
+        customPump: (WidgetTester tester) async {
+      await tester.pump(const Duration(seconds: 1));
+    });
   });
 }
