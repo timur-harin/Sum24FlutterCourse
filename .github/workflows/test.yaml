@@ -6,7 +6,7 @@ on:
             - main
     pull_request:
         branches:
-            - main
+            - lab7
 
 jobs:
     test:
