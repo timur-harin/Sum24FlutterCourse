@@ -27,4 +27,4 @@ jobs:
                 
             - uses: bluefireteam/flutter-gh-pages@v7
             with:
-                github_token: ${{ secrets.GITHUB_TOKEN }}
+                customArgs: "lib/livecoding/cicd/main.dart"
