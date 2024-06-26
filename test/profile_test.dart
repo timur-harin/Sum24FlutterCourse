@@ -1,6 +1,7 @@
 import 'package:education/templates/lab6/card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:network_image_mock/network_image_mock.dart';
 
 void main() {
   testWidgets('ProfileCard displays correct information',
@@ -12,9 +13,21 @@ void main() {
 
     // Act
     // TODO add test using pumpWidget
+    await mockNetworkImagesFor(() async {
+      await tester.pumpWidget(const MaterialApp(
+          home: ProfileCard(
+              description: description,
+              name: name,
+              imageUrl: imageUrl
+          )));
+    });
+    await tester.pumpAndSettle(const Duration(seconds: 2));
 
     // Assert
     // TODO add assertions using expect and findsOneWidget
+    expect(find.text(name), findsOneWidget);
+    expect(find.text(description), findsOneWidget);
+    expect(find.byType(CircleAvatar), findsOneWidget);
 
     // Test using flutter test test/custom_button_test.dart
   });

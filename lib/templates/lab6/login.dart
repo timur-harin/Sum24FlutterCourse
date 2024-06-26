@@ -1,6 +1,7 @@
 import 'package:education/templates/lab6/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -8,8 +9,8 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-    //  get from localization
-     ""
+          // localization?.title ?? 'Title',
+          ""
         ),
         actions: [
           IconButton(
