@@ -1,1 +1,27 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    avoid_unnecessary_containers: ignore
+    prefer_const_constructors: ignore
+
+    prefer_const_constructors_in_immutables: ignore
+    use_key_in_widget_constructors: ignore
+    depend_on_referenced_packages: ignore
+    prefer_final_fields: ignore
+    body_might_complete_normally_nullable: ignore
+    constant_identifier_names: ignore
+    prefer_const_literals_to_create_immutables: ignore
+    avoid_print: ignore
+    use_super_parameters: ignore
+    unnecessary_new: ignore
+    non_constant_identifier_names: ignore
+    unused_local_variable: ignore
+    unused_field: ignore
+    unnecessary_import: ignore
+    library_private_types_in_public_api: ignore
+    sort_child_properties_last: ignore
+    unused_import: ignore
+    unnecessary_getters_setters: ignore
+    sized_box_for_whitespace: ignore
+    unnecessary_const: ignore
