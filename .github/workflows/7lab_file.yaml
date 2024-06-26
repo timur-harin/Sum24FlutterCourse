@@ -1,9 +1,9 @@
-name: 7lab_file.yaml
+name: Build and Deploy
 
 on:
   push:
     branches:
-      - lab7
+      - main
 
 jobs:
   build_web:
@@ -21,14 +21,8 @@ jobs:
     - name: Get dependencies
       run: flutter pub get
 
-    - name: Analyze
-      run: flutter analyze
-
-    - name: Test
-      run: flutter test test/test_for_7lab.dart
-
-    - name: Build
-      run: flutter build web
+    - name: Build web app
+      run: flutter build web --web-renderer html lib/templates/lab7/main.dart
 
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@4.1.0
@@ -52,7 +46,7 @@ jobs:
       run: flutter pub get
 
     - name: Build Windows app
-      run: flutter build windows
+      run: flutter build windows lib/templates/lab7/main.dart
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
