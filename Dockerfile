@@ -1,28 +1,20 @@
-FROM debian:latest AS build-env
+# Use the official Dart image as the base image
+FROM dart:stable AS build
 
-RUN apt-get update 
-# Add apt-get install for flutter linux from 
-# https://docs.flutter.dev/get-started/install/linux/desktop?tab=download
-RUN apt-get clean
+# Resolve app dependencies.
+WORKDIR /app
+COPY pubspec.* ./
+RUN dart pub get
 
-# TODO clone original flutter github repo
+# Copy app source code and AOT compile the app.
+COPY . ./
+RUN dart pub get --offline
+RUN dart compile exe bin/server.dart -o bin/server
 
-ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
+# Use the official Dart runtime image to package the AOT compiled app.
+FROM scratch
+COPY --from=build /runtime/ /
+COPY --from=build /app/bin/server /app/bin/
 
-RUN flutter doctor -v
-
-RUN flutter channel stable
-RUN flutter upgrade
-RUN flutter config --enable-web
-
-
-RUN mkdir /app/
-COPY . /app/
-WORKDIR /app/
-
-# TODO get dependencies
-# TODO build web from needed file
-
-FROM nginx:1.21.1-alpine
-
-COPY --from=build-env /app/build/web /usr/share/nginx/html
+# Start the server.
+CMD ["app/bin/server"]
