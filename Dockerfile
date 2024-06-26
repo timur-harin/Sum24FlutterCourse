@@ -1,28 +1,36 @@
-FROM debian:latest AS build-env
+# Dockerfile
+FROM ubuntu:20.04
 
-RUN apt-get update 
-# Add apt-get install for flutter linux from 
-# https://docs.flutter.dev/get-started/install/linux/desktop?tab=download
-RUN apt-get clean
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+  curl \
+  git \
+  unzip \
+  xz-utils \
+  zip \
+  libglu1-mesa
 
-# TODO clone original flutter github repo
+# Install Flutter
+RUN git clone https://github.com/flutter/flutter.git -b stable --depth 1 /flutter
+ENV PATH="/flutter/bin:/flutter/bin/cache/dart-sdk/bin:${PATH}"
 
-ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
+# Precache Flutter Web
+RUN flutter precache --web
 
-RUN flutter doctor -v
+# Set working directory
+WORKDIR /app
 
-RUN flutter channel stable
-RUN flutter upgrade
-RUN flutter config --enable-web
+# Copy app files
+COPY . .
 
+# Get dependencies
+RUN flutter pub get
 
-RUN mkdir /app/
-COPY . /app/
-WORKDIR /app/
+# Build the web app
+RUN flutter build web
 
-# TODO get dependencies
-# TODO build web from needed file
+# Expose port
+EXPOSE 8080
 
-FROM nginx:1.21.1-alpine
-
-COPY --from=build-env /app/build/web /usr/share/nginx/html
+# Run the web app
+CMD ["flutter", "run", "-d", "web-server", "--web-port", "8080"]
