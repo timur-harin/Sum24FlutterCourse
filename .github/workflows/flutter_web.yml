@@ -3,10 +3,10 @@ name: TestCICD
 on:
   push:
     branches: 
-      - lab7
+      - lab-7
   pull_request:
     branches: 
-      - lab7
+      - lab-7
 
 jobs:
   build:
