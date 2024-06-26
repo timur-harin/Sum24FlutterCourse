@@ -18,7 +18,11 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'latest' # or specify the required version
+          flutter-version: '2.8.1'
+          channel: stable
+          architecture: X64
+          cache: false
+          pub-cache-path: default
 
       - name: Install dependencies
         run: flutter pub get
@@ -38,7 +42,11 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'latest'
+          flutter-version: '2.8.1'
+          channel: stable
+          architecture: X64
+          cache: false
+          pub-cache-path: default
 
       - name: Install dependencies
         run: flutter pub get
@@ -57,7 +65,11 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'latest'
+          flutter-version: '2.8.1'
+          channel: stable
+          architecture: X64
+          cache: false
+          pub-cache-path: default
 
       - name: Install dependencies
         run: flutter pub get
