@@ -8,7 +8,6 @@ Add rules for analyzers in analysis_options.yaml to avoid infos and warnings in 
 
 Add widget test for main.dart and apply running this test in GitHub Actions
 
-
 ## CI/CD
 
 Add new yaml file to get dependencies, analyze, test, and deploy using GitHub actions - this web app
