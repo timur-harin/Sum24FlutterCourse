@@ -1,20 +1,32 @@
-# Use the official Dart image as the base image
-FROM dart:stable AS build
+FROM debian:latest AS build-env
 
-# Resolve app dependencies.
-WORKDIR /app
-COPY pubspec.* ./
-RUN dart pub get
+RUN apt-get update
+RUN apt-get install -y bash curl file git unzip which xz-utils zip
 
-# Copy app source code and AOT compile the app.
-COPY . ./
-RUN dart pub get --offline
-RUN dart compile exe bin/server.dart -o bin/server
+RUN apt-get clean
 
-# Use the official Dart runtime image to package the AOT compiled app.
-FROM scratch
-COPY --from=build /runtime/ /
-COPY --from=build /app/bin/server /app/bin/
+RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
+ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
+RUN flutter doctor -v
+RUN flutter channel stable
+RUN flutter upgrade
 
-# Start the server.
-CMD ["app/bin/server"]
+RUN flutter config --enable-web
+
+RUN mkdir /app/
+
+COPY . /app/
+
+WORKDIR /app/
+RUN flutter pub get
+RUN flutter build web
+
+RUN adduser nonroot
+
+USER nonroot
+
+FROM nginx:1.21.1-alpine
+
+COPY --from=build-env /app/build/web /usr/share/nginx/html
+
+HEALTHCHECK --interval=1m --timeout=3s CMD curl --fail http://localhost:80/ || exit 1
