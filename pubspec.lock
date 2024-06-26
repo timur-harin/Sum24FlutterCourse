@@ -271,7 +271,11 @@ packages:
     source: hosted
     version: "0.2.0"
   flutter_localizations:
+<<<<<<< HEAD
     dependency: "direct main"
+=======
+    dependency: transitive
+>>>>>>> 8153cba42d2512afba394f7988dc5f86a4fdccfc
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -326,6 +330,7 @@ packages:
     source: hosted
     version: "2.1.2"
   golden_toolkit:
+<<<<<<< HEAD
     dependency: "direct dev"
     description:
       name: golden_toolkit
@@ -333,6 +338,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.0"
+=======
+    dependency: "direct main"
+    description:
+      name: golden_toolkit
+      sha256: "8f74adab33154fe7b731395782797021f97d2edc52f7bfb85ff4f1b5c4a215f0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.15.0"
+>>>>>>> 8153cba42d2512afba394f7988dc5f86a4fdccfc
   graphs:
     dependency: transitive
     description:
@@ -373,6 +387,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+<<<<<<< HEAD
   image_size_getter:
     dependency: transitive
     description:
@@ -381,6 +396,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.3"
+=======
+>>>>>>> 8153cba42d2512afba394f7988dc5f86a4fdccfc
   intl:
     dependency: "direct main"
     description:
@@ -397,6 +414,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.20.0"
+<<<<<<< HEAD
   intl_utils:
     dependency: "direct dev"
     description:
@@ -405,6 +423,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.8.7"
+=======
+>>>>>>> 8153cba42d2512afba394f7988dc5f86a4fdccfc
   io:
     dependency: transitive
     description:

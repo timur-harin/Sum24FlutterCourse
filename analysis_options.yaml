@@ -1,1 +1,9 @@
 include: package:flutter_lints/flutter.yaml
+analyzer:
+  exclude:
+    - lib\templates\lab7\main.dart
+
+linter:
+  rules:
+    avoid_print: false
+    prefer_const_constructors: true

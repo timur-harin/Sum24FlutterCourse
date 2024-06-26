@@ -22,10 +22,17 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           theme: theme.currentTheme,
           localizationsDelegates: [
+<<<<<<< HEAD
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
+=======
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            // Add your generated delegate here
+>>>>>>> 8153cba42d2512afba394f7988dc5f86a4fdccfc
           ],
           supportedLocales: [
             const Locale('en', ''),
@@ -37,3 +44,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8153cba42d2512afba394f7988dc5f86a4fdccfc

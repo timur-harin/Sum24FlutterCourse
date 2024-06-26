@@ -10,16 +10,25 @@ dependencies:
   dio: ^5.4.3+1
   flutter:
     sdk: flutter
+<<<<<<< HEAD
   flutter_gen: ^5.6.0
   flutter_localization: ^0.2.0
   flutter_localizations:
     sdk: flutter
   provider: ^6.1.2
   intl: any
+=======
+  flutter_localization: ^0.2.0
+>>>>>>> 8153cba42d2512afba394f7988dc5f86a4fdccfc
   flutter_riverpod: ^2.5.1
   freezed: ^2.5.2
   freezed_annotation: ^2.4.1
+  golden_toolkit: ^0.15.0
   http: ^1.2.1
+<<<<<<< HEAD
+=======
+  intl: ^0.19.0
+>>>>>>> 8153cba42d2512afba394f7988dc5f86a4fdccfc
   intl_translation: ^0.20.0
   json_annotation: ^4.9.0
   json_serializable: ^6.8.0
@@ -39,4 +48,19 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+<<<<<<< HEAD
   generate: true
+=======
+  assets:
+    - assets/
+    - assets/fonts/
+
+
+  fonts:
+    - family: Coves
+      fonts:
+        - asset: assets/fonts/bold.otf
+          weight: 700
+        - asset: assets/fonts/light.otf
+          weight: 400
+>>>>>>> 8153cba42d2512afba394f7988dc5f86a4fdccfc
