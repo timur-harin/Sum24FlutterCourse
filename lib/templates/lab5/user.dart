@@ -2,7 +2,7 @@
 // TODO add user.g.dart as part
 // TODO add user.freezed.dart as part
 
-@freezed
+/*@freezed
 class User with _$User {
   // TODO task 3 to make this class for url http://jsonplaceholder.typicode.com/users/
 }
@@ -13,3 +13,4 @@ Future<List<User>> fetchUsers() async {
 
   return [];
 }
+*/

@@ -3,9 +3,9 @@
 class Post {
   // TODO task 1 to make this class for url http://jsonplaceholder.typicode.com/posts
 
-  factory Post.fromJson(Map<String, dynamic> json) {}
+  //factory Post.fromJson(Map<String, dynamic> json) {}
 
-  factory Post.toJson(Post post) {}
+  //factory Post.toJson(Post post) {}
 }
 
 Future<List<Post>> fetchPosts() async {
