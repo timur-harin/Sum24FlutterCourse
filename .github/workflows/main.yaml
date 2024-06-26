@@ -23,5 +23,5 @@ jobs:
             - run: flutter build web --release lib/templates/lab7/main.dart
             - uses: bluefireteam/flutter-gh-pages@v7
               with:
-                baseHref: '/Almasbag15/Sum24FlutterCourse/'
+                baseHref: '/'
                 customArgs: "lib/templates/lab7/main.dart"
