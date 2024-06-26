@@ -27,8 +27,7 @@ jobs:
 
             - uses: bluefireteam/flutter-gh-pages@v7
               with:
-                    baseHref: /
-
+                customArgs: "lib/livecoding/cicd/main.dart"
 
 
 
