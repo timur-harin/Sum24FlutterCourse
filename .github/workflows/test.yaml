@@ -102,7 +102,8 @@ jobs:
 
             - run: flutter analyze  --no-fatal-warnings --no-fatal-infos lib/templates/lab7/main.dart 
 
-            - run: flutter build web --release lib/templates/lab7/main.dart
+            - run: flutter build web
+              
 
             - uses: bluefireteam/flutter-gh-pages@v7
               with:
