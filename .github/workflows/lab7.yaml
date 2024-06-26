@@ -36,7 +36,10 @@ jobs:
           channel: 'stable'
 
       - name: Install dependencies
-        run: dart pub get
+        run: flutter pub get
 
       - name: Build Windows application
         run: flutter build windows
+
+      - name: Run tests
+        run: flutter test test/widget_test.dart
