@@ -19,7 +19,7 @@ jobs:
     - run: flutter pub get
     - run: flutter test test/test_for_main.dart
     - run: flutter analyze lib/templates/lab7
-    - run: flutter build web 
+    - run: flutter build web lib/templates/lab7/main.dart
 
     # - name: Deploy to GitHub Pages
     #   uses: peaceiris/actions-gh-pages@v3
