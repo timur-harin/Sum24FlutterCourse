@@ -1,6 +1,7 @@
 import 'package:education/templates/lab6/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -8,8 +9,7 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-    //  get from localization
-     ""
+          AppLocalizations.of(context)!.title,
         ),
         actions: [
           IconButton(
@@ -28,14 +28,14 @@ class LoginScreen extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                // labelText: get from localization
+                label: Text(AppLocalizations.of(context)!.username),
               ),
             ),
             SizedBox(height: 20),
             TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                // labelText: get from localization
+                label: Text(AppLocalizations.of(context)!.password),
               ),
               obscureText: true,
             ),
@@ -45,7 +45,7 @@ class LoginScreen extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {},
-                child: Text(""),
+                child: Text(AppLocalizations.of(context)!.login),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.red,
                 ),

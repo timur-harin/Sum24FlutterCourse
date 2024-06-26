@@ -14,12 +14,6 @@ void main() {
       builder.build(),
       surfaceSize: Size(1000, 2000), 
     );
-
-    // TODO fix to pass this using 'flutter test'
-
     await screenMatchesGolden(tester, 'login_screen');
-
-    // Test using flutter test test/golden_test.dart
-
   });
 }
