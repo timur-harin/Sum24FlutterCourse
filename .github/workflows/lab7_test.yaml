@@ -37,5 +37,6 @@ jobs:
           with:
             channel: stable
         - run: flutter build windows lib/templates/lab7/main.dart
+        - run: .\build\windows\x64\runner\Release\education.exe
 
 
