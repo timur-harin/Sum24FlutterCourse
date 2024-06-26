@@ -3,23 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 
-void main() {
+/* void main() {
   testGoldens('LoginScreen golden test', (WidgetTester tester) async {
     final builder = GoldenBuilder.grid(
       columns: 1,
       widthToHeightRatio: 0.5,
-    )..addScenario('Login Screen', MaterialApp(home: LoginScreen()));
+    )..addScenario('Login Screen', const MaterialApp(home: LoginScreen()));
 
     await tester.pumpWidgetBuilder(
       builder.build(),
       surfaceSize: const Size(1000, 2000), 
     );
 
-    // TODO fix to pass this using 'flutter test'
+    await tester.pumpAndSettle();
 
     await screenMatchesGolden(tester, 'login_screen');
+  });
+} */
 
-    // Test using flutter test test/golden_test.dart
-
+void main() {
+  testGoldens('LoginScreen golden test', (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(home: LoginScreen()));
+    await expectLater(
+      find.byType(LoginScreen),
+      matchesGoldenFile('login_screen.png'),
+    );
   });
 }
