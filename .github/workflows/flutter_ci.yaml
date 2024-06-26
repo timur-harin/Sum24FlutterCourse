@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: ci/cd pipeline
 
 on:
   push:
@@ -20,9 +20,6 @@ jobs:
         with:
           flutter-version: '3.22.2'
           channel: stable
-          # architecture: X64
-          # cache: false
-          # pub-cache-path: default
 
       - name: Install dependencies
         run: flutter pub get
@@ -41,9 +38,6 @@ jobs:
         with:
           flutter-version: '3.22.2'
           channel: stable
-          # architecture: X64
-          # cache: false
-          # pub-cache-path: default
 
       - name: Install dependencies
         run: flutter pub get
@@ -64,9 +58,6 @@ jobs:
         with:
           flutter-version: '3.22.2'
           channel: stable
-          # architecture: X64
-          # cache: false
-          # pub-cache-path: default
 
       - name: Install dependencies
         run: flutter pub get
