@@ -57,37 +57,32 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
-    // return const FlutterLogo(
-    //   size: 100,
-    // );
-
-    return const Text("Hello Flutter!", style: TextStyle(fontStyle: FontStyle.italic, color: Colors.red, fontSize: 10));
+    return const FlutterLogo(
+      size: 100,
+    );
   }
 
   Widget exercise2() {
-    return const Icon(Icons.icecream, color: Colors.green, size: 140);
+    return const FlutterLogo(
+      size: 100,
+    );
   }
 
   Widget exercise3() {
-    Container cont = Container(width: 200, height: 200, child:
-    Image.network("https://get.wallhere.com/photo/anime-anime-girls-clothing-Platinum-Wind-costume-1600x1200-px-mangaka-540539.jpg"));
-    return cont;
-  }
-
-  void printFunction() {
-    print("Pressed");
+    return const FlutterLogo(
+      size: 100,
+    );
   }
 
   Widget exercise4() {
-    TextButton btn = TextButton(onPressed: printFunction, child: const Text("Button"));
-    return btn;
+    return const FlutterLogo(
+      size: 100,
+    );
   }
 
   Widget exercise5() {
-    Column col = Column(children: [
-      Container(child: const Text("Text"), padding: const EdgeInsets.symmetric(horizontal: 10.1, vertical: 2.1), color: Colors.red),
-      Container(child: const Icon(Icons.gamepad), margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5), color: Colors.blue)
-    ],);
-    return col;
+    return const FlutterLogo(
+      size: 100,
+    );
   }
 }
