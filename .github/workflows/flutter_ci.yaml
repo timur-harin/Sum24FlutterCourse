@@ -35,9 +35,9 @@ jobs:
         run: flutter build web --release
 
       - name: Deploy to GitHub Pages
+        if: success()  # Only deploy if previous steps were successful
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/web
           cname: your-custom-domain.com  # Optional: Add custom domain if needed
-
