@@ -28,7 +28,7 @@ jobs:
         run: flutter analyze
 
       - name: Run tests
-        run: flutter test test/test.dart
+        run: flutter test test/lab7_widget_test.dart
 
       - name: Build app
         run: flutter build web
