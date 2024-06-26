@@ -1,19 +1,41 @@
-# Use the official Dart image
-FROM dart:stable AS build
+# Use the latest Debian image as the build environment
+FROM debian:latest AS build-env
 
-# Resolve app dependencies
-WORKDIR /app
-COPY . .
-RUN dart pub get
+# Install necessary packages and clean up
+RUN apt-get update && \
+    apt-get install -y curl git unzip xz-utils zip libglu1-mesa && \
+    apt-get clean
 
-# Compile the app
-RUN dart compile exe bin/server.dart -o bin/server
+# Download and install Flutter
+RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
 
-# Use a minimal runtime image
-FROM scratch
-COPY --from=build /runtime/ /
-COPY --from=build /app/bin/server /app/bin/
-COPY --from=build /app/web /app/web/
+# Set Flutter to the stable channel and enable web support
+ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
 
-# Start the server
-CMD ["/app/bin/server"]
+RUN flutter doctor -v
+RUN flutter channel stable
+RUN flutter upgrade
+RUN flutter config --enable-web
+
+# Create and set the working directory
+RUN mkdir /app/
+COPY . /app/
+WORKDIR /app/
+
+# Get Flutter dependencies
+RUN flutter pub get
+
+# Build the Flutter web app
+RUN flutter build web
+
+# Use Nginx to serve the Flutter web app
+FROM nginx:1.21.1-alpine
+
+# Copy the built web app to the Nginx HTML directory
+COPY --from=build-env /app/build/web /usr/share/nginx/html
+
+# Expose port 80 to the outside world
+EXPOSE 80
+
+# Start Nginx server
+CMD ["nginx", "-g", "daemon off;"]
