@@ -1,1 +1,23 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    avoid_print: ignore
+    avoid_unnecessary_containers: ignore
+    prefer_const_constructors: ignore
+    prefer_const_literals_to_create_immutables: ignore
+    prefer_typing_uninitialized_variables: ignore
+    unnecessary_new: ignore
+    unnecessary_this: ignore
+    unused_local_variable: ignore
+
+linter:
+  rules:
+    avoid_print: false
+    avoid_unnecessary_containers: false
+    prefer_const_constructors: false
+    prefer_const_literals_to_create_immutables: false
+    prefer_typing_uninitialized_variables: false
+    unnecessary_new: false
+    unnecessary_this: false
+    unused_local_variable: false
