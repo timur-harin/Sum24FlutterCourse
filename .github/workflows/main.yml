@@ -39,3 +39,4 @@ jobs:
       - uses: bluefireteam/flutter-gh-pages@v7
         with:
           customArgs: "lib/templates/lab7/main.dart"
+          
