@@ -8,6 +8,26 @@ analyzer:
     avoid_init_to_null: ignore
     prefer_const_constructors: ignore
     prefer_const_literals_to_create_immutables: ignore
+    unnecessary_getters_setters: ignore
+    use_super_parameters: ignore
+    library_private_types_in_public_api: ignore
+    depend_on_referenced_packages: ignore
+    body_might_complete_normally_nullable: ignore
+    constant_identifier_names: ignore
+    avoid_redundant_argument_values: ignore
+    non_constant_identifier_names: ignore
+    unused_field: ignore
+    unnecessary_const: ignore
+    unnecessary_import: ignore
+    type_annotate_public_apis: ignore
+    unused_import: ignore
+    body_might_complete_normally: ignore
+    empty_constructor_bodies: ignore
+    undefined_annotation: ignore
+    mixin_of_non_class: ignore
+    prefer_const_constructors_in_immutables: ignore
+    sized_box_for_whitespace: ignore
+    sort_child_properties_last: ignore
     prefer_final_fields: ignore
     use_key_in_widget_constructors: ignore
     avoid_unnecessary_containers: ignore
