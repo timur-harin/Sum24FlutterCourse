@@ -21,6 +21,7 @@ class TestingApp extends StatelessWidget {
     return Consumer<ThemeNotifier>(
       builder: (context, theme, child) {
         return MaterialApp(
+          // debugShowCheckedModeBanner: false,
           theme: theme.currentTheme,
           locale: const Locale("ru"),
           localizationsDelegates: const [

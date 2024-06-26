@@ -51,7 +51,7 @@ class LoginScreen extends StatelessWidget {
                 onPressed: () {
                   showDialog(context: context, builder: (context) {return Dialog(
                     child: ProfileCard(
-                      imageUrl: 'https://w7.pngwing.com/pngs/981/645/png-transparent-default-profile-united-states-computer-icons-desktop-free-high-quality-person-icon-miscellaneous-silhouette-symbol.png',
+                      imageUrl: 'https://sun9-72.userapi.com/impf/c638220/v638220224/1f00f/-QQD7cDESJA.jpg?size=999x733&quality=96&sign=8a771962b08d7019fcc40eeb29ac430e&c_uniq_tag=-YwPY4s_VKq0VtkZKfBb91YKz4mmmFb4sSna7pBIJfk&type=album',
                       name: 'John Doe',
                       description: 'description',
                     ),
