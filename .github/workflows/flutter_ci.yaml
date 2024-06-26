@@ -1,48 +1,43 @@
-name: Flutter CI/CD
+name: CI/CD
 
 on:
   push:
     branches:
-      - main
+      - lab7
+  pull_request:
+    branches:
+      - lab7
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: '2.x'
+  build:
+    runs-on: windows-latest
 
-  dependencies:
-    needs: setup
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-      - run: flutter pub get
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-  analyze:
-    needs: dependencies
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-      - run: flutter analyze
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.22.1'
 
-  test:
-    needs: analyze
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-      - run: flutter test
+    - name: Install dependencies
+      run: flutter pub get
 
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-      - run: flutter build web
-      # Add deployment steps here based on the target platform, e.g., Firebase or GitHub Pages
+    - name: Analyze
+      run: flutter analyze
+
+    - name: Run tests
+      run: flutter test test/widget_test.dart
+
+    - name: Build web app
+      run: flutter build web
+
+    - name: Build Windows application
+      run: flutter build windows
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: build/web
