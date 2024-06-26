@@ -39,7 +39,14 @@ flutter:
   uses-material-design: true
   generate: true # Add this line
   assets:
+<<<<<<< HEAD
     - lib/l10n/
+=======
+    - assets/
+    - assets/fonts/
+
+
+>>>>>>> 8153cba42d2512afba394f7988dc5f86a4fdccfc
   fonts:
     - family: Coves
       fonts:

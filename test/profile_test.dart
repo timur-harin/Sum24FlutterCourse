@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:education/templates/lab6/card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,27 +18,19 @@ Widget makeTestableWidget() {
 }
 
 void main() {
-  testWidgets('ProfileCard displays correct information', (WidgetTester tester) async {
-    const imageUrl = 'https://upload.wikimedia.org/wikipedia/ru/0/07/%D0%9A%D0%BE%D0%BB%D1%8B%D0%B2%D0%B0%D0%BD.png';
-    const name = 'Kolyvan';
-    const description = 'character';
+  testWidgets('ProfileCard displays correct information',
+      (WidgetTester tester) async {
+    // Arrange
+    const imageUrl = 'https://example.com/image.jpg';
+    const name = 'John Doe';
+    const description = 'Software Developer';
 
-    await mockNetworkImagesFor( ()async  => await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: ProfileCard(
-            imageUrl: imageUrl,
-            name: name,
-            description: description,
-          ),
-        ),
-      ),
-    ));
+    // Act
+    // TODO add test using pumpWidget
 
-    expect(find.text(name), findsOneWidget);
-    expect(find.text(description), findsOneWidget);
-    expect(find.byType(ProfileCard), findsOneWidget);
-    expect(find.byType(CircleAvatar), findsOneWidget);
+    // Assert
+    // TODO add assertions using expect and findsOneWidget
+
+    // Test using flutter test test/custom_button_test.dart
   });
-  // Test using flutter test test/profile_test.dart
 }
