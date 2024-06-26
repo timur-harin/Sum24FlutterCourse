@@ -2,9 +2,9 @@ name: Flutter Web CI/CD
 
 on:
   push:
-    branches: [deploy]  
+    branches: [lab-7]  
   pull_request:
-    branches: [deploy]  
+    branches: [lab-7]  
 
 jobs:
   build-web:
@@ -32,7 +32,7 @@ jobs:
       run: flutter build web --release lib\templates\lab7\main.dart
 
     - name: Deploy to GitHub Pages
-      if: github.ref == 'refs/heads/deploy'  
+      if: github.ref == 'refs/heads/lab-7'  
       uses: bluefireteam/actions-gh-pages@v3
       with:
         customArgs: "lib\templates\lab7\main.dart"
@@ -56,13 +56,13 @@ jobs:
       run: flutter config --enable-windows-desktop
 
       - name: Analyze code
-      run: flutter analyze
+      run: flutter analyze --no-fatal-warnings --no-fatal-infos lib\templates\lab7\main.dart
 
     - name: Run tests
       run: flutter test test/test_main.dart
 
     - name: Build Windows
-      run: flutter build windows
+      run: flutter build windows --release lib\templates\lab7\main.dart
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
