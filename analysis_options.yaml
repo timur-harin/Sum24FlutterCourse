@@ -1,1 +1,8 @@
 include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    avoid_unnecessary_containers: ignore
+    prefer_const_constructors: ignore
+
+    
