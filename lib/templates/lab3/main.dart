@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(
-    // TODO to enable riverpod - add ProviderScope
-    WaterBalanceApp(),
-  );
+  runApp(ProviderScope(
+    child: WaterBalanceApp(),
+  )
+      // TODO to enable riverpod - add ProviderScope
+
+      );
 }
 
 class WaterBalanceApp extends StatelessWidget {
@@ -20,7 +22,7 @@ class WaterBalanceApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // TODO to run app - change to needed screen widget
-      home: null,
+      home: const HydrationScreen(),
     );
   }
 }
