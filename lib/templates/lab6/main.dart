@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (_) => ThemeNotifier(ThemeData.light()),
+      create: (_) => ThemeNotifier(ThemeData().brightness == Brightness.light),
       child: MyApp(),
     ),
   );
@@ -21,11 +22,12 @@ class MyApp extends StatelessWidget {
       builder: (context, theme, child) {
         return MaterialApp(
           theme: theme.currentTheme,
+          locale: Locale(Intl.getCurrentLocale()),
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
-            // Add your generated delegate here
+            AppLocalizations.delegate,
           ],
           supportedLocales: [
             const Locale('en', ''),

@@ -1,15 +1,16 @@
 import 'package:education/templates/lab6/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
-    //  get from localization
-     ""
+        localizations?.title ?? 'Title'
         ),
         actions: [
           IconButton(
@@ -28,14 +29,14 @@ class LoginScreen extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                // labelText: get from localization
+                labelText: localizations?.login ?? 'Login',
               ),
             ),
             SizedBox(height: 20),
             TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                // labelText: get from localization
+                labelText: localizations?.password ?? 'Password',
               ),
               obscureText: true,
             ),
