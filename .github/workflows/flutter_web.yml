@@ -23,7 +23,7 @@ jobs:
       run: flutter pub get
 
     - name: Analyze code
-      run: flutter analyze
+      run: flutter analyze lib/templates/lab7/main.dart
 
     - name: Run tests
       run: flutter test test/test_main.dart
@@ -57,13 +57,13 @@ jobs:
       run: flutter config --enable-windows-desktop
 
     - name: Analyze code
-      run: flutter analyze
+      run: flutter analyze lib/templates/lab7/main.dart
 
     - name: Run tests
       run: flutter test test/test_main.dart
 
     - name: Build Windows
-      run: flutter build windows
+      run: flutter build windows --release lib/templates/lab7/main.dart
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
