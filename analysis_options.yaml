@@ -1,1 +1,7 @@
 include: package:flutter_lints/flutter.yaml
+linter:
+  rules:
+    prefer_relative_imports:
+      enabled: false
+    unnecessary_null_aware_operator:
+      enabled: true
