@@ -17,7 +17,7 @@ void main() {
 
     // TODO fix to pass this using 'flutter test'
 
-    await screenMatchesGolden(tester, 'login_screen');
+    await screenMatchesGolden(tester, 'Some logins screen');
 
     // Test using flutter test test/golden_test.dart
 
