@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout repository
@@ -30,7 +30,10 @@ jobs:
       - name: Run tests
         run: flutter test test/lab7_widget_test.dart
 
-      - name: Build app
+      - name: Build windows app
+        run: flutter build windows
+
+      - name: Build web app
         run: flutter build web
 
       - name: Deploy to GitHub Pages
