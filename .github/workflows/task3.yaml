@@ -27,7 +27,7 @@ jobs:
         run: flutter pub get
 
       - name: Analyze code
-        run: flutter analyze lib\templates\lab7\main.dart
+        run: flutter analyze lib/templates/lab7/main.dart
 
       - name: Run tests
         run: flutter test test/test.dart
