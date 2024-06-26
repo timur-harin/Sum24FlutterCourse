@@ -29,7 +29,17 @@ jobs:
               with:
                 customArgs: "lib/templates/lab7/main.dart"
 
-    - run: flutter build windows --release lib/templates/lab7/main.dart
+    build:
+        runs-on: windows-latest
+        steps:
+        - uses: actions/checkout@v4
+        - uses: subosito/flutter-action@v2
+            with:
+            channel: stable
+            flutter-version: 3.22.2
+        - run: flutter pub get
+        - run: flutter build windows --release lib/templates/lab7/main.dart
+
 
 
 
