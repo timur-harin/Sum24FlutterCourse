@@ -4,8 +4,11 @@ on:
   push:
     branches: 
       - main
+      - lab7
   pull_request:
-    branches: [ main ]
+    branches: 
+      - main
+      - lab7
 
 jobs:
   build:
@@ -19,7 +22,7 @@ jobs:
     - run: flutter pub get
     - run: flutter test test/test_for_main.dart
     - run: flutter analyze lib/templates/lab7
-    - run: flutter build web
+    - run: flutter build web 
 
 
     # - name: Deploy to GitHub Pages
