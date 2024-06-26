@@ -1,0 +1,43 @@
+name: CI/CD lab7
+
+on:
+  push:
+    branches:
+      - lab7
+  pull_request:
+    branches:
+      - lab7
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.1'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test test/lab7_widget_test.dart
+
+      - name: Build windows app
+        run: flutter build windows
+
+      - name: Build web app
+        run: flutter build web
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/web
