@@ -1,43 +1,26 @@
 name: CI/CD
 
-on:
-  push:
-    branches:
-      - lab7
-  pull_request:
-    branches:
-      - lab7
+on: 
+    push:
+        branches:
+            - lab7
+    pull_request:
+        branches:
+            - lab7
 
 jobs:
-  build:
-    runs-on: windows-latest
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.22.1'
-
-    - name: Install dependencies
-      run: flutter pub get
-
-    - name: Analyze
-      run: flutter analyze lib/templates/lab7
-
-    - name: Run tests
-      run: flutter test test/widget_test.dart
-
-    - name: Build web app
-      run: flutter build web
-
-    - name: Build Windows application
-      run: flutter build windows
-
-    - name: Deploy to GitHub Pages
-    - uses: bluefireteam/flutter-gh-pages@v7
-      with:
-        baseHref: /Sum24FlutterCourse/
-        customArgs: "lib/templates/lab7/main.dart"
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: subosito/flutter-action@v2
+              with:
+                channel: stable
+                flutter-version: 3.22.2
+            - run: flutter pub get
+            - run: flutter test test/widget_test.dart
+            - run: flutter analyze lib/templates/lab7
+            - uses: bluefireteam/flutter-gh-pages@v7
+              with:
+                baseHref: /Sum24FlutterCourse/
+                customArgs: "lib/templates/lab7/main.dart"
