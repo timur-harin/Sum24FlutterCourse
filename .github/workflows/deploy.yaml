@@ -35,5 +35,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - uses: bluefireteam/flutter-gh-pages@v7
         with:
-          baseHref: /lab7
+          baseHref: /lab7/
           customArgs: "lib/templates/lab7/main.dart"
