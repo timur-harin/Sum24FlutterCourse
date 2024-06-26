@@ -1,12 +1,12 @@
-name: Build Web
+name: Web Sfed
 
 on:
   push:
     branches:
-      - main
+      - lab7
   pull_request:
     branches:
-      - main
+      - lab7
 
 jobs:
   test:
