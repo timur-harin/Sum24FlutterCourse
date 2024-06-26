@@ -15,10 +15,9 @@ void main() {
       ),
     );
 
-    // Act
-    await tester.pump(); // Rebuild the widget after the initial build
 
-    // Assert
+    await tester.pump();
+
     expect(find.text('Hello World!'), findsOneWidget);
   });
 }
