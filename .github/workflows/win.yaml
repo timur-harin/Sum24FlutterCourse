@@ -1,4 +1,4 @@
-name: Lab 7
+name: Lab 7 Windows
 
 on: 
     push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
     test:
-        runs-on: ubuntu-latest
+        runs-on: windows-latest
         steps:
             - uses: actions/checkout@v3
             - uses: subosito/flutter-action@v2
@@ -20,9 +20,5 @@ jobs:
             - run: flutter pub get
             - run: flutter test test/widget_test.dart
             - run: flutter analyze lib/templates/lab7
-            - uses: bluefireteam/flutter-gh-pages@v7
-              with:
-                baseHref: /Sum24FlutterCourse/
-                customArgs: "lib/templates/lab7/main.dart"
-                
- 
+            - run: flutter build windows
+            
