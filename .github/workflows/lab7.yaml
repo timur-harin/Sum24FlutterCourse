@@ -7,7 +7,7 @@ on:
     branches: [ lab7 ]
 
 jobs:
-  test:
+  build_linux:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,7 +33,7 @@ jobs:
       - name: Set up Dart
         uses: dart-lang/setup-dart@v1
         with:
-          sdk: '3.4.3'
+          channel: 'stable'
 
       - name: Install dependencies
         run: dart pub get
