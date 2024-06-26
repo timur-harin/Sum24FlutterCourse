@@ -11,14 +11,12 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_localization: ^0.2.0
-  flutter_localizations:
-    sdk: flutter
   flutter_riverpod: ^2.5.1
   freezed: ^2.5.2
   freezed_annotation: ^2.4.1
   golden_toolkit: ^0.15.0
   http: ^1.2.1
-  intl: any
+  intl: ^0.19.0
   intl_translation: ^0.20.0
   json_annotation: ^4.9.0
   json_serializable: ^6.8.0
@@ -26,7 +24,6 @@ dependencies:
   riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
   shared_preferences: ^2.2.3
-  network_image_mock: ^2.1.1
 
 dev_dependencies:
   flutter_test:
@@ -36,13 +33,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  generate: true
   assets:
     - assets/
     - assets/fonts/
-#    - assets/images/
-#    - assets/icons/
-#    - assets/tests/
+
+
   fonts:
     - family: Coves
       fonts:
