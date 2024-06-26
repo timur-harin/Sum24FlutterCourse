@@ -1,4 +1,5 @@
 {
+    "@locale": "ru",
     "title": "Логин",
     "username": "Имя пользователя",
     "password": "Пароль",

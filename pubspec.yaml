@@ -33,12 +33,14 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
   assets:
     - assets/
     - assets/fonts/
     - assets/images/
     - assets/icons/
     - assets/tests/
+    - lib/l10n/
   fonts:
     - family: Coves
       fonts:
