@@ -19,16 +19,17 @@ jobs:
                 flutter-version: 3.22.2
             - run: flutter pub get
 
-            - run: flutter analyze --no-fatal-warnings --no-fatal-infos lib/livecoding/cicd/ 
+            - run: flutter analyze --no-fatal-warnings --no-fatal-infos lib/templates/lab7/ 
 
             - run: flutter test test/widget_test.dart
 
-            - run: flutter build web --release lib/livecoding/cicd/main.dart
+            - run: flutter build web --release lib/templates/lab7/main.dart
                 
-            - uses: peaceiris/actions-gh-pages@v3
+            - uses: bluefireteam/flutter-gh-pages@v7
               with:
-                github_token: ${{ secrets.GITHUB_TOKEN }}
-                publish_dir: build/web
+                baseHref: /{YOUR_REPO_NAME} #example:  /Sum24FlutterCourse/
+                customArgs: "lib/templates/lab7/main.dart"
+
     
     build-windows:
         runs-on: windows-latest
