@@ -1,18 +1,16 @@
 import 'package:flutter_test/flutter_test.dart';
 
 bool isValidEmail(String email) {
-  // TODO add your validation logic here
-  return false;
+  final emailRegex = RegExp(r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+');
+  return emailRegex.hasMatch(email);
 }
 
 void main() {
-  group('Email Validation', () {
-    test('Valid email returns true', () {
-      expect(isValidEmail('test@example.com'), true);
-    });
+  test('Email validation', () {
+    final validEmail = 'example@example.com';
+    final invalidEmail = 'invalid email';
 
-    //  TODO add more test cases for invalid emails
+    expect(isValidEmail(validEmail), true);
+    expect(isValidEmail(invalidEmail), false);
   });
-
-  // Test using flutter test test/unit_test.dart
 }
