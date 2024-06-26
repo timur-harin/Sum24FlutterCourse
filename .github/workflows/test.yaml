@@ -3,10 +3,10 @@ name: CI/CD
 on:
   push:
     branches:
-      - main
+      - lab7
   pull_request:
     branches:
-      - main
+      - lab7
 
 jobs:
   analyze:
