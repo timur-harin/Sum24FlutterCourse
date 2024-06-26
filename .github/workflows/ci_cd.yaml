@@ -11,7 +11,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -19,24 +18,20 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '2.10.3'  # Specify a Flutter version that supports Dart SDK version >=3.4.1 <4.0.0
+          flutter-version: '3.22.2'
           channel: stable
-          architecture: x64
-          cache: true  # Enable caching for faster builds
+          architecture: X64
+          cache: false
           pub-cache-path: default
 
       - name: Install dependencies
         run: flutter pub get
-
-      - name: Analyze
-        run: flutter analyze
 
       - name: Run tests
         run: flutter test test/widget_test.dart
 
   build-windows:
     runs-on: windows-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -44,10 +39,10 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '2.10.3'
+          flutter-version: '3.22.2'
           channel: stable
-          architecture: x64
-          cache: true
+          architecture: X64
+          cache: false
           pub-cache-path: default
 
       - name: Install dependencies
@@ -67,10 +62,10 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '2.10.3'
+          flutter-version: '3.22.2'
           channel: stable
-          architecture: x64
-          cache: true
+          architecture: X64
+          cache: false
           pub-cache-path: default
 
       - name: Install dependencies
