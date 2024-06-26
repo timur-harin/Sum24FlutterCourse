@@ -98,7 +98,7 @@ jobs:
                 flutter-version: 3.22.2
             - run: flutter pub get
 
-            - run: flutter test test/widget_test.dart
+            - run: flutter test test/test_for_main.dart
 
             - run: flutter analyze  --no-fatal-warnings --no-fatal-infos lib/templates/lab7/main.dart 
 
