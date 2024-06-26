@@ -105,7 +105,7 @@ jobs:
             - uses: bluefireteam/flutter-gh-pages@v7
               with:
                 baseHref: /Sum24FlutterCourse/
-                customArgs: --target=="lib/templates/lab7/main.dart"
+                customArgs: --target="lib/templates/lab7/main.dart"
     
     # не работает – сейчас дебажим задание №4
     # windows_app:
