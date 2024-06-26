@@ -1,1 +1,6 @@
 include: package:flutter_lints/flutter.yaml
+
+linter:
+   rules:
+     -  unused_import: true
+        prefer_const_constructors: false

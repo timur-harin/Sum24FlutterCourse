@@ -1,18 +1,28 @@
 import 'package:education/templates/lab6/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+<<<<<<< HEAD
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
   
+=======
+
+class LoginScreen extends StatelessWidget {
+>>>>>>> upstream/main
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
+<<<<<<< HEAD
               AppLocalizations.of(context)!.title,
+=======
+    //  get from localization
+     ""
+>>>>>>> upstream/main
         ),
         actions: [
           IconButton(
@@ -31,7 +41,10 @@ class LoginScreen extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
+<<<<<<< HEAD
                 label: Text(AppLocalizations.of(context)?.username ?? "Username"),
+=======
+>>>>>>> upstream/main
                 // labelText: get from localization
               ),
             ),
@@ -39,7 +52,10 @@ class LoginScreen extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
+<<<<<<< HEAD
                 label: Text(AppLocalizations.of(context)?.password ?? "Password"),
+=======
+>>>>>>> upstream/main
                 // labelText: get from localization
               ),
               obscureText: true,
@@ -50,7 +66,10 @@ class LoginScreen extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {},
+<<<<<<< HEAD
                 child: Text(AppLocalizations.of(context)?.login ?? "Login"),
+=======
+>>>>>>> upstream/main
                 child: Text(""),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.red,
