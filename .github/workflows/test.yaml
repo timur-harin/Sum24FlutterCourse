@@ -1,6 +1,13 @@
 name: Specific Flutter Test
 
-on: [push, pull_request]
+on:
+    push:
+        branches:
+            - lab7
+
+    pull_request:
+        branches:
+            - lab7
 
 jobs:
     test:

@@ -8,8 +8,7 @@ Add rules for analyzers in analysis_options.yaml to avoid infos and warnings in 
 
 ## Test
 
-Add widget test for main.dart and apply running this test in GitHub Actions 
-
+Add widget test for main.dart and apply running this test in GitHub Actions -- done
 
 ## CI/CD
 

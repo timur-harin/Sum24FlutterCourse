@@ -1,0 +1,40 @@
+name: Web App Workflow
+
+on:
+    push:
+        branches:
+            - lab7
+
+    pull_request:
+        branches:
+            - lab7
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.1'
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze code
+        run: flutter analyze --no-pub --no-fatal-warnings
+
+      - name: Run tests
+        run: flutter test test/test.dart
+
+      - name: Build web app
+        run: flutter build web --release lib/templates/lab7/main.dart
+
+      - uses: bluefireteam/flutter-gh-pages@v7
+        with:
+          baseHref: /lab7
