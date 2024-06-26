@@ -1,0 +1,7 @@
+{
+  "@@locale": "ru",
+  "loginScreenTitle": "Логин",
+  "emailLabel": "Электронная почта",
+  "passwordLabel": "Пароль",
+  "loginButton": "Вход"
+}
