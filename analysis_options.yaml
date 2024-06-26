@@ -1,1 +1,12 @@
 include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    avoid_print: false
+    constant_identifier_names: false
+
+analyzer:
+  exclude:
+    - lib/templates/lab7/main.dart
+  errors:
+    unused_local_variable: ignore
