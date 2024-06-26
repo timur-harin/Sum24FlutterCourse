@@ -28,6 +28,11 @@ jobs:
       - uses: bluefireteam/flutter-gh-pages@v7
         with:
           customArgs: "lib/templates/lab7/main.dart"
+
+      - uses: bluefireteam/flutter-gh-pages@v7
+        with:
+            baseHref: /Sum24FlutterCourse
+            customArgs: "lib/templates/lab7/main.dart"     
   build:
     runs-on: windows-latest
     steps:
@@ -38,3 +43,5 @@ jobs:
           flutter-version: 3.22.2
       - run: flutter pub get
       - run: flutter build windows --release lib/templates/lab7/main.dart
+
+        
