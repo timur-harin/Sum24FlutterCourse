@@ -1,1 +1,23 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - lib/main.dart
+
+linter:
+  rules:
+    avoid_print: false
+    avoid_unnecessary_containers: false
+    unnecessary_new: false
+    unnecessary_const: false
+
+
+files:
+  lib/main.dart:
+    include:
+      - package:flutter_lints/flutter.yaml
+    exclude:
+      - avoid_print
+      - avoid_unnecessary_containers
+      - unnecessary_new
+      - unnecessary_const
