@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ThemeNotifier extends ChangeNotifier {
   ThemeData _currentTheme;
+  bool flag = true;
 
   ThemeNotifier(this._currentTheme);
 
@@ -9,5 +10,13 @@ class ThemeNotifier extends ChangeNotifier {
 
   void switchTheme() {
     // TODO add switch theme
+    if(flag){
+      _currentTheme = ThemeData.dark();
+    }
+    else{
+      _currentTheme = ThemeData.light();
+    }
+    flag = !flag;
+    notifyListeners();
   }
 }
