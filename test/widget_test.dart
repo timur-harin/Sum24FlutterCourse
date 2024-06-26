@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:education/templates/lab7/main.dart';
 
 void main() {
+
   testWidgets('MyHomePage displays "Hello World!"', (WidgetTester tester) async {
-    // Build the widget tree
     await tester.pumpWidget(
       const ProviderScope(
         child: MaterialApp(
@@ -14,10 +14,9 @@ void main() {
       ),
     );
 
-    // Create the Finders
     final textFinder = find.text('Hello World!');
 
-    // Verify the text appears exactly once in the widget tree
     expect(textFinder, findsOneWidget);
   });
+  // flutter test test/widget_test.dart
 }

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
@@ -19,6 +18,3 @@ linter:
     prefer_const_constructors_in_immutables: true
     use_key_in_widget_constructors: true
     avoid_returning_null_for_void: true
-=======
-include: package:flutter_lints/flutter.yaml
->>>>>>> bc4eeed58ca86db55cd80525b9ed3711375895e1
