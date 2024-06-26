@@ -1,17 +1,22 @@
+import 'package:education/templates/lab6/card.dart';
+import 'package:education/templates/lab6/notifier.dart';
 import 'package:education/templates/lab6/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-    //  get from localization
-     ""
-        ),
+        title: Text(AppLocalizations.of(context)!.title),
         actions: [
+          IconButton(onPressed: (){
+         Provider.of<LocaleNotifier>(context, listen: false)
+                    .switchLocale(); // Or toggle based on currentLocale
+          
+          }, icon: Icon(Icons.language)),
           IconButton(
             icon: Icon(Icons.brightness_6),
             onPressed: () {
@@ -25,9 +30,11 @@ class LoginScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text("52", style: TextStyle(fontSize: 52*5.2,color: Color(0xFFFEF7FF) )),
             TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
+                labelText: AppLocalizations.of(context)!.username, 
                 // labelText: get from localization
               ),
             ),
@@ -35,6 +42,7 @@ class LoginScreen extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
+                 labelText: AppLocalizations.of(context)!.password, 
                 // labelText: get from localization
               ),
               obscureText: true,
@@ -45,7 +53,8 @@ class LoginScreen extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {},
-                child: Text(""),
+                child: Text( AppLocalizations.of(context)!.login,
+                ),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.red,
                 ),

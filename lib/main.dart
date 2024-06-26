@@ -10,15 +10,13 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Center(
           child: Column(
             children: [
               Text('Hello World!'),
-              GroupButton(
-                isRadio: false,
-                buttons: ["12:00", "13:00", "14:30", "18:00", "19:00", "21:40"],
-              )
+            
             ],
           ),
         ),
