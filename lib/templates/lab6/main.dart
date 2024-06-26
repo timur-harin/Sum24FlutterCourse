@@ -21,13 +21,13 @@ class MyApp extends StatelessWidget {
       builder: (context, theme, child) {
         return MaterialApp(
           theme: theme.currentTheme,
-          localizationsDelegates: [
+          localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
             // Add your generated delegate here
           ],
-          supportedLocales: [
+          supportedLocales: const [
             const Locale('en', ''),
             const Locale('ru', ''),
           ],
@@ -37,4 +37,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

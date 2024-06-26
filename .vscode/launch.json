@@ -11,6 +11,13 @@
             "program": "lib/templates/lab3/main.dart"
         },
         {
+            "name": "lab6",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "chrome",
+            "program": "lib/templates/lab6/main.dart"
+        },
+        {
             "name": "lab2",
             "request": "launch",
             "type": "dart",

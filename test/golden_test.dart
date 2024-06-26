@@ -12,10 +12,11 @@ void main() {
 
     await tester.pumpWidgetBuilder(
       builder.build(),
-      surfaceSize: Size(1000, 2000), 
+      surfaceSize: const Size(1000, 2000), 
     );
 
-    // TODO fix to pass this using 'flutter test'
+    // // TODO fix to pass this using 'flutter test'
+    // Impossible because login_screen.png is broken
 
     await screenMatchesGolden(tester, 'login_screen');
 

@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_localization: ^0.2.0
+  flutter_localizations:
+    sdk: flutter
   flutter_riverpod: ^2.5.1
   freezed: ^2.5.2
   freezed_annotation: ^2.4.1
@@ -34,6 +36,7 @@ dev_dependencies:
   network_image_mock: ^2.0.1
 
 flutter:
+  generate: true
   uses-material-design: true
   assets:
     - assets/
