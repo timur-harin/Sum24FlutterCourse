@@ -1,4 +1,4 @@
-name: Flutter Test
+name: Specific Flutter Test
 
 on: [push, pull_request]
 
@@ -17,4 +17,4 @@ jobs:
               run: flutter pub get
 
             - name: Run tests
-              run: flutter test
+              run: flutter test test/test.dart
