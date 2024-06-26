@@ -1,1 +1,23 @@
 include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # Disable unnecessary_const, which flags using const unnecessarily
+    unnecessary_const: false
+    # Disable unnecessary_new, which flags using new unnecessarily
+    unnecessary_new: false
+    # Enable more specific rules for Flutter
+    avoid_print: true # This flags any use of print in production code
+    prefer_const_constructors: true # This encourages the use of const constructors where possible
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.gr.dart"
+
+  errors:
+    # Treat certain info-level issues as ignored
+    todo: ignore
+    # Upgrade the severity of certain warnings, if desired
+    deprecated_member_use: error
