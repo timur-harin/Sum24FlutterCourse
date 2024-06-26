@@ -4,7 +4,7 @@
 
 Add rules for analyzers in analysis_options.yaml to avoid infos and warnings in main.dart -- done
 
-(change rules for statistic analizator)
+(change rules for static analizator)
 
 ## Test
 
