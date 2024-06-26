@@ -1,1 +1,42 @@
-void main() {}
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+void main() {
+  runApp(
+    const ProviderScope(
+        child: MaterialApp(
+      home: MyHomePage(),
+    )),
+  );
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyHomePage> {
+  int number = 0;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Container(
+          child: Column(
+            children: [
+              Text(number.toString(), style: TextStyle(fontSize: 30),),
+              IconButton(onPressed: (){
+                setState(() {
+                  number++;
+                });
+              }, icon: Icon(Icons.add)),
+              Text("data")
+            ],
+          )
+        ),
+      ),
+    );
+  }
+}
