@@ -39,6 +39,8 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/tests/
+    - lib/l10n/intl_en.json
+    - lib/l10n/intl_ru.json
   fonts:
     - family: Coves
       fonts:

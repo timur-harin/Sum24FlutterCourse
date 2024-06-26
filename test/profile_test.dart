@@ -1,6 +1,7 @@
-import 'package:education/templates/lab6/card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../lib/templates/lab6/card.dart';
 
 void main() {
   testWidgets('ProfileCard displays correct information',
@@ -11,11 +12,21 @@ void main() {
     const description = 'Software Developer';
 
     // Act
-    // TODO add test using pumpWidget
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: ProfileCard(
+            imageUrl: imageUrl,
+            name: name,
+            description: description,
+          ),
+        ),
+      ),
+    );
 
     // Assert
-    // TODO add assertions using expect and findsOneWidget
-
-    // Test using flutter test test/custom_button_test.dart
+    expect(find.text(name), findsOneWidget);
+    expect(find.text(description), findsOneWidget);
+    expect(find.byType(CircleAvatar), findsOneWidget);
   });
 }
