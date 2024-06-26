@@ -32,5 +32,5 @@ jobs:
 
       - uses: bluefireteam/flutter-gh-pages@v7
         with:
-          baseHref: https://vizitei-dmitri.github.io/Sum24FlutterCourse/
+          baseHref: /Sum24FlutterCourse/
           customArgs: "lib/templates/lab7/main.dart"
