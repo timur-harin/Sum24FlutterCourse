@@ -1,21 +1,45 @@
+import 'dart:collection';
+
 import 'package:education/templates/lab6/card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:network_image_mock/network_image_mock.dart';
+
+Widget makeTestableWidget() {
+  return MaterialApp(
+    home: Scaffold(
+      body: ProfileCard(
+        imageUrl:
+            'https://imgs.smoothradio.com/images/191589?width=1200&crop=1_1&signature=KHg-WnaLlH9KsZwE-qYgxTkaSpU=',
+        name: 'John Doe',
+        description: 'Software Developer',
+      ),
+    ),
+  );
+}
 
 void main() {
   testWidgets('ProfileCard displays correct information',
       (WidgetTester tester) async {
-    // Arrange
-    const imageUrl = 'https://example.com/image.jpg';
+    const imageUrl =
+        'https://imgs.smoothradio.com/images/191589?width=1200&crop=1_1&signature=KHg-WnaLlH9KsZwE-qYgxTkaSpU=';
     const name = 'John Doe';
     const description = 'Software Developer';
 
-    // Act
-    // TODO add test using pumpWidget
+    await mockNetworkImagesFor(() async => await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: ProfileCard(
+                imageUrl: imageUrl,
+                name: name,
+                description: description,
+              ),
+            ),
+          ),
+        ));
 
-    // Assert
-    // TODO add assertions using expect and findsOneWidget
-
-    // Test using flutter test test/custom_button_test.dart
+    expect(find.text(name), findsOneWidget);
+    expect(find.text(description), findsOneWidget);
+    expect(find.byType(CircleAvatar), findsOneWidget);
   });
 }
