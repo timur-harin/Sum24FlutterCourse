@@ -1,7 +1,9 @@
 {
+    "@@locale": "ru",
     "title": "Вход",
     "username": "Имя пользователя",
-    "password": "Пароль",
     "emailLabel": "Электронная почта",
-    "login": "Войти"
+    "password": "Пароль",
+    "login": "Войти",
+    "settings": "Сменить тему"
 }

@@ -2,5 +2,6 @@
     "title": "Login",
     "username": "Username",
     "password": "Password",
-    "login": "Login"
+    "emailLabel": "Email",
+    "login": "Sign in"
 }

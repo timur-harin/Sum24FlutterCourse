@@ -3,7 +3,7 @@ import 'package:education/templates/lab6/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   runApp(
@@ -14,24 +14,39 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  MyAppState createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  static Locale changing = const Locale('en');
+
+   void setLocale(Locale locale) {
+    setState(() {
+      changing = locale;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeNotifier>(
       builder: (context, theme, child) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           theme: theme.currentTheme,
-          localizationsDelegates: [
+          locale: changing,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
-            // Add your generated delegate here
           ],
-          supportedLocales: [
-            const Locale('en', ''),
-            const Locale('ru', ''),
+           supportedLocales: const [
+            Locale('en'),
+            Locale('ru'), 
           ],
-          home: LoginScreen(),
+          home: LoginScreen(changing: setLocale),
         );
       },
     );

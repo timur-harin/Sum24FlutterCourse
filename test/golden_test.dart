@@ -8,18 +8,20 @@ void main() {
     final builder = GoldenBuilder.grid(
       columns: 1,
       widthToHeightRatio: 0.5,
-    )..addScenario('Login Screen', MaterialApp(home: LoginScreen()));
+    )..addScenario('Login Screen', MaterialApp(home: LoginScreen(changing: onLocaleChange)));
 
     await tester.pumpWidgetBuilder(
       builder.build(),
-      surfaceSize: Size(1000, 2000), 
+      surfaceSize: const Size(1000, 2000), 
     );
 
-    // TODO fix to pass this using 'flutter test'
+    await tester.pumpAndSettle();
 
     await screenMatchesGolden(tester, 'login_screen');
 
-    // Test using flutter test test/golden_test.dart
-
   });
+}
+
+void onLocaleChange(Locale locale) {
+  print('Changed to: $locale');
 }
