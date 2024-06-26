@@ -3,10 +3,10 @@ name: Build Web
 on: 
     push:
         branches:
-            - main
+            - lab7
     pull_request:
         branches:
-            - main
+            - lab7
 
 jobs:
     test:
@@ -19,7 +19,7 @@ jobs:
                 flutter-version: 3.22.2
             - run: flutter pub get
 
-            - run: flutter test test/test.dart
+            - run: flutter test test/widgetTest.dart
 
             - run: flutter analyze  --no-fatal-warnings --no-fatal-infos lib/livecoding/cicd/ 
 
