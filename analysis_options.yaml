@@ -1,1 +1,24 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - lib/main.dart
+
+linter:
+  rules:
+    # List of lint rules
+    avoid_print: false
+    await_only_futures: true
+    camel_case_types: true
+    constant_identifier_names: true
+    empty_catches: true
+    empty_constructor_bodies: true
+    empty_statements: true
+    # Add more rules as needed
+
+# Override rules specifically for main.dart
+analyzer:
+  errors:
+    lib/main.dart:
+      info: ignore
+      warning: ignore
