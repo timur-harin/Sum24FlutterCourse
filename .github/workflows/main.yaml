@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -19,7 +19,7 @@ jobs:
           flutter-version: 3.22.1
       - run: flutter pub get
 
-      - run: flutter test test/test.dart
+      - run: flutter test lib/templates/lab7/main.dart
 
       - run: flutter analyze  --no-fatal-warnings --no-fatal-infos lib/livecoding/cicd/
 
