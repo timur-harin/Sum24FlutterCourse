@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 void main() {
   runApp(
@@ -13,6 +15,19 @@ void main() {
     ),
   );
 }
+
+class ThemeNotifier extends ChangeNotifier {
+  ThemeData _currentTheme;
+  ThemeNotifier(this._currentTheme);
+  ThemeData get currentTheme => _currentTheme;
+  void setTheme(ThemeData theme) {
+    _currentTheme = theme;
+    notifyListeners();
+  }
+
+}
+
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -25,6 +40,7 @@ class MyApp extends StatelessWidget {
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
+            //AppLocalizations.delegate,
             // Add your generated delegate here
           ],
           supportedLocales: [

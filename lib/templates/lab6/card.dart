@@ -10,6 +10,7 @@ class ProfileCard extends StatelessWidget {
     required this.name,
     required this.description,
   });
+  
 
   @override
   Widget build(BuildContext context) {
