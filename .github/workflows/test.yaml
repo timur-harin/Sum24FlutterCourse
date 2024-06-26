@@ -30,15 +30,15 @@ jobs:
                 baseHref: /Sum24FlutterCourse/
                 customArgs: --target="lib/templates/lab7/main.dart"
     windows_app:
-        build:
-            runs-on: windows-latest
-            steps:
-            - uses: actions/checkout@v4
-            - uses: subosito/flutter-action@v2
-            with:
-                channel: stable
-                flutter-version: 3.22.2
-            - run: flutter build windows  
+    
+        runs-on: windows-latest
+        steps:
+        - uses: actions/checkout@v4
+        - uses: subosito/flutter-action@v2
+        with:
+            channel: stable
+            flutter-version: 3.22.2
+        - run: flutter build windows  
 
 
 
