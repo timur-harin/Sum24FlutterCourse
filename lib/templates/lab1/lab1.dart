@@ -86,6 +86,10 @@ class LAb1HomePage extends StatelessWidget {
   
   }
 
+  printPressed() {
+    print("Pressed");
+  }
+
   Widget exercise4() {
     return  TextButton(
       child: Text(
