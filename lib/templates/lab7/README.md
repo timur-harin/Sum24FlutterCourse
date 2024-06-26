@@ -2,23 +2,23 @@
 
 ## Analyzer
 
-Add rules for analyzers in analysis_options.yaml to avoid infos and warnings in main.dart
+Add rules for analyzers in analysis_options.yaml to avoid infos and warnings in main.dart - done
 
 ## Test
 
-Add widget test for main.dart and apply running this test in GitHub Actions
+Add widget test for main.dart and apply running this test in GitHub Actions - done
 
 
 ## CI/CD
 
 Add new yaml file to get dependencies, analyze, test, and deploy using GitHub actions - this web app
-Check on which branch you need to push to run the job
+Check on which branch you need to push to run the job - done
 
 ## Build 
 
-Add new job to build windows application in windows machine using GitHub actions
+Add new job to build windows application in windows machine using GitHub actions - done?
 
 ## Docker
 
-Add needed lines for exsists Dockerfile as linux container for web app 
+Add needed lines for exsists Dockerfile as linux container for web app -
 

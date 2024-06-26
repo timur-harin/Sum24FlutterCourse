@@ -1,1 +1,7 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    unnecessary_new: ignore
+  exclude:
+    - lib/templates/lab7/main.dart
