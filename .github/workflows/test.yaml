@@ -28,6 +28,9 @@ jobs:
             - uses: bluefireteam/flutter-gh-pages@v7
               with:
                 customArgs: "lib/livecoding/cicd/main.dart"
+            
+            - name: Run widget tests
+                run: flutter test test/test_for_lab7.dart
 
 
 

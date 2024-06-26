@@ -1,0 +1,61 @@
+name: 7lab_file.yaml
+
+on:
+  push:
+    branches:
+      - lab7
+
+jobs:
+  build_web:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        flutter-version: 3.22.2
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Analyze
+      run: flutter analyze
+
+    - name: Test
+      run: flutter test test/test_for_7lab.dart
+
+    - name: Build
+      run: flutter build web
+
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@4.1.0
+      with:
+        branch: gh-pages
+        folder: build/web
+
+  build_windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        flutter-version: 3.22.2
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Build Windows app
+      run: flutter build windows
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: windows-app
+        path: build/windows/runner/Release
