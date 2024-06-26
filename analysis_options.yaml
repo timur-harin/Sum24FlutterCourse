@@ -3,3 +3,6 @@ include: package:flutter_lints/flutter.yaml
 linter:
   rules:
     - avoid_unnecessary_containers : true
+    - prefer_const_constructors : false
+    - avoid_warnings : true
+    - avoid_info : true

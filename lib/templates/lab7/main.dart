@@ -23,7 +23,7 @@ class _MyWidgetState extends State<MyHomePage> {
     return Scaffold(
       body: Center(
         child: Container(
-          child: const Text('Hello World!'),
+          child: Text('Hello World!'),
         ),
       ),
     );

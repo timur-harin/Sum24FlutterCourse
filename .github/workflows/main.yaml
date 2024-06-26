@@ -17,7 +17,13 @@ jobs:
               with:
                 channel: stable
                 flutter-version: 3.22.2
+                architecture: X64
+                cache: false
             - run: flutter pub get
             - run: flutter test test/test.dart
             - run: flutter analyze  --no-fatal-warnings --no-fatal-infos lib/templates/lab7/ 
             - run: flutter build web --release lib/templates/lab7/main.dart
+            - uses: bluefireteam/flutter-gh-pages@v7
+              with:
+                baseHref: /Sum24FlutterCourse/
+                customArgs: "lib/templates/lab7/main.dart"
