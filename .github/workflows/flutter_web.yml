@@ -23,20 +23,21 @@ jobs:
       run: flutter pub get
 
     - name: Analyze code
-      run: flutter analyze --no-fatal-warnings --no-fatal-infos lib\templates\lab7\main.dart
+      run: flutter analyze
 
     - name: Run tests
       run: flutter test test/test_main.dart
 
     - name: Build web
-      run: flutter build web --release lib\templates\lab7\main.dart
+      run: flutter build web --release lib/templates/lab7/main.dart
 
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/lab-7'  
-      uses: bluefireteam/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v3
       with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: build/web
         customArgs: "lib/templates/lab7/main.dart"
-
   build-windows:
     runs-on: windows-latest
 
@@ -56,13 +57,13 @@ jobs:
       run: flutter config --enable-windows-desktop
 
       - name: Analyze code
-      run: flutter analyze --no-fatal-warnings --no-fatal-infos lib\templates\lab7\main.dart
+      run: flutter analyze
 
     - name: Run tests
       run: flutter test test/test_main.dart
 
     - name: Build Windows
-      run: flutter build windows --release lib\templates\lab7\main.dart
+      run: flutter build windows
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
