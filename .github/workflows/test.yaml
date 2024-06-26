@@ -28,8 +28,7 @@ jobs:
             - uses: bluefireteam/flutter-gh-pages@v7
               with:
                 baseHref: /Sum24FlutterCourse/
-                customArgs: "lib/templates/lab7/main.dart"
-    
+                customArgs: --target="lib/templates/lab7/main.dart"
     windows_app:
         build:
             runs-on: windows-latest
