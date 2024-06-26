@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout repository
@@ -32,6 +32,9 @@ jobs:
 
     - name: Build web app
       run: flutter build web
+
+    - name: Build Windows application
+      run: flutter build windows
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
