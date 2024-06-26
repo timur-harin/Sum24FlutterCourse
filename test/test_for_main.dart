@@ -1,6 +1,4 @@
-import 'dart:collection';
 
-import 'package:education/templates/lab6/card.dart';
 import 'package:education/templates/lab7/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
