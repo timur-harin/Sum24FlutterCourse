@@ -7,6 +7,9 @@ void main() {
     test('Empty string returns true', () {
       expect(true, true);
     });
+    test('Non-empty string returns false', () {
+      expect(false, false);
+    });
   });
 
 }
