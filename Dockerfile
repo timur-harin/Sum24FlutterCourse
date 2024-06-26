@@ -8,6 +8,7 @@ RUN apt-get clean
 
 
 # TODO clone original flutter github repo
+RUN git -v
 RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
 
 ENV PATH="${PATH}:/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin"
@@ -27,7 +28,7 @@ WORKDIR /app/
 RUN flutter pub get
 
 # TODO build web from needed file
-RUN flutter build web --release lib/template/lab7/main.dart
+RUN flutter build web --release ./lib/templates/lab7/main.dart
 
 FROM nginx:1.21.1-alpine
 
