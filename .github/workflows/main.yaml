@@ -24,7 +24,3 @@ jobs:
       - run: flutter analyze  --no-fatal-warnings --no-fatal-infos lib/templates/lab7/
 
       - run: flutter build web --release lib/templates/lab7/main.dart
-
-      - uses: bluefireteam/flutter-gh-pages@v7
-        with:
-          customArgs: 'lib/livecoding/cicd/main.dart'
