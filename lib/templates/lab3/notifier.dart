@@ -1,6 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'storage.dart';
 
+const double maxLevel = 2000.0;
+const int stepNumber = 20;
+
 final localStorageServiceProvider = Provider<LocalStorageService>((ref) {
   return LocalStorageService();
 });
@@ -8,27 +11,39 @@ final localStorageServiceProvider = Provider<LocalStorageService>((ref) {
 final waterIntakeProvider =
     StateNotifierProvider<WaterIntakeNotifier, double>((ref) {
   final localStorageService = ref.watch(localStorageServiceProvider);
-  return WaterIntakeNotifier(localStorageService);
+  return WaterIntakeNotifier(localStorageService,
+      maxLevel: maxLevel, steps: stepNumber);
 });
 
 class WaterIntakeNotifier extends StateNotifier<double> {
+  final double maxLevel;
+  late double _step;
+
   final LocalStorageService _localStorageService;
 
-  WaterIntakeNotifier(this._localStorageService) : super(0) {
+  WaterIntakeNotifier(this._localStorageService,
+      {required int steps, this.maxLevel = 100.0})
+      : super(0.0) {
+    _step = (steps > 0.0) ? maxLevel / steps : maxLevel;
     _loadWaterIntake();
   }
 
   void _loadWaterIntake() async {
-    // TODO - Load the water intake from _localStorageService using await
-    // state =
+    state = await _localStorageService.getWaterIntake();
   }
 
-  void increment(double amount) async {
-    state += amount;
-    // TODO - Save the water intake into _localStorageService using saveWaterIntake
+  void increment() async {
+    if (state < maxLevel) {
+      state += _step;
+      if (maxLevel - state < .0001) {
+        state = maxLevel;
+      }
+    }
+    _localStorageService.saveWaterIntake(state);
   }
 
   void reset() async {
-    // TODO - reset state and save it into _localStorageService using saveWaterIntake
+    state = 0.0;
+    _localStorageService.saveWaterIntake(state);
   }
 }

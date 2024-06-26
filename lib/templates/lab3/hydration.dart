@@ -2,9 +2,9 @@ import 'package:education/templates/lab3/painter.dart';
 import 'package:flutter/material.dart';
 
 class HydrationWidget extends StatefulWidget {
-  final double waterIntakeLevel;
+  final double waterIntakeRatio;
 
-  const HydrationWidget({super.key, required this.waterIntakeLevel});
+  const HydrationWidget({super.key, required this.waterIntakeRatio});
 
   @override
   HydrationWidgetState createState() => HydrationWidgetState();
@@ -17,7 +17,7 @@ class HydrationWidgetState extends State<HydrationWidget> {
     return SizedBox(
       width: size.width,
       height: size.height - 200,
-      child: WaterPainterWidget(waterIntakeLevel: widget.waterIntakeLevel),
+      child: WaterPainterWidget(waterIntakeRatio: widget.waterIntakeRatio),
     );
   }
 }
