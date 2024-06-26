@@ -7,8 +7,8 @@ void main() {
   testWidgets('ProfileCard displays correct information',
       (WidgetTester tester) async {
     const imageUrl = 'https://example.com/image.jpg';
-    const name = 'John Doe';
-    const description = 'Software Developer';
+    const name = 'John Donkihot';
+    const description = 'Rickroller';
 
 
     await mockNetworkImagesFor(() async => await tester.pumpWidget(const MaterialApp(
