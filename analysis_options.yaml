@@ -6,6 +6,11 @@ analyzer:
     public_member_api_docs: ignore
     unnecessary_new: ignore
     avoid_init_to_null: ignore
+    prefer_const_constructors: ignore
+    prefer_const_literals_to_create_immutables: ignore
+    prefer_final_fields: ignore
+    use_key_in_widget_constructors: ignore
+    avoid_unnecessary_containers: ignore
 
 linter:
   rules:
@@ -17,3 +22,13 @@ linter:
     - prefer_const_literals_to_create_immutables
     - prefer_final_fields
     - use_key_in_widget_constructors
+    - avoid_redundant_argument_values
+    - avoid_single_cascade_in_expression_statements
+    - prefer_is_empty
+    - prefer_is_not_empty
+    - prefer_iterable_whereType
+    - type_annotate_public_apis
+    - use_function_type_syntax_for_parameters
+    - use_rethrow_when_possible
+    - unnecessary_lambdas
+    - avoid_unnecessary_containers
