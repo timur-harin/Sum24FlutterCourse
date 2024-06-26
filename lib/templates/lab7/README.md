@@ -17,7 +17,7 @@ Check on which branch you need to push to run the job -- done
 
 ## Build 
 
-Add new job to build windows application in windows machine using GitHub actions 
+Add new job to build windows application in windows machine using GitHub actions -- done
 
 ## Docker
 
