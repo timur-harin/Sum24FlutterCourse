@@ -42,9 +42,8 @@ flutter:
   assets:
     - assets/
     - assets/fonts/
-    - assets/images/
-    - assets/icons/
-    - assets/tests/
+
+
   fonts:
     - family: Coves
       fonts:
