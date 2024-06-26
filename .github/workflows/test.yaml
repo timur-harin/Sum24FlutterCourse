@@ -30,7 +30,6 @@ jobs:
                 baseHref: /Sum24FlutterCourse/
                 customArgs: --target="lib/templates/lab7/main.dart"
     windowsApp:
-    
         runs-on: windows-latest
         steps:
         - uses: actions/checkout@v4
