@@ -27,9 +27,6 @@ jobs:
         run: flutter pub get
 
       - name: Build Windows App
-        run: flutter build windows --release
+        run: flutter build windows lib/templates/lab7/main.dart
 
-      - uses: bluefireteam/flutter-gh-pages@v7
-        with:
-          baseHref: /Sum24FlutterCourse/
-          customArgs: "lib/templates/lab7/main.dart"
+
