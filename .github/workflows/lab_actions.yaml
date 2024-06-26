@@ -1,0 +1,27 @@
+name: Lab 7 GitHub Workflow
+on:
+  push:
+    branches:
+      - main
+      - lab-7
+  pull_request:
+    branches:
+      - main
+      - lab-7
+jobs:
+  deploy_github_actions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.22.2
+      - run: flutter pub get
+      - run: flutter analyze  --no-fatal-warnings --no-fatal-infos lib/templates/lab7/main.dart
+      - run: flutter test test/widget_test.dart
+      - run: flutter build web --release lib/templates/lab7/main.dart
+      - uses: bluefireteam/flutter-gh-pages@v7
+        with:
+          baseHref: /Dmitrii-Bargan/summer-2024-cmdf/
+          customArgs: "lib/templates/lab7/main.dart"
