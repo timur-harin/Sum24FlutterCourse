@@ -6,6 +6,7 @@ class LocaleNotifier with ChangeNotifier {
   Locale get currentLocale => _currentLocale;
 
   void switchLocale() {
+    
     if (_currentLocale == Locale('en')) {
       _currentLocale = Locale('ru');
     } else {

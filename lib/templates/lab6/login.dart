@@ -54,7 +54,7 @@ class LoginScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.red,
+                  foregroundColor: Color.fromARGB(255, 33, 148, 91),
                 ),
                 child: Text(localization?.login ?? 'Login'),
               ),
