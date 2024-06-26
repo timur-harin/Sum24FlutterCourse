@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 void main() => runApp(const Lab1());
 
@@ -57,6 +58,7 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise1() {
+<<<<<<< HEAD
     return Text(
       'Hello Flutter!',
       style: TextStyle(
@@ -70,32 +72,62 @@ class LAb1HomePage extends StatelessWidget {
   Widget exercise2() {
     return Icon(
       Icons.home,
+=======
+    return const Text(
+      "Hello, Flutter!",
+      style: TextStyle(
+        fontSize: 30,
+        color: Colors.lightBlue,
+        fontWeight: FontWeight.bold),
+        );
+  }
+
+  Widget exercise2() {
+    return const Icon(
+      Icons.favorite,
+>>>>>>> 8153cba42d2512afba394f7988dc5f86a4fdccfc
       size: 100,
       color: Colors.red,
     );
   }
 
   Widget exercise3() {
+<<<<<<< HEAD
     return Image.network(
       'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Zunge_raus.JPG/300px-Zunge_raus.JPG',
       width: 150,
       height: 250,
       fit: BoxFit.cover,
+=======
+    return const Image(
+      width: 100, height: 100, image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+>>>>>>> 8153cba42d2512afba394f7988dc5f86a4fdccfc
     );
+  }
+
+  printPressed() {
+    print("Pressed");
   }
 
   Widget exercise4() {
     return TextButton(
+<<<<<<< HEAD
       onPressed: () => print('Pressed'),
       child: Text(
         'Pressed',
       ),
     );
+=======
+      onPressed: printPressed,
+      child: const Text('CLICK ME!'),
+      );
+>>>>>>> 8153cba42d2512afba394f7988dc5f86a4fdccfc
   }
 
   Widget exercise5() {
     return Column(
       children: [
+<<<<<<< HEAD
         Container(
           padding: EdgeInsets.all(10),
           margin: EdgeInsets.all(10),
@@ -123,6 +155,11 @@ class LAb1HomePage extends StatelessWidget {
           ),
         ),
       ],
+=======
+        Container(color: Colors.blue, padding: const EdgeInsets.all(50), child: const Text("This is home Icon in Container!")),
+        Container(color: Colors.red, margin: const EdgeInsets.all(100), child: const Icon(Icons.home)),
+      ]
+>>>>>>> 8153cba42d2512afba394f7988dc5f86a4fdccfc
     );
   }
 }
