@@ -1,22 +1,47 @@
-import 'package:education/templates/lab6/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'theme.dart';
 
 class LoginScreen extends StatelessWidget {
+  final Function(Locale) onLocaleChange;
+
+  LoginScreen({required this.onLocaleChange});
+
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-    //  get from localization
-     ""
-        ),
+        title: Text(localizations?.title ?? 'Title'),
         actions: [
           IconButton(
             icon: Icon(Icons.brightness_6),
             onPressed: () {
               Provider.of<ThemeNotifier>(context, listen: false).switchTheme();
             },
+          ),
+          PopupMenuButton<String>(
+            onSelected: (String value) {
+              if (value == 'en') {
+                onLocaleChange(Locale('en'));
+              } else if (value == 'ru') {
+                onLocaleChange(Locale('ru'));
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                  value: 'en',
+                  child: Text('English'),
+                ),
+                PopupMenuItem(
+                  value: 'ru',
+                  child: Text('Русский'),
+                ),
+              ];
+            },
+            icon: Icon(Icons.language),
           ),
         ],
       ),
@@ -28,14 +53,14 @@ class LoginScreen extends StatelessWidget {
             TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                // labelText: get from localization
+                labelText: localizations?.username ?? 'Username',
               ),
             ),
             SizedBox(height: 20),
             TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                // labelText: get from localization
+                labelText: localizations?.password ?? 'Password',
               ),
               obscureText: true,
             ),
@@ -45,9 +70,9 @@ class LoginScreen extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {},
-                child: Text(""),
+                child: Text(localizations?.login ?? 'Login'),
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.red,
+                  foregroundColor: Color.fromARGB(255, 0, 17, 255),
                 ),
               ),
             ),

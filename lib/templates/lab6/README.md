@@ -22,4 +22,3 @@ Use this doc link https://docs.flutter.dev/ui/accessibility-and-internationaliza
 ### Theme change
 
 Add theme switching using theme notifier
-
