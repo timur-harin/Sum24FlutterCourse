@@ -1,0 +1,22 @@
+name: Lab 7 CI
+
+on:
+  push:
+    branches:
+      - lab7
+  pull_request:
+    branches:
+      - lab7
+
+jobs:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v4
+    - uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        flutter-version: 3.23.0-0.1.pre
+    - run: flutter pub get
+    - run: flutter analyze lib/templates/lab7/main.dart
+    - run: flutter test test/lab7_test.dart
+    - run: flutter build web --release lib/templates/lab7/main.dart
