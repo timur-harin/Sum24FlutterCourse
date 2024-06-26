@@ -7,6 +7,10 @@ RUN apt-get clean
 
 # TODO clone original flutter github repo
 
+RUN sudo apt-get update -y && sudo apt-get upgrade -y;
+RUN sudo apt-get install -y curl git unzip xz-utils zip libglu1-mesa
+RUN git clone https://github.com/flutter/flutter.git
+
 ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
 
 RUN flutter doctor -v
@@ -21,8 +25,11 @@ COPY . /app/
 WORKDIR /app/
 
 # TODO get dependencies
+RUN flutter pub get
+
 # TODO build web from needed file
 
+RUN flutter build web
 FROM nginx:1.21.1-alpine
 
 COPY --from=build-env /app/build/web /usr/share/nginx/html

@@ -1,0 +1,41 @@
+name: Flutter Test
+
+on:
+  push:
+    branches: lab7
+  pull_request:
+    branches: lab7
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Flutter actions
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '2.5.3'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
+  build_windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Flutter actions
+        uses: subeditor/flutter-action@v1
+        with:
+          flutter-version: '2.5.3'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Windows application
+        run: flutter build windows --release

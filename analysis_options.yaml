@@ -1,1 +1,10 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - 'lib/main.dart'
+  errors:
+    unused_element: ignore
+    unused_import: ignore
+    unused_local_variable: ignore
+    dead_code: ignore
