@@ -19,7 +19,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '2.10.3'  # Ensure compatibility with Dart SDK requirements
+          flutter-version: '2.10.3'  # Specify a Flutter version that supports Dart SDK version >=3.4.1 <4.0.0
           channel: stable
           architecture: x64
           cache: true  # Enable caching for faster builds
