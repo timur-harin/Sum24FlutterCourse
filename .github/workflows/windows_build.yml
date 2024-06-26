@@ -26,7 +26,7 @@ jobs:
         run: flutter pub get
 
       - name: Build Windows App
-        run: flutter build web --release lib/templates/lab7/main.dart
+        run: flutter build windows --release lib/templates/lab7/main.dart
 
       - uses: bluefireteam/flutter-gh-pages@v7
         with:
