@@ -10,6 +10,5 @@ void main() {
     await tester.pumpWidget(ProviderScope(child: MaterialApp(home: MyHomePage())));
     expect(find.byType(Text), findsAny);
 
-
   });
 }
