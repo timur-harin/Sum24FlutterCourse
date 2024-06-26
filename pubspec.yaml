@@ -30,15 +30,13 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^4.0.0
   build_runner: ^2.4.11
+  network_image_mock: ^2.0.1
 
 flutter:
   uses-material-design: true
   assets:
     - assets/
     - assets/fonts/
-    - assets/images/
-    - assets/icons/
-    - assets/tests/
   fonts:
     - family: Coves
       fonts:
