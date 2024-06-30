@@ -9,13 +9,13 @@ class Lab1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: LAb1HomePage(),
+      home: Lab1HomePage(),
     );
   }
 }
 
-class LAb1HomePage extends StatelessWidget {
-  const LAb1HomePage({super.key});
+class Lab1HomePage extends StatelessWidget {
+  const Lab1HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +63,9 @@ class LAb1HomePage extends StatelessWidget {
       style: TextStyle(
         fontSize: 30,
         color: Colors.lightBlue,
-        fontWeight: FontWeight.bold),
-        );
+        fontWeight: FontWeight.bold,
+      ),
+    );
   }
 
   Widget exercise2() {
@@ -77,7 +78,10 @@ class LAb1HomePage extends StatelessWidget {
 
   Widget exercise3() {
     return const Image(
-      width: 100, height: 100, image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+      width: 200,
+      height: 200,
+      fit: BoxFit.cover,
+      image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
     );
   }
 
@@ -89,15 +93,33 @@ class LAb1HomePage extends StatelessWidget {
     return TextButton(
       onPressed: printPressed,
       child: const Text('CLICK ME!'),
-      );
+    );
   }
 
   Widget exercise5() {
     return Column(
       children: [
-        Container(color: Colors.blue, padding: const EdgeInsets.all(50), child: const Text("This is home Icon in Container!")),
-        Container(color: Colors.red, margin: const EdgeInsets.all(100), child: const Icon(Icons.home)),
-      ]
+        Container(
+          padding: const EdgeInsets.all(16.0),
+          margin: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.blue, width: 2),
+            borderRadius: BorderRadius.circular(8.0),
+            color: Colors.blue[100],
+          ),
+          child: const Text("This is a text widget inside a container!"),
+        ),
+        Container(
+          padding: const EdgeInsets.all(16.0),
+          margin: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.red, width: 2),
+            borderRadius: BorderRadius.circular(8.0),
+            color: Colors.red[100],
+          ),
+          child: const Icon(Icons.home, size: 50),
+        ),
+      ],
     );
   }
 }
