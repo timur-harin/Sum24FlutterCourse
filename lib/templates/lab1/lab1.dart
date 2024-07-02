@@ -59,25 +59,25 @@ class LAb1HomePage extends StatelessWidget {
 
   Widget exercise1() {
     return const Text(
-      "Hello, Flutter!",
+      "Hello Flutter!",
       style: TextStyle(
         fontSize: 30,
-        color: Colors.lightBlue,
-        fontWeight: FontWeight.bold),
+        color: Color.fromARGB(255, 244, 3, 188),
+        fontWeight: FontWeight.w600),
         );
   }
 
   Widget exercise2() {
     return const Icon(
-      Icons.favorite,
-      size: 100,
-      color: Colors.red,
+      Icons.home,
+      size: 300,
+      color: Color.fromARGB(255, 255, 247, 91),
     );
   }
 
   Widget exercise3() {
     return const Image(
-      width: 100, height: 100, image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+      width: 300, height: 300, image: NetworkImage('https://http.cat/images/200.jpg'),
     );
   }
 
@@ -86,18 +86,32 @@ class LAb1HomePage extends StatelessWidget {
   }
 
   Widget exercise4() {
-    return TextButton(
-      onPressed: printPressed,
-      child: const Text('CLICK ME!'),
-      );
-  }
+  return TextButton(
+    onPressed: printPressed,
+    child: const Text(
+      'Press me',
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        decoration: TextDecoration.underline,
+      ),
+    ),
+  );
+}
 
   Widget exercise5() {
     return Column(
       children: [
-        Container(color: Colors.blue, padding: const EdgeInsets.all(50), child: const Text("This is home Icon in Container!")),
-        Container(color: Colors.red, margin: const EdgeInsets.all(100), child: const Icon(Icons.home)),
-      ]
+        Container(
+          color: const Color.fromARGB(255, 177, 220, 255),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
+          child: const Text("This is home Icon in Container!"),
+        ),
+        Container(
+          color: Color.fromARGB(255, 255, 144, 188),
+          margin: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
+          child: const Icon(Icons.favorite),
+        ),
+      ],
     );
   }
 }
