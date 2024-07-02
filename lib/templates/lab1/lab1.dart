@@ -77,7 +77,7 @@ class LAb1HomePage extends StatelessWidget {
 
   Widget exercise3() {
     return const Image(
-      width: 300, height: 300, image: NetworkImage('https://http.cat/images/200.jpg'),
+      width: 100, height: 100, image: NetworkImage('https://http.cat/images/200.jpg'),
     );
   }
 
