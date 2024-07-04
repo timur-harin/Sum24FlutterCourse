@@ -26,6 +26,67 @@ This course is part of the Flutter elective summer program at Innopolis Universi
 |Midterm individual project   |20       |
 |Final team project           |30       |
 
+## Lab Tasks and Assignments
+
+Throughout the course, students completed various lab tasks and assignments aimed at reinforcing the concepts taught in the lectures. Each lab focuses on specific aspects of Flutter development, as detailed below:
+
+### Labs
+
+- [Lab 1](/lib/templates/lab1/README.md): Implement basic Flutter widgets and their properties to create a simple UI.
+  - Text widget customization
+  - Icon widget usage
+  - Image display from network
+  - Button creation and functionality
+  - Layout with Columns and Containers
+- [Lab 2](/lib/templates/lab2/README.md): Dive into Dart programming concepts including classes, inheritance, mixins, functions, and null-safety through hands-on tasks.
+  - Creating and using Dart classes
+  - Inheritance in Dart
+  - Using mixins for JSON serialization
+  - Function writing and usage
+  - Implementing null-safety features
+- [Lab 3](/lib/templates/lab3/README.md): Build a stateful Flutter application focusing on hydration tracking with advanced state management and custom UI painting.
+  - State management with StatefulWidget
+  - State management using Riverpod
+  - Custom UI painting for water intake visualization
+  - Data persistence with SharedPreferences
+- [Lab 4](/lib/templates/lab4/README.md): Explore asynchronous programming, state management solutions, and making HTTP requests in Flutter.
+  - Async/await for asynchronous operations
+  - Using Provider and Riverpod for state management
+  - Making HTTP requests with the HTTP package and Dio
+- [Lab 5](/lib/templates/lab5/README.md): Learn about JSON parsing, route navigation, and using the freezed package in Flutter.
+  - JSON parsing and data fetching
+  - Route navigation with arguments
+  - Using freezed for immutable data models
+- [Lab 6](/lib/templates/lab6/README.md): Focus on testing and widget implementation, including unit, widget, and golden tests, along with localization and theming.
+  - Implementing various types of tests
+  - Adding localization support
+  - Theme switching functionality
+- [Lab 7](/lib/templates/lab7/README.md): Advanced topics including setting up analyzer rules, CI/CD with GitHub Actions, Docker integration, and building for different platforms.
+  - Analyzer setup and code quality
+  - CI/CD pipeline configuration
+  - Dockerization of a Flutter web app
+  - Building and deploying for multiple platforms
+
+### Assignments
+
+- [Middle Individual Assignment](/lib/templates/middleAssignment/README.md): The Contrast Shower Companion app. 
+
+Students are tasked with creating an app to guide users through contrast shower sessions, with functionality to save it in localstorage and navigate between pages
+
+
+- [Final Assignment](/lib/templates/project/README.md): Healthy app
+ 
+Students will work in teams to develop a Cross-Platform Flutter Healthy App, incorporating various features and best practices covered throughout the course
+
+
+### Bonus assignment
+
+For those who seek to get an A grade on the course without participating in other activities, it is enough to complete the [Bonus Assignment](/lib/templates/bonusAssignment/README.md). It includes the development of a cross-platform Flutter package for document scanning, taking into account requirements such as camera integration, touch control, border recognition and image processing.
+
+
+
+
+
 ## Final Feedback Overview
 
 The course feedback is visualized in the following graphs, representing students' responses collected after the course completion. These graphs provide insights into various aspects of the course, including overall impressions, application of learned skills, interactions with classmates from other electives, course comparison with other courses, reflections on prior knowledge, and feelings at the course's end.
