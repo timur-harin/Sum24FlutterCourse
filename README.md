@@ -84,8 +84,40 @@ Students will work in teams to develop a Cross-Platform Flutter Healthy App, inc
 For those who seek to get an A grade on the course without participating in other activities, it is enough to complete the [Bonus Assignment](/lib/templates/bonusAssignment/README.md). It includes the development of a cross-platform Flutter package for document scanning, taking into account requirements such as camera integration, touch control, border recognition and image processing.
 
 
+## Course Workflow
 
+This course adopts a practical, hands-on approach to learning, emphasizing collaboration and version control as key aspects of modern software development. Assignments and lab exercises are structured to reinforce these concepts through a pull request-based workflow.
 
+### Forking and Cloning Repositories
+
+At the beginning of the course, students are required to fork the main repository containing the templates for labs and assignments. This process introduces students to the concept of "forking" in GitHub, creating a personal copy of the repository on their own GitHub account which they can modify independently.
+
+### Completing Assignments and Labs
+
+For each assignment or lab:
+
+1. Students work within their forked repository, making changes or completing tasks as specified in the lab or assignment instructions.
+2. Upon completion, students push their changes to their forked repository on GitHub.
+
+### Creating Pull Requests
+
+After pushing changes to GitHub, students create a Pull Request (PR) from their repository to the original repository from which they forked. This PR should include all changes made during the lab or assignment. 
+
+1. Navigate to the original repository on GitHub.
+2. Click on the 'Pull Requests' tab and then the 'New Pull Request' button.
+3. Select your repository and branch with the changes as the source, and the original repository's corresponding branch as the destination.
+4. Review the changes, ensuring they are complete and correct as per the assignment requirements.
+5. Create the Pull Request, providing any necessary descriptions or comments for the instructors or TAs to review.
+
+### Review and Feedback
+
+Instructors and TAs review the Pull Requests, providing feedback directly within the GitHub interface. This feedback may include suggestions for improvement, questions about the implementation, or confirmation of successful completion.
+
+### Merging Pull Requests
+
+Once the assignment or lab is successfully completed and reviewed, the Pull Request may be closed. In this course, the primary goal of the PR is for submission and feedback rather than merging into the main repository. This approach allows instructors to easily track submissions and provide structured feedback, while students gain experience with a key aspect of collaborative software development.
+
+This pull request-based workflow not only reinforces the technical skills involved in using git and GitHub but also simulates a collaborative development environment, preparing students for future software projects in both academic and professional settings.
 
 ## Final Feedback Overview
 
