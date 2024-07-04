@@ -27,9 +27,6 @@ jobs:
 
             - uses: bluefireteam/flutter-gh-pages@v7
               with:
-                customArgs: "lib/livecoding/cicd/main.dart"
-
-
-
-            
-
+                baseHref: /Sum24FlutterCourse/
+                customArgs: --target="lib/livecoding/cicd/main.dart"
+        
