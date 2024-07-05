@@ -62,6 +62,10 @@ This course is part of the Flutter elective summer program at Innopolis Universi
 |Midterm individual project   |20       |
 |Final team project           |30       |
 
+## Grade distribution
+
+![Grade distribution](/feedback/figures/sum24/grades.png)
+
 ## Lab Tasks and Assignments
 
 Throughout the course, students completed various lab tasks and assignments aimed at reinforcing the concepts taught in the lectures. Each lab focuses on specific aspects of Flutter development, as detailed below:
