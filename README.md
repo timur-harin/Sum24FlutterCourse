@@ -19,7 +19,7 @@ This course is part of the Flutter elective summer program at Innopolis Universi
 9. [Kiwi](https://github.com/KIWI-Food-App/KIWI) - app to track calories from user parameters
 10. [Shleappy](https://github.com/krokant-team/solid-flutter-project) - sleep-tracking app
 11. [Flutter shoes shop](https://github.com/FlutterShop/FlutterShop) - full-fledged mobile application for an online sneaker store
-12. [MeditationApp](https://github.com/Flutter-Summer-Project/MeditationApp) - app for meditation practicies
+12. [MeditationApp](https://github.com/Flutter-Summer-Project/MeditationApp) - app for meditation practices
 13. [InnoRun](https://github.com/InnoRunProject/InnoRun) - app to communicate runners to join running together
 14. [Sleep tracker](https://github.com/ChabanovX/sleep-tracker) - sleep-tracking app
 15. [Karma](https://github.com/Flutter-best-team/unnamed_project) - app to balancing the positive and negative aspects of your life
@@ -27,7 +27,7 @@ This course is part of the Flutter elective summer program at Innopolis Universi
 17. [FoodTracker](https://github.com/flutterTeamDMSA/final_project_flutter) - app for calculating calories based on a photograph of food
 18. [PlantNanny](https://github.com/flutterInnopolis/Sum24FlutterCourse2024) -  app to track habits
 
-#### Bonus Assigment partial completion
+#### Bonus Assignment partial completion
 
 [Document scanning package](https://pub.dev/packages/docu_ng)
 
@@ -107,7 +107,7 @@ Throughout the course, students completed various lab tasks and assignments aime
 
 - [Middle Individual Assignment](/lib/templates/middleAssignment/README.md): The Contrast Shower Companion app. 
 
-Students are tasked with creating an app to guide users through contrast shower sessions, with functionality to save it in localstorage and navigate between pages
+Students are tasked with creating an app to guide users through contrast shower sessions, with functionality to save it in local-storage and navigate between pages
 
 
 - [Final Assignment](/lib/templates/project/README.md): Healthy app
@@ -190,6 +190,70 @@ Insights into whether students' expectations were met, exceeded, or not achieved
 
 Reflections on students' feelings and takeaways at the course's conclusion, summarizing their end-of-course perspective.
 
+
+### I haven't seen this in other courses, but I liked it in this one
+![I didn't see it, but liked here](/feedback/figures/sum24/no_in_others_but_liked_in_this.png)
+
+
+### I haven't seen this in other courses, but I liked it in this one
+![Liked Features Not Seen Elsewhere](/feedback/figures/sum24/no_in_others_but_liked_in_this.png)
+
+This visualization captures unique elements of the course that were particularly appreciated by students, highlighting innovative aspects that set it apart from other courses.
+
+### I haven't seen this in other courses, and it's good that it wasn't here either
+![Appreciated Omissions](/feedback/figures/sum24/no_in_others_and_good.png)
+
+This chart illustrates course elements that, while absent, were noted by students as positive omissions, suggesting a thoughtful curriculum design that aligns with student expectations.
+
+### I've seen it in other courses, and I've missed it in this one
+![Missed Features](/feedback/figures/sum24/seen_in_others_and_missed_in_this.png)
+
+This visualization reflects on aspects that students have encountered in other courses but were missing here, indicating areas for potential inclusion to enhance the learning experience.
+
+### I've seen it in other courses, and it's a good thing it wasn't here
+![Excluded and Appreciated](/feedback/figures/sum24/seen_in_others_and_good_not_have_here.png)
+
+This figure shows the course components that are commonly found in other courses but were deliberately excluded here, to the appreciation of students, underscoring the importance of curricular uniqueness.
+
+### I've learned...
+![Learning Outcomes](/feedback/figures/sum24/learned.png)
+
+This plot presents what students have learned, encapsulating the course's impact on their knowledge and skills in a visually engaging manner.
+
+### It seemed useless to me...
+![Perceived Uselessness](/feedback/figures/sum24/useless.png)
+
+This visualization highlights the elements of the course that were perceived as unnecessary or less valuable by students, offering insights into areas for potential refinement.
+
+### This course can be improved by...
+![Suggestions for Improvement](/feedback/figures/sum24/improve_by.png)
+
+This chart captures constructive feedback from students on how the course could be improved, providing valuable directions for future enhancements.
+
+### Timur's English level
+![Timur's English Level](/feedback/figures/sum24/timur_english_level.png)
+
+Feedback on Timur's proficiency in English, highlighting how it impacts the learning experience.
+
+### Timur's approach compared to other courses...
+![Timur's Approach](/feedback/figures/sum24/timur_approach.png)
+
+Students' comparison of Timur's teaching methodology with that of other instructors, focusing on effectiveness and engagement.
+
+### I want to do it after this course...
+![Post-Course Ambitions](/feedback/figures/sum24/do_after.png)
+
+Capturing the aspirations and plans students have developed as a result of their learnings from the course.
+
+### I promise based on the results of this course over the summer, not necessarily about studying
+![Summer Promises](/feedback/figures/sum24/promise.png)
+
+A collection of students' commitments, inspired by their course achievements, extending beyond academic pursuits.
+
+### I wish + to whom I wish it
+![Wishes and Recipients](/feedback/figures/sum24/wish.png)
+
+Expressions of hope and goodwill, directed towards peers, instructors, or the broader community, as inspired by the course's spirit.
 
 ### If you want to see the full feedback, including answers to open questions
 [View JSON Results from Yandex.Form](/feedback/data/sum24_final_after_project.json)
