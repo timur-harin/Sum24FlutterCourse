@@ -5,309 +5,130 @@ from collections import Counter
 from textblob import TextBlob
 from wordcloud import WordCloud
 
+
+base_dir = 'feedback/figures/sum24/'
+
 data = json.load(open('feedback/data/sum24_final_after_project.json'))
-responses = [response[0][1] for response in data]
 
-response_count = Counter(responses)
 
-plt.figure(figsize=(10, 6))
-plt.bar(response_count.keys(), response_count.values())
-plt.ylabel('Number of Responses')
-plt.title('Overall Impressions After the Course')
-plt.xticks(rotation=45, ha="right")
-plt.tight_layout()
+def plot_bar_chart(data, title, filename, xlabel='Number of Responses'):
+    response_count = Counter(data)
+    plt.figure(figsize=(10, 6))
+    bars = plt.bar(response_count.keys(), response_count.values())
+    plt.ylabel(xlabel)
+    plt.title(title)
+    plt.xticks(rotation=45, ha="right")
 
-plt.savefig('feedback/figures/sum24/overall_impressions.png')
+    total = sum(response_count.values())
+    for bar in bars:
+        height = bar.get_height()
+        percentage = f'{100 * height/total:.1f}%'
+        plt.text(bar.get_x() + bar.get_width() / 2, height,
+                 percentage, ha='center', va='bottom')
 
-responses = [response[1][1] for response in data]
+    plt.tight_layout()
+    plt.savefig(base_dir + filename)
 
-response_count = Counter(responses)
 
-plt.figure(figsize=(10, 6))
-plt.bar(response_count.keys(), response_count.values())
-plt.ylabel('Number of Responses')
-plt.title('Now I...')
-plt.xticks(rotation=45, ha="right")
-plt.tight_layout()
+def clear_text_data(data):
+    cleared_data = []
+    for d in data:
+        if len(d) > 3:
+            cleared_data.append(d)
+    return cleared_data
 
-plt.savefig('feedback/figures/sum24/now_i.png')
 
+def plot_text_responses(data, title, filename):
+    new_data = clear_text_data(data)
+    plt.figure(figsize=(10, len(new_data) * 0.7))
+    plt.axis([-0.1, 1.1, 0, len(new_data)+2])  
+    plt.title(title, pad=20)
+    plt.yticks([])
+    plt.xticks([])
+    plt.box(False)
+    for i, response in enumerate(new_data, start=1):
+        plt.text(0.01, i + 0.5, response, ha='left', 
+                 va='center', wrap=True, fontsize=8)
+    plt.tight_layout()
+    plt.savefig(base_dir + filename)
 
-responses = [response[2][1] for response in data]
 
-response_count = Counter(responses)
+plot_bar_chart([response[0][1] for response in data],
+               'Overall Impressions After the Course', 'overall_impressions.png')
 
-plt.figure(figsize=(10, 6))
-plt.bar(response_count.keys(), response_count.values())
-plt.ylabel('Number of Responses')
-plt.title('How do you feel after talking with classmates from other electives?')
-plt.xticks(rotation=45, ha="right")
-plt.tight_layout()
 
-plt.savefig('feedback/figures/sum24/how_do_you_feel.png')
+plot_bar_chart([response[1][1] for response in data],
+               'Now I...', 'now_i.png')
 
-responses = [response[3][1] for response in data]
 
-response_count = Counter(responses)
+plot_bar_chart([response[2][1] for response in data],
+               'How do you feel after talking with classmates from other electives?',
+               'how_do_you_feel.png')
 
-plt.figure(figsize=(10, 6))
-plt.bar(response_count.keys(), response_count.values())
-plt.ylabel('Number of Responses')
-plt.title('This elective is compared to other courses ...')
-plt.xticks(rotation=45, ha="right")
-plt.tight_layout()
 
-plt.savefig('feedback/figures/sum24/this_elective.png')
+plot_bar_chart([response[3][1] for response in data],
+               'This elective is compared to other courses ...',
+               'this_elective.png')
 
-responses = [response[4][1] for response in data]
 
-response_count = Counter(responses)
+plot_bar_chart([response[4][1] for response in data],
+               'If I had known in advance how this elective would go, then I would',
+               'if_i_had_known_in_advance.png')
 
-plt.figure(figsize=(10, 6))
-plt.bar(response_count.keys(), response_count.values())
-plt.ylabel('Number of Responses')
-plt.title('If I had known in advance how this elective would go, then I would')
-plt.xticks(rotation=45, ha="right")
-plt.tight_layout()
 
-plt.savefig('feedback/figures/sum24/if_i_had_known.png')
+plot_bar_chart([response[5][1] for response in data],
+               'At the end of the course , I ...',
+               'at_the_end.png')
 
-responses = [response[5][1] for response in data]
 
-response_count = Counter(responses)
+plot_text_responses([response[6][1] for response in data],
+                    "I haven't seen this in other courses, but I liked it in this one", 'no_in_others_but_liked_in_this.png')
 
-plt.figure(figsize=(10, 6))
-plt.bar(response_count.keys(), response_count.values())
-plt.title('At the end of the course , I ...')
-plt.xticks(rotation=45, ha="right")
-plt.tight_layout()
 
-plt.savefig('feedback/figures/sum24/at_the_end.png')
+plot_text_responses([response[7][1] for response in data],
+                    "I haven't seen this in other courses, and it's good that it wasn't here either", 'no_in_others_and_good.png')
 
 
-responses = [response[6][1]
-             for response in data]
+plot_text_responses([response[8][1] for response in data],
+                    "I've seen it in other courses, and I've missed it in this one", 'seen_in_others_and_missed_in_this.png')
 
-plt.figure(figsize=(10, len(responses) / 2))
-plt.axis([0, 1, 0, len(responses)])
-plt.title("I haven't seen this in other courses, but I liked it in this one")
-plt.yticks([])
-plt.xticks([])
-plt.box(False)
 
-for i, response in enumerate(responses, start=1):
-    plt.text(0.01, i, response, ha='left', va='center',
-             wrap=True, fontsize=8)
+plot_text_responses([response[9][1] for response in data],
+                    "I've seen it in other courses, and it's a good thing he wasn't here", 'seen_in_others_and_good_not_have_here.png')
 
-plt.tight_layout()
 
-plt.savefig('feedback/figures/sum24/no_in_others_but_liked_in_this.png')
+plot_text_responses([response[10][1] for response in data],
+                    "I've learned...", 'learned.png')
 
-responses = [response[7][1]
-             for response in data]
 
-plt.figure(figsize=(10, len(responses) / 2))
-plt.axis([0, 1, 0, len(responses)])
-plt.title(
-    "I haven't seen this in other courses, and it's good that it wasn't here either")
-plt.yticks([])
-plt.xticks([])
-plt.box(False)
+plot_text_responses([response[11][1] for response in data],
+                    "It seemed useless to me...", 'useless.png')
 
-for i, response in enumerate(responses, start=1):
-    plt.text(0.01, i, response, ha='left', va='center', wrap=True, fontsize=8)
+plot_text_responses([response[12][1] for response in data],
+                    "This course can be improved by ...", 'improve_by.png')
 
-plt.tight_layout()
+plot_bar_chart([response[13][1] for response in data],
+               "I think that Timur...", 'timur_flutter_skills.png')
 
-plt.savefig('feedback/figures/sum24/no_in_others_and_good.png')
 
-responses = [response[8][1]
-             for response in data]
+plot_bar_chart([response[14][1] for response in data],
+               "Timur's English level", 'timur_english_level.png')
 
-plt.figure(figsize=(10, len(responses) / 2))
-plt.axis([0, 1, 0, len(responses)])
-plt.title(
-    "I've seen it in other courses, and I've missed it in this one")
-plt.yticks([])
-plt.xticks([])
-plt.box(False)
 
-for i, response in enumerate(responses, start=1):
-    plt.text(0.01, i, response, ha='left', va='center', wrap=True, fontsize=8)
+plot_bar_chart([response[15][1] for response in data],
+               "Timur's approach compared to other courses ...", 'timur_approach.png')
 
-plt.tight_layout()
 
-plt.savefig('feedback/figures/sum24/seen_in_others_and_missed_in_this.png')
+plot_text_responses([response[16][1] for response in data],
+                    "I want to do it after this course...", 'want_to_do_after.png')
 
 
-responses = [response[9][1]
-             for response in data]
+plot_text_responses([response[17][1] for response in data],
+                    "I promise based on the results of this course over the summer, not necessarily about studying", 'promise.png')
 
-plt.figure(figsize=(10, len(responses) / 2))
-plt.axis([0, 1, 0, len(responses)])
-plt.title(
-    "I've seen it in other courses, and it's a good thing he wasn't here")
-plt.yticks([])
-plt.xticks([])
-plt.box(False)
 
-for i, response in enumerate(responses, start=1):
-    plt.text(0.01, i, response, ha='left', va='center', wrap=True, fontsize=8)
-
-plt.tight_layout()
-
-plt.savefig('feedback/figures/sum24/seen_in_others_and_good_not_have_here.png')
-
-
-responses = [response[10][1]
-             for response in data]
-
-plt.figure(figsize=(10, len(responses) / 2))
-plt.axis([0, 1, 0, len(responses)])
-plt.title(
-    "I've learned...")
-plt.yticks([])
-plt.xticks([])
-plt.box(False)
-
-for i, response in enumerate(responses, start=1):
-    plt.text(0.01, i, response, ha='left', va='center', wrap=True, fontsize=8)
-
-plt.tight_layout()
-
-plt.savefig('feedback/figures/sum24/learned.png')
-
-responses = [response[11][1]
-             for response in data]
-
-plt.figure(figsize=(10, len(responses) / 2))
-plt.axis([0, 1, 0, len(responses)])
-plt.title(
-    "It seemed useless to me...")
-
-plt.yticks([])
-plt.xticks([])
-plt.box(False)
-
-for i, response in enumerate(responses, start=1):
-    plt.text(0.01, i, response, ha='left', va='center', wrap=True, fontsize=8)
-
-plt.tight_layout()
-
-plt.savefig('feedback/figures/sum24/useless.png')
-
-
-responses = [response[12][1]
-             for response in data]
-
-plt.figure(figsize=(10, len(responses) / 2))
-plt.axis([0, 1, 0, len(responses)])
-plt.title(
-    "This course can be improved by ...")
-
-plt.yticks([])
-plt.xticks([])
-plt.box(False)
-
-for i, response in enumerate(responses, start=1):
-    plt.text(0.01, i, response, ha='left', va='center', wrap=True, fontsize=8)
-
-plt.tight_layout()
-
-plt.savefig('feedback/figures/sum24/improve_by.png')
-
-
-responses = [response[13][1] for response in data]
-
-response_count = Counter(responses)
-
-plt.figure(figsize=(10, 6))
-plt.bar(response_count.keys(), response_count.values())
-plt.ylabel('Number of Responses')
-plt.title('I think that Timur...')
-plt.xticks(rotation=45, ha="right")
-plt.tight_layout()
-
-plt.savefig('feedback/figures/sum24/timur_flutter_skills.png')
-
-responses = [response[14][1] for response in data]
-
-response_count = Counter(responses)
-
-plt.figure(figsize=(10, 6))
-plt.bar(response_count.keys(), response_count.values())
-plt.ylabel('Number of Responses')
-plt.title("Timur's English level")
-plt.xticks(rotation=45, ha="right")
-plt.tight_layout()
-
-plt.savefig('feedback/figures/sum24/timur_english_level.png')
-
-responses = [response[15][1] for response in data]
-
-response_count = Counter(responses)
-
-plt.figure(figsize=(10, 6))
-plt.bar(response_count.keys(), response_count.values())
-plt.ylabel('Number of Responses')
-plt.title("Timur's approach compared to other courses ...")
-plt.xticks(rotation=45, ha="right")
-plt.tight_layout()
-
-plt.savefig('feedback/figures/sum24/timur_approach.png')
-
-
-responses = [response[16][1] for response in data]
-
-plt.figure(figsize=(10, len(responses) / 2))
-plt.axis([0, 1, 0, len(responses)])
-plt.title(
-    "I want to do it after this course...")
-plt.yticks([])
-plt.xticks([])
-plt.box(False)
-
-for i, response in enumerate(responses, start=1):
-    plt.text(0.01, i, response, ha='left', va='center', wrap=True, fontsize=8)
-
-plt.tight_layout()
-
-plt.savefig('feedback/figures/sum24/do_after.png')
-
-responses = [response[17][1] for response in data]
-
-plt.figure(figsize=(10, len(responses) / 2))
-plt.axis([0, 1, 0, len(responses)])
-plt.title(
-    "I promise based on the results of this course over the summer, not necessarily about studying")
-plt.yticks([])
-plt.xticks([])
-plt.box(False)
-
-for i, response in enumerate(responses, start=1):
-    plt.text(0.01, i, response, ha='left', va='center', wrap=True, fontsize=8)
-
-plt.tight_layout()
-
-plt.savefig('feedback/figures/sum24/promise.png')
-
-responses = [response[18][1] for response in data]
-
-plt.figure(figsize=(10, len(responses) / 2))
-plt.axis([0, 1, 0, len(responses)])
-plt.title(
-    "I wish + to whom I wish it")
-plt.yticks([])
-plt.xticks([])
-plt.box(False)
-
-
-for i, response in enumerate(responses, start=1):
-    plt.text(0.01, i, response, ha='left', va='center', wrap=True, fontsize=8)
-
-plt.tight_layout()
-
-plt.savefig('feedback/figures/sum24/wish.png')
+plot_text_responses([response[18][1] for response in data],
+                    "I wish + to whom I wish it", 'wish.png')
 
 
 with open('feedback/data/[Sum24] FCPA Grades.csv') as file:

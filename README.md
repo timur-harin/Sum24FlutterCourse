@@ -185,7 +185,7 @@ This chart illustrates students' feelings after interacting with peers from diff
 Student responses comparing this elective to other courses they have taken, providing context on its relative difficulty, engagement, and value.
 
 ### If I had known in advance how this elective would go, then I would...
-![In Hindsight](/feedback/figures/sum24/if_i_had_known.png)
+![In Hindsight](/feedback/figures/sum24/if_i_had_known_in_advance.png)
 
 Insights into whether students' expectations were met, exceeded, or not achieved, based on their prior expectations of the elective.
 
@@ -193,10 +193,6 @@ Insights into whether students' expectations were met, exceeded, or not achieved
 ![Course Conclusion](/feedback/figures/sum24/at_the_end.png)
 
 Reflections on students' feelings and takeaways at the course's conclusion, summarizing their end-of-course perspective.
-
-
-### I haven't seen this in other courses, but I liked it in this one
-![I didn't see it, but liked here](/feedback/figures/sum24/no_in_others_but_liked_in_this.png)
 
 
 ### I haven't seen this in other courses, but I liked it in this one
@@ -245,7 +241,7 @@ Feedback on Timur's proficiency in English, highlighting how it impacts the lear
 Students' comparison of Timur's teaching methodology with that of other instructors, focusing on effectiveness and engagement.
 
 ### I want to do it after this course...
-![Post-Course Ambitions](/feedback/figures/sum24/do_after.png)
+![Post-Course Ambitions](/feedback/figures/sum24/want_to_do_after.png)
 
 Capturing the aspirations and plans students have developed as a result of their learnings from the course.
 
