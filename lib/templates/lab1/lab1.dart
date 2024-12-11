@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 void main() => runApp(const Lab1());
 
@@ -22,13 +21,16 @@ class LAb1HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: const Icon(Icons.stars),
         title: const Text('Lab 1'),
+        backgroundColor: Colors.teal,
+        elevation: 4,
       ),
-      body: myWidget(),
+      body: myWidget(context),
     );
   }
 
-  Widget myWidget() {
+  Widget myWidget(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -47,7 +49,7 @@ class LAb1HomePage extends StatelessWidget {
           const SizedBox(
             height: 25,
           ),
-          exercise4(),
+          exercise4(context),
           const SizedBox(
             height: 25,
           ),
@@ -59,45 +61,72 @@ class LAb1HomePage extends StatelessWidget {
 
   Widget exercise1() {
     return const Text(
-      "Hello, Flutter!",
+      'Flutter Rules',
+      textAlign: TextAlign.center,
       style: TextStyle(
-        fontSize: 30,
-        color: Colors.lightBlue,
-        fontWeight: FontWeight.bold),
-        );
+        fontWeight: FontWeight.w900,
+        fontSize: 37.0,
+        color: Colors.teal,
+      ),
+    );
   }
 
   Widget exercise2() {
     return const Icon(
-      Icons.favorite,
-      size: 100,
-      color: Colors.red,
+      Icons.tv,
+      color: Colors.teal,
+      size: 42.0,
     );
   }
 
   Widget exercise3() {
-    return const Image(
-      width: 100, height: 100, image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+    return Image.network(
+      'https://i.pinimg.com/736x/b7/43/26/b74326865ca5feff316e6416a1b73ddc.jpg',
+      width: 48.0,
+      height: 64.0,
+      fit: BoxFit.fill,
     );
   }
 
-  printPressed() {
-    print("Pressed");
-  }
-
-  Widget exercise4() {
+  Widget exercise4(BuildContext context) {
     return TextButton(
-      onPressed: printPressed,
-      child: const Text('CLICK ME!'),
-      );
+      style: TextButton.styleFrom(
+        foregroundColor: Colors.tealAccent[700],
+      ),
+      child: const Text('Press me'),
+      onPressed: () {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Pressed'),
+        ));
+      },
+    );
   }
 
   Widget exercise5() {
     return Column(
-      children: [
-        Container(color: Colors.blue, padding: const EdgeInsets.all(50), child: const Text("This is home Icon in Container!")),
-        Container(color: Colors.red, margin: const EdgeInsets.all(100), child: const Icon(Icons.home)),
-      ]
+      children: <Widget>[
+        Container(
+          padding: const EdgeInsets.all(16.0),
+          decoration: const BoxDecoration(
+            color: Colors.teal,
+            borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          ),
+          child: const Text(
+            'There\'s a Column!',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(32.0),
+          margin: const EdgeInsets.fromLTRB(4.0, 16.0, 4.0, 8.0),
+          decoration: const FlutterLogoDecoration(),
+          child: const Icon(
+            Icons.egg_sharp,
+            color: Colors.blue,
+            size: 25.0,
+          ),
+        ),
+      ],
     );
   }
 }

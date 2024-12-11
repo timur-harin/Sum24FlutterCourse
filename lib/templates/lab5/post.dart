@@ -1,15 +1,36 @@
-// TODO add dependencies
+import 'package:dio/dio.dart';
 
 class Post {
-  // TODO task 1 to make this class for url http://jsonplaceholder.typicode.com/posts
+  final int userId;
+  final int id;
+  final String title;
+  final String body;
 
-  factory Post.fromJson(Map<String, dynamic> json) {}
+  Post(
+      {required this.userId,
+      required this.id,
+      required this.title,
+      required this.body});
 
-  factory Post.toJson(Post post) {}
+  factory Post.fromJson(Map<String, dynamic> json) => Post(
+      userId: json['userId'],
+      id: json['id'],
+      title: json['title'],
+      body: json['body']);
+
+  Map<String, dynamic> toJson(Post post) => <String, dynamic>{
+        'userId': userId,
+        'id': id,
+        'title': title,
+        'body': body
+      };
 }
 
-Future<List<Post>> fetchPosts() async {
-  // TODO task 1.2 to make this function for url http://jsonplaceholder.typicode.com/posts
-  // // Using fabric from class
-  return [];
+Future<List<Post>> fetchPosts({int start = 0, required int count}) async {
+  List<Post> posts = [];
+  const url = 'http://jsonplaceholder.typicode.com/posts';
+  for (int i = start; i < start + count; ++i) {
+    posts.add(Post.fromJson((await Dio().get('$url/$i')).data));
+  }
+  return posts;
 }
